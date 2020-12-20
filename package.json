@@ -1,0 +1,128 @@
+{
+  "name": "snovy",
+  "version": "0.0.0",
+  "description": "note manager with advanced tag support",
+  "main": "index.tsx",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stroym/snovy"
+  },
+  "author": "stroym",
+  "license": "GNU GPL V3",
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.53",
+    "@types/react-dom": "^16.9.8",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "4.0.1",
+    "typescript": "^4.0.3",
+    "web-vitals": "^0.2.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/preset-env": "^7.12.7",
+    "@babel/preset-react": "^7.12.7",
+    "@babel/preset-typescript": "^7.12.7",
+    "@babel/register": "^7.12.1",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^14.14.12",
+    "@typescript-eslint/eslint-plugin": "^4.8.2",
+    "@typescript-eslint/parser": "^4.8.2",
+    "@webpack-cli/serve": "^1.1.0",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^5.0.1",
+    "eslint": "^7.15.0",
+    "fork-ts-checker-webpack-plugin": "^6.0.5",
+    "html-webpack-plugin": "^4.5.0",
+    "pre-commit": "^1.2.2",
+    "raw-loader": "^4.0.2",
+    "style-loader": "^2.0.0",
+    "type-fest": "^0.20.2",
+    "typescript": "^4.1.2",
+    "web-vitals": "^1.0.1",
+    "webpack": "^5.10.0",
+    "webpack-cli": "^4.2.0",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "scripts": {
+    "dev": "webpack --mode development",
+    "start": "webpack serve",
+    "build": "webpack --mode production",
+    "eject": "react-scripts eject",
+    "lint": "eslint '*/**/*.{ts,tsx}' --quiet --fix"
+  },
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": 2020,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "plugins": [
+      "react"
+    ],
+    "extends": [
+      "react-app",
+      "plugin:react/recommended"
+    ],
+    "rules": {
+      "indent": [
+        "error",
+        2,
+        {
+          "SwitchCase": 1
+        }
+      ],
+      "quotes": [
+        "error",
+        "double"
+      ],
+      "semi": [
+        "error",
+        "always"
+      ],
+      "no-multiple-empty-lines": [
+        "error",
+        {
+          "max": 1,
+          "maxBOF": 1,
+          "maxEOF": 1
+        }
+      ],
+      "one-var": [
+        "error",
+        "never"
+      ],
+      "no-use-before-define": "off"
+    }
+  },
+  "pre-commit": [
+    "lint"
+  ],
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react",
+      "@babel/preset-typescript"
+    ],
+    "plugins": [
+      "react-refresh/babel",
+      "@babel/plugin-proposal-class-properties"
+    ]
+  }
+}
