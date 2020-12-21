@@ -16,4 +16,51 @@ html, body, #root {
   width: 100%;
   height: 100%;
   background-color: chocolate;
+  line-height: 0;
+}
+
+//TODO
+#snovy-app > * {
+  box-sizing: border-box;
+}
+
+#snovy-bar-top {
+  height: 10%;
+  width: 100%;
+  display: inline-block;
+  vertical-align: top;
+  background-color: purple;
+  border-bottom: black solid 4px;
+}
+
+#snovy-bar-bottom {
+  height: 5%;
+  width: 100%;
+  display: inline-block;
+  vertical-align: bottom;
+  background-color: gray;
+  border-top: black solid 4px;
+}
+
+#snovy-bar-left {
+  height: 85%;
+  width: 20%;
+  display: inline-block;
+  background-color: blue;
+  border-right: black solid 4px;
+}
+
+#snovy-bar-right {
+  height: 85%;
+  width: 10%;
+  display: inline-block;
+  background-color: green;
+  border-left: black solid 4px;
+}
+
+#snovy-editor {
+  height: 85%;
+  width: 70%;
+  display: inline-block;
+  background-color: white;
 }

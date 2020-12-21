@@ -11,9 +11,9 @@ function App() {
     <div id="snovy-app">
       <TopBar/>
       <LeftBar/>
+      <Editor/>
       <RightBar/>
       <BottomBar/>
-      <Editor/>
     </div>
   );
 }

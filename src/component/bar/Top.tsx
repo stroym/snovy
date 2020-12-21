@@ -5,9 +5,9 @@ export default class TopBar extends React.Component {
 
   render() {
     return (
-      <div id="snovy-bar-top">
+      <span id="snovy-bar-top">
         <Search/>
-      </div>
+      </span>
     );
   }
 

@@ -4,8 +4,8 @@ export default class Search extends React.Component {
 
   render() {
     return (
-      <div id="snovy-search">
-      </div>
+      <span id="snovy-search">
+      </span>
     );
   }
 
