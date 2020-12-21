@@ -1,9 +1,9 @@
 import React from "react";
-import TopBar from "./bar/top";
-import LeftBar from "./bar/left";
-import RightBar from "./bar/right";
-import BottomBar from "./bar/bottom";
-import Editor from "./editor";
+import TopBar from "./bar/Top";
+import LeftBar from "./bar/Left";
+import RightBar from "./bar/Right";
+import BottomBar from "./bar/Bottom";
+import Editor from "./Editor";
 
 export default class Container extends React.Component {
 

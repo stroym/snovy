@@ -1,6 +1,6 @@
-import {Base} from "./base";
-import Section from "./section";
-import Tag from "./tag";
+import {Base} from "./Base";
+import Section from "./Section";
+import Tag from "./Tag";
 
 export default class Notebook extends Base {
 

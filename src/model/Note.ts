@@ -1,5 +1,5 @@
-import {OrderableBase} from "./base";
-import Tag from "./tag";
+import {OrderableBase} from "./Base";
+import Tag from "./Tag";
 
 export default class Note extends OrderableBase {
 

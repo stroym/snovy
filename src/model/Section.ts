@@ -1,5 +1,5 @@
-import Note from "./note";
-import {OrderableBase} from "./base";
+import Note from "./Note";
+import {OrderableBase} from "./Base";
 
 export default class Section extends OrderableBase {
 

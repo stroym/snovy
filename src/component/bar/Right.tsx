@@ -1,6 +1,6 @@
 import React from "react";
-import TagSelector from "../selector/tag";
-import TagFilter from "../tagFilter";
+import TagSelector from "../selector/Tag";
+import TagFilter from "../TagFilter";
 
 export default class SidebarRight extends React.Component {
 

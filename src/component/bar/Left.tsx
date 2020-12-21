@@ -1,7 +1,7 @@
 import React from "react";
-import NotebookSelector from "../selector/notebook";
-import SectionSelector from "../selector/section";
-import NoteSelector from "../selector/note";
+import NotebookSelector from "../selector/Notebook";
+import SectionSelector from "../selector/Section";
+import NoteSelector from "../selector/Note";
 
 export default class LeftBar extends React.Component {
 
