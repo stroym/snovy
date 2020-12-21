@@ -37,8 +37,8 @@ module.exports = {
         use: "raw-loader"
       },
       {
-        test: /\.css$/i,
-        use: ["style-loader", "css-loader"]
+        test: /\.(s?)css$/i,
+        use: ["style-loader", "css-loader", "sass-loader"]
       }
     ]
   },
