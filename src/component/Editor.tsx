@@ -4,8 +4,8 @@ export default class Editor extends React.Component {
 
   render() {
     return (
-      <div id="snovy-editor" className={"basic-layout"}>
-      </div>
+      <textarea id="snovy-editor">
+      </textarea>
     );
   }
 
