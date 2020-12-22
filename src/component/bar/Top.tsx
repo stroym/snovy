@@ -1,5 +1,6 @@
 import React from "react";
 import Search from "../Search";
+import Toolbar from "../Toolbar";
 
 export default class TopBar extends React.Component {
 
@@ -7,6 +8,7 @@ export default class TopBar extends React.Component {
     return (
       <span id="snovy-bar-top">
         <Search/>
+        <Toolbar/>
       </span>
     );
   }
