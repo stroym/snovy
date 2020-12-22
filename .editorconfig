@@ -8,11 +8,7 @@ indent_size = 2
 tab_width = 2
 ij_continuation_indent_size = 2
 
-[{*.cjs, *.js}]
-indent_size = 2
-tab_width = 2
-ij_continuation_indent_size = 2
-
+#TODO JSON
 
 [{*.ats, *.ts}]
 indent_size = 2
@@ -183,6 +179,3 @@ ij_typescript_var_declaration_wrap = normal
 ij_typescript_while_brace_force = never
 ij_typescript_while_on_new_line = false
 ij_typescript_wrap_comments = false
-
-
-#TODO specify more things other than just indent sizes - yeah, sure, eslint is a thing, but they can both work in tandem with each other
