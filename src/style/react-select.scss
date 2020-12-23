@@ -1,0 +1,28 @@
+.react-select-container,
+.react-select-container .react-select__control {
+  height: 100%;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.react-select-container .react-select__menu {
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+}
+
+.react-select-container .react-select__menu-list {
+  border: 1px solid black;
+  background-color: white;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+//.react-select-container .react-select__option--is-selected {
+//  background-color: green;
+//}
+//
+//.react-select-container .react-select__option--is-focused {
+//  background-color: lime;
+//}

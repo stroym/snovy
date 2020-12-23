@@ -1,3 +1,8 @@
+@use "style/react-select";
+@use "style/layout";
+@use "style/left";
+@use "style/top";
+
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
@@ -10,111 +15,4 @@ html, body, #root {
   height: 100vh;
   width: 100vw;
   font-family: "Roboto", sans-serif;
-}
-
-#snovy-app {
-  width: 100%;
-  height: 100%;
-  background-color: chocolate;
-  display: grid;
-  grid-template-columns: 2fr 7fr 1fr;
-  grid-template-rows: 10% 1fr 5%;
-  grid-template-areas: "top top top" "left editor right" "bottom bottom bottom";
-}
-
-//TODO
-#snovy-app > * {
-  box-sizing: border-box;
-}
-
-#snovy-bar-top {
-  grid-area: top;
-  background-color: purple;
-  border-bottom: black solid 4px;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  grid-template-areas: "top top top2 top2" "bot bot bot bot";
-}
-
-#snovy-bar-bottom {
-  grid-area: bottom;
-  background-color: gray;
-  border-top: black solid 4px;
-}
-
-#snovy-bar-left {
-  grid-area: left;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 20fr;
-  grid-template-areas: "notebook notebook" "section note";
-  grid-gap: 2px;
-  background-color: blue;
-  border-right: black solid 4px;
-}
-
-#snovy-bar-right {
-  grid-area: right;
-  background-color: green;
-  border-left: black solid 4px;
-}
-
-#snovy-editor {
-  grid-area: editor;
-  padding: 10px;
-  background-color: white;
-  resize: none;
-  overflow-y: auto;
-  outline: 0;
-  border: 0;
-  line-height: 1.5em;
-}
-
-#snovy-selector-notebook {
-  grid-area: notebook;
-  background-color: turquoise;
-}
-
-.react-select,
-.react-select > div {
-  height: 100%;
-  border: 0;
-  box-shadow: none;
-  border-radius: 0;
-}
-
-#snovy-selector-section {
-  grid-area: section;
-  background-color: wheat;
-}
-
-#snovy-selector-note {
-  grid-area: note;
-  background-color: beige;
-}
-
-#snovy-search {
-  height: 50%;
-  width: 50%;
-  background-color: cornflowerblue;
-}
-
-#notebook-select .menuList {
-  padding-top: 0;
-  padding-bottom: 0;
-  margin-top: 0;
-}
-
-#snovy-search {
-  grid-area: top2;
-  height: 100%;
-  width: 100%;
-}
-
-#snovy-toolbar {
-  grid-area: bot;
-  height: 100%;
-  width: 100%;
-  background-color: chocolate;
 }

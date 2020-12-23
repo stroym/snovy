@@ -1,0 +1,16 @@
+#snovy-selector-notebook {
+  grid-area: notebook;
+  background-color: turquoise;
+}
+
+#snovy-selector-section {
+  grid-area: section;
+  background-color: wheat;
+  overflow-y: auto;
+}
+
+#snovy-selector-note {
+  grid-area: note;
+  background-color: beige;
+  overflow-y: auto;
+}
