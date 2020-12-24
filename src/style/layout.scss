@@ -17,7 +17,8 @@
   background-color: purple;
   border-bottom: black solid 4px;
   display: grid;
-  padding: 5px 5px 0 5px;
+  padding-top: 2px;
+  grid-gap: 1px;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   grid-template-areas: "top top top top2" "bot bot bot bot";
