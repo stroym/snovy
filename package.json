@@ -12,6 +12,7 @@
   "license": "GNU GPL V3",
   "dependencies": {
     "react": "^17.0.1",
+    "react-contexify": "^5.0.0",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
     "react-select": "^3.1.1"
@@ -112,7 +113,7 @@
         "error",
         "never"
       ],
-      "no-use-before-define": "off",
+      "no-use-before-define": "warn",
       "no-unused-vars": "warn"
     }
   },

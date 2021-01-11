@@ -4,11 +4,11 @@ import Tag from "./Tag";
 export default class Note extends OrderableBase {
 
   content: string;
-  archived: boolean = false;
-  state: string;
+  archived: boolean;
+  state: string; //class/list in notebook
   tags: Set<Tag> = new Set<Tag>();
 
-  constructor(id: number, name: string, order: number, content: string, archived: boolean, state: string, tags?: Set<Tag>) {
+  constructor(id: number, name: string, order: number, content: string, state: string, tags?: Set<Tag>, archived: boolean = false) {
     super(id, name, order);
     this.content = content;
     this.archived = archived;

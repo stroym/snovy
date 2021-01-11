@@ -14,3 +14,15 @@
   background-color: beige;
   overflow-y: auto;
 }
+
+.snovy-list-selector .selected {
+  background-color: rebeccapurple;
+}
+
+.snovy-list-selector .snovy-list-item {
+  padding: 4px 2px;
+}
+
+.snovy-list-selector .snovy-list-item:hover {
+  background-color: mediumpurple;
+}
