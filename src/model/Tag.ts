@@ -2,9 +2,9 @@ import {Base} from "./Base";
 
 export default class Tag extends Base {
 
-  category?: string;
+  category?: Category;
 
-  constructor(id: number, name: string, category?: string) {
+  constructor(id: number, name: string, category?: Category) {
     super(id, name.replace("#", ""));
     this.category = category;
   }
@@ -14,7 +14,23 @@ export default class Tag extends Base {
   }
 
   toString(): string {
-    return this.category ? super.toString() : this.category + ":" + this.name;
+    return this.category ? this.category + this.name : super.toString();
+  }
+
+}
+
+export class Category {
+
+  name: string;
+  exclusive: boolean;
+
+  constructor(name: string, exclusive: boolean = false) {
+    this.name = name;
+    this.exclusive = exclusive;
+  }
+
+  toString(): string {
+    return this.exclusive ? this.name + "::" : this.name + ":";
   }
 
 }

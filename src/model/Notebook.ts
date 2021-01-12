@@ -1,11 +1,12 @@
 import {Base} from "./Base";
 import Section from "./Section";
 import Tag from "./Tag";
+import IdentifiedArray from "./IdentifiedArray";
 
 export default class Notebook extends Base {
 
-  sections: Section[] = new Array<Section>();
-  tags: Tag[] = new Array<Tag>();
+  sections: IdentifiedArray<Section> = new IdentifiedArray<Section>();
+  tags: IdentifiedArray<Tag> = new IdentifiedArray<Tag>();
   states: string[] = new Array<string>();
 
   constructor(id: number, name: string) {
@@ -13,9 +14,7 @@ export default class Notebook extends Base {
   }
 
   addSection(name: string, order: number) {
-    let id = this.sections.length > 0 ? this.sections[this.sections.length - 1].id + 1 : 0; //TODO depends on how order'll work
-
-    this.sections.push(new Section(id, name, order));
+    this.sections.push(new Section(this.sections.getNewId(), name, order));
   }
 
 }
