@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {ActionMeta, ValueType} from "react-select";
 import Creatable from "react-select/creatable";
 import Notebook from "../../model/Notebook";
@@ -10,21 +10,26 @@ type NotebookProps = {
 
 const NotebookSelector = (props: NotebookProps) => {
 
-  const [active, setActive] = React.useState<Notebook | undefined>(); //TODO select first option (if available) by default and fire change
+  const [active, setActive] = React.useState<Notebook | undefined>(props.notebooks.length > 0 ? props.notebooks[0] : undefined);
 
   const handleChange = (value: ValueType<Notebook, false>, action: ActionMeta<Notebook>) => {
     setActive(value as Notebook);
-    props.selectActive(value as Notebook);
   };
+
+  useEffect(
+    () => {
+      props.selectActive(active as Notebook);
+    }, [active]
+  );
 
   return (
     <span id="snovy-selector-notebook">
-    <Creatable id="notebook-select" className="react-select-container" classNamePrefix="react-select"
-               placeholder="Select notebook or add new..."
-               value={active}
-               options={props.notebooks}
-               getOptionLabel={(option) => option.name} getOptionValue={((option) => option.name)}
-               onChange={handleChange}
+    <Creatable<Notebook> id="notebook-select" className="react-select-container" classNamePrefix="react-select"
+                         placeholder="Select notebook or add new..."
+                         value={active}
+                         options={props.notebooks}
+                         getOptionLabel={(option) => option.name} getOptionValue={((option) => option.name)}
+                         onChange={handleChange}
     />
     </span>
   );

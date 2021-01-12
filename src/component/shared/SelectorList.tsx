@@ -4,6 +4,8 @@ import SelectorListItem from "./SelectorListItem";
 import "react-contexify/dist/ReactContexify.css";
 import {Base} from "../../model/Base";
 
+const activeItemClass = "selected";
+
 interface ListProps<T extends Base> extends React.HTMLProps<HTMLOListElement> {
   selectActive: (active: T | undefined) => any,
   items: T[]
@@ -11,63 +13,51 @@ interface ListProps<T extends Base> extends React.HTMLProps<HTMLOListElement> {
 
 const SelectorList = <T extends Base>(props: ListProps<T>) => {
 
-  // const [activeElement, setActiveElement] = useState<HTMLLIElement | undefined>();
+  const selfRef = useRef<HTMLOListElement>(null);
+
+  //currently selected HTML element
+  const selected = useRef<Element>();
+
+  //item corresponding to the currently selected HTML element
   const [activeItem, setActiveItem] = useState<T | undefined>();
 
-  const selected = useRef<HTMLLIElement | undefined>(undefined);
+  const updateSelected = useCallback(
+    (newSelection: Element) => {
+      if (selected.current) {
+        selected.current.classList.remove(activeItemClass);
+      }
 
+      selected.current = newSelection;
+      selected.current.classList.add(activeItemClass);
+    }, []
+  );
+
+  //update selected child when child is clicked
   const itemClick = useCallback(
     (item: T, li: HTMLLIElement) => {
       setActiveItem(item);
-      props.selectActive(item);
 
-      if (selected.current) {
-        selected.current.classList.remove("selected");
-      }
-
-      selected.current = li;
-
-      selected.current.classList.add("selected");
-    },
-    []
+      updateSelected(li);
+    }, []
   );
 
-  // const handleActive = (event: React.MouseEvent) => {
-  //   if (event.target instanceof HTMLLIElement) {
-  //
-  //     if (selected.current) {
-  //       selected.current.classList.remove("selected");
-  //     }
-  //
-  //     selected.current = event.target;
-  //
-  //     selected.current.classList.add("selected");
-  //
-  //     console.log(event.target);
-  //
-  //     // setActiveElement(event.target);
-  //
-  //     //TODO try to get to the mapped item
-  //   }
-  // };
-
-  //TODO yeah, this is not ideal...
+  //select first item when new items are received
   useEffect(
     () => {
-      if (selected.current) {
-        selected.current.classList.remove("selected");
-      }
-
-      if (props.items.length > 0) {
+      if (props.items.length > 0 && selfRef.current) {
         setActiveItem(props.items[0]);
 
-        selected.current = selfRef.current!.firstChild as HTMLLIElement;
-        selected.current.classList.add("selected");
+        updateSelected(selfRef.current.children[0]);
       }
     }, [props.items]
   );
 
-  const selfRef = useRef<HTMLOListElement>(null);
+  //return selected item to parent on change
+  useEffect(
+    () => {
+      props.selectActive(activeItem);
+    }, [activeItem]
+  );
 
   return (
     <ol id={props.id} ref={selfRef} className="snovy-list-selector">

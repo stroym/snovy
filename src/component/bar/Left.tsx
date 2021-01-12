@@ -15,15 +15,22 @@ let s111 = new Section(3, "SECTION 111", 1);
 let s2 = new Section(1, "SECTION 2", 2);
 let s22 = new Section(2, "SECTION 22", 2);
 
-s1.addNote(new Note(61561, "16556", 0, "bye", ""));
-s2.addNote(new Note(61561, "asdsadada", 0, "hi", ""));
+s1.addNote("16556", 0, "bye", "");
+s1.addNote("16556", 0, "bye", "");
+s11.addNote("16556", 0, "bye", "");
+s11.addNote("16556", 0, "bye", "");
+
+s2.addNote("asdsadada", 0, "hi", "");
+s2.addNote("asdsadada", 0, "hi", "");
+s22.addNote("asdsadada", 0, "hi", "");
 
 n1.sections.push(s1, s11, s111);
 n2.sections.push(s2, s22);
 
-let testNotebooks = [new Notebook(0, "test"), n1, n2].sort((a: Notebook, b: Notebook) => {
-  return a.id - b.id;
-});
+let testNotebooks = [n1, n2, new Notebook(0, "test")];
+// .sort((a: Notebook, b: Notebook) => {
+//   return a.id - b.id;
+// });
 
 export const LeftBar = () => {
 
