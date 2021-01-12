@@ -5,7 +5,7 @@ import Notebook from "../../model/Notebook";
 
 type NotebookProps = {
   notebooks: Notebook[],
-  selectActive: (active: Notebook | undefined) => any
+  onActiveChange: (active: Notebook | undefined) => any
 }
 
 const NotebookSelector = (props: NotebookProps) => {
@@ -18,7 +18,7 @@ const NotebookSelector = (props: NotebookProps) => {
 
   useEffect(
     () => {
-      props.selectActive(active as Notebook);
+      props.onActiveChange(active as Notebook);
     }, [active]
   );
 

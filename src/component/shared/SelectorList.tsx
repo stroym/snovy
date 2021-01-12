@@ -7,7 +7,7 @@ import {Base} from "../../model/Base";
 const activeItemClass = "selected";
 
 interface ListProps<T extends Base> extends React.HTMLProps<HTMLOListElement> {
-  selectActive: (active: T | undefined) => any,
+  onActiveChange: (active: T | undefined) => any,
   items: T[]
 }
 
@@ -55,7 +55,7 @@ const SelectorList = <T extends Base>(props: ListProps<T>) => {
   //return selected item to parent on change
   useEffect(
     () => {
-      props.selectActive(activeItem);
+      props.onActiveChange(activeItem);
     }, [activeItem]
   );
 

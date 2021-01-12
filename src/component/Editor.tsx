@@ -1,12 +1,12 @@
 import React from "react";
+import Note from "../model/Note";
 
-export default class Editor extends React.Component {
+const Editor = (props: { activeNote: Note | undefined }) => {
 
-  render() {
-    return (
-      <textarea id="snovy-editor">
-      </textarea>
-    );
-  }
+  return (
+    <textarea id="snovy-editor">{props.activeNote?.content}</textarea>
+  );
 
-}
+};
+
+export default Editor;

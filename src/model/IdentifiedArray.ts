@@ -5,7 +5,9 @@ export default class IdentifiedArray<T extends Base> extends Array<T> {
   //TODO possibly counter + custom push?
 
   getNewId(): number {
-    return this.last()?.id ?? 0;
+    let temp = this.last();
+
+    return temp ? temp.id + 1 : 0;
   }
 
   removeItem(item: T) {
