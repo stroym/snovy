@@ -3,12 +3,10 @@ import {ActionMeta, ValueType} from "react-select";
 import Creatable from "react-select/creatable";
 import Notebook from "../../model/Notebook";
 
-type NotebookProps = {
+const NotebookSelector = (props: {
   notebooks: Notebook[],
   onActiveChange: (active: Notebook | undefined) => any
-}
-
-const NotebookSelector = (props: NotebookProps) => {
+}) => {
 
   const [active, setActive] = React.useState<Notebook | undefined>(props.notebooks.length > 0 ? props.notebooks[0] : undefined);
 

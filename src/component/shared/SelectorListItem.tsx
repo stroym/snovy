@@ -1,11 +1,6 @@
 import React, {useCallback, useRef} from "react";
 import {Base} from "../../model/Base";
 
-interface ListItemProps<T extends Base> extends React.HTMLAttributes<HTMLLIElement> {
-  mapped: T,
-  clicked: (clicked: T, li: HTMLLIElement) => any
-}
-
 // class SelectorListItem<T extends Base> extends React.Component<ListItemProps<T>> {
 //
 //   constructor(props: ListItemProps<T>) {
@@ -25,7 +20,10 @@ interface ListItemProps<T extends Base> extends React.HTMLAttributes<HTMLLIEleme
 //   }
 // }
 
-const SelectorListItem = <T extends Base>(props: ListItemProps<T>) => {
+const SelectorListItem = <T extends Base>(props: {
+  mapped: T,
+  clicked: (clicked: T, li: HTMLLIElement) => any
+}) => {
 
   const selfRef = useRef<HTMLLIElement>(null);
 
