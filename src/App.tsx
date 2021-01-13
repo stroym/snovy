@@ -20,11 +20,11 @@ let s2 = new Section(1, "SECTION 2", 2);
 let s22 = new Section(2, "SECTION 22", 2);
 
 s1.addNote("16556", 0, "bye", "");
-// s1.addNote("16556", 0, "bye", "");
-// s11.addNote("16556", 0, "bye", "");
+s1.addNote("16556", 0, "bye", "");
+s11.addNote("16556", 0, "bye", "");
 s11.addNote("16556", 0, "asdasdasdads", "");
 
-// s2.addNote("asdsadada", 0, "hi", "");
+s2.addNote("asdsadada", 0, "hi", "");
 s2.addNote("asdsadada", 0, "hi", "");
 s22.addNote("asdsadada", 0, "hi", "");
 

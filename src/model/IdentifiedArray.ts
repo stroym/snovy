@@ -2,12 +2,15 @@ import {Base} from "./Base";
 
 export default class IdentifiedArray<T extends Base> extends Array<T> {
 
-  //TODO possibly counter + custom push?
+  idCounter = 0;
+
+  push(...items: T[]): number {
+    this.idCounter = items[items.length - 1].id + 1;
+    return super.push(...items);
+  }
 
   getNewId(): number {
-    let temp = this.last();
-
-    return temp ? temp.id + 1 : 0;
+    return this.idCounter;
   }
 
   removeItem(item: T) {
