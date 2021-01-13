@@ -1,37 +1,19 @@
-import React from "react";
+import React, {useState} from "react";
 
-export default class ContextMenu extends React.Component<ContextProps, ContextState> {
-
-  constructor(props: ContextProps) {
-    super(props);
-
-    this.state = {
-      visible: false,
-      x: 0,
-      y: 0
-    };
-  }
-
-  render() {
-    return (
-      <div className="snovy-context-menu">
-        {
-          this.props.actions.map((a, i: number) =>
-            <div key={i++} onClick={a.action}>{a.text}</div>
-          )
-        }
-      </div>
-    );
-  }
-
-}
-
-type ContextProps = {
+const ContextMenu = (props: {
   actions: { text: string, action: any }[]
-}
+}) => {
 
-type ContextState = {
-  visible: boolean,
-  x: number,
-  y: number
-}
+  const [visible, setVisible] = useState(false);
+  const [x, setX] = useState(0);
+  const [y, setY] = useState(0);
+
+  return (
+    <ol className="snovy-context-menu">
+      {props.actions.map((a, i: number) => <li key={i++} onClick={a.action}>{a.text}</li>)}
+    </ol>
+  );
+
+};
+
+export default ContextMenu;

@@ -4,7 +4,7 @@ import SelectorListItem from "./SelectorListItem";
 import "react-contexify/dist/ReactContexify.css";
 import {Base} from "../../model/Base";
 
-const activeItemClass = "selected";
+const selectedClass = "selected";
 
 const SelectorList = <T extends Base>(props: {
   id: string,
@@ -19,26 +19,6 @@ const SelectorList = <T extends Base>(props: {
 
   //item corresponding to the currently selected HTML element
   const [activeItem, setActiveItem] = useState<T | undefined>();
-
-  const updateSelected = useCallback(
-    (newSelection: Element) => {
-      if (selected.current) {
-        selected.current.classList.remove(activeItemClass);
-      }
-
-      selected.current = newSelection;
-      selected.current.classList.add(activeItemClass);
-    }, []
-  );
-
-  //update selected child when child is clicked
-  const itemClick = useCallback(
-    (item: T, li: HTMLLIElement) => {
-      setActiveItem(item);
-
-      updateSelected(li);
-    }, []
-  );
 
   //select first item when new items are received
   useEffect(
@@ -62,9 +42,44 @@ const SelectorList = <T extends Base>(props: {
     }, [activeItem]
   );
 
+  //TODO maybe do this without state, if possible? array of child refs, maybe?
+  //add/remove css class to/from selected element
+  const updateSelected = useCallback(
+    (newSelection: Element) => {
+      if (selected.current) {
+        selected.current.classList.remove(selectedClass);
+      }
+
+      selected.current = newSelection;
+      selected.current.classList.add(selectedClass);
+    }, []
+  );
+
+  const itemClick = useCallback(
+    (item: T, element: Element) => {
+      setActiveItem(item);
+
+      updateSelected(element);
+    }, []
+  );
+
+  const showContextMenu = useCallback(
+    (event: React.MouseEvent, item?: T) => {
+      event.preventDefault();
+
+      if (item) {
+        console.log("clicked on item");
+      } else {
+        console.log("parent right click");
+      }
+
+    }, []
+  );
+
   return (
-    <ol id={props.id} ref={selfRef} className="snovy-list-selector">
-      {props.items?.map((item: T) => <SelectorListItem key={item.id} clicked={itemClick} mapped={item}/>)}
+    <ol id={props.id} ref={selfRef} className="snovy-list-selector" onContextMenu={showContextMenu}>
+      {props.items?.map((item: T) => <SelectorListItem key={item.id} mapped={item} onClick={itemClick}
+                                                       onRightClick={showContextMenu}/>)}
     </ol>
   );
 
