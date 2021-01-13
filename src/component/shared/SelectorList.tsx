@@ -6,12 +6,11 @@ import {Base} from "../../model/Base";
 
 const activeItemClass = "selected";
 
-interface ListProps<T extends Base> extends React.HTMLProps<HTMLOListElement> {
+const SelectorList = <T extends Base>(props: {
+  id: string,
   onActiveChange: (active: T | undefined) => any,
-  items: T[]
-}
-
-const SelectorList = <T extends Base>(props: ListProps<T>) => {
+  items: T[] | undefined
+}) => {
 
   const selfRef = useRef<HTMLOListElement>(null);
 
@@ -44,10 +43,14 @@ const SelectorList = <T extends Base>(props: ListProps<T>) => {
   //select first item when new items are received
   useEffect(
     () => {
-      if (props.items.length > 0 && selfRef.current) {
-        setActiveItem(props.items[0]);
+      if (props.items && props.items.length > 0) {
+        if (selfRef.current) {
+          setActiveItem(props.items[0]);
 
-        updateSelected(selfRef.current.children[0]);
+          updateSelected(selfRef.current.children[0]);
+        }
+      } else {
+        setActiveItem(undefined);
       }
     }, [props.items]
   );
@@ -61,7 +64,7 @@ const SelectorList = <T extends Base>(props: ListProps<T>) => {
 
   return (
     <ol id={props.id} ref={selfRef} className="snovy-list-selector">
-      {props.items.map((item: T) => <SelectorListItem key={item.id} clicked={itemClick} mapped={item}/>)}
+      {props.items?.map((item: T) => <SelectorListItem key={item.id} clicked={itemClick} mapped={item}/>)}
     </ol>
   );
 

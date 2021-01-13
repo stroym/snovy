@@ -55,14 +55,20 @@ function App() {
     setActiveNote(active);
   };
 
+  const updateNoteContent = (content: string) => {
+    if (activeNote) {
+      activeNote.content = content;
+    }
+  };
+
   return (
     <div id="snovy-app">
       <TopBar/>
       <LeftBar onActiveNotebookChange={selectNotebook} notebooks={notebooks}
-               onActiveSectionChange={selectSection} sections={activeNotebook?.sections ?? []}
-               onActiveNoteChange={selectNote} notes={activeSection?.notes ?? []}
+               onActiveSectionChange={selectSection} sections={activeNotebook?.sections}
+               onActiveNoteChange={selectNote} notes={activeSection?.notes}
       />
-      <Editor activeNote={activeNote}/>
+      <Editor activeNote={activeNote} onValueChange={updateNoteContent}/>
       <RightBar/>
       <BottomBar/>
     </div>

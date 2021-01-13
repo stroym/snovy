@@ -10,8 +10,8 @@ export const LeftBar = (props: {
   onActiveSectionChange: (active: Section | undefined) => any,
   onActiveNoteChange: (active: Note | undefined) => any,
   notebooks: Notebook[],
-  sections: Section[],
-  notes: Note[]
+  sections: Section[] | undefined,
+  notes: Note[] | undefined
 }) => {
 
   return (
