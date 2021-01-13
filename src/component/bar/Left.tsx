@@ -9,7 +9,7 @@ export const LeftBar = (props: {
   onActiveNotebookChange: (active: Notebook | undefined) => any,
   onActiveSectionChange: (active: Section | undefined) => any,
   onActiveNoteChange: (active: Note | undefined) => any,
-  notebooks: Notebook[],
+  notebooks: Notebook[] | undefined,
   sections: Section[] | undefined,
   notes: Note[] | undefined
 }) => {

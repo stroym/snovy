@@ -38,7 +38,7 @@ let testNotebooks = [n1, n2, new Notebook(0, "test")];
 
 function App() {
 
-  const [notebooks, setNotebooks] = React.useState<Notebook[]>(testNotebooks);
+  const [notebooks, setNotebooks] = React.useState<Notebook[] | undefined>(testNotebooks);
   const [activeNotebook, setActiveNotebook] = React.useState<Notebook | undefined>();
   const [activeSection, setActiveSection] = React.useState<Section | undefined>();
   const [activeNote, setActiveNote] = React.useState<Note | undefined>();

@@ -25,7 +25,7 @@ const Editor = (props: {
   );
 
   return (
-    <textarea id="snovy-editor" onChange={handleChange} value={value}/>
+    <textarea id="snovy-editor" onChange={handleChange} value={value} disabled={!props.activeNote}/>
   );
 
 };

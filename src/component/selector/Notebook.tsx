@@ -4,11 +4,11 @@ import Creatable from "react-select/creatable";
 import Notebook from "../../model/Notebook";
 
 const NotebookSelector = (props: {
-  notebooks: Notebook[],
+  notebooks: Notebook[] | undefined,
   onActiveChange: (active: Notebook | undefined) => any
 }) => {
 
-  const [active, setActive] = React.useState<Notebook | undefined>(props.notebooks.length > 0 ? props.notebooks[0] : undefined);
+  const [active, setActive] = React.useState<Notebook | undefined>(props.notebooks && props.notebooks.length > 0 ? props.notebooks[0] : undefined);
 
   const handleChange = (value: ValueType<Notebook, false>, action: ActionMeta<Notebook>) => {
     setActive(value as Notebook);
