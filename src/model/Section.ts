@@ -1,22 +1,20 @@
 import Note from "./Note";
-import {OrderableBase} from "./Base";
 import Tag from "./Tag";
-import IdentifiedArray from "./IdentifiedArray";
+import Notebook from "./Notebook";
+import {Holder} from "./Holder";
 
-export default class Section extends OrderableBase {
+export default class Section extends Holder<Note, Notebook> {
 
-  notes: IdentifiedArray<Note> = new IdentifiedArray<Note>();
-
-  constructor(id: number, name: string, order: number) {
-    super(id, name, order);
+  get notes(): Array<Note> {
+    return this.items;
   }
 
-  addNote(name: string, order: number, content: string, state: string, tags?: Set<Tag>, archived: boolean = false) {
-    this.notes.push(new Note(this.notes.getNewId(), name, order, content, state, tags, archived));
+  addNote(name: string, content: string, state: string, order: number, tags?: Set<Tag>, archived: boolean = false) {
+    this.addItem(new Note(this, this.idCounter, name, content, state, order, tags, archived));
   }
 
   deleteNote(note: Note) {
-    this.notes.removeItem(note);
+    this.deleteItem(note);
   }
 
 }

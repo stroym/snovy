@@ -1,15 +1,16 @@
-import {OrderableBase} from "./Base";
 import Tag from "./Tag";
+import {HolderItem} from "./Holder";
+import Section from "./Section";
 
-export default class Note extends OrderableBase {
+export default class Note extends HolderItem<Section> {
 
   content: string;
   archived: boolean;
   state: string; //class/list in notebook
   tags: Set<Tag> = new Set<Tag>();
 
-  constructor(id: number, name: string, order: number, content: string, state: string, tags?: Set<Tag>, archived: boolean = false) {
-    super(id, name, order);
+  constructor(parent: Section, id: number, name: string, content: string, state: string, order: number, tags?: Set<Tag>, archived: boolean = false) {
+    super(parent, id, name, order);
     this.content = content;
     this.archived = archived;
     this.state = state;

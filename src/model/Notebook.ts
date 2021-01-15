@@ -1,20 +1,23 @@
-import {Base} from "./Base";
 import Section from "./Section";
 import Tag from "./Tag";
-import IdentifiedArray from "./IdentifiedArray";
+import {Holder} from "./Holder";
+import Manager from "./Manager";
 
-export default class Notebook extends Base {
+export default class Notebook extends Holder<Section, Manager> {
 
-  sections: IdentifiedArray<Section> = new IdentifiedArray<Section>();
-  tags: IdentifiedArray<Tag> = new IdentifiedArray<Tag>();
-  states: string[] = new Array<string>();
+  tags: Set<Tag> = new Set<Tag>();
+  states: Set<string> = new Set<string>();
 
-  constructor(id: number, name: string) {
-    super(id, name);
+  get sections(): Array<Section> {
+    return this.items;
   }
 
   addSection(name: string, order: number) {
-    this.sections.push(new Section(this.sections.getNewId(), name, order));
+    this.addItem(new Section(this, this.idCounter, name, order));
+  }
+
+  deleteSection(section: Section) {
+    this.deleteItem(section);
   }
 
 }
