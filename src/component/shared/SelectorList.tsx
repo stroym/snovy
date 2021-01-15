@@ -3,6 +3,7 @@ import SelectorListItem from "./SelectorListItem";
 
 import "react-contexify/dist/ReactContexify.css";
 import {Base} from "../../model/Base";
+import ContextMenu, {Action} from "./ContextMenu";
 
 const selectedClass = "selected";
 
@@ -64,22 +65,21 @@ const SelectorList = <T extends Base>(props: {
   );
 
   const showContextMenu = useCallback(
-    (event: React.MouseEvent, item?: T) => {
+    (event: React.MouseEvent) => {
       event.preventDefault();
-
-      if (item) {
-        console.log("clicked on item");
-      } else {
-        console.log("parent right click");
-      }
-
     }, []
   );
 
+  //TODO probably subclass contextmenu for this
+  const [actions, setActions] = useState<Array<Action>>([
+    new Action("container 1", () => ""),
+    new Action("container 2", () => "")
+  ]);
+
   return (
     <ol id={props.id} ref={selfRef} className="snovy-list-selector" onContextMenu={showContextMenu}>
-      {props.items?.map((item: T) => <SelectorListItem key={item.id} mapped={item} onClick={itemClick}
-                                                       onRightClick={showContextMenu}/>)}
+      {props.items?.map((item: T) => <SelectorListItem key={item.id} mapped={item} onClick={itemClick}/>)}
+      <ContextMenu id="snovy-list-context-menu" actions={actions} parentRef={selfRef}/>
     </ol>
   );
 
