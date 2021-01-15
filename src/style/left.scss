@@ -1,22 +1,21 @@
 #snovy-selector-notebook {
   grid-area: notebook;
-  background-color: turquoise;
 }
 
 #snovy-selector-section {
   grid-area: section;
-  background-color: wheat;
+  background-color: darkslateblue;
   overflow-y: auto;
 }
 
 #snovy-selector-note {
   grid-area: note;
-  background-color: beige;
+  background-color: darkslategray;
   overflow-y: auto;
 }
 
 .snovy-list-selector .selected {
-  background-color: rebeccapurple;
+  background-color: darkgreen;
 }
 
 .snovy-list-selector .snovy-list-item {
@@ -24,5 +23,5 @@
 }
 
 .snovy-list-selector .snovy-list-item:hover {
-  background-color: mediumpurple;
+  background-color: forestgreen;
 }
