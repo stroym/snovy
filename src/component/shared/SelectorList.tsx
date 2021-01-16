@@ -10,6 +10,7 @@ const selectedClass = "selected";
 const SelectorList = <T extends Base>(props: {
   id: string,
   onActiveChange: (active: T | undefined) => any,
+  onContextChange: (context: T, action: Action) => any,
   items: T[] | undefined
 }) => {
 
@@ -18,8 +19,8 @@ const SelectorList = <T extends Base>(props: {
   //currently selected HTML element
   const selected = useRef<Element>();
 
-  //item corresponding to the currently selected HTML element
   const [activeItem, setActiveItem] = useState<T | undefined>();
+  const [activeContext, setActiveContext] = useState<T | undefined>();
 
   //select first item when new items are received
   useEffect(
@@ -64,19 +65,20 @@ const SelectorList = <T extends Base>(props: {
     }, []
   );
 
-  const actions = [
-      new Action("container 1", () => {
-          console.log("action 1");
-        }
-      ),
-      new Action("container 2", () => "")
-    ]
-  ;
+  const itemContext = useCallback(
+    (item: T, action: Action) => {
+      setActiveContext(item);
+      props.onContextChange(item, action);
+    }, []
+  );
+
+  //TODO try to make context menu called only from here, not from item
 
   return (
     <ol id={props.id} ref={selfRef} className="snovy-list-selector">
-      {props.items?.map((item: T) => <SelectorListItem key={item.id} mapped={item} onClick={itemClick}/>)}
-      <ContextMenu actions={actions} parentRef={selfRef}/>
+      {props.items?.map((item: T) => <SelectorListItem key={item.id} mapped={item}
+                                                       onClick={itemClick} onContext={itemContext}/>)}
+      <ContextMenu parentRef={selfRef} target={undefined} contextChange={itemContext}/>
     </ol>
   );
 

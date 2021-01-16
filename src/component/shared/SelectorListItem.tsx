@@ -1,28 +1,32 @@
-import React, {useCallback, useRef} from "react";
+import React, {useCallback, useRef, useState} from "react";
 import {Base} from "../../model/Base";
 import ContextMenu, {Action} from "./ContextMenu";
 
 const SelectorListItem = <T extends Base>(props: {
   mapped: T,
-  onClick: (item: T, element: HTMLLIElement) => any
+  onClick: (item: T, element: HTMLLIElement) => any,
+  onContext: (item: T, action: Action) => any
 }) => {
 
   const selfRef = useRef<HTMLLIElement>(null);
 
+  //TODO actually make editability work
+  const [editable, setEditable] = useState<boolean>(false);
+
   const handleClick = useCallback(
     () => {
+      console.log(props.mapped);
       props.onClick(props.mapped, selfRef.current!);
     }, []
   );
 
-  const actions = [new Action("item", () => {
-    console.log(props.mapped);
-  })];
-
   return (
-    <li className={"snovy-list-item"} ref={selfRef} onClick={handleClick}>
+    <li className={"snovy-list-item"} ref={selfRef} onClick={handleClick} contentEditable={editable}
+        onDoubleClick={() => {
+          setEditable(true);
+        }}>
       {props.mapped.name}
-      <ContextMenu actions={actions} parentRef={selfRef}/>
+      <ContextMenu parentRef={selfRef} target={props.mapped} contextChange={props.onContext}/>
     </li>
   );
 

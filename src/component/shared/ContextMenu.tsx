@@ -2,7 +2,8 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
-  actions: Array<Action>
+  target: any,
+  contextChange: (item: any, action: Action) => any
 }) => {
 
   const [visible, setVisible] = useState(false);
@@ -20,7 +21,9 @@ const ContextMenu = (props: {
   );
 
   const handleItemClick = useCallback(
-    () => {
+    (action: Action) => {
+      props.contextChange(props.target, action);
+
       setVisible(false);
     }, []
   );
@@ -48,6 +51,14 @@ const ContextMenu = (props: {
     };
   });
 
+  const actions = [
+    new Action("new", ActionType.NEW),
+    ...props.target ? [
+      new Action("rename", ActionType.EDIT),
+      new Action("delete", ActionType.DELETE)
+    ] : []
+  ];
+
   return (
     <ol className="snovy-context-menu" hidden={!visible} ref={selfRef}
         style={{
@@ -55,7 +66,7 @@ const ContextMenu = (props: {
           top: y + "px",
           left: x + "px"
         }}>
-      {props.actions.map((a, i: number) => <ContextMenuItem key={i} action={a} afterAction={handleItemClick}/>)}
+      {actions.map((a: Action, i: number) => <ContextMenuItem key={i} action={a} execute={handleItemClick}/>)}
     </ol>
   );
 
@@ -63,13 +74,12 @@ const ContextMenu = (props: {
 
 export const ContextMenuItem = (props: {
   action: Action,
-  afterAction: () => any
+  execute: (action: Action) => any
 }) => {
 
   const handleClick = useCallback(
     () => {
-      props.action.execute();
-      props.afterAction();
+      props.execute(props.action);
     }, []
   );
 
@@ -80,14 +90,21 @@ export const ContextMenuItem = (props: {
 };
 
 export class Action {
-  text: string;
-  execute: (...params: any) => any
 
-  constructor(text: string, action: (...params: any) => any) {
+  text: string;
+  type: ActionType
+
+  constructor(text: string, type: ActionType) {
     this.text = text;
-    this.execute = action;
+    this.type = type;
   }
 
+}
+
+export enum ActionType {
+  NEW,
+  EDIT,
+  DELETE
 }
 
 export default ContextMenu;

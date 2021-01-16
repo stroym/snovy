@@ -1,9 +1,9 @@
 import Section from "./Section";
 import Tag from "./Tag";
-import {Holder} from "./Holder";
+import {ParentedHolder} from "./Base";
 import Manager from "./Manager";
 
-export default class Notebook extends Holder<Section, Manager> {
+export default class Notebook extends ParentedHolder<Section, Manager> {
 
   tags: Set<Tag> = new Set<Tag>();
   states: Set<string> = new Set<string>();
@@ -12,8 +12,12 @@ export default class Notebook extends Holder<Section, Manager> {
     return this.items;
   }
 
-  addSection(name: string, order: number) {
-    this.addItem(new Section(this, this.idCounter, name, order));
+  addSection(name: string, order?: number) {
+    if (order) {
+      this.addItem(new Section(this, this.idCounter, name, order), true);
+    } else {
+      this.addItem(new Section(this, this.idCounter, name, this.items.length));
+    }
   }
 
   deleteSection(section: Section) {

@@ -1,5 +1,5 @@
 import Tag from "./Tag";
-import {HolderItem} from "./Holder";
+import {HolderItem} from "./Base";
 import Section from "./Section";
 
 export default class Note extends HolderItem<Section> {

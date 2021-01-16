@@ -1,14 +1,14 @@
 import Notebook from "./Notebook";
-import {Holder} from "./Holder";
+import {Holder} from "./Base";
 
-export default class Manager extends Holder<Notebook, undefined> {
+export default class Manager extends Holder<Notebook> {
 
   // tags: Set<Tag> = new Set<Tag>();         //global tags
   // states: Set<string> = new Set<string>(); //global states
 
   //testing data
   constructor() {
-    super(undefined, 0, "", 0); //TODO there's gotta be a better way to do this
+    super(0, "", 0); //TODO there's gotta be a better way to do this
     for (let i = 0; i < 3; i++) {
       this.addNotebook("notebook " + i, i);
     }
@@ -35,26 +35,11 @@ export default class Manager extends Holder<Notebook, undefined> {
   }
 
   get notebooks() {
-    return this.items.sort((a: Notebook, b: Notebook) => {
-      return a.id - b.id;
-    });
-  }
-
-  get sortedAlphabetically() {
-    return this.items.sort((a: Notebook, b: Notebook) => {
-      return a.name.localeCompare(b.name);
-    });
-  }
-
-  get sortedByOrder() {
-    return this.items.sort((a: Notebook, b: Notebook) => {
-      return a.order - b.order;
-    });
+    return this.itemsSortedById;
   }
 
   addNotebook(name: string, order: number) {
     this.addItem(new Notebook(this, this.idCounter, name, order));
-    this.idCounter++;
   }
 
   removeNotebook(item: Notebook) {
