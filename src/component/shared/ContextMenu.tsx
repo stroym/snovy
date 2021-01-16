@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
@@ -9,9 +9,21 @@ const ContextMenu = (props: {
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
 
-  const handleClick = useCallback(() => {
-    visible && setVisible(false);
-  }, [visible]);
+  const selfRef = useRef<HTMLOListElement>(null);
+
+  const handleOutsideClick = useCallback(
+    (event) => {
+      if (!selfRef.current?.contains(event.target)) {
+        setVisible(false);
+      }
+    }, []
+  );
+
+  const handleItemClick = useCallback(
+    () => {
+      setVisible(false);
+    }, []
+  );
 
   const handleContextMenu = useCallback(
     (event: any) => {
@@ -27,35 +39,53 @@ const ContextMenu = (props: {
   );
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("mousedown", handleOutsideClick);
     props.parentRef.current?.addEventListener("contextmenu", handleContextMenu);
 
     return () => {
-      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("mousedown", handleOutsideClick);
       props.parentRef.current?.removeEventListener("contextmenu", handleContextMenu);
     };
   });
 
   return (
-    <ol className="snovy-context-menu" hidden={!visible}
+    <ol className="snovy-context-menu" hidden={!visible} ref={selfRef}
         style={{
           position: "absolute",
           top: y + "px",
           left: x + "px"
         }}>
-      {props.actions.map((a, i: number) => <li key={i++} onClick={a.action}>{a.text}</li>)}
+      {props.actions.map((a, i: number) => <ContextMenuItem key={i} action={a} afterAction={handleItemClick}/>)}
     </ol>
+  );
+
+};
+
+export const ContextMenuItem = (props: {
+  action: Action,
+  afterAction: () => any
+}) => {
+
+  const handleClick = useCallback(
+    () => {
+      props.action.execute();
+      props.afterAction();
+    }, []
+  );
+
+  return (
+    <li onClick={handleClick}>{props.action.text}</li>
   );
 
 };
 
 export class Action {
   text: string;
-  action: (...params: any) => any
+  execute: (...params: any) => any
 
   constructor(text: string, action: (...params: any) => any) {
     this.text = text;
-    this.action = action;
+    this.execute = action;
   }
 
 }

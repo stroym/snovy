@@ -64,11 +64,14 @@ const SelectorList = <T extends Base>(props: {
     }, []
   );
 
-  //TODO probably subclass contextmenu for this
-  const [actions, setActions] = useState<Array<Action>>([
-    new Action("container 1", () => ""),
-    new Action("container 2", () => "")
-  ]);
+  const actions = [
+      new Action("container 1", () => {
+          console.log("action 1");
+        }
+      ),
+      new Action("container 2", () => "")
+    ]
+  ;
 
   return (
     <ol id={props.id} ref={selfRef} className="snovy-list-selector">
