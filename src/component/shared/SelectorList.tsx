@@ -64,12 +64,6 @@ const SelectorList = <T extends Base>(props: {
     }, []
   );
 
-  const showContextMenu = useCallback(
-    (event: React.MouseEvent) => {
-      event.preventDefault();
-    }, []
-  );
-
   //TODO probably subclass contextmenu for this
   const [actions, setActions] = useState<Array<Action>>([
     new Action("container 1", () => ""),
@@ -77,9 +71,9 @@ const SelectorList = <T extends Base>(props: {
   ]);
 
   return (
-    <ol id={props.id} ref={selfRef} className="snovy-list-selector" onContextMenu={showContextMenu}>
+    <ol id={props.id} ref={selfRef} className="snovy-list-selector">
       {props.items?.map((item: T) => <SelectorListItem key={item.id} mapped={item} onClick={itemClick}/>)}
-      <ContextMenu id="snovy-list-context-menu" actions={actions} parentRef={selfRef}/>
+      <ContextMenu actions={actions} parentRef={selfRef}/>
     </ol>
   );
 

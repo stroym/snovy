@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState} from "react";
 
 const ContextMenu = (props: {
-  id?: string
   parentRef: React.RefObject<Element>,
   actions: Array<Action>
 }) => {
@@ -15,35 +14,30 @@ const ContextMenu = (props: {
   }, [visible]);
 
   const handleContextMenu = useCallback(
-    (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+    (event: any) => {
+      event.preventDefault();
+      event.stopPropagation();
 
-      setX(e.pageX);
-      setY(e.pageY);
+      setX(event.pageX);
+      setY(event.pageY);
 
-      // console.log(e.target);
-      // console.log(props.parentRef.current);
-      if (e.target == props.parentRef.current) {
-        setVisible(true);
-      }
-
+      setVisible(true);
     },
-    [setX, setY]
+    []
   );
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClick);
-    document.addEventListener("contextmenu", handleContextMenu);
+    props.parentRef.current?.addEventListener("contextmenu", handleContextMenu);
 
     return () => {
       document.removeEventListener("mousedown", handleClick);
-      document.removeEventListener("contextmenu", handleContextMenu);
+      props.parentRef.current?.removeEventListener("contextmenu", handleContextMenu);
     };
   });
 
   return (
-    <ol className="snovy-context-menu" id={props.id} hidden={!visible}
+    <ol className="snovy-context-menu" hidden={!visible}
         style={{
           position: "absolute",
           top: y + "px",

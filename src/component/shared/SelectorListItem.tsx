@@ -15,20 +15,14 @@ const SelectorListItem = <T extends Base>(props: {
     }, []
   );
 
-  const handleRightClick = useCallback(
-    (event: React.MouseEvent) => {
-      event.preventDefault();
-    }, []
-  );
-
   const [actions, setActions] = useState<[{ text: string, action: () => any }]>([
     new Action("item", () => "")
   ]);
 
   return (
-    <li className={"snovy-list-item"} ref={selfRef} onClick={handleClick} onContextMenu={handleRightClick}>
+    <li className={"snovy-list-item"} ref={selfRef} onClick={handleClick}>
       {props.mapped.name}
-      <ContextMenu id="snovy-item-context-menu" actions={actions} parentRef={selfRef}/>
+      <ContextMenu actions={actions} parentRef={selfRef}/>
     </li>
   );
 
