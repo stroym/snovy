@@ -44,7 +44,6 @@ const SelectorList = <T extends Base>(props: {
     }, [activeItem]
   );
 
-  //TODO maybe do this without state, if possible? array of child refs, maybe?
   //add/remove css class to/from selected element
   const updateSelected = useCallback(
     (newSelection: Element) => {

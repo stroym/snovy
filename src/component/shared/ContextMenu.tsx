@@ -78,7 +78,8 @@ export const ContextMenuItem = (props: {
 }) => {
 
   const handleClick = useCallback(
-    () => {
+    (event: React.MouseEvent) => {
+      event.stopPropagation();
       props.execute(props.action);
     }, []
   );
