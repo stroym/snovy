@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef} from "react";
 import SelectorListItem from "./SelectorListItem";
 
 import "react-contexify/dist/ReactContexify.css";
@@ -10,7 +10,7 @@ const selectedClass = "selected";
 const SelectorList = <T extends Base>(props: {
   id: string,
   onActiveChange: (active: T | undefined) => any,
-  onContextChange: (context: T, action: Action) => any,
+  onContextChange: (action: Action) => any,
   items: T[] | undefined
 }) => {
 
@@ -19,29 +19,19 @@ const SelectorList = <T extends Base>(props: {
   //currently selected HTML element
   const selected = useRef<Element>();
 
-  const [activeItem, setActiveItem] = useState<T | undefined>();
-  const [activeContext, setActiveContext] = useState<T | undefined>();
-
   //select first item when new items are received
   useEffect(
     () => {
       if (props.items && props.items.length > 0) {
         if (selfRef.current) {
-          setActiveItem(props.items[0]);
+          props.onActiveChange(props.items[0]);
 
           updateSelected(selfRef.current.children[0]);
         }
       } else {
-        setActiveItem(undefined);
+        props.onActiveChange(undefined);
       }
     }, [props.items]
-  );
-
-  //return selected item to parent on change
-  useEffect(
-    () => {
-      props.onActiveChange(activeItem);
-    }, [activeItem]
   );
 
   //add/remove css class to/from selected element
@@ -58,16 +48,15 @@ const SelectorList = <T extends Base>(props: {
 
   const itemClick = useCallback(
     (item: T, element: Element) => {
-      setActiveItem(item);
+      props.onActiveChange(item);
 
       updateSelected(element);
     }, []
   );
 
   const itemContext = useCallback(
-    (item: T, action: Action) => {
-      setActiveContext(item);
-      props.onContextChange(item, action);
+    (action: Action) => {
+      props.onContextChange(action);
     }, []
   );
 

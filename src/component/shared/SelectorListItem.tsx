@@ -5,7 +5,7 @@ import ContextMenu, {Action} from "./ContextMenu";
 const SelectorListItem = <T extends Base>(props: {
   mapped: T,
   onClick: (item: T, element: HTMLLIElement) => any,
-  onContext: (item: T, action: Action) => any
+  onContext: (action: Action) => any
 }) => {
 
   const selfRef = useRef<HTMLLIElement>(null);
@@ -15,7 +15,6 @@ const SelectorListItem = <T extends Base>(props: {
 
   const handleClick = useCallback(
     () => {
-      console.log(props.mapped);
       props.onClick(props.mapped, selfRef.current!);
     }, []
   );

@@ -13,7 +13,7 @@ export const LeftBar = (props: {
   notebooks: Notebook[] | undefined,
   sections: Section[] | undefined,
   notes: Note[] | undefined,
-  contextSelection: (item: Note | Section | Notebook | undefined, action: Action) => any
+  contextSelection: (action: Action) => any
 }) => {
 
   return (

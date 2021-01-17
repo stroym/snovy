@@ -3,7 +3,7 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
   target: any,
-  contextChange: (item: any, action: Action) => any
+  contextChange: (action: Action) => any
 }) => {
 
   const [visible, setVisible] = useState(false);
@@ -22,7 +22,7 @@ const ContextMenu = (props: {
 
   const handleItemClick = useCallback(
     (action: Action) => {
-      props.contextChange(props.target, action);
+      props.contextChange(action);
 
       setVisible(false);
     }, []
@@ -52,10 +52,10 @@ const ContextMenu = (props: {
   });
 
   const actions = [
-    new Action("new", ActionType.NEW),
+    new Action("new", ActionType.NEW, props.target),
     ...props.target ? [
-      new Action("rename", ActionType.EDIT),
-      new Action("delete", ActionType.DELETE)
+      new Action("rename", ActionType.EDIT, props.target),
+      new Action("delete", ActionType.DELETE, props.target)
     ] : []
   ];
 
@@ -94,10 +94,12 @@ export class Action {
 
   text: string;
   type: ActionType
+  target: any
 
-  constructor(text: string, type: ActionType) {
+  constructor(text: string, type: ActionType, target: any) {
     this.text = text;
     this.type = type;
+    this.target = target;
   }
 
 }
