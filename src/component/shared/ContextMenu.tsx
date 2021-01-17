@@ -41,16 +41,19 @@ const ContextMenu = (props: {
     []
   );
 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleOutsideClick);
-    props.parentRef.current?.addEventListener("contextmenu", handleContextMenu);
+  useEffect(
+    () => {
+      document.addEventListener("mousedown", handleOutsideClick);
+      props.parentRef.current?.addEventListener("contextmenu", handleContextMenu);
 
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-      props.parentRef.current?.removeEventListener("contextmenu", handleContextMenu);
-    };
-  });
+      return () => {
+        document.removeEventListener("mousedown", handleOutsideClick);
+        props.parentRef.current?.removeEventListener("contextmenu", handleContextMenu);
+      };
+    }, []
+  );
 
+  //TODO pass actions directly - or better yet allow for passing elements
   const actions = [
     new Action("new", ActionType.NEW, props.target),
     ...props.target ? [

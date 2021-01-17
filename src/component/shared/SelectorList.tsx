@@ -60,8 +60,6 @@ const SelectorList = <T extends Base>(props: {
     }, []
   );
 
-  //TODO try to make context menu called only from here, not from item
-
   return (
     <ol id={props.id} ref={selfRef} className="snovy-list-selector">
       {props.items?.map((item: T) => <SelectorListItem key={item.id} mapped={item}
