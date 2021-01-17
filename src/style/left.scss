@@ -19,6 +19,12 @@
 }
 
 .snovy-list-selector .snovy-list-item {
+  user-select: none;
+  padding: 4px 2px 4px 10px;
+}
+
+.snovy-list-selector .snovy-list-item[contenteditable=true] {
+  user-select: text;
   padding: 4px 2px 4px 10px;
 }
 

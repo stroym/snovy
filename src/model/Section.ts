@@ -9,11 +9,11 @@ export default class Section extends ParentedHolder<Note, Notebook> {
     return this.items;
   }
 
-  addNewNote(name: string, order?: number) {
+  addNewItem(order?: number) {
     if (order) {
-      this.addItem(new Note(this, this.idCounter, name, "", "new", order), true);
+      this.addItem(new Note(this, this.idCounter, "", "", "new", order), true);
     } else {
-      this.addItem(new Note(this, this.idCounter, name, "", "new", this.items.length));
+      this.addItem(new Note(this, this.idCounter, "", "", "new", this.items.length));
     }
   }
 

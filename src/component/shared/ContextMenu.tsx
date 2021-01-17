@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
-  target: any,
+  actions: Array<Action>,
   contextChange: (action: Action) => any
 }) => {
 
@@ -53,15 +53,6 @@ const ContextMenu = (props: {
     }, []
   );
 
-  //TODO pass actions directly - or better yet allow for passing elements
-  const actions = [
-    new Action("new", ActionType.NEW, props.target),
-    ...props.target ? [
-      new Action("rename", ActionType.EDIT, props.target),
-      new Action("delete", ActionType.DELETE, props.target)
-    ] : []
-  ];
-
   return (
     <ol className="snovy-context-menu" hidden={!visible} ref={selfRef}
         style={{
@@ -69,7 +60,7 @@ const ContextMenu = (props: {
           top: y + "px",
           left: x + "px"
         }}>
-      {actions.map((a: Action, i: number) => <ContextMenuItem key={i} action={a} execute={handleItemClick}/>)}
+      {props.actions.map((a: Action, i: number) => <ContextMenuItem key={i} action={a} execute={handleItemClick}/>)}
     </ol>
   );
 
@@ -96,8 +87,8 @@ export const ContextMenuItem = (props: {
 export class Action {
 
   text: string;
-  type: ActionType
-  target: any
+  type: ActionType;
+  target: any;
 
   constructor(text: string, type: ActionType, target: any) {
     this.text = text;

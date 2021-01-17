@@ -2,12 +2,12 @@ import React, {useCallback, useEffect, useRef} from "react";
 import SelectorListItem from "./SelectorListItem";
 
 import "react-contexify/dist/ReactContexify.css";
-import {Base} from "../../model/Base";
-import ContextMenu, {Action} from "./ContextMenu";
+import {HolderItem} from "../../model/Base";
+import ContextMenu, {Action, ActionType} from "./ContextMenu";
 
 const selectedClass = "selected";
 
-const SelectorList = <T extends Base>(props: {
+const SelectorList = <T extends HolderItem<any>>(props: {
   id: string,
   onActiveChange: (active: T | undefined) => any,
   onContextChange: (action: Action) => any,
@@ -60,11 +60,16 @@ const SelectorList = <T extends Base>(props: {
     }, []
   );
 
+  //TODO how to handle this?
+  const actions = [
+    new Action("new", ActionType.NEW, props.items)
+  ];
+
   return (
     <ol id={props.id} ref={selfRef} className="snovy-list-selector">
       {props.items?.map((item: T) => <SelectorListItem key={item.id} mapped={item}
                                                        onClick={itemClick} onContext={itemContext}/>)}
-      <ContextMenu parentRef={selfRef} target={undefined} contextChange={itemContext}/>
+      <ContextMenu parentRef={selfRef} actions={actions} contextChange={itemContext}/>
     </ol>
   );
 

@@ -4,6 +4,7 @@
 }
 
 .snovy-context-menu li {
+  user-select: none;
   border-bottom: 1px solid black;
   list-style-type: none;
   padding: 2px 5px;

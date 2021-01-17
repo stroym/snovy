@@ -9,7 +9,7 @@ import Note from "./model/Note";
 import Notebook from "./model/Notebook";
 import Section from "./model/Section";
 import Manager from "./model/Manager";
-import {Action, ActionType} from "./component/shared/ContextMenu";
+import {Action} from "./component/shared/ContextMenu";
 
 let manager = new Manager();
 
@@ -46,35 +46,11 @@ function App() {
 
   useEffect(
     () => {
-      if (action) {
-        switch (action.type) {
-          case ActionType.NEW:
-            if (action.target) {
-              if (action.target instanceof Note) {
-                //TODO insertAfter helper method?
-                action.target.parent.addNewNote("new", action.target.order + 1);
-              } else if (action.target instanceof Section) {
-                action.target.parent.addSection("new", action.target.order + 1);
-              } else if (action.target instanceof Notebook) {
-                action.target.parent.addNotebook("new", action.target.order + 1);
-              }
-            } else {
-              //TODO need to get items from originating element... possibly put onto action (also maybe the action.target itself)
-              // this could be directly in the list, but there'll be some issues with generics
-              //insert with order = list.length
-            }
-            break;
-          case ActionType.EDIT:
-            action.target?.rename("blob");
-            break;
-          case ActionType.DELETE:
-            action.target?.parent.deleteItem(action.target);
-            break;
-          default:
-        }
-
-        setAction(undefined);
+      if (action && action.target) {
+        action.target.parent.handleAction(action);
       }
+
+      setAction(undefined);
     }, [action]
   );
 

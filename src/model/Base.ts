@@ -1,3 +1,5 @@
+import {Action, ActionType} from "../component/shared/ContextMenu";
+
 export abstract class Base {
 
   readonly id: number;
@@ -44,7 +46,7 @@ export abstract class Holder<T extends HolderItem<any>> extends OrderedBase {
 
   protected idCounter: number = 0;
 
-  protected items: Array<T> = new Array<T>();
+  items: Array<T> = new Array<T>();
 
   get itemsSortedById() {
     return this.items.sort((a: T, b: T) => {
@@ -101,6 +103,30 @@ export abstract class ParentedHolder<T extends HolderItem<any>, P extends Holder
   constructor(parent: P, id: number, name: string, order: number) {
     super(id, name, order);
     this.parent = parent;
+  }
+
+  abstract addNewItem(order?: number): void;
+
+  handleAction(action: Action) {
+    switch (action.type) {
+      case ActionType.NEW:
+        if (action.target) {
+          this.addNewItem(action.target.order + 1);
+          // this.addItem();
+        } else {
+          //TODO need to get items from originating element... possibly put onto action (also maybe the action.target itself)
+          // this could be directly in the list, but there'll be some issues with generics
+          //insert with order = list.length
+        }
+        break;
+      case ActionType.EDIT:
+        action.target?.rename("blob");
+        break;
+      case ActionType.DELETE:
+        action.target?.parent.deleteItem(action.target);
+        break;
+      default:
+    }
   }
 
 }

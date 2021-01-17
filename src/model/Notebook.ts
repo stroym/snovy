@@ -12,11 +12,15 @@ export default class Notebook extends ParentedHolder<Section, Manager> {
     return this.items;
   }
 
-  addSection(name: string, order?: number) {
+  addSection(name: string, order: number) {
+    this.addItem(new Section(this, this.idCounter, name, order));
+  }
+
+  addNewItem(order?: number) {
     if (order) {
-      this.addItem(new Section(this, this.idCounter, name, order), true);
+      this.addItem(new Section(this, this.idCounter, "", order), true);
     } else {
-      this.addItem(new Section(this, this.idCounter, name, this.items.length));
+      this.addItem(new Section(this, this.idCounter, "", this.items.length));
     }
   }
 
