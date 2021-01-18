@@ -19,10 +19,10 @@ export const LeftBar = (props: {
   return (
     <div id="snovy-bar-left">
       <NotebookSelector notebooks={props.notebooks} onActiveChange={props.onActiveNotebookChange}/>
-      <SelectorList<Section> id="snovy-selector-section" items={props.sections}
+      <SelectorList<Section> id="snovy-selector-section" items={props.sections ?? []}
                              onActiveChange={props.onActiveSectionChange} onContextChange={props.contextSelection}
       />
-      <SelectorList<Note> id="snovy-selector-note" items={props.notes}
+      <SelectorList<Note> id="snovy-selector-note" items={props.notes ?? []}
                           onActiveChange={props.onActiveNoteChange} onContextChange={props.contextSelection}
       />
     </div>

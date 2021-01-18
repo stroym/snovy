@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {HolderItem} from "../../model/Base";
+import {Holder, HolderItem} from "../../model/Base";
 
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
@@ -36,7 +36,6 @@ const ContextMenu = (props: {
   const handleContextMenu = useCallback(
     (event: any) => {
       event.preventDefault();
-      // event.stopPropagation();
 
       setX(event.pageX);
       setY(event.pageY);
@@ -94,12 +93,14 @@ export class Action {
 
   text: string;
   type: ActionType;
-  target: HolderItem<any>;
+  target?: HolderItem<any>;
+  parent?: Holder<any>
 
-  constructor(text: string, type: ActionType, target: any) {
+  constructor(text: string, type: ActionType, target?: HolderItem<any>, parent?: Holder<any>) {
     this.text = text;
     this.type = type;
     this.target = target;
+    this.parent = parent;
   }
 
   handle() {

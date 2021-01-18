@@ -7,11 +7,12 @@ import ContextMenu, {Action, ActionType} from "./ContextMenu";
 
 const selectedClass = "selected";
 
+//TODO pass holder instead of items, probably
 const SelectorList = <T extends HolderItem<any>>(props: {
   id: string,
   onActiveChange: (active: T | undefined) => any,
   onContextChange: (action: Action) => any,
-  items: T[] | undefined
+  items: T[]
 }) => {
 
   const selfRef = useRef<HTMLOListElement>(null);
@@ -19,11 +20,9 @@ const SelectorList = <T extends HolderItem<any>>(props: {
   //select first item when new items are received
   useEffect(
     () => {
-      if (props.items && props.items.length > 0) {
-        if (selfRef.current) {
-          setActiveItem(props.items[0]);
-          props.onActiveChange(props.items[0]);
-        }
+      if (props.items.length > 0) {
+        setActiveItem(props.items[0]);
+        props.onActiveChange(props.items[0]);
       } else {
         props.onActiveChange(undefined);
       }
@@ -75,8 +74,8 @@ const SelectorList = <T extends HolderItem<any>>(props: {
 
   return (
     <ol id={props.id} ref={selfRef} className="snovy-list-selector">
-      {props.items?.map((item: T) => <SelectorListItem key={item.id} mapped={item} active={item == activeItem}
-                                                       onClick={itemClick} onContext={itemContext}/>)}
+      {props.items.map((item: T) => <SelectorListItem key={item.id} mapped={item} active={item == activeItem}
+                                                      onClick={itemClick} onContext={itemContext}/>)}
       <ContextMenu parentRef={selfRef} actions={actions} contextChange={props.onContextChange}
                    resetContext={onContextAction}/>
     </ol>
