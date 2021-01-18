@@ -1,28 +1,32 @@
 import Note from "./Note";
-import Tag from "./Tag";
 import Notebook from "./Notebook";
-import {ParentedHolder} from "./Base";
+import {Holder} from "./Base";
 
-export default class Section extends ParentedHolder<Note, Notebook> {
+export default class Section extends Holder<Note, Notebook> {
 
   get notes(): Array<Note> {
     return this.items;
   }
 
-  addNewItem(order?: number) {
-    if (order) {
-      this.addItem(new Note(this, this.idCounter, "", "", "new", order), true);
-    } else {
-      this.addItem(new Note(this, this.idCounter, "", "", "new", this.items.length));
-    }
+  //for testing purposes
+  static WithData(parent: Notebook, id: number, name: string, order: number): Section {
+    return new Section(parent, id, name, order);
   }
 
-  addNote(name: string, content: string, state: string, order: number, tags?: Set<Tag>, archived: boolean = false) {
-    this.addItem(new Note(this, this.idCounter, name, content, state, order, tags, archived));
+  insert() {
+    this.addItem(new Note(this, this.idCounter, "", this.items.length));
   }
 
   deleteNote(note: Note) {
     this.deleteItem(note);
+  }
+
+  insertAt(order: number) {
+    this.addItem(new Note(this, this.idCounter, "", order), true);
+  }
+
+  addNote() {
+    this.addItem(Note.WithData(this, this.idCounter, "note " + this.idCounter, this.items.length));
   }
 
 }

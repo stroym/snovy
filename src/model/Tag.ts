@@ -1,11 +1,11 @@
-import {Base} from "./Base";
+import {Item} from "./Base";
 
-export default class Tag extends Base {
+export default class Tag extends Item {
 
   category?: Category;
 
-  constructor(id: number, name: string, category?: Category) {
-    super(id, name.replace("#", ""));
+  constructor(id: number, name: string, order: number, category?: Category) {
+    super(id, name.replace("#", ""), order);
     this.category = category;
   }
 

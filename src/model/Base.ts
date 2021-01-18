@@ -1,26 +1,17 @@
-export abstract class Base {
+export abstract class Item {
 
   readonly id: number;
   name: string;
+  order: number;
 
-  protected constructor(id: number, name: string) {
+  protected constructor(id: number, name: string, order: number) {
     this.id = id;
     this.name = name;
+    this.order = order;
   }
 
   rename(newName: string) {
     this.name = newName;
-  }
-
-}
-
-export abstract class OrderedBase extends Base {
-
-  order: number;
-
-  protected constructor(id: number, name: string, order: number) {
-    super(id, name);
-    this.order = order;
   }
 
   toString(): string {
@@ -29,18 +20,7 @@ export abstract class OrderedBase extends Base {
 
 }
 
-export abstract class HolderItem<P extends ParentedHolder<any, any>> extends OrderedBase {
-
-  parent: P;
-
-  protected constructor(parent: P, id: number, name: string, order: number) {
-    super(id, name, order);
-    this.parent = parent;
-  }
-
-}
-
-export abstract class Holder<T extends HolderItem<any>> extends OrderedBase {
+export abstract class OrphanHolder<T extends Item> extends Item {
 
   protected idCounter: number = 0;
 
@@ -79,7 +59,7 @@ export abstract class Holder<T extends HolderItem<any>> extends OrderedBase {
     this.items.splice(this.items.indexOf(item), 1);
   }
 
-  protected deleteById(id: number): boolean {
+  deleteById(id: number): boolean {
     let item = this.items.find(value => {
       return value.id == id;
     });
@@ -94,7 +74,8 @@ export abstract class Holder<T extends HolderItem<any>> extends OrderedBase {
 
 }
 
-export abstract class ParentedHolder<T extends HolderItem<any>, P extends Holder<any>> extends Holder<T> {
+//TODO try to improve manager, somehow... the OrphanHolder really shouldn't exist
+export abstract class Holder<T extends Item, P extends OrphanHolder<any>> extends OrphanHolder<T> {
 
   parent: P;
 
@@ -103,6 +84,8 @@ export abstract class ParentedHolder<T extends HolderItem<any>, P extends Holder
     this.parent = parent;
   }
 
-  abstract addNewItem(order?: number): void;
+  abstract insertAt(order: number): void;
+
+  abstract insert(item: T): void;
 
 }

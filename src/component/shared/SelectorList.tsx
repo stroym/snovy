@@ -2,13 +2,11 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 import SelectorListItem from "./SelectorListItem";
 
 import "react-contexify/dist/ReactContexify.css";
-import {HolderItem} from "../../model/Base";
+import {Holder} from "../../model/Base";
 import ContextMenu, {Action, ActionType} from "./ContextMenu";
 
-const selectedClass = "selected";
-
 //TODO pass holder instead of items, probably
-const SelectorList = <T extends HolderItem<any>>(props: {
+const SelectorList = <T extends Holder<any, any>>(props: {
   id: string,
   onActiveChange: (active: T | undefined) => any,
   onContextChange: (action: Action) => any,

@@ -1,7 +1,7 @@
 import Notebook from "./Notebook";
-import {Holder} from "./Base";
+import {OrphanHolder} from "./Base";
 
-export default class Manager extends Holder<Notebook> {
+export default class Manager extends OrphanHolder<Notebook> {
 
   // tags: Set<Tag> = new Set<Tag>();         //global tags
   // states: Set<string> = new Set<string>(); //global states
@@ -17,7 +17,7 @@ export default class Manager extends Holder<Notebook> {
       let notebook = this.items[i];
 
       for (let j = 0; j < i + 4; j++) {
-        notebook.addSection("Section " + j, j);
+        notebook.addSection();
       }
     }
 
@@ -28,7 +28,7 @@ export default class Manager extends Holder<Notebook> {
         let section = notebook.sections[j];
 
         for (let k = 0; k < j + 5; k++) {
-          section.addNote("note " + k, "content " + k, "", k);
+          section.addNote();
         }
       }
     }

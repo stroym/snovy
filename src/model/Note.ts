@@ -1,32 +1,38 @@
 import Tag from "./Tag";
-import {HolderItem} from "./Base";
+import {Holder} from "./Base";
 import Section from "./Section";
 
-export default class Note extends HolderItem<Section> {
+export default class Note extends Holder<Tag, Section> {
 
-  content: string;
-  archived: boolean;
-  state: string; //class/list in notebook
-  tags: Set<Tag> = new Set<Tag>();
+  content: string = "";
+  archived: boolean = false;
+  state: string = ""; //class/list in notebook
 
-  constructor(parent: Section, id: number, name: string, content: string, state: string, order: number, tags?: Set<Tag>, archived: boolean = false) {
-    super(parent, id, name, order);
-    this.content = content;
-    this.archived = archived;
-    this.state = state;
-    this.tags = tags ? tags : this.tags;
+  //for testing purposes
+  static WithData(parent: Section, id: number, name: string, order: number): Note {
+    let temp = new Note(parent, id, name, order);
+    temp.content = "content " + id;
+    return temp;
   }
 
   tag(tag: Tag): void {
-    this.tags.add(tag);
+    if (!this.items.includes(tag)) {
+      this.items.push(tag);
+    }
   }
 
   untag(tag: Tag): void {
-    this.tags.delete(tag);
+    this.deleteItem(tag);
   }
 
   isState(state: string): boolean {
     return this.state === state;
+  }
+
+  insert(item: Tag): void {
+  }
+
+  insertAt(order: number): void {
   }
 
 }

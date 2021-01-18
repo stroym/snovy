@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {Holder, HolderItem} from "../../model/Base";
+import {Holder, OrphanHolder} from "../../model/Base";
 
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
@@ -93,33 +93,14 @@ export class Action {
 
   text: string;
   type: ActionType;
-  target?: HolderItem<any>;
-  parent?: Holder<any>
+  target?: Holder<any, any>;
+  parent?: OrphanHolder<any>
 
-  constructor(text: string, type: ActionType, target?: HolderItem<any>, parent?: Holder<any>) {
+  constructor(text: string, type: ActionType, target?: Holder<any, any>, parent?: OrphanHolder<any>) {
     this.text = text;
     this.type = type;
     this.target = target;
     this.parent = parent;
-  }
-
-  handle() {
-    console.log(this.target);
-    if (this.target) {
-      switch (this.type) {
-        case ActionType.NEW:
-          //action.target.order + 1 find a away to pass order from target
-          this.target.parent.addNewItem(this.target.order + 1);
-          break;
-        case ActionType.EDIT:
-          this.target.rename("blob");
-          break;
-        case ActionType.DELETE:
-          this.target.parent.deleteItem(this.target);
-          break;
-        default:
-      }
-    }
   }
 
 }

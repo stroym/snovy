@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {HolderItem} from "../../model/Base";
+import {Holder} from "../../model/Base";
 
-const SelectorListItem = <T extends HolderItem<any>>(props: {
+const SelectorListItem = <T extends Holder<any, any>>(props: {
   mapped: T,
   active: boolean
   onClick: (item: T) => any,

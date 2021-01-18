@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import "./App.scss";
 import TopBar from "./component/bar/Top";
 import LeftBar from "./component/bar/Left";
@@ -15,10 +15,10 @@ let manager = new Manager();
 
 function App() {
 
-  const [notebooks, setNotebooks] = React.useState<Notebook[] | undefined>(manager.notebooks);
-  const [activeNotebook, setActiveNotebook] = React.useState<Notebook | undefined>();
-  const [activeSection, setActiveSection] = React.useState<Section | undefined>();
-  const [activeNote, setActiveNote] = React.useState<Note | undefined>();
+  const [notebooks, setNotebooks] = useState<Notebook[] | undefined>(manager.notebooks);
+  const [activeNotebook, setActiveNotebook] = useState<Notebook | undefined>();
+  const [activeSection, setActiveSection] = useState<Section | undefined>();
+  const [activeNote, setActiveNote] = useState<Note | undefined>();
 
   const selectNotebook = (active: Notebook | undefined) => {
     setActiveNotebook(active);
@@ -38,12 +38,14 @@ function App() {
     }
   };
 
+  //TODO pass actions from the top? name, function and boom?
+
   const onContextAction = (action: Action) => {
     console.log(action);
     if (action.target) {
       switch (action.type) {
         case ActionType.NEW:
-          action.target.parent.addNewItem(action.target.order + 1);
+          action.target.parent.insertAt(action.target.order + 1);
 
           //this is a very hacky way of updating children, but hey, it works, sorta kinda
           if (action.target instanceof Note) {
