@@ -1,11 +1,11 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {HolderItem} from "../../model/Base";
-import ContextMenu, {Action, ActionType} from "./ContextMenu";
 
 const SelectorListItem = <T extends HolderItem<any>>(props: {
   mapped: T,
-  onClick: (item: T, element: HTMLLIElement) => any,
-  onContext: (action: Action) => any
+  active: boolean
+  onClick: (item: T) => any,
+  onContext: (item: T) => any
 }) => {
 
   const selfRef = useRef<HTMLLIElement>(null);
@@ -15,7 +15,7 @@ const SelectorListItem = <T extends HolderItem<any>>(props: {
 
   const handleClick = useCallback(
     () => {
-      props.onClick(props.mapped, selfRef.current!);
+      props.onClick(props.mapped);
     }, []
   );
 
@@ -43,18 +43,16 @@ const SelectorListItem = <T extends HolderItem<any>>(props: {
     }, []
   );
 
-  const actions = [
-    new Action("new", ActionType.NEW, props.mapped),
-    new Action("rename", ActionType.EDIT, props.mapped),
-    new Action("delete", ActionType.DELETE, props.mapped)
-  ];
+  const handleContext = () => {
+    props.onContext(props.mapped);
+  };
 
   //TODO use input if I manage to remove contextmenu from here
   return (
-    <li className={"snovy-list-item"} ref={selfRef} onClick={handleClick} onDoubleClick={makeEditable}
+    <li className={props.active ? "snovy-list-item selected" : "snovy-list-item"} ref={selfRef}
+        onClick={handleClick} onDoubleClick={makeEditable} onContextMenu={handleContext}
         suppressContentEditableWarning contentEditable={editable}>
       {props.mapped.name}
-      <ContextMenu parentRef={selfRef} actions={actions} contextChange={props.onContext}/>
     </li>
   );
 

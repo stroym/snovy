@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import SelectorListItem from "./SelectorListItem";
 
 import "react-contexify/dist/ReactContexify.css";
@@ -16,17 +16,13 @@ const SelectorList = <T extends HolderItem<any>>(props: {
 
   const selfRef = useRef<HTMLOListElement>(null);
 
-  //currently selected HTML element
-  const selected = useRef<Element>();
-
   //select first item when new items are received
   useEffect(
     () => {
       if (props.items && props.items.length > 0) {
         if (selfRef.current) {
+          setActiveItem(props.items[0]);
           props.onActiveChange(props.items[0]);
-
-          updateSelected(selfRef.current.children[0]);
         }
       } else {
         props.onActiveChange(undefined);
@@ -34,42 +30,55 @@ const SelectorList = <T extends HolderItem<any>>(props: {
     }, [props.items]
   );
 
-  //add/remove css class to/from selected element
-  const updateSelected = useCallback(
-    (newSelection: Element) => {
-      if (selected.current) {
-        selected.current.classList.remove(selectedClass);
-      }
-
-      selected.current = newSelection;
-      selected.current.classList.add(selectedClass);
-    }, []
-  );
-
   const itemClick = useCallback(
-    (item: T, element: Element) => {
+    (item: T) => {
+      setActiveItem(item);
       props.onActiveChange(item);
-
-      updateSelected(element);
     }, []
   );
 
   const itemContext = useCallback(
-    (action: Action) => {
-      props.onContextChange(action);
+    (item: T) => {
+      setActiveContext(item);
     }, []
   );
 
-  //TODO how to handle this?
-  const actions = [
-    new Action("new", ActionType.NEW, props.items)
-  ];
+  const [activeItem, setActiveItem] = useState<T>();
+  const [activeContext, setActiveContext] = useState<T>();
+  const [actions, setActions] = useState<Array<Action>>([]);
+
+  useEffect(
+    () => {
+      if (activeContext) {
+        setActions([
+          new Action("new", ActionType.NEW, activeContext),
+          new Action("rename", ActionType.EDIT, activeContext),
+          new Action("delete", ActionType.DELETE, activeContext)
+        ]);
+      } else {
+        setActions([]);
+        // console.log("probably parent click, buddy");
+      }
+
+    }, [activeContext]
+  );
+
+  const onContextAction = useCallback(
+    () => {
+      setActiveContext(undefined);
+    }, []
+  );
+
+  //TODO pass parent into list?
+  // return last contexted item
+  // return action
 
   return (
     <ol id={props.id} ref={selfRef} className="snovy-list-selector">
-      {props.items?.map((item: T) => <SelectorListItem key={item.id} mapped={item}
+      {props.items?.map((item: T) => <SelectorListItem key={item.id} mapped={item} active={item == activeItem}
                                                        onClick={itemClick} onContext={itemContext}/>)}
-      <ContextMenu parentRef={selfRef} actions={actions} contextChange={itemContext}/>
+      <ContextMenu parentRef={selfRef} actions={actions} contextChange={props.onContextChange}
+                   resetContext={onContextAction}/>
     </ol>
   );
 

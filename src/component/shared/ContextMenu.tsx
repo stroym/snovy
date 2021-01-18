@@ -1,9 +1,11 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
+import {HolderItem} from "../../model/Base";
 
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
   actions: Array<Action>,
-  contextChange: (action: Action) => any
+  contextChange: (action: Action) => any,
+  resetContext: () => any
 }) => {
 
   const [visible, setVisible] = useState(false);
@@ -15,7 +17,9 @@ const ContextMenu = (props: {
   const handleOutsideClick = useCallback(
     (event) => {
       if (!selfRef.current?.contains(event.target)) {
+
         setVisible(false);
+        props.resetContext();
       }
     }, []
   );
@@ -25,13 +29,14 @@ const ContextMenu = (props: {
       props.contextChange(action);
 
       setVisible(false);
+      props.resetContext();
     }, []
   );
 
   const handleContextMenu = useCallback(
     (event: any) => {
       event.preventDefault();
-      event.stopPropagation();
+      // event.stopPropagation();
 
       setX(event.pageX);
       setY(event.pageY);
@@ -74,6 +79,7 @@ export const ContextMenuItem = (props: {
   const handleClick = useCallback(
     (event: React.MouseEvent) => {
       event.stopPropagation();
+      // props.action.handle();
       props.execute(props.action);
     }, []
   );
@@ -88,12 +94,31 @@ export class Action {
 
   text: string;
   type: ActionType;
-  target: any;
+  target: HolderItem<any>;
 
   constructor(text: string, type: ActionType, target: any) {
     this.text = text;
     this.type = type;
     this.target = target;
+  }
+
+  handle() {
+    console.log(this.target);
+    if (this.target) {
+      switch (this.type) {
+        case ActionType.NEW:
+          //action.target.order + 1 find a away to pass order from target
+          this.target.parent.addNewItem(this.target.order + 1);
+          break;
+        case ActionType.EDIT:
+          this.target.rename("blob");
+          break;
+        case ActionType.DELETE:
+          this.target.parent.deleteItem(this.target);
+          break;
+        default:
+      }
+    }
   }
 
 }

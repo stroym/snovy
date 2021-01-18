@@ -16,7 +16,7 @@ export default class Manager extends Holder<Notebook> {
     for (let i = 0; i < this.items.length; i++) {
       let notebook = this.items[i];
 
-      for (let j = 0; j < 4; j++) {
+      for (let j = 0; j < i + 4; j++) {
         notebook.addSection("Section " + j, j);
       }
     }
@@ -27,7 +27,7 @@ export default class Manager extends Holder<Notebook> {
       for (let j = 0; j < notebook.sections.length; j++) {
         let section = notebook.sections[j];
 
-        for (let k = 0; k < 5; k++) {
+        for (let k = 0; k < j + 5; k++) {
           section.addNote("note " + k, "content " + k, "", k);
         }
       }

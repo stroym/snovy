@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import "./App.scss";
 import TopBar from "./component/bar/Top";
 import LeftBar from "./component/bar/Left";
@@ -9,7 +9,7 @@ import Note from "./model/Note";
 import Notebook from "./model/Notebook";
 import Section from "./model/Section";
 import Manager from "./model/Manager";
-import {Action} from "./component/shared/ContextMenu";
+import {Action, ActionType} from "./component/shared/ContextMenu";
 
 let manager = new Manager();
 
@@ -19,8 +19,6 @@ function App() {
   const [activeNotebook, setActiveNotebook] = React.useState<Notebook | undefined>();
   const [activeSection, setActiveSection] = React.useState<Section | undefined>();
   const [activeNote, setActiveNote] = React.useState<Note | undefined>();
-
-  const [action, setAction] = React.useState<any>();
 
   const selectNotebook = (active: Notebook | undefined) => {
     setActiveNotebook(active);
@@ -41,17 +39,36 @@ function App() {
   };
 
   const onContextAction = (action: Action) => {
-    setAction(action);
+    console.log(action);
+    if (action.target) {
+      switch (action.type) {
+        case ActionType.NEW:
+          action.target.parent.addNewItem(action.target.order + 1);
+
+          //this is a very hacky way of updating children, but hey, it works, sorta kinda
+          if (action.target instanceof Note) {
+            setActiveSection(undefined);
+            setActiveSection(action.target.parent);
+          } else if (action.target instanceof Section) {
+            setActiveNotebook(undefined);
+            setActiveNotebook(action.target.parent);
+          }
+          break;
+        case ActionType.EDIT:
+          action.target.rename("blob");
+          break;
+        case ActionType.DELETE:
+          action.target.parent.deleteItem(action.target);
+          break;
+        default:
+      }
+    }
   };
 
-  useEffect(
+  React.useEffect(
     () => {
-      if (action && action.target) {
-        action.target.parent.handleAction(action);
-      }
-
-      setAction(undefined);
-    }, [action]
+      console.log(activeSection?.items);
+    }, [activeSection?.items]
   );
 
   return (
