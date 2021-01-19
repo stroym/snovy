@@ -32,12 +32,6 @@ function App() {
     setActiveNote(active);
   };
 
-  const updateNoteContent = (content: string) => {
-    if (activeNote) {
-      activeNote.content = content;
-    }
-  };
-
   //TODO pass actions from the top? name, function and boom?
 
   const onContextAction = (action: Action) => {
@@ -81,7 +75,7 @@ function App() {
                onActiveNoteChange={selectNote} notes={activeSection?.itemsSortedByOrder}
                contextSelection={onContextAction}
       />
-      <Editor activeNote={activeNote} onValueChange={updateNoteContent}/>
+      <Editor activeNote={activeNote}/>
       <RightBar/>
       <BottomBar/>
     </div>

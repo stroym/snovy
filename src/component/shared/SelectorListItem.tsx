@@ -47,29 +47,33 @@ const SelectorListItem = <T extends Holder<any, any>>(props: {
     (event) => {
       if (!selfRef.current?.contains(event.target)) {
         setEditable(false);
-        selfRef.current?.classList.remove("editable");
+
+        if (selfRef.current) {
+          selfRef.current.classList.remove("editable");
+          selfRef.current.selectionStart = selfRef.current.selectionEnd = 0;
+        }
       }
     }, []
   );
 
-  const makeEditable = useCallback(
-    () => {
-      setEditable(true);
-      selfRef.current?.classList.add("editable");
-    }, []
-  );
+  const makeEditable = () => {
+    setEditable(true);
 
-  const handleChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      setValue(event.target.value);
-      props.mapped.name = event.target.value;
-    }, []
-  );
+    if (selfRef.current) {
+      selfRef.current.selectionStart = selfRef.current.selectionEnd = -1;
+      selfRef.current.classList.add("editable");
+    }
+  };
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+    props.mapped.name = event.target.value;
+  };
 
   return (
     <input className={props.active ? "snovy-list-item selected" : "snovy-list-item"} ref={selfRef}
-           onClick={handleClick} onDoubleClick={makeEditable} onContextMenu={handleContext}
            type="text" value={value} placeholder={"Name..."} onChange={handleChange} readOnly={!editable}
+           onClick={handleClick} onDoubleClick={makeEditable} onContextMenu={handleContext}
     />
   );
 

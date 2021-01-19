@@ -2,25 +2,31 @@
   grid-area: notebook;
 }
 
+.snovy-list-selector {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 #snovy-selector-section {
   grid-area: section;
   background-color: darkslateblue;
-  overflow-y: auto;
 }
 
 #snovy-selector-note {
   grid-area: note;
   background-color: darkslategray;
-  overflow-y: auto;
 }
 
-.snovy-list-selector .snovy-list-item {
+.snovy-list-item {
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: unset; //TODO
   background: none;
   border: none;
   width: 100%;
   cursor: default;
-  padding: 4px 2px 4px 10px;
+  padding: 4px 10px;
+  user-select: none;
 }
 
 .snovy-list-selector .selected {
@@ -29,8 +35,9 @@
 
 .snovy-list-selector .editable {
   cursor: text;
+  user-select: text;
 }
 
-.snovy-list-selector .snovy-list-item:hover {
+.snovy-list-item:hover {
   background-color: forestgreen;
 }

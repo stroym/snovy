@@ -8,10 +8,6 @@
   grid-template-areas: "top top top" "left editor right" "bottom bottom bottom";
 }
 
-#snovy-app > * {
-  box-sizing: border-box;
-}
-
 #snovy-bar-top {
   grid-area: top;
   background-color: purple;
