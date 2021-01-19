@@ -8,13 +8,6 @@ export default class Note extends Holder<Tag, Section> {
   archived: boolean = false;
   state: string = ""; //class/list in notebook
 
-  //for testing purposes
-  static WithData(parent: Section, id: number, name: string, order: number): Note {
-    let temp = new Note(parent, id, name, order);
-    temp.content = "content " + id;
-    return temp;
-  }
-
   tag(tag: Tag): void {
     if (!this.items.includes(tag)) {
       this.items.push(tag);
@@ -33,6 +26,13 @@ export default class Note extends Holder<Tag, Section> {
   }
 
   insertAt(order: number): void {
+  }
+
+  //for testing purposes
+  static WithData(parent: Section, id: number, name: string, order: number): Note {
+    let temp = new Note(parent, id, name, order);
+    temp.content = "content " + id;
+    return temp;
   }
 
 }

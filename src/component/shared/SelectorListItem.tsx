@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {ChangeEvent, useCallback, useEffect, useRef, useState} from "react";
 import {Holder} from "../../model/Base";
 
 const SelectorListItem = <T extends Holder<any, any>>(props: {
@@ -8,24 +8,10 @@ const SelectorListItem = <T extends Holder<any, any>>(props: {
   onContext: (item: T) => any
 }) => {
 
-  const selfRef = useRef<HTMLLIElement>(null);
+  const selfRef = useRef<HTMLInputElement>(null);
 
-  //TODO actually make editability work
+  const [value, setValue] = useState<string>("");
   const [editable, setEditable] = useState<boolean>(false);
-
-  const handleClick = useCallback(
-    () => {
-      props.onClick(props.mapped);
-    }, []
-  );
-
-  const handleOutsideClick = useCallback(
-    (event) => {
-      if (!selfRef.current?.contains(event.target)) {
-        setEditable(false);
-      }
-    }, []
-  );
 
   useEffect(
     () => {
@@ -37,23 +23,54 @@ const SelectorListItem = <T extends Holder<any, any>>(props: {
     }, []
   );
 
-  const makeEditable = useCallback(
+  useEffect(
     () => {
-      setEditable(true);
+      setValue(props.mapped.name);
+    }, [props.mapped, props.mapped.name]
+  );
+
+  const handleClick = useCallback(
+    () => {
+      console.log(props.mapped);
+      props.onClick(props.mapped);
     }, []
   );
 
-  const handleContext = () => {
-    props.onContext(props.mapped);
-  };
+  const handleContext = useCallback(
+    () => {
+      console.log(props.mapped);
+      props.onContext(props.mapped);
+    }, []
+  );
 
-  //TODO use input if I manage to remove contextmenu from here
+  const handleOutsideClick = useCallback(
+    (event) => {
+      if (!selfRef.current?.contains(event.target)) {
+        setEditable(false);
+        selfRef.current?.classList.remove("editable");
+      }
+    }, []
+  );
+
+  const makeEditable = useCallback(
+    () => {
+      setEditable(true);
+      selfRef.current?.classList.add("editable");
+    }, []
+  );
+
+  const handleChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      setValue(event.target.value);
+      props.mapped.name = event.target.value;
+    }, []
+  );
+
   return (
-    <li className={props.active ? "snovy-list-item selected" : "snovy-list-item"} ref={selfRef}
-        onClick={handleClick} onDoubleClick={makeEditable} onContextMenu={handleContext}
-        suppressContentEditableWarning contentEditable={editable}>
-      {props.mapped.name}
-    </li>
+    <input className={props.active ? "snovy-list-item selected" : "snovy-list-item"} ref={selfRef}
+           onClick={handleClick} onDoubleClick={makeEditable} onContextMenu={handleContext}
+           type="text" value={value} placeholder={"Name..."} onChange={handleChange} readOnly={!editable}
+    />
   );
 
 };

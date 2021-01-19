@@ -14,18 +14,21 @@
   overflow-y: auto;
 }
 
+.snovy-list-selector .snovy-list-item {
+  font-size: unset; //TODO
+  background: none;
+  border: none;
+  width: 100%;
+  cursor: default;
+  padding: 4px 2px 4px 10px;
+}
+
 .snovy-list-selector .selected {
   background-color: darkgreen;
 }
 
-.snovy-list-selector .snovy-list-item {
-  user-select: none;
-  padding: 4px 2px 4px 10px;
-}
-
-.snovy-list-selector .snovy-list-item[contenteditable=true] {
-  user-select: text;
-  padding: 4px 2px 4px 10px;
+.snovy-list-selector .editable {
+  cursor: text;
 }
 
 .snovy-list-selector .snovy-list-item:hover {

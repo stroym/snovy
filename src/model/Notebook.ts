@@ -12,21 +12,21 @@ export default class Notebook extends Holder<Section, Manager> {
     return this.items;
   }
 
+  insert() {
+    this.addItem(new Section(this, this.idCounter, "", this.items.length));
+  }
+
+  insertAt(order: number) {
+    this.addItem(new Section(this, this.idCounter, "", order), true);
+  }
+
   //for testing purposes
   static WithData(parent: Manager, id: number, name: string, order: number): Notebook {
     return new Notebook(parent, id, name, order);
   }
 
-  insert() {
-    this.addItem(new Section(this, this.idCounter, "", this.items.length));
-  }
-
   deleteSection(section: Section) {
     this.deleteItem(section);
-  }
-
-  insertAt(order: number) {
-    this.addItem(new Section(this, this.idCounter, "", order), true);
   }
 
   addSection() {
