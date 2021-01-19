@@ -1,28 +1,28 @@
-import React from "react";
-import Select from "react-select";
+import React from "react"
+import Select from "react-select"
 
 const options = [
   {value: "text", label: "Text"},
   {value: "title", label: "Title"},
   {value: "tags", label: "Tags"}
-];
+]
 
 const values = [
   {value: "a", label: "a"},
   {value: "b", label: "b"},
   {value: "c", label: "c"}
-];
+]
 
 export default class Search extends React.Component<{}, SearchState> {
 
   constructor(props: {}) {
-    super(props);
+    super(props)
 
     this.state = {
       filter: options[0]
-    };
+    }
 
-    this.handleOptions = this.handleOptions.bind(this);
+    this.handleOptions = this.handleOptions.bind(this)
   }
 
   //TODO another select for mode selection: some (or) + all (and) - mainly tags, contains/equals (text/title)
@@ -46,14 +46,14 @@ export default class Search extends React.Component<{}, SearchState> {
                 onChange={this.handleOptions}
         />
       </span>
-    );
+    )
   }
 
   handleOptions(value: any): void {
     this.setState({
       filter: value
-    });
-    console.log(value);
+    })
+    console.log(value)
   }
 
 }

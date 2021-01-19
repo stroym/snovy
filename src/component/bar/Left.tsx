@@ -1,10 +1,10 @@
-import React from "react";
-import NotebookSelector from "../selector/Notebook";
-import Note from "../../model/Note";
-import Section from "../../model/Section";
-import Notebook from "../../model/Notebook";
-import SelectorList from "../shared/SelectorList";
-import {Action} from "../shared/ContextMenu";
+import React from "react"
+import NotebookSelector from "../selector/Notebook"
+import Note from "../../model/Note"
+import Section from "../../model/Section"
+import Notebook from "../../model/Notebook"
+import SelectorList from "../shared/SelectorList"
+import {Action} from "../shared/ContextMenu"
 
 export const LeftBar = (props: {
   onActiveNotebookChange: (active: Notebook | undefined) => any,
@@ -26,8 +26,8 @@ export const LeftBar = (props: {
                           onActiveChange={props.onActiveNoteChange} onContextChange={props.contextSelection}
       />
     </div>
-  );
+  )
 
-};
+}
 
-export default LeftBar;
+export default LeftBar

@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 export default class Toolbar extends React.Component {
 
@@ -6,7 +6,7 @@ export default class Toolbar extends React.Component {
     return (
       <span id="snovy-toolbar">
       </span>
-    );
+    )
   }
 
 }

@@ -1,5 +1,5 @@
-import React from "react";
-import TagSelector from "../selector/Tag";
+import React from "react"
+import TagSelector from "../selector/Tag"
 
 export default class SidebarRight extends React.Component {
 
@@ -8,7 +8,7 @@ export default class SidebarRight extends React.Component {
       <div id="snovy-bar-right">
         <TagSelector/>
       </div>
-    );
+    )
   }
 
 }

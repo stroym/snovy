@@ -1,24 +1,24 @@
-import React, {useEffect} from "react";
-import {ActionMeta, ValueType} from "react-select";
-import Creatable from "react-select/creatable";
-import Notebook from "../../model/Notebook";
+import React, {useEffect} from "react"
+import {ActionMeta, ValueType} from "react-select"
+import Creatable from "react-select/creatable"
+import Notebook from "../../model/Notebook"
 
 const NotebookSelector = (props: {
   notebooks: Notebook[] | undefined,
   onActiveChange: (active: Notebook | undefined) => any
 }) => {
 
-  const [active, setActive] = React.useState<Notebook | undefined>(props.notebooks && props.notebooks.length > 0 ? props.notebooks[0] : undefined);
+  const [active, setActive] = React.useState<Notebook | undefined>(props.notebooks && props.notebooks.length > 0 ? props.notebooks[0] : undefined)
 
   const handleChange = (value: ValueType<Notebook, false>, action: ActionMeta<Notebook>) => {
-    setActive(value as Notebook);
-  };
+    setActive(value as Notebook)
+  }
 
   useEffect(
     () => {
-      props.onActiveChange(active as Notebook);
+      props.onActiveChange(active as Notebook)
     }, [active]
-  );
+  )
 
   return (
     <span id="snovy-selector-notebook">
@@ -30,8 +30,8 @@ const NotebookSelector = (props: {
                          onChange={handleChange}
     />
     </span>
-  );
+  )
 
-};
+}
 
-export default NotebookSelector;
+export default NotebookSelector

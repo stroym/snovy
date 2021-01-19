@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 export default class TagSelector extends React.Component {
 
@@ -6,7 +6,7 @@ export default class TagSelector extends React.Component {
     return (
       <div id="snovy-selector-tag">
       </div>
-    );
+    )
   }
 
 }

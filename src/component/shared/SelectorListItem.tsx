@@ -1,5 +1,5 @@
-import React, {ChangeEvent, useCallback, useEffect, useRef, useState} from "react";
-import {Holder} from "../../model/Base";
+import React, {ChangeEvent, useCallback, useEffect, useRef, useState} from "react"
+import {Holder} from "../../model/Base"
 
 const SelectorListItem = <T extends Holder<any, any>>(props: {
   mapped: T,
@@ -8,75 +8,75 @@ const SelectorListItem = <T extends Holder<any, any>>(props: {
   onContext: (item: T) => any
 }) => {
 
-  const selfRef = useRef<HTMLInputElement>(null);
+  const selfRef = useRef<HTMLInputElement>(null)
 
-  const [value, setValue] = useState<string>("");
-  const [editable, setEditable] = useState<boolean>(false);
+  const [value, setValue] = useState<string>("")
+  const [editable, setEditable] = useState<boolean>(false)
 
   useEffect(
     () => {
-      document.addEventListener("mousedown", handleOutsideClick);
+      document.addEventListener("mousedown", handleOutsideClick)
 
       return () => {
-        document.removeEventListener("mousedown", handleOutsideClick);
-      };
+        document.removeEventListener("mousedown", handleOutsideClick)
+      }
     }, []
-  );
+  )
 
   useEffect(
     () => {
-      setValue(props.mapped.name);
+      setValue(props.mapped.name)
     }, [props.mapped, props.mapped.name]
-  );
+  )
 
   const handleClick = useCallback(
     () => {
-      console.log(props.mapped);
-      props.onClick(props.mapped);
+      console.log(props.mapped)
+      props.onClick(props.mapped)
     }, []
-  );
+  )
 
   const handleContext = useCallback(
     () => {
-      console.log(props.mapped);
-      props.onContext(props.mapped);
+      console.log(props.mapped)
+      props.onContext(props.mapped)
     }, []
-  );
+  )
 
   const handleOutsideClick = useCallback(
     (event) => {
       if (!selfRef.current?.contains(event.target)) {
-        setEditable(false);
+        setEditable(false)
 
         if (selfRef.current) {
-          selfRef.current.classList.remove("editable");
-          selfRef.current.selectionStart = selfRef.current.selectionEnd = 0;
+          selfRef.current.classList.remove("editable")
+          selfRef.current.selectionStart = selfRef.current.selectionEnd = 0
         }
       }
     }, []
-  );
+  )
 
   const makeEditable = () => {
-    setEditable(true);
+    setEditable(true)
 
     if (selfRef.current) {
-      selfRef.current.selectionStart = selfRef.current.selectionEnd = -1;
-      selfRef.current.classList.add("editable");
+      selfRef.current.selectionStart = selfRef.current.selectionEnd = -1
+      selfRef.current.classList.add("editable")
     }
-  };
+  }
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-    props.mapped.name = event.target.value;
-  };
+    setValue(event.target.value)
+    props.mapped.name = event.target.value
+  }
 
   return (
     <input className={props.active ? "snovy-list-item selected" : "snovy-list-item"} ref={selfRef}
            type="text" value={value} placeholder={"Name..."} onChange={handleChange} readOnly={!editable}
            onClick={handleClick} onDoubleClick={makeEditable} onContextMenu={handleContext}
     />
-  );
+  )
 
-};
+}
 
-export default SelectorListItem;
+export default SelectorListItem

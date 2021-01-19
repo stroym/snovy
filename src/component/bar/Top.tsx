@@ -1,6 +1,6 @@
-import React from "react";
-import Search from "../Search";
-import Toolbar from "../Toolbar";
+import React from "react"
+import Search from "../Search"
+import Toolbar from "../Toolbar"
 
 export default class TopBar extends React.Component {
 
@@ -10,7 +10,7 @@ export default class TopBar extends React.Component {
         <Search/>
         <Toolbar/>
       </span>
-    );
+    )
   }
 
 }

@@ -1,9 +1,9 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
-import SelectorListItem from "./SelectorListItem";
+import React, {useCallback, useEffect, useRef, useState} from "react"
+import SelectorListItem from "./SelectorListItem"
 
-import "react-contexify/dist/ReactContexify.css";
-import {Holder} from "../../model/Base";
-import ContextMenu, {Action, ActionType} from "./ContextMenu";
+import "react-contexify/dist/ReactContexify.css"
+import {Holder} from "../../model/Base"
+import ContextMenu, {Action, ActionType} from "./ContextMenu"
 
 //TODO pass holder instead of items, probably
 const SelectorList = <T extends Holder<any, any>>(props: {
@@ -13,36 +13,36 @@ const SelectorList = <T extends Holder<any, any>>(props: {
   items: T[]
 }) => {
 
-  const selfRef = useRef<HTMLOListElement>(null);
+  const selfRef = useRef<HTMLOListElement>(null)
 
   //select first item when new items are received
   useEffect(
     () => {
       if (props.items.length > 0) {
-        setActiveItem(props.items[0]);
-        props.onActiveChange(props.items[0]);
+        setActiveItem(props.items[0])
+        props.onActiveChange(props.items[0])
       } else {
-        props.onActiveChange(undefined);
+        props.onActiveChange(undefined)
       }
     }, [props.items]
-  );
+  )
 
   const itemClick = useCallback(
     (item: T) => {
-      setActiveItem(item);
-      props.onActiveChange(item);
+      setActiveItem(item)
+      props.onActiveChange(item)
     }, []
-  );
+  )
 
   const itemContext = useCallback(
     (item: T) => {
-      setActiveContext(item);
+      setActiveContext(item)
     }, []
-  );
+  )
 
-  const [activeItem, setActiveItem] = useState<T>();
-  const [activeContext, setActiveContext] = useState<T>();
-  const [actions, setActions] = useState<Array<Action>>([]);
+  const [activeItem, setActiveItem] = useState<T>()
+  const [activeContext, setActiveContext] = useState<T>()
+  const [actions, setActions] = useState<Array<Action>>([])
 
   useEffect(
     () => {
@@ -51,20 +51,20 @@ const SelectorList = <T extends Holder<any, any>>(props: {
           new Action("new", ActionType.NEW, activeContext),
           new Action("rename", ActionType.EDIT, activeContext),
           new Action("delete", ActionType.DELETE, activeContext)
-        ]);
+        ])
       } else {
-        setActions([]);
+        setActions([])
         // console.log("probably parent click, buddy");
       }
 
     }, [activeContext]
-  );
+  )
 
   const onContextAction = useCallback(
     () => {
-      setActiveContext(undefined);
+      setActiveContext(undefined)
     }, []
-  );
+  )
 
   //TODO pass parent into list?
   // return last contexted item
@@ -77,8 +77,8 @@ const SelectorList = <T extends Holder<any, any>>(props: {
       <ContextMenu parentRef={selfRef} actions={actions} contextChange={props.onContextChange}
                    resetContext={onContextAction}/>
     </ol>
-  );
+  )
 
-};
+}
 
-export default SelectorList;
+export default SelectorList

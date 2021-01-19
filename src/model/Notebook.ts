@@ -1,36 +1,36 @@
-import Section from "./Section";
-import Tag from "./Tag";
-import {Holder} from "./Base";
-import Manager from "./Manager";
+import Section from "./Section"
+import Tag from "./Tag"
+import {Holder} from "./Base"
+import Manager from "./Manager"
 
 export default class Notebook extends Holder<Section, Manager> {
 
-  tags: Set<Tag> = new Set<Tag>();
-  states: Set<string> = new Set<string>();
+  tags: Set<Tag> = new Set<Tag>()
+  states: Set<string> = new Set<string>()
 
   get sections(): Array<Section> {
-    return this.items;
-  }
-
-  insert() {
-    this.addItem(new Section(this, this.idCounter, "", this.items.length));
-  }
-
-  insertAt(order: number) {
-    this.addItem(new Section(this, this.idCounter, "", order), true);
+    return this.items
   }
 
   //for testing purposes
   static WithData(parent: Manager, id: number, name: string, order: number): Notebook {
-    return new Notebook(parent, id, name, order);
+    return new Notebook(parent, id, name, order)
+  }
+
+  insert() {
+    this.addItem(new Section(this, this.idCounter, "", this.items.length))
+  }
+
+  insertAt(order: number) {
+    this.addItem(new Section(this, this.idCounter, "", order), true)
   }
 
   deleteSection(section: Section) {
-    this.deleteItem(section);
+    this.deleteItem(section)
   }
 
   addSection() {
-    this.addItem(Section.WithData(this, this.idCounter, "section " + this.idCounter, this.items.length));
+    this.addItem(Section.WithData(this, this.idCounter, "section " + this.idCounter, this.items.length))
   }
 
 }
