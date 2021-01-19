@@ -1,8 +1,8 @@
 export abstract class Item {
 
-  readonly id: number;
-  name: string;
-  order: number;
+  readonly id: number
+  name: string
+  order: number
 
   protected constructor(id: number, name: string, order: number) {
     this.id = id
@@ -22,9 +22,8 @@ export abstract class Item {
 
 export abstract class OrphanHolder<T extends Item> extends Item {
 
-  protected idCounter: number = 0;
-
-  items: Array<T> = new Array<T>();
+  items: Array<T> = new Array<T>()
+  protected idCounter: number = 0
 
   get itemsSortedById() {
     return this.items.sort((a: T, b: T) => {
@@ -45,7 +44,13 @@ export abstract class OrphanHolder<T extends Item> extends Item {
   }
 
   deleteItem(item: T) {
-    this.items.splice(this.items.indexOf(item), 1)
+    let index = this.items.indexOf(item)
+
+    this.items.splice(index, 1)
+
+    this.items.slice(index).forEach(value => {
+      value.order--
+    })
   }
 
   deleteById(id: number): boolean {
@@ -77,7 +82,7 @@ export abstract class OrphanHolder<T extends Item> extends Item {
 //TODO try to improve manager, somehow... the OrphanHolder really shouldn't exist
 export abstract class Holder<T extends Item, P extends OrphanHolder<any>> extends OrphanHolder<T> {
 
-  parent: P;
+  parent: P
 
   constructor(parent: P, id: number, name: string, order: number) {
     super(id, name, order)
