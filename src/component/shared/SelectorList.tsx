@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from "react"
+import React, {useEffect, useRef, useState} from "react"
 import SelectorListItem from "./SelectorListItem"
 
 import "react-contexify/dist/ReactContexify.css"
@@ -23,11 +23,16 @@ const SelectorList = <T extends Holder<any, any>>(props: {
     () => {
       if (props.items.length > 0) {
         setActiveItem(props.items[0])
-        props.onActiveChange(props.items[0])
       } else {
-        props.onActiveChange(undefined)
+        setActiveItem(undefined)
       }
     }, [props.items]
+  )
+
+  useEffect(
+    () => {
+      props.onActiveChange(activeItem)
+    }, [activeItem]
   )
 
   useEffect(
@@ -45,18 +50,13 @@ const SelectorList = <T extends Holder<any, any>>(props: {
     }, [activeContext, setActiveContext]
   )
 
-  const itemClick = useCallback(
-    (item: T) => {
-      setActiveItem(item)
-      props.onActiveChange(item)
-    }, []
-  )
+  const itemClick = (item: T) => {
+    setActiveItem(item)
+  }
 
-  const itemContext = useCallback(
-    (item: T) => {
-      setActiveContext(item)
-    }, []
-  )
+  const itemContext = (item: T) => {
+    setActiveContext(item)
+  }
 
   return (
     <ol id={props.id} ref={selfRef} className="snovy-list-selector">
