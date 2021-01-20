@@ -1,10 +1,8 @@
-import React, {useCallback, useEffect, useRef, useState} from "react"
-import {Holder, OrphanHolder} from "../../model/Base"
+import React, {useEffect, useRef, useState} from "react"
 
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
   actions: Array<Action>,
-  contextChange: (action: Action) => any,
   resetContext: () => any
 }) => {
 
@@ -26,36 +24,26 @@ const ContextMenu = (props: {
     }, []
   )
 
-  const handleOutsideClick = useCallback(
-    (event) => {
-      if (!selfRef.current?.contains(event.target)) {
-
-        setVisible(false)
-        props.resetContext()
-      }
-    }, []
-  )
-
-  const handleItemClick = useCallback(
-    (action: Action) => {
-      props.contextChange(action)
-
+  const handleOutsideClick = (event: any) => {
+    if (!selfRef.current?.contains(event.target)) {
       setVisible(false)
       props.resetContext()
-    }, []
-  )
+    }
+  }
 
-  const handleContextMenu = useCallback(
-    (event: any) => {
-      event.preventDefault()
+  const handleItemClick = () => {
+    setVisible(false)
+    props.resetContext()
+  }
 
-      setX(event.pageX)
-      setY(event.pageY)
+  const handleContextMenu = (event: any) => {
+    event.preventDefault()
 
-      setVisible(true)
-    },
-    []
-  )
+    setX(event.pageX)
+    setY(event.pageY)
+
+    setVisible(true)
+  }
 
   return (
     <ol className="snovy-context-menu" hidden={!visible} ref={selfRef}
@@ -72,15 +60,13 @@ const ContextMenu = (props: {
 
 export const ContextMenuItem = (props: {
   action: Action,
-  execute: (action: Action) => any
+  execute: () => any
 }) => {
 
-  const handleClick = useCallback(
-    (event: React.MouseEvent) => {
-      event.stopPropagation()
-      props.execute(props.action)
-    }, []
-  )
+  const handleClick = () => {
+    props.action.execute()
+    props.execute()
+  }
 
   return (
     <li onClick={handleClick}>{props.action.text}</li>
@@ -90,24 +76,14 @@ export const ContextMenuItem = (props: {
 
 export class Action {
 
-  text: string;
-  type: ActionType;
-  target?: Holder<any, any>;
-  parent?: OrphanHolder<any>
+  text: string
+  execute: (...args: any) => any
 
-  constructor(text: string, type: ActionType, target?: Holder<any, any>, parent?: OrphanHolder<any>) {
+  constructor(text: string, execute: (...args: any) => any) {
     this.text = text
-    this.type = type
-    this.target = target
-    this.parent = parent
+    this.execute = execute
   }
 
-}
-
-export enum ActionType {
-  NEW,
-  EDIT,
-  DELETE
 }
 
 export default ContextMenu

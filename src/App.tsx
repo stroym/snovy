@@ -9,7 +9,6 @@ import Note from "./model/Note"
 import Notebook from "./model/Notebook"
 import Section from "./model/Section"
 import Manager from "./model/Manager"
-import {Action, ActionType} from "./component/shared/ContextMenu"
 
 let manager = new Manager()
 
@@ -32,42 +31,13 @@ function App() {
     setActiveNote(active)
   }
 
-  //TODO pass actions from the top? name, function and boom?
-
-  const onContextAction = (action: Action) => {
-    console.log(action)
-    if (action.target) {
-      switch (action.type) {
-        case ActionType.NEW:
-          action.target.parent.insertAt(action.target.order + 1)
-
-          //this is a very hacky way of updating children, but hey, it works, sorta kinda
-          if (action.target instanceof Note) {
-            setActiveSection(undefined)
-            setActiveSection(action.target.parent)
-          } else if (action.target instanceof Section) {
-            setActiveNotebook(undefined)
-            setActiveNotebook(action.target.parent)
-          }
-          break
-        case ActionType.EDIT:
-          action.target.rename("blob")
-          break
-        case ActionType.DELETE:
-          action.target.parent.deleteItem(action.target)
-          break
-        default:
-      }
-    }
-  }
-
   return (
     <div id="snovy-app">
       <TopBar/>
       <LeftBar onActiveNotebookChange={selectNotebook} notebooks={notebooks}
                onActiveSectionChange={selectSection} sections={activeNotebook?.itemsSortedByOrder}
                onActiveNoteChange={selectNote} notes={activeSection?.itemsSortedByOrder}
-               contextSelection={onContextAction}
+               activeNotebook={activeNotebook} activeSection={activeSection}
       />
       <Editor activeNote={activeNote}/>
       <RightBar/>

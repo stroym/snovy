@@ -25,11 +25,9 @@ export default class Note extends Holder<Tag, Section> {
     this.deleteItem(tag)
   }
 
-  insert(item: Tag): void {
-  }
+  insert(): void {}
 
-  insertAt(order: number): void {
-  }
+  insertAt(order: number): void {}
 
   isState(state: string): boolean {
     return this.state === state

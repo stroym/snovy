@@ -2,7 +2,7 @@ import {Item} from "./Base"
 
 export default class Tag extends Item {
 
-  category?: Category;
+  category?: Category
 
   constructor(id: number, name: string, order: number, category?: Category) {
     super(id, name.replace("#", ""), order)
@@ -21,8 +21,8 @@ export default class Tag extends Item {
 
 export class Category {
 
-  name: string;
-  exclusive: boolean;
+  name: string
+  exclusive: boolean
 
   constructor(name: string, exclusive: boolean = false) {
     this.name = name

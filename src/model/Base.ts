@@ -91,6 +91,6 @@ export abstract class Holder<T extends Item, P extends OrphanHolder<any>> extend
 
   abstract insertAt(order: number): void;
 
-  abstract insert(item: T): void;
+  abstract insert(): void;
 
 }

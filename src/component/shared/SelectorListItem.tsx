@@ -29,13 +29,8 @@ const SelectorListItem = <T extends Holder<any, any>>(props: {
     }, [props.mapped, props.mapped.name]
   )
 
-  const handleClick = () => {
-    console.log(props.mapped)
-    props.onClick(props.mapped)
-  }
-
-  const handleContext = () => {
-    console.log(props.mapped)
+  const handleContext = (event: React.MouseEvent) => {
+    event.stopPropagation()
     props.onContext(props.mapped)
   }
 
@@ -69,7 +64,7 @@ const SelectorListItem = <T extends Holder<any, any>>(props: {
   return (
     <input className={props.active ? "snovy-list-item selected" : "snovy-list-item"} ref={selfRef}
            type="text" value={value} placeholder={"Name..."} onChange={handleChange} readOnly={!editable}
-           onClick={handleClick} onDoubleClick={makeEditable} onContextMenu={handleContext}
+           onClick={() => {props.onClick(props.mapped)}} onDoubleClick={makeEditable} onContextMenu={handleContext}
     />
   )
 
