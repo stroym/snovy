@@ -8,11 +8,23 @@ const ContextMenu = (props: {
   resetContext: () => any
 }) => {
 
+  const selfRef = useRef<HTMLOListElement>(null)
+
   const [visible, setVisible] = useState(false)
   const [x, setX] = useState(0)
   const [y, setY] = useState(0)
 
-  const selfRef = useRef<HTMLOListElement>(null)
+  useEffect(
+    () => {
+      document.addEventListener("mousedown", handleOutsideClick)
+      props.parentRef.current?.addEventListener("contextmenu", handleContextMenu)
+
+      return () => {
+        document.removeEventListener("mousedown", handleOutsideClick)
+        props.parentRef.current?.removeEventListener("contextmenu", handleContextMenu)
+      }
+    }, []
+  )
 
   const handleOutsideClick = useCallback(
     (event) => {
@@ -45,18 +57,6 @@ const ContextMenu = (props: {
     []
   )
 
-  useEffect(
-    () => {
-      document.addEventListener("mousedown", handleOutsideClick)
-      props.parentRef.current?.addEventListener("contextmenu", handleContextMenu)
-
-      return () => {
-        document.removeEventListener("mousedown", handleOutsideClick)
-        props.parentRef.current?.removeEventListener("contextmenu", handleContextMenu)
-      }
-    }, []
-  )
-
   return (
     <ol className="snovy-context-menu" hidden={!visible} ref={selfRef}
         style={{
@@ -78,7 +78,6 @@ export const ContextMenuItem = (props: {
   const handleClick = useCallback(
     (event: React.MouseEvent) => {
       event.stopPropagation()
-      // props.action.handle();
       props.execute(props.action)
     }, []
   )

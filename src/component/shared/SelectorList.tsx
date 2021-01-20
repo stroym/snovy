@@ -15,7 +15,10 @@ const SelectorList = <T extends Holder<any, any>>(props: {
 
   const selfRef = useRef<HTMLOListElement>(null)
 
-  //select first item when new items are received
+  const [activeItem, setActiveItem] = useState<T>()
+  const [activeContext, setActiveContext] = useState<T>()
+  const [actions, setActions] = useState<Array<Action>>([])
+
   useEffect(
     () => {
       if (props.items.length > 0) {
@@ -25,6 +28,21 @@ const SelectorList = <T extends Holder<any, any>>(props: {
         props.onActiveChange(undefined)
       }
     }, [props.items]
+  )
+
+  useEffect(
+    () => {
+      if (activeContext) {
+        setActions([
+          new Action("new", ActionType.NEW, activeContext),
+          new Action("rename", ActionType.EDIT, activeContext),
+          new Action("delete", ActionType.DELETE, activeContext)
+        ])
+      } else {
+        setActions([])
+        // console.log("probably parent click, buddy");
+      }
+    }, [activeContext, setActiveContext]
   )
 
   const itemClick = useCallback(
@@ -40,42 +58,12 @@ const SelectorList = <T extends Holder<any, any>>(props: {
     }, []
   )
 
-  const [activeItem, setActiveItem] = useState<T>()
-  const [activeContext, setActiveContext] = useState<T>()
-  const [actions, setActions] = useState<Array<Action>>([])
-
-  useEffect(
-    () => {
-      if (activeContext) {
-        setActions([
-          new Action("new", ActionType.NEW, activeContext),
-          new Action("rename", ActionType.EDIT, activeContext),
-          new Action("delete", ActionType.DELETE, activeContext)
-        ])
-      } else {
-        setActions([])
-        // console.log("probably parent click, buddy");
-      }
-
-    }, [activeContext]
-  )
-
-  const onContextAction = useCallback(
-    () => {
-      setActiveContext(undefined)
-    }, []
-  )
-
-  //TODO pass parent into list?
-  // return last contexted item
-  // return action
-
   return (
     <ol id={props.id} ref={selfRef} className="snovy-list-selector">
       {props.items.map((item: T) => <SelectorListItem key={item.id} mapped={item} active={item == activeItem}
                                                       onClick={itemClick} onContext={itemContext}/>)}
       <ContextMenu parentRef={selfRef} actions={actions} contextChange={props.onContextChange}
-                   resetContext={onContextAction}/>
+                   resetContext={() => setActiveContext(undefined)}/>
     </ol>
   )
 

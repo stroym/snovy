@@ -61,12 +61,6 @@ function App() {
     }
   }
 
-  React.useEffect(
-    () => {
-      console.log(activeSection?.items)
-    }, [activeSection?.items]
-  )
-
   return (
     <div id="snovy-app">
       <TopBar/>
