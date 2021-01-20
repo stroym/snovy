@@ -29,19 +29,15 @@ const SelectorListItem = <T extends Holder<any, any>>(props: {
     }, [props.mapped, props.mapped.name]
   )
 
-  const handleClick = useCallback(
-    () => {
-      console.log(props.mapped)
-      props.onClick(props.mapped)
-    }, []
-  )
+  const handleClick = () => {
+    console.log(props.mapped)
+    props.onClick(props.mapped)
+  }
 
-  const handleContext = useCallback(
-    () => {
-      console.log(props.mapped)
-      props.onContext(props.mapped)
-    }, []
-  )
+  const handleContext = () => {
+    console.log(props.mapped)
+    props.onContext(props.mapped)
+  }
 
   const handleOutsideClick = useCallback(
     (event) => {
