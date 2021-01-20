@@ -22,11 +22,11 @@ export const LeftBar = (props: {
       <NotebookSelector notebooks={props.notebooks} onActiveChange={props.onActiveNotebookChange}/>
       <List<Notebook, Section> id="snovy-selector-section" holder={props.activeNotebook}
                                onActiveChange={props.onActiveSectionChange}
-                               key={buildId(props.activeNotebook)}
+                               key={buildId(props.activeNotebook) ?? Notebook.prototype.name}
       />
       <List<Section, Note> id="snovy-selector-note" holder={props.activeSection}
                            onActiveChange={props.onActiveNoteChange}
-                           key={buildId(props.activeSection)}
+                           key={buildId(props.activeSection) ?? Section.prototype.name}
 
       />
     </div>
@@ -34,12 +34,8 @@ export const LeftBar = (props: {
 
 }
 
-function buildId(parent?: Holder<any, any>) {
-  if (parent) {
-    return parent?.constructor.name + parent.id + "items"
-  } else {
-    return ""
-  }
+function buildId(parent: Holder<any, any> | undefined) {
+  return parent ? parent.constructor.name + parent?.id + "items" : undefined
 }
 
 export default LeftBar

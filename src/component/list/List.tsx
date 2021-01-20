@@ -13,7 +13,7 @@ const List = <P extends Holder<T, any>, T extends Holder<any, P>>(props: {
 
   const [activeItem, setActiveItem] = useState<T>()
   const [activeContext, setActiveContext] = useState<T | undefined | null>()
-  const [actions, setActions] = useState<Array<Action>>([])
+  const [actions, setActions] = useState<Array<Action> | undefined>()
 
   useEffect(
     () => {
@@ -48,15 +48,22 @@ const List = <P extends Holder<T, any>, T extends Holder<any, P>>(props: {
             }),
             new Action("delete", () => {
               props.holder!.deleteItem(activeContext)
+
+              if (activeItem == activeContext) {
+                setActiveItem(undefined)
+              }
             })
           ] : []
         ])
+      } else {
+        setActions(undefined)
       }
     }, [activeContext]
   )
 
   return (
-    <ol id={props.id} ref={selfRef} className="snovy-list" onContextMenu={() => setActiveContext(null)}>
+    <ol id={props.id} ref={selfRef} className={props.holder ? "snovy-list" : "snovy-list disabled"}
+        onContextMenu={() => setActiveContext(null)}>
       {props.holder?.itemsSortedByOrder.map((item: T) =>
         <ListItem key={item.id} mapped={item} active={item == activeItem}
                   onClick={(item: T) => {setActiveItem(item)}}

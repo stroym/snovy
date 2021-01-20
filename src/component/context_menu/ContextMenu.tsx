@@ -4,7 +4,7 @@ import ContextMenuItem from "./ContextMenuItem"
 //TODO allow for passing already finished child elements
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
-  actions: Array<Action>,
+  actions: Array<Action> | undefined,
   resetContext: () => any
 }) => {
 
@@ -45,6 +45,10 @@ const ContextMenu = (props: {
     setY(event.pageY)
 
     setVisible(true)
+  }
+
+  if (!props.actions) {
+    return null
   }
 
   return (
