@@ -1,11 +1,9 @@
 import React, {useEffect, useRef, useState} from "react"
-import SelectorListItem from "./SelectorListItem"
-
-import "react-contexify/dist/ReactContexify.css"
+import ListItem from "./ListItem"
 import {Holder} from "../../model/Base"
-import ContextMenu, {Action} from "./ContextMenu"
+import ContextMenu, {Action} from "../context_menu/ContextMenu"
 
-const SelectorList = <P extends Holder<T, any>, T extends Holder<any, P>>(props: {
+const List = <P extends Holder<T, any>, T extends Holder<any, P>>(props: {
   id: string,
   onActiveChange: (active: T | undefined) => any,
   holder: P | undefined
@@ -58,11 +56,11 @@ const SelectorList = <P extends Holder<T, any>, T extends Holder<any, P>>(props:
   )
 
   return (
-    <ol id={props.id} ref={selfRef} className="snovy-list-selector" onContextMenu={() => setActiveContext(null)}>
+    <ol id={props.id} ref={selfRef} className="snovy-list" onContextMenu={() => setActiveContext(null)}>
       {props.holder?.itemsSortedByOrder.map((item: T) =>
-        <SelectorListItem key={item.id} mapped={item} active={item == activeItem}
-                          onClick={(item: T) => {setActiveItem(item)}}
-                          onContext={(item: T) => {setActiveContext(item)}}
+        <ListItem key={item.id} mapped={item} active={item == activeItem}
+                  onClick={(item: T) => {setActiveItem(item)}}
+                  onContext={(item: T) => {setActiveContext(item)}}
         />)
       }
       <ContextMenu parentRef={selfRef} actions={actions} resetContext={() => setActiveContext(undefined)}/>
@@ -71,4 +69,4 @@ const SelectorList = <P extends Holder<T, any>, T extends Holder<any, P>>(props:
 
 }
 
-export default SelectorList
+export default List

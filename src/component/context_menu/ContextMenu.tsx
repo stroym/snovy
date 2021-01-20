@@ -1,5 +1,7 @@
 import React, {useEffect, useRef, useState} from "react"
+import ContextMenuItem from "./ContextMenuItem"
 
+//TODO allow for passing already finished child elements
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
   actions: Array<Action>,
@@ -54,22 +56,6 @@ const ContextMenu = (props: {
         }}>
       {props.actions.map((a: Action, i: number) => <ContextMenuItem key={i} action={a} execute={handleItemClick}/>)}
     </ol>
-  )
-
-}
-
-export const ContextMenuItem = (props: {
-  action: Action,
-  execute: () => any
-}) => {
-
-  const handleClick = () => {
-    props.action.execute()
-    props.execute()
-  }
-
-  return (
-    <li onClick={handleClick}>{props.action.text}</li>
   )
 
 }

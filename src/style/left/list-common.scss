@@ -1,4 +1,4 @@
-.snovy-list-selector {
+.snovy-list {
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -15,7 +15,7 @@
   user-select: none;
 }
 
-.snovy-list-selector .editable {
+.snovy-list .editable {
   cursor: text;
   user-select: text;
 }

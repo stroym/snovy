@@ -1,7 +1,7 @@
 import React, {useEffect} from "react"
 import {ActionMeta, ValueType} from "react-select"
 import Creatable from "react-select/creatable"
-import Notebook from "../../model/Notebook"
+import Notebook from "../model/Notebook"
 
 const NotebookSelector = (props: {
   notebooks: Notebook[] | undefined,

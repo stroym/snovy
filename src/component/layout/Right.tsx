@@ -1,5 +1,5 @@
 import React from "react"
-import TagSelector from "../selector/Tag"
+import TagSelector from "../Tag"
 
 export default class SidebarRight extends React.Component {
 

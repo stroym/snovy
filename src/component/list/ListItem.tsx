@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useCallback, useEffect, useRef, useState} from "react"
 import {Holder} from "../../model/Base"
 
-const SelectorListItem = <T extends Holder<any, any>>(props: {
+const ListItem = <T extends Holder<any, any>>(props: {
   mapped: T,
   active: boolean
   onClick: (item: T) => any,
@@ -70,4 +70,4 @@ const SelectorListItem = <T extends Holder<any, any>>(props: {
 
 }
 
-export default SelectorListItem
+export default ListItem

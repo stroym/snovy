@@ -1,9 +1,9 @@
 import React from "react"
-import NotebookSelector from "../selector/Notebook"
+import NotebookSelector from "../NotebookSelector"
 import Note from "../../model/Note"
 import Section from "../../model/Section"
 import Notebook from "../../model/Notebook"
-import SelectorList from "../shared/SelectorList"
+import List from "../list/List"
 import {Holder} from "../../model/Base"
 
 export const LeftBar = (props: {
@@ -20,13 +20,13 @@ export const LeftBar = (props: {
   return (
     <div id="snovy-bar-left">
       <NotebookSelector notebooks={props.notebooks} onActiveChange={props.onActiveNotebookChange}/>
-      <SelectorList<Notebook, Section> id="snovy-selector-section" holder={props.activeNotebook}
-                                       onActiveChange={props.onActiveSectionChange}
-                                       key={buildId(props.activeNotebook)}
+      <List<Notebook, Section> id="snovy-selector-section" holder={props.activeNotebook}
+                               onActiveChange={props.onActiveSectionChange}
+                               key={buildId(props.activeNotebook)}
       />
-      <SelectorList<Section, Note> id="snovy-selector-note" holder={props.activeSection}
-                                   onActiveChange={props.onActiveNoteChange}
-                                   key={buildId(props.activeSection)}
+      <List<Section, Note> id="snovy-selector-note" holder={props.activeSection}
+                           onActiveChange={props.onActiveNoteChange}
+                           key={buildId(props.activeSection)}
 
       />
     </div>

@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useEffect, useState} from "react"
-import Note from "../model/Note"
+import Note from "../../model/Note"
 
 const Editor = (props: {
   activeNote: Note | undefined
