@@ -1,20 +1,6 @@
-#snovy-selector-notebook {
-  grid-area: notebook;
-}
-
 .snovy-list-selector {
   overflow-y: auto;
   overflow-x: hidden;
-}
-
-#snovy-selector-section {
-  grid-area: section;
-  background-color: darkslateblue;
-}
-
-#snovy-selector-note {
-  grid-area: note;
-  background-color: darkslategray;
 }
 
 .snovy-list-item {
@@ -29,15 +15,7 @@
   user-select: none;
 }
 
-.snovy-list-selector .selected {
-  background-color: darkgreen;
-}
-
 .snovy-list-selector .editable {
   cursor: text;
   user-select: text;
-}
-
-.snovy-list-item:hover {
-  background-color: forestgreen;
 }

@@ -1,0 +1,7 @@
+@use "list-common";
+@use "list-note";
+@use "list-section";
+
+#snovy-selector-notebook {
+  grid-area: notebook;
+}

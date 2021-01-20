@@ -27,7 +27,7 @@ export default class Manager extends OrphanHolder<Notebook> {
       for (let j = 0; j < notebook.sections.length; j++) {
         let section = notebook.sections[j]
 
-        for (let k = 0; k < j + 5; k++) {
+        for (let k = 0; k < 5 + j * 10; k++) {
           section.addNote()
         }
       }
