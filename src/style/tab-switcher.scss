@@ -1,0 +1,15 @@
+.snovy-tab-switcher {
+  grid-area: tabs;
+  background-color: coral;
+  border-left: black solid 1px;
+}
+
+.snovy-tab-switcher_right {
+  @extend .snovy-tab-switcher;
+  border-left: black solid 1px;
+}
+
+.snovy-tab-switcher_left {
+  @extend .snovy-tab-switcher;
+  border-right: black solid 1px;
+}

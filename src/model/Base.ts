@@ -3,6 +3,8 @@ export abstract class Item {
   readonly id: number
   name: string
   order: number
+  //createdAt
+  //editedAt
 
   protected constructor(id: number, name: string, order: number) {
     this.id = id

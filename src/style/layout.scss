@@ -3,7 +3,7 @@
   height: 100%;
   background-color: chocolate;
   display: grid;
-  grid-template-columns: 20% 70% 10%;
+  grid-template-columns: 20% 60% 20%;
   grid-template-rows: 10% 85% 5%;
   grid-template-areas: "top top top" "left editor right" "bottom bottom bottom";
 }
@@ -39,6 +39,9 @@
 
 #snovy-bar-right {
   grid-area: right;
+  display: grid;
+  grid-template-columns: 90% 10%;
+  grid-template-areas: "main tabs";
   background-color: green;
   border-left: black solid 4px;
 }

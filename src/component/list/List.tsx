@@ -3,6 +3,7 @@ import ListItem from "./ListItem"
 import {Holder} from "../../model/Base"
 import ContextMenu, {Action} from "../context_menu/ContextMenu"
 
+//TODO mutliselect for context actions - pop out checkboxes?
 const List = <P extends Holder<T, any>, T extends Holder<any, P>>(props: {
   id: string,
   onActiveChange: (active: T | undefined) => any,
