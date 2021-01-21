@@ -1,4 +1,11 @@
-.sidebar-inner-content {
-  grid-area: main;
-}
+@use "../common/sidebar-content";
 
+@import "../theme";
+
+#snovy-bar-right {
+  grid-area: right;
+  display: grid;
+  grid-template-columns: 9fr 1fr;
+  grid-template-areas: "main tabs";
+  border-left: $border;
+}

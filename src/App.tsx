@@ -34,13 +34,14 @@ function App() {
   return (
     <div id="snovy-app">
       <TopBar/>
-      <LeftBar onActiveNotebookChange={selectNotebook} notebooks={notebooks}
-               onActiveSectionChange={selectSection} sections={activeNotebook?.itemsSortedByOrder}
-               onActiveNoteChange={selectNote} notes={activeSection?.itemsSortedByOrder}
-               activeNotebook={activeNotebook} activeSection={activeSection}
-      />
-      <Editor activeNote={activeNote}/>
-      <RightBar/>
+      <div id="snovy-middle">
+        <LeftBar onActiveSectionChange={selectSection} onActiveNoteChange={selectNote}
+                 onActiveNotebookChange={selectNotebook} notebooks={notebooks}
+                 activeNotebook={activeNotebook} activeSection={activeSection}
+        />
+        <Editor activeNote={activeNote}/>
+        <RightBar/>
+      </div>
       <BottomBar/>
     </div>
   )

@@ -1,0 +1,41 @@
+@import "../theme";
+
+#snovy-top-upper {
+  grid-area: top;
+  padding: 2px 0;
+  background-color: $colour-accent;
+  display: grid;
+  grid-template-columns: 40% 40% 20%;
+  grid-template-areas: "left centre right";
+  border-bottom: $border-halved;
+}
+
+#snovy-search {
+  grid-area: right;
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-gap: 1px;
+  grid-template-columns: 3fr 1fr;
+  grid-template-areas: "left right";
+}
+
+#snovy-search #search {
+  grid-area: left;
+}
+
+#snovy-search #options {
+  grid-area: right;
+}
+
+#snovy-toolbar {
+  grid-area: bottom;
+  display: grid;
+  grid-gap: 1px;
+  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-areas: "left centre right";
+  height: 100%;
+  width: 100%;
+  background-color: $colour-main;
+  border-top: $border-halved;
+}

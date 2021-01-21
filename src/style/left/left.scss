@@ -1,7 +1,36 @@
-@use "list-common";
-@use "list-note";
-@use "list-section";
+@use "../common/list";
+@use "../common/sidebar-content";
+
+@import "../theme";
+
+#snovy-bar-left {
+  grid-area: left;
+  display: grid;
+  grid-template-columns: 1fr 9fr;
+  grid-template-rows: 100%;
+  grid-template-areas: "tabs main";
+  border-right: $border;
+}
+
+#left-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  //grid-template-rows: 1fr 20fr;
+  grid-template-rows: 5% 95%;
+  grid-template-areas: "notebook notebook" "section note";
+}
 
 #snovy-selector-notebook {
   grid-area: notebook;
+  border-bottom: $border;
+}
+
+#snovy-selector-section {
+  grid-area: section;
+  border-right: $border-halved;
+}
+
+#snovy-selector-note {
+  grid-area: note;
+  border-left: $border-halved;
 }

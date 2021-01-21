@@ -1,5 +1,6 @@
 import React, {ChangeEvent, useEffect, useState} from "react"
 import Note from "../../model/Note"
+import Toolbar from "../Toolbar"
 
 const Editor = (props: {
   activeNote: Note | undefined
@@ -21,7 +22,10 @@ const Editor = (props: {
   }
 
   return (
-    <textarea id="snovy-editor" onChange={handleChange} value={value} disabled={!props.activeNote}/>
+    <div id="snovy-editor-container">
+      <Toolbar id="snovy-editor-toolbar"/>
+      <textarea id="snovy-editor" onChange={handleChange} value={value} disabled={!props.activeNote}/>
+    </div>
   )
 
 }

@@ -1,12 +1,14 @@
 import React from "react"
 
-export default class Toolbar extends React.Component {
+const Toolbar = (props: {
+  id?: string
+}) => {
 
-  render() {
-    return (
-      <span id="snovy-toolbar">
+  return (
+    <span id={props.id}>
       </span>
-    )
-  }
+  )
 
 }
+
+export default Toolbar

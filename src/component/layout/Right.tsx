@@ -13,7 +13,7 @@ export default class SidebarRight extends React.Component {
   render() {
     return (
       <div id="snovy-bar-right">
-        <div className="sidebar-inner-content">
+        <div className="sidebar-inner-content" id="right-content">
           <TagManager/>
         </div>
         <TabSwitcher position={Position.RIGHT}/>

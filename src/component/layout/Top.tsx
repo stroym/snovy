@@ -1,16 +1,15 @@
 import React from "react"
 import Search from "../Search"
-import Toolbar from "../Toolbar"
 
-export default class TopBar extends React.Component {
+const TopBar = (props: {}) => {
 
-  render() {
-    return (
-      <span id="snovy-bar-top">
+  return (
+    <span id="snovy-bar-top">
         <Search/>
-        <Toolbar/>
+      {/*<Toolbar/>*/}
       </span>
-    )
-  }
+  )
 
 }
+
+export default TopBar

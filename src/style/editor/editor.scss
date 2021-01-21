@@ -1,0 +1,27 @@
+@import "../theme";
+
+#snovy-editor-container {
+  grid-area: centre;
+  display: grid;
+  grid-template-rows: 5% 95%;
+  grid-template-areas: "toolbar" "editor";
+}
+
+#snovy-editor-toolbar {
+  grid-area: toolbar;
+  background-color: $colour-main;
+  border-bottom: $border;
+}
+
+#snovy-editor {
+  grid-area: editor;
+  padding: 10px;
+  background-color: $colour-editor;
+  color: ghostwhite;
+  resize: none;
+  overflow-y: auto;
+  outline: 0;
+  border: 0;
+  line-height: 1.5em;
+  scrollbar-color: whitesmoke darkgray;
+}

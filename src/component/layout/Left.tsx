@@ -1,10 +1,11 @@
 import React from "react"
-import NotebookSelector from "../NotebookSelector"
 import Note from "../../model/Note"
 import Section from "../../model/Section"
 import Notebook from "../../model/Notebook"
 import List from "../list/List"
 import {Holder} from "../../model/Base"
+import TabSwitcher, {Position} from "../TabSwitcher"
+import NotebookSelector from "../NotebookSelector"
 
 export const LeftBar = (props: {
   onActiveNotebookChange: (active: Notebook | undefined) => any,
@@ -13,22 +14,23 @@ export const LeftBar = (props: {
   activeNotebook: Notebook | undefined,
   activeSection: Section | undefined,
   notebooks: Notebook[] | undefined,
-  sections: Section[] | undefined,
-  notes: Note[] | undefined
 }) => {
 
   return (
     <div id="snovy-bar-left">
-      <NotebookSelector notebooks={props.notebooks} onActiveChange={props.onActiveNotebookChange}/>
-      <List<Notebook, Section> id="snovy-selector-section" holder={props.activeNotebook}
-                               onActiveChange={props.onActiveSectionChange}
-                               key={buildId(props.activeNotebook) ?? Notebook.prototype.name}
-      />
-      <List<Section, Note> id="snovy-selector-note" holder={props.activeSection}
-                           onActiveChange={props.onActiveNoteChange}
-                           key={buildId(props.activeSection) ?? Section.prototype.name}
+      <div className="sidebar-inner-content" id="left-content">
+        <NotebookSelector notebooks={props.notebooks} onActiveChange={props.onActiveNotebookChange}/>
+        <List<Notebook, Section> id="snovy-selector-section" holder={props.activeNotebook}
+                                 onActiveChange={props.onActiveSectionChange}
+                                 key={buildId(props.activeNotebook) ?? Notebook.prototype.name}
+        />
+        <List<Section, Note> id="snovy-selector-note" holder={props.activeSection}
+                             onActiveChange={props.onActiveNoteChange}
+                             key={buildId(props.activeSection) ?? Section.prototype.name}
 
-      />
+        />
+      </div>
+      <TabSwitcher position={Position.LEFT}/>
     </div>
   )
 

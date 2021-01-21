@@ -1,6 +1,9 @@
+@import "../theme";
+
 .snovy-list {
   overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-color: darkgreen $colour-accent;
 }
 
 .snovy-list-item {
@@ -18,4 +21,12 @@
 .snovy-list .editable {
   cursor: text;
   user-select: text;
+}
+
+.snovy-list .selected {
+  background-color: darkkhaki;
+}
+
+.snovy-list-item:hover {
+  background-color: olive;
 }
