@@ -10,11 +10,9 @@ import Notebook from "./model/Notebook"
 import Section from "./model/Section"
 import Manager from "./model/Manager"
 
-let manager = new Manager()
-
 function App() {
 
-  const [notebooks, setNotebooks] = useState<Notebook[] | undefined>(manager.notebooks)
+  const [manager, setManager] = useState<Manager>(new Manager())
   const [activeNotebook, setActiveNotebook] = useState<Notebook | undefined>()
   const [activeSection, setActiveSection] = useState<Section | undefined>()
   const [activeNote, setActiveNote] = useState<Note | undefined>()
@@ -36,7 +34,7 @@ function App() {
       <TopBar/>
       <div id="snovy-middle">
         <LeftBar onActiveSectionChange={selectSection} onActiveNoteChange={selectNote}
-                 onActiveNotebookChange={selectNotebook} notebooks={notebooks}
+                 onActiveNotebookChange={selectNotebook} manager={manager}
                  activeNotebook={activeNotebook} activeSection={activeSection}
         />
         <Editor activeNote={activeNote}/>

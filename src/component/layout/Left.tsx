@@ -6,20 +6,21 @@ import List from "../list/List"
 import {Holder} from "../../model/Base"
 import TabSwitcher, {Position} from "../TabSwitcher"
 import NotebookSelector from "../NotebookSelector"
+import Manager from "../../model/Manager"
 
 export const LeftBar = (props: {
   onActiveNotebookChange: (active: Notebook | undefined) => any,
   onActiveSectionChange: (active: Section | undefined) => any,
   onActiveNoteChange: (active: Note | undefined) => any,
+  manager: Manager,
   activeNotebook: Notebook | undefined,
-  activeSection: Section | undefined,
-  notebooks: Notebook[] | undefined,
+  activeSection: Section | undefined
 }) => {
 
   return (
     <div id="snovy-bar-left">
       <div className="sidebar-inner-content" id="left-content">
-        <NotebookSelector notebooks={props.notebooks} onActiveChange={props.onActiveNotebookChange}/>
+        <NotebookSelector notebooks={props.manager.notebooks} onActiveChange={props.onActiveNotebookChange}/>
         <List<Notebook, Section> id="snovy-selector-section" holder={props.activeNotebook}
                                  onActiveChange={props.onActiveSectionChange}
                                  key={buildId(props.activeNotebook) ?? Notebook.prototype.name}
