@@ -3,25 +3,25 @@
 #snovy-editor-container {
   grid-area: centre;
   display: grid;
-  grid-template-rows: 5% 95%;
+  grid-template-rows: 1fr 20fr;
   grid-template-areas: "toolbar" "editor";
 }
 
 #snovy-editor-toolbar {
   grid-area: toolbar;
-  background-color: $colour-main;
+  background-color: $colour-primary;
   border-bottom: $border;
 }
 
 #snovy-editor {
   grid-area: editor;
   padding: 10px;
-  background-color: $colour-editor;
-  color: ghostwhite;
+  background-color: $colour-primary;
+  color: $colour-text-primary;
   resize: none;
   overflow-y: auto;
   outline: 0;
   border: 0;
   line-height: 1.5em;
-  scrollbar-color: whitesmoke darkgray;
+  scrollbar-color: $scrollbar;
 }

@@ -1,0 +1,7 @@
+@import "../theme";
+
+#snovy-bar-bottom {
+  grid-area: bottom;
+  background-color: $colour-accent;
+  border-top: $border;
+}

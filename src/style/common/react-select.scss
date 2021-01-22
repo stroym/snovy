@@ -1,10 +1,16 @@
+@import "../theme";
+
 .react-select-container,
 .react-select-container .react-select__control {
   height: 100%;
   border: 0;
   box-shadow: none;
   border-radius: 0;
-  background-color: transparent;
+  background-color: $colour-primary;
+}
+
+.react-select-container .react-select__value-container > * {
+  color: $colour-text-primary;
 }
 
 .react-select-container .react-select__menu {
@@ -17,12 +23,14 @@
   border: 1px solid black;
   padding-top: 0;
   padding-bottom: 0;
+  color: $colour-text-primary;
+  background-color: $colour-primary;
 }
 
-//.react-select-container .react-select__option--is-selected {
-//  background-color: green;
-//}
-//
-//.react-select-container .react-select__option--is-focused {
-//  background-color: lime;
-//}
+.react-select-container .react-select__option--is-selected {
+  background-color: $colour-active;
+}
+
+.react-select-container .react-select__option--is-focused {
+  background-color: $colour-hover;
+}

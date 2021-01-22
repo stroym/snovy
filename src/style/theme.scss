@@ -1,7 +1,14 @@
-$colour-main: darkolivegreen;
-$colour-accent: darkseagreen;
-$colour-editor: black;
-$colour-border: white;
+$colour-primary: #1e1e1e;
+$colour-accent: darkolivegreen;
+$colour-border: black;
+
+$colour-text-primary: ghostwhite;
+$colour-text-secondary: black;
+
+$colour-active: olive;
+$colour-hover: darkkhaki;
+
+$scrollbar: darkgreen $colour-accent;
 
 $border: $colour-border solid 2px;
 $border-halved: $colour-border solid 1px;

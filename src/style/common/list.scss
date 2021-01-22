@@ -3,13 +3,14 @@
 .snovy-list {
   overflow-y: auto;
   overflow-x: hidden;
-  scrollbar-color: darkgreen $colour-accent;
+  scrollbar-color: $scrollbar;
 }
 
 .snovy-list-item {
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: unset; //TODO
+  color: $colour-text-primary;
   background: none;
   border: none;
   width: 100%;
@@ -24,9 +25,9 @@
 }
 
 .snovy-list .selected {
-  background-color: darkkhaki;
+  background-color: $colour-active;
 }
 
 .snovy-list-item:hover {
-  background-color: olive;
+  background-color: $colour-hover;
 }

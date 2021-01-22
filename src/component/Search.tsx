@@ -34,7 +34,7 @@ export default class Search extends React.Component<{}, SearchState> {
     return (
       <span id="snovy-search">
         <Select id="search" className="react-select-container" classNamePrefix="react-select"
-                placeholder="Search by criteria..." options={values}
+                placeholder="Quick search..." options={values}
                 isClearable isSearchable isMulti={this.state.filter === options[2]}
                 components={{
                   DropdownIndicator: () => null,
