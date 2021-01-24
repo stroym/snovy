@@ -28,7 +28,7 @@ export const LeftBar = (props: {
   return (
     <div id="snovy-bar-left">
       <div className="sidebar-inner-content" id="left-content">
-        <NotebookSelector notebooks={props.manager.notebooks} onActiveChange={props.onActiveNotebookChange}/>
+        <NotebookSelector notebooks={props.manager.items} onActiveChange={props.onActiveNotebookChange}/>
         <List<Section> id="snovy-selector-section" items={props.activeNotebook?.itemsSortedByOrder}
                        onActiveChange={props.onActiveSectionChange} onContextChange={onContextChange}
                        key={buildId(props.activeNotebook) ?? Notebook.prototype.name}

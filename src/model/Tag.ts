@@ -3,6 +3,8 @@ import {Item} from "./Base"
 //TODO add colour to both tag and category
 export default class Tag extends Item {
 
+  //owner - notebook | manager (if global) ? not sure if bidirectional relationship is necessary
+  //linked notes
   category?: Category
 
   constructor(id: number, name: string, order: number, category?: Category) {

@@ -1,15 +1,19 @@
 export abstract class Item {
 
   readonly id: number
+
+  readonly createdAt: Date
+  changedAt: Date //TODO wire up changes
+
   name: string
   order: number
-  //createdAt
-  //editedAt
 
   protected constructor(id: number, name: string, order: number) {
     this.id = id
     this.name = name
     this.order = order
+    this.createdAt = new Date()
+    this.changedAt = this.createdAt
   }
 
   rename(newName: string) {
@@ -22,10 +26,43 @@ export abstract class Item {
 
 }
 
-export abstract class OrphanHolder<T extends Item> extends Item {
+export interface ParentInterface<T extends Item> {
+
+  idCounter: number
+
+  items: Array<T>
+
+  itemsSortedById: Array<T>
+  itemsSortedAlphabetically: Array<T>
+  itemsSortedByOrder: Array<T>
+
+  addItem: (item: T, reorder: boolean) => void
+
+  deleteItem: (item: T) => void
+  deleteById: (id: number) => boolean
+
+}
+
+export abstract class ItemWithParent<P extends ParentInterface<any>> extends Item {
+
+  parent: P
+
+  constructor(parent: P, id: number, name: string, order: number) {
+    super(id, name, order)
+    this.parent = parent
+  }
+
+}
+
+export abstract class ItemWithParentAndChildren<T extends Item, P extends ParentInterface<any>> extends ItemWithParent<P> implements ParentInterface<T> {
+
+  idCounter: number = 0
 
   items: Array<T> = new Array<T>()
-  protected idCounter: number = 0
+
+  constructor(parent: P, id: number, name: string, order: number) {
+    super(parent, id, name, order)
+  }
 
   get itemsSortedById() {
     return this.items.sort((a: T, b: T) => {
@@ -43,6 +80,17 @@ export abstract class OrphanHolder<T extends Item> extends Item {
     return this.items.sort((a: T, b: T) => {
       return a.order - b.order
     })
+  }
+
+  addItem(item: T, reorder: boolean = false) {
+    if (reorder) {
+      this.itemsSortedByOrder.slice(item.order).forEach(value => {
+        value.order++
+      })
+    }
+
+    this.items.push(item)
+    this.idCounter++
   }
 
   deleteItem(item: T) {
@@ -66,29 +114,6 @@ export abstract class OrphanHolder<T extends Item> extends Item {
     } else {
       return false
     }
-  }
-
-  protected addItem(item: T, reorder: boolean = false) {
-    if (reorder) {
-      this.itemsSortedByOrder.slice(item.order).forEach(value => {
-        value.order++
-      })
-    }
-
-    this.items.push(item)
-    this.idCounter++
-  }
-
-}
-
-//TODO try to improve manager, somehow... the OrphanHolder really shouldn't exist
-export abstract class Holder<T extends Item, P extends OrphanHolder<any>> extends OrphanHolder<T> {
-
-  parent: P
-
-  constructor(parent: P, id: number, name: string, order: number) {
-    super(id, name, order)
-    this.parent = parent
   }
 
   abstract insertAt(order: number): void;

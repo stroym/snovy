@@ -1,20 +1,15 @@
 import Section from "./Section"
 import Tag from "./Tag"
-import {Holder} from "./Base"
+import {ItemWithParentAndChildren} from "./Base"
 import Manager from "./Manager"
 
-export default class Notebook extends Holder<Section, Manager> {
+export default class Notebook extends ItemWithParentAndChildren<Section, Manager> {
 
   tags: Set<Tag> = new Set<Tag>()
   states: Set<string> = new Set<string>()
 
   get sections(): Array<Section> {
     return this.items
-  }
-
-  //for testing purposes
-  static WithData(parent: Manager, id: number, name: string, order: number): Notebook {
-    return new Notebook(parent, id, name, order)
   }
 
   insert() {
@@ -27,10 +22,6 @@ export default class Notebook extends Holder<Section, Manager> {
 
   deleteSection(section: Section) {
     this.deleteItem(section)
-  }
-
-  addSection() {
-    this.addItem(Section.WithData(this, this.idCounter, "section " + this.idCounter, this.items.length))
   }
 
 }

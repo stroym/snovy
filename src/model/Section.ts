@@ -1,16 +1,11 @@
 import Note from "./Note"
 import Notebook from "./Notebook"
-import {Holder} from "./Base"
+import {ItemWithParentAndChildren} from "./Base"
 
-export default class Section extends Holder<Note, Notebook> {
+export default class Section extends ItemWithParentAndChildren<Note, Notebook> {
 
   get notes(): Array<Note> {
     return this.items
-  }
-
-  //for testing purposes
-  static WithData(parent: Notebook, id: number, name: string, order: number): Section {
-    return new Section(parent, id, name, order)
   }
 
   insert() {
@@ -23,10 +18,6 @@ export default class Section extends Holder<Note, Notebook> {
 
   deleteNote(note: Note) {
     this.deleteItem(note)
-  }
-
-  addNote() {
-    this.addItem(Note.WithData(this, this.idCounter, "note " + this.idCounter, this.items.length))
   }
 
 }

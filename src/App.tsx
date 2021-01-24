@@ -27,6 +27,7 @@ function App() {
 
   const selectNote = (active: Note | undefined) => {
     setActiveNote(active)
+    console.log(active)
   }
 
   return (
