@@ -1,29 +1,30 @@
 import React, {useEffect, useRef, useState} from "react"
 import ListItem from "./ListItem"
-import {Holder} from "../../model/Base"
+import {Item} from "../../model/Base"
 import ContextMenu, {Action} from "../context_menu/ContextMenu"
 
-//TODO mutliselect for context actions - pop out checkboxes?
-const List = <P extends Holder<T, any>, T extends Holder<any, P>>(props: {
-  id: string,
+//TODO mutliselect
+const List = <T extends Item>(props: {
+  id?: string,
   onActiveChange: (active: T | undefined) => any,
-  holder: P | undefined
+  onContextChange: (active: T | null | undefined) => any,
+  contextActions?: Array<Action>,
+  items: Array<T> | undefined
 }) => {
 
-  const selfRef = useRef<HTMLOListElement>(null)
+  const selfRef = useRef<HTMLDivElement>(null)
 
   const [activeItem, setActiveItem] = useState<T>()
   const [activeContext, setActiveContext] = useState<T | undefined | null>()
-  const [actions, setActions] = useState<Array<Action> | undefined>()
 
   useEffect(
     () => {
-      if (props.holder && props.holder.items.length > 0) {
-        setActiveItem(props.holder.itemsSortedByOrder[0])
+      if (props.items && props.items.length > 0) {
+        setActiveItem(props.items[0])
       } else {
         setActiveItem(undefined)
       }
-    }, [props.holder, props.holder?.items]
+    }, [props.items]
   )
 
   useEffect(
@@ -34,45 +35,20 @@ const List = <P extends Holder<T, any>, T extends Holder<any, P>>(props: {
 
   useEffect(
     () => {
-      if (props.holder) {
-        setActions([
-          new Action("new", () => {
-            if (activeContext) {
-              props.holder!.insertAt(activeContext.order + 1)
-            } else {
-              props.holder!.insert()
-            }
-          }),
-          ...activeContext ? [
-            new Action("edit", () => {
-              //maybe open a dialog window with overview of the item
-            }),
-            new Action("delete", () => {
-              props.holder!.deleteItem(activeContext)
-
-              if (activeItem == activeContext) {
-                setActiveItem(undefined)
-              }
-            })
-          ] : []
-        ])
-      } else {
-        setActions(undefined)
-      }
+      props.onContextChange(activeContext)
     }, [activeContext]
   )
 
   return (
-    <ol id={props.id} ref={selfRef} className={props.holder ? "snovy-list" : "snovy-list disabled"}
-        onContextMenu={() => setActiveContext(null)}>
-      {props.holder?.itemsSortedByOrder.map((item: T) =>
-        <ListItem key={item.id} mapped={item} active={item == activeItem}
-                  onClick={(item: T) => {setActiveItem(item)}}
-                  onContext={(item: T) => {setActiveContext(item)}}
+    <div id={props.id} ref={selfRef} className={"snovy-list".concat(props.items ? "" : " disabled")}
+         onContextMenu={() => setActiveContext(null)}>
+      {props.items?.map((item: T) =>
+        <ListItem key={item.id} mapped={item} active={item == activeItem} activeContext={item == activeContext}
+                  onClick={(item: T) => {setActiveItem(item)}} onContext={(item: T) => {setActiveContext(item)}}
         />)
       }
-      <ContextMenu parentRef={selfRef} actions={actions} resetContext={() => setActiveContext(undefined)}/>
-    </ol>
+      <ContextMenu parentRef={selfRef} actions={props.contextActions} resetContext={() => setActiveContext(undefined)}/>
+    </div>
   )
 
 }

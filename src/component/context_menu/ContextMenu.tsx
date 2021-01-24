@@ -1,14 +1,14 @@
 import React, {useEffect, useRef, useState} from "react"
 import ContextMenuItem from "./ContextMenuItem"
 
-//TODO allow for passing already finished child elements
+//TODO allow for optionally passing child elements
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
-  actions: Array<Action> | undefined,
+  actions?: Array<Action>,
   resetContext: () => any
 }) => {
 
-  const selfRef = useRef<HTMLOListElement>(null)
+  const selfRef = useRef<HTMLDivElement>(null)
 
   const [visible, setVisible] = useState(false)
   const [x, setX] = useState(0)
@@ -28,12 +28,11 @@ const ContextMenu = (props: {
 
   const handleOutsideClick = (event: any) => {
     if (!selfRef.current?.contains(event.target)) {
-      setVisible(false)
-      props.resetContext()
+      onClickFinish()
     }
   }
 
-  const handleItemClick = () => {
+  const onClickFinish = () => {
     setVisible(false)
     props.resetContext()
   }
@@ -52,26 +51,24 @@ const ContextMenu = (props: {
   }
 
   return (
-    <ol className="snovy-context-menu" hidden={!visible} ref={selfRef}
-        style={{
-          position: "absolute",
-          top: y + "px",
-          left: x + "px"
-        }}>
-      {props.actions.map((a: Action, i: number) => <ContextMenuItem key={i} action={a} execute={handleItemClick}/>)}
-    </ol>
+    <div className="snovy-context-menu" hidden={!visible} ref={selfRef}
+         style={{
+           position: "absolute",
+           top: y + "px",
+           left: x + "px"
+         }}>
+      {props.actions.map((a: Action, i: number) => <ContextMenuItem key={i} action={a} onClick={onClickFinish}/>)}
+    </div>
   )
 
 }
 
 export class Action {
 
-  text: string
-  execute: (...args: any) => any
-
-  constructor(text: string, execute: (...args: any) => any) {
-    this.text = text
-    this.execute = execute
+  constructor(
+    public    text: string,
+    public execute: (...args: any) => any
+  ) {
   }
 
 }

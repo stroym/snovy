@@ -25,10 +25,10 @@
 
 #snovy-selector-section {
   grid-area: section;
-  border-right: $border-halved;
+  border-right: $border-thin;
 }
 
 #snovy-selector-note {
   grid-area: note;
-  border-left: $border-halved;
+  border-left: $border-thin;
 }

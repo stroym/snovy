@@ -1,9 +1,10 @@
 import React, {ChangeEvent, useCallback, useEffect, useRef, useState} from "react"
-import {Holder} from "../../model/Base"
+import {Item} from "../../model/Base"
 
-const ListItem = <T extends Holder<any, any>>(props: {
+const ListItem = <T extends Item>(props: {
   mapped: T,
-  active: boolean
+  active: boolean,
+  activeContext: boolean,
   onClick: (item: T) => any,
   onContext: (item: T) => any
 }) => {
@@ -29,6 +30,22 @@ const ListItem = <T extends Holder<any, any>>(props: {
     }, [props.mapped, props.mapped.name]
   )
 
+  useEffect(
+    () => {
+      if (editable) {
+        if (selfRef.current) {
+          selfRef.current.selectionStart = selfRef.current.selectionEnd = -1
+          selfRef.current.classList.add("editable")
+        }
+      } else {
+        if (selfRef.current) {
+          selfRef.current.classList.remove("editable")
+          selfRef.current.selectionStart = selfRef.current.selectionEnd = 0
+        }
+      }
+    }, [editable]
+  )
+
   const handleContext = (event: React.MouseEvent) => {
     event.stopPropagation()
     props.onContext(props.mapped)
@@ -38,33 +55,25 @@ const ListItem = <T extends Holder<any, any>>(props: {
     (event) => {
       if (!selfRef.current?.contains(event.target)) {
         setEditable(false)
-
-        if (selfRef.current) {
-          selfRef.current.classList.remove("editable")
-          selfRef.current.selectionStart = selfRef.current.selectionEnd = 0
-        }
       }
     }, []
   )
-
-  const makeEditable = () => {
-    setEditable(true)
-
-    if (selfRef.current) {
-      selfRef.current.selectionStart = selfRef.current.selectionEnd = -1
-      selfRef.current.classList.add("editable")
-    }
-  }
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value)
     props.mapped.name = event.target.value
   }
 
+  const makeClassName = () => {
+    return "snovy-list-item".concat(props.active ? " active " : "", props.activeContext ? " active-context " : "")
+  }
+
   return (
-    <input className={props.active ? "snovy-list-item selected" : "snovy-list-item"} ref={selfRef}
-           type="text" value={value} placeholder={"Name..."} onChange={handleChange} readOnly={!editable}
-           onClick={() => {props.onClick(props.mapped)}} onDoubleClick={makeEditable} onContextMenu={handleContext}
+    <input className={makeClassName()} ref={selfRef} type="text" value={value} placeholder={"Name..."}
+           onChange={handleChange} readOnly={!editable}
+           onClick={() => {props.onClick(props.mapped)}}
+           onDoubleClick={() => {setEditable(true)}}
+           onContextMenu={handleContext}
     />
   )
 

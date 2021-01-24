@@ -1,19 +1,23 @@
+@import "../theme";
+
 .snovy-context-menu {
-  border: 1px solid black;
-  background-color: white;
+  border: $border-thin;
+  background-color: $colour-primary;
 }
 
-.snovy-context-menu li {
+.snovy-context-menu-item {
+  color: $colour-text-primary;
   user-select: none;
-  border-bottom: 1px solid black;
-  list-style-type: none;
-  padding: 2px 5px;
+  border-bottom: $border-thin;
+  width: 100%;
+
+  padding: 4px 10px;
 }
 
-.snovy-context-menu li:hover {
-  background-color: cornflowerblue;
+.snovy-context-menu-item:hover {
+  background-color: $colour-hover;
 }
 
-.snovy-context-menu > li:last-child {
+.snovy-context-menu:last-child {
   border-bottom: none;
 }

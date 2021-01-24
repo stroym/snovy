@@ -35,7 +35,7 @@ function App() {
       <div id="snovy-middle">
         <LeftBar onActiveSectionChange={selectSection} onActiveNoteChange={selectNote}
                  onActiveNotebookChange={selectNotebook} manager={manager}
-                 activeNotebook={activeNotebook} activeSection={activeSection}
+                 activeNotebook={activeNotebook} activeSection={activeSection} activeNote={activeNote}
         />
         <Editor activeNote={activeNote}/>
         <RightBar activeNote={activeNote}/>

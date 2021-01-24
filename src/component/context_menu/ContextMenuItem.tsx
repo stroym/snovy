@@ -3,16 +3,16 @@ import {Action} from "./ContextMenu"
 
 export const ContextMenuItem = (props: {
   action: Action,
-  execute: () => any
+  onClick: () => any
 }) => {
 
   const handleClick = () => {
     props.action.execute()
-    props.execute()
+    props.onClick()
   }
 
   return (
-    <li onClick={handleClick}>{props.action.text}</li>
+    <div className="snovy-context-menu-item" onClick={handleClick}>{props.action.text}</div>
   )
 
 }
