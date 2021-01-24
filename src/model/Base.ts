@@ -6,12 +6,10 @@ export abstract class Item {
   changedAt: Date //TODO wire up changes
 
   name: string
-  order: number
 
-  protected constructor(id: number, name: string, order: number) {
+  protected constructor(id: number, name: string) {
     this.id = id
     this.name = name
-    this.order = order
     this.createdAt = new Date()
     this.changedAt = this.createdAt
   }
@@ -26,7 +24,18 @@ export abstract class Item {
 
 }
 
-export interface ParentInterface<T extends Item> {
+export abstract class OrderedItem extends Item {
+
+  order: number
+
+  protected constructor(id: number, name: string, order: number) {
+    super(id, name)
+    this.order = order
+  }
+
+}
+
+export interface ParentInterface<T extends OrderedItem> {
 
   idCounter: number
 
@@ -43,7 +52,7 @@ export interface ParentInterface<T extends Item> {
 
 }
 
-export abstract class ItemWithParent<P extends ParentInterface<any>> extends Item {
+export abstract class ItemWithParent<P extends ParentInterface<any>> extends OrderedItem {
 
   parent: P
 
@@ -54,7 +63,7 @@ export abstract class ItemWithParent<P extends ParentInterface<any>> extends Ite
 
 }
 
-export abstract class ItemWithParentAndChildren<T extends Item, P extends ParentInterface<any>> extends ItemWithParent<P> implements ParentInterface<T> {
+export abstract class ItemWithParentAndChildren<T extends OrderedItem, P extends ParentInterface<any>> extends ItemWithParent<P> implements ParentInterface<T> {
 
   idCounter: number = 0
 

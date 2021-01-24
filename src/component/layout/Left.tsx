@@ -3,7 +3,7 @@ import Note from "../../model/Note"
 import Section from "../../model/Section"
 import Notebook from "../../model/Notebook"
 import List from "../list/List"
-import {Item} from "../../model/Base"
+import {OrderedItem} from "../../model/Base"
 import TabSwitcher, {Position} from "../TabSwitcher"
 import NotebookSelector from "../NotebookSelector"
 import Manager from "../../model/Manager"
@@ -84,7 +84,7 @@ export const LeftBar = (props: {
 
 }
 
-function buildId(parent: Item | undefined) {
+function buildId(parent: OrderedItem | undefined) {
   return parent ? parent.constructor.name + parent?.id + "items" : undefined
 }
 

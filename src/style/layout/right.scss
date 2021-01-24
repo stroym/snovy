@@ -9,3 +9,19 @@
   grid-template-areas: "main tabs";
   border-left: $border;
 }
+
+#right-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 20fr;
+  grid-template-areas: "top top" "middle middle" "bottom bottom";
+}
+
+#right-sidebar-content-filler {
+  grid-area: top;
+  border-bottom: $border;
+}
+
+#snovy-tag-manager {
+  grid-area: middle;
+}

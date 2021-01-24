@@ -19,6 +19,10 @@ export default class Note extends ItemWithParent<Section> {
     this.tags.delete(tag)
   }
 
+  get tagsArray() {
+    return Array.from(this.tags)
+  }
+
   isState(state: string): boolean {
     return this.state === state
   }

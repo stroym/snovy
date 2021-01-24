@@ -1,12 +1,23 @@
-import React from "react"
+import React, {useState} from "react"
+import Note from "../../model/Note"
+import Tag from "../../model/Tag"
+import List from "../list/List"
 
-export default class TagManager extends React.Component {
+const TagManager = (props: {
+  activeNote: Note | undefined
+}) => {
 
-  render() {
-    return (
-      <div id="snovy-tag-manager">
-      </div>
-    )
-  }
+  const [activeContext, setActiveContext] = useState<Tag | undefined>()
+
+  return (
+    <div id="snovy-tag-manager">
+      <List<Tag> items={props.activeNote?.tagsArray}
+                 onActiveChange={() => {}}
+                 onContextChange={(target: any) => {setActiveContext(target)}}
+      />
+    </div>
+  )
 
 }
+
+export default TagManager

@@ -7,8 +7,8 @@ export default class Tag extends Item {
   //linked notes
   category?: Category
 
-  constructor(id: number, name: string, order: number, category?: Category) {
-    super(id, name.replace("#", ""), order)
+  constructor(id: number, name: string, category?: Category) {
+    super(id, name.replace("#", ""))
     this.category = category
   }
 

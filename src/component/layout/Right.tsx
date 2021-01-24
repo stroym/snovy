@@ -1,7 +1,7 @@
-import React from "react"
+import React, {useState} from "react"
 import TabSwitcher, {Position} from "../TabSwitcher"
-import TagDisplay from "../tag/TagDisplay"
 import Note from "../../model/Note"
+import TagManager from "../tag/TagManager"
 
 //intellij-esque side tab switcher:
 // note overview - state, tags
@@ -13,10 +13,14 @@ const SidebarRight = (props: {
   activeNote: Note | undefined
 }) => {
 
+  const [activeTab, setActiveTab] = useState()
+
   return (
     <div id="snovy-bar-right">
       <div className="sidebar-inner-content" id="right-content">
-        <TagDisplay activeNote={props.activeNote}/>
+        <span id="right-sidebar-content-filler"/>
+        <TagManager activeNote={props.activeNote}/>
+        {/*<TagDisplay activeNote={props.activeNote}/>*/}
       </div>
       <TabSwitcher position={Position.RIGHT}/>
     </div>
