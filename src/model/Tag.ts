@@ -1,5 +1,6 @@
 import {Item} from "./Base"
 
+//TODO add colour to both tag and category
 export default class Tag extends Item {
 
   category?: Category

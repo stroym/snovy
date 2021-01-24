@@ -38,7 +38,7 @@ function App() {
                  activeNotebook={activeNotebook} activeSection={activeSection}
         />
         <Editor activeNote={activeNote}/>
-        <RightBar/>
+        <RightBar activeNote={activeNote}/>
       </div>
       <BottomBar/>
     </div>
