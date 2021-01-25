@@ -1,7 +1,9 @@
 import React, {useState} from "react"
 import TabSwitcher, {Position} from "../TabSwitcher"
 import Note from "../../model/Note"
-import TagManager from "../tag/TagManager"
+import Notebook from "../../model/Notebook"
+import Tag from "../../model/Tag"
+import TagDisplay from "../tag/TagDisplay"
 
 //intellij-esque side tab switcher:
 // note overview - state, tags
@@ -10,7 +12,10 @@ import TagManager from "../tag/TagManager"
 // complex filtering? - results on the left, most likely in a separate component
 // version history, if that's ever a thing
 const SidebarRight = (props: {
-  activeNote: Note | undefined
+  activeNotebook: Notebook | undefined,
+  activeNote: Note | undefined,
+  activeTag: Tag | undefined,
+  onActiveTagChange: (tag: Tag | undefined) => any
 }) => {
 
   const [activeTab, setActiveTab] = useState()
@@ -19,8 +24,10 @@ const SidebarRight = (props: {
     <div id="snovy-bar-right">
       <div className="sidebar-inner-content" id="right-content">
         <span id="right-sidebar-content-filler"/>
-        <TagManager activeNote={props.activeNote}/>
-        {/*<TagDisplay activeNote={props.activeNote}/>*/}
+        {/*<TagManager activeNotebook={props.activeNotebook} activeTag={props.activeTag}*/}
+        {/*            onActiveTagChange={props.onActiveTagChange}*/}
+        {/*/>*/}
+        <TagDisplay tags={props.activeNote?.tagsArray}/>
       </div>
       <TabSwitcher position={Position.RIGHT}/>
     </div>

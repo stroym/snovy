@@ -13,7 +13,7 @@
 #right-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 20fr;
+  grid-template-rows: 1fr 10fr 10fr;
   grid-template-areas: "top top" "middle middle" "bottom bottom";
 }
 
@@ -22,6 +22,42 @@
   border-bottom: $border;
 }
 
+#snovy-tag-display,
 #snovy-tag-manager {
-  grid-area: middle;
+  grid-area: middle  / bottom / bottom;
+}
+
+#snovy-tag-display {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+  align-items: flex-start;
+}
+
+.snovy-tag-item {
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 5px;
+  padding: 4px 4px 4px 10px;
+  color: $colour-text-secondary; //settable   //TODO settables
+  background: red; //settable
+  border: white; //settable
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-items: flex-start;
+}
+
+.snovy-tag-item button {
+  height: 20px;
+  width: 20px;
+  margin-left: 5px;
+  border: $border-thin;
+  border-radius: 50%;
+  text-align: center;
+  background: none;
+  color: $colour-text-secondary;
+  font-weight: 600;
+  font-size: 0.8em;
 }

@@ -9,6 +9,7 @@ import Note from "./model/Note"
 import Notebook from "./model/Notebook"
 import Section from "./model/Section"
 import Manager from "./model/Manager"
+import Tag from "./model/Tag"
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
   const [activeNotebook, setActiveNotebook] = useState<Notebook | undefined>()
   const [activeSection, setActiveSection] = useState<Section | undefined>()
   const [activeNote, setActiveNote] = useState<Note | undefined>()
+  const [activeTag, setActiveTag] = useState<Tag | undefined>()
 
   const selectNotebook = (active: Notebook | undefined) => {
     setActiveNotebook(active)
@@ -29,6 +31,10 @@ function App() {
     setActiveNote(active)
   }
 
+  const selectTag = (active: Tag | undefined) => {
+    setActiveTag(active)
+  }
+
   return (
     <div id="snovy-app">
       <TopBar/>
@@ -38,7 +44,9 @@ function App() {
                  activeNotebook={activeNotebook} activeSection={activeSection} activeNote={activeNote}
         />
         <Editor activeNote={activeNote}/>
-        <RightBar activeNote={activeNote}/>
+        <RightBar activeNotebook={activeNotebook} activeNote={activeNote} activeTag={activeTag}
+                  onActiveTagChange={selectTag}
+        />
       </div>
       <BottomBar/>
     </div>

@@ -6,6 +6,7 @@ import ContextMenu, {Action} from "../context_menu/ContextMenu"
 //TODO mutliselect
 const List = <T extends Item>(props: {
   id?: string,
+  defaultSelection?: boolean,
   onActiveChange: (active: T | undefined) => any,
   onContextChange: (active: T | null | undefined) => any,
   contextActions?: Array<Action>,
@@ -14,15 +15,13 @@ const List = <T extends Item>(props: {
 
   const selfRef = useRef<HTMLDivElement>(null)
 
-  const [activeItem, setActiveItem] = useState<T>()
+  const [activeItem, setActiveItem] = useState<T | undefined>()
   const [activeContext, setActiveContext] = useState<T | undefined | null>()
 
   useEffect(
     () => {
-      if (props.items && props.items.length > 0) {
+      if (props.defaultSelection && props.items && props.items.length > 0) {
         setActiveItem(props.items[0])
-      } else {
-        setActiveItem(undefined)
       }
     }, [props.items]
   )

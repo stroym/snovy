@@ -29,7 +29,7 @@ export const LeftBar = (props: {
     <div id="snovy-bar-left">
       <div className="sidebar-inner-content" id="left-content">
         <NotebookSelector notebooks={props.manager.items} onActiveChange={props.onActiveNotebookChange}/>
-        <List<Section> id="snovy-selector-section" items={props.activeNotebook?.itemsSortedByOrder}
+        <List<Section> id="snovy-list-section" items={props.activeNotebook?.itemsSortedByOrder} defaultSelection
                        onActiveChange={props.onActiveSectionChange} onContextChange={onContextChange}
                        key={buildId(props.activeNotebook) ?? Notebook.prototype.name}
                        contextActions={
@@ -53,7 +53,7 @@ export const LeftBar = (props: {
                          ] : undefined
                        }
         />
-        <List<Note> id="snovy-selector-note" items={props.activeSection?.itemsSortedByOrder}
+        <List<Note> id="snovy-list-note" items={props.activeSection?.itemsSortedByOrder} defaultSelection
                     onActiveChange={props.onActiveNoteChange} onContextChange={onContextChange}
                     key={buildId(props.activeSection) ?? Section.prototype.name}
                     contextActions={

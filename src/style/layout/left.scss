@@ -23,12 +23,12 @@
   border-bottom: $border;
 }
 
-#snovy-selector-section {
+#snovy-list-section {
   grid-area: section;
   border-right: $border-thin;
 }
 
-#snovy-selector-note {
+#snovy-list-note {
   grid-area: note;
   border-left: $border-thin;
 }
