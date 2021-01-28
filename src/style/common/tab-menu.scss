@@ -15,18 +15,17 @@
   align-items: center;
   padding: 10px 0;
   cursor: default;
-  border-top: $border-thin;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
   }
 
-  &:first-child {
-    border-top: unset;
+  &.active {
+    background-color: $colour-active;
   }
 }
 
-.snovy-tab-menu_left {
+.snovy-tab-menu-left {
   @extend .snovy-tab-menu;
   border-right: $border;
 
@@ -35,7 +34,7 @@
   }
 }
 
-.snovy-tab-menu_right {
+.snovy-tab-menu-right {
   @extend .snovy-tab-menu;
   border-left: $border;
 

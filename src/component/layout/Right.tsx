@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import TabMenu, {Orientation} from "../tab_menu/TabMenu"
 import Note from "../../model/Note"
 import Notebook from "../../model/Notebook"
@@ -6,6 +6,7 @@ import Tag from "../../model/Tag"
 import TagDisplay from "../tag/TagDisplay"
 import TabMenuItem from "../tab_menu/TabMenuItem"
 import Sidebar from "./Sidebar"
+import TagManager from "../tag/TagManager"
 
 //intellij-esque side tab switcher:
 // note overview - state, tags
@@ -20,23 +21,38 @@ const SidebarRight = (props: {
   onActiveTagChange: (tag: Tag | undefined) => any
 }) => {
 
-  const [activeTab, setActiveTab] = useState()
+  const [children, setChildren] = useState<Array<React.ReactElement> | React.ReactElement>([])
+
+  const onTabClick = (children: Array<React.ReactElement> | React.ReactElement) => {
+    setChildren(children)
+  }
+
+  useEffect(
+    () => {
+      console.log("blob")
+    }, [props.activeNote]
+  )
 
   return (
     <Sidebar orientation={Orientation.RIGHT}
-             classList={["jel"]}
              tabs={
-               <TabMenu orientation={Orientation.RIGHT}>
-                 <TabMenuItem text={"hello"}/>
-                 <TabMenuItem text={"bye"}/>
+               <TabMenu orientation={Orientation.RIGHT} onClick={onTabClick}>
+                 <TabMenuItem text={"Note Tags"} defaultSelected>
+                   <TagDisplay activeNote={props.activeNote}/>
+                 </TabMenuItem>
+                 <TabMenuItem text={"Tag Overview"}>
+                   <TagManager activeNotebook={props.activeNotebook} activeTag={props.activeTag}
+                               onActiveTagChange={props.onActiveTagChange}
+                   />
+                 </TabMenuItem>
+                 <TabMenuItem text={"Filtering Options"}>
+                 </TabMenuItem>
+                 <TabMenuItem text={"Note Details"}>
+                 </TabMenuItem>
                </TabMenu>
              }
     >
-      <></>
-      <TagDisplay activeNote={props.activeNote}/>
-      {/*<TagManager activeNotebook={props.activeNotebook} activeTag={props.activeTag}*/}
-      {/*            onActiveTagChange={props.onActiveTagChange}*/}
-      {/*/>*/}
+      {children}
     </Sidebar>
   )
 

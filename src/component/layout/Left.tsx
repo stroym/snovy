@@ -4,12 +4,11 @@ import Section from "../../model/Section"
 import Notebook from "../../model/Notebook"
 import List from "../list/List"
 import {OrderedItem} from "../../model/Base"
-import TabMenu, {Orientation} from "../tab_menu/TabMenu"
+import {Orientation} from "../tab_menu/TabMenu"
 import NotebookSelector from "../NotebookSelector"
 import Manager from "../../model/Manager"
 import ContextMenuItem from "../context_menu/ContextMenuItem"
 import Sidebar from "./Sidebar"
-import TabMenuItem from "../tab_menu/TabMenuItem"
 
 export const LeftBar = (props: {
   onActiveNotebookChange: (active: Notebook | undefined) => any,
@@ -30,12 +29,12 @@ export const LeftBar = (props: {
   //TODO autoselect previous item when currently selected is deleted
   return (
     <Sidebar orientation={Orientation.LEFT}
-             tabs={
-               <TabMenu orientation={Orientation.LEFT}>
-                 <TabMenuItem text={"blob"}/>
-                 <TabMenuItem text={"blib"}/>
-               </TabMenu>
-             }
+      // tabs={
+      //   <TabMenu orientation={Orientation.LEFT}>
+      //     <TabMenuItem text={"Notes"}/>
+      //     <TabMenuItem text={"Search"}/>
+      //   </TabMenu>
+      // }
     >
       <NotebookSelector notebooks={props.manager.items} onActiveChange={props.onActiveNotebookChange}/>
       <List<Section> id="snovy-list-section" items={props.activeNotebook?.itemsSortedByOrder} defaultSelection

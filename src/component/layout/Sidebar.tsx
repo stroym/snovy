@@ -3,8 +3,8 @@ import TabMenu, {Orientation} from "../tab_menu/TabMenu"
 
 const Sidebar = (props: {
   classList?: Array<string>,
-  children: Array<React.ReactElement>,
-  tabs: React.ReactElement<typeof TabMenu>,
+  children: Array<React.ReactElement> | React.ReactElement,
+  tabs?: React.ReactElement<typeof TabMenu>,
   orientation: Orientation.LEFT | Orientation.RIGHT
 }) => {
 
