@@ -1,16 +1,35 @@
-import React from "react"
+import React, {useEffect, useState} from "react"
 import Tag from "../../model/Tag"
 import TagItem from "./TagItem"
+import Note from "../../model/Note"
 
 const TagDisplay = (props: {
-  tags: Array<Tag> | undefined
+  activeNote: Note | undefined
 }) => {
+
+  if (!props.activeNote) {
+    return null
+  }
+
+  //TODO find a better way to update this component
+  const [updated, setUpdated] = useState<number>()
+
+  useEffect(
+    () => {
+      console.log("blob")
+    }, [props.activeNote, props.activeNote.tags]
+  )
+
+  const onRemove = (tag: Tag) => {
+    setUpdated(tag.id)
+    props.activeNote!.untag(tag)
+  }
 
   //TODO a way for adding new/existing tags (input/context/+ button)
   return (
     <div id="snovy-tag-display">
-      {props.tags?.map((item: Tag) =>
-        <TagItem key={item.id} mapped={item}/>)
+      {Array.from(props.activeNote.tagsSortedAlphabetically).map((item: Tag) =>
+        <TagItem key={item.id} mapped={item} onRemove={onRemove}/>)
       }
     </div>
   )

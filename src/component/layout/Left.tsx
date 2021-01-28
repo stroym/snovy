@@ -4,10 +4,11 @@ import Section from "../../model/Section"
 import Notebook from "../../model/Notebook"
 import List from "../list/List"
 import {OrderedItem} from "../../model/Base"
-import TabSwitcher, {Position} from "../TabSwitcher"
+import TabMenu, {Position} from "../tab_menu/TabMenu"
 import NotebookSelector from "../NotebookSelector"
 import Manager from "../../model/Manager"
 import {Action} from "../context_menu/ContextMenu"
+import TabMenuItem from "../tab_menu/TabMenuItem"
 
 export const LeftBar = (props: {
   onActiveNotebookChange: (active: Notebook | undefined) => any,
@@ -26,7 +27,7 @@ export const LeftBar = (props: {
   }
 
   return (
-    <div id="snovy-bar-left">
+    <div id="snovy-bar-left" className="snovy-sidebar">
       <div className="sidebar-inner-content" id="left-content">
         <NotebookSelector notebooks={props.manager.items} onActiveChange={props.onActiveNotebookChange}/>
         <List<Section> id="snovy-list-section" items={props.activeNotebook?.itemsSortedByOrder} defaultSelection
@@ -78,7 +79,10 @@ export const LeftBar = (props: {
                     }
         />
       </div>
-      <TabSwitcher position={Position.LEFT}/>
+      <TabMenu position={Position.LEFT}>
+        <TabMenuItem text={"blob"}/>
+        <TabMenuItem text={"blib"}/>
+      </TabMenu>
     </div>
   )
 

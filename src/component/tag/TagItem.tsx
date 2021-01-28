@@ -2,7 +2,8 @@ import React from "react"
 import Tag from "../../model/Tag"
 
 const TagItem = (props: {
-  mapped: Tag
+  mapped: Tag,
+  onRemove: (tag: Tag) => any
 }) => {
 
   //TODO maybe, MAYBE, editable input... but since it needs to grow with content, it's probably not worth the hassle
@@ -12,7 +13,7 @@ const TagItem = (props: {
   return (
     <span className="snovy-tag-item">
       <div>{props.mapped.name}</div>
-      <button>{"×"}</button>
+      <button onClick={() => props.onRemove(props.mapped)}>{"×"}</button>
     </span>
   )
 

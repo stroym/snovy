@@ -1,4 +1,4 @@
-import Tag from "./Tag"
+import Tag, {Category} from "./Tag"
 import {ItemWithParent} from "./Base"
 import Section from "./Section"
 
@@ -21,6 +21,16 @@ export default class Note extends ItemWithParent<Section> {
 
   get tagsArray() {
     return Array.from(this.tags)
+  }
+
+  get tagsSortedAlphabetically() {
+    return this.tagsArray.sort((a: Tag, b: Tag) => {
+      return a.name.localeCompare(b.name)
+    })
+  }
+
+  isExclusivelyTagged(category: Category) {
+    return this.tagsArray.find(tag => tag.category == category)
   }
 
   isState(state: string): boolean {

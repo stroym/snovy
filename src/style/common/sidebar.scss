@@ -1,0 +1,25 @@
+@import "../theme";
+
+.snovy-sidebar {
+  display: grid;
+}
+
+#snovy-bar-left {
+  grid-area: left;
+  grid-template-columns: 1fr 9fr;
+  grid-template-areas: "tabs main";
+  border-right: $border;
+}
+
+#snovy-bar-right {
+  grid-area: right;
+  grid-template-columns: 9fr 1fr;
+  grid-template-areas: "main tabs";
+  border-left: $border;
+}
+
+.sidebar-inner-content {
+  grid-area: main;
+  background-color: $colour-primary;
+  min-height: 0;
+}

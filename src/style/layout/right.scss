@@ -1,14 +1,6 @@
-@use "../common/sidebar-content";
+@use "../common/sidebar";
 
 @import "../theme";
-
-#snovy-bar-right {
-  grid-area: right;
-  display: grid;
-  grid-template-columns: 9fr 1fr;
-  grid-template-areas: "main tabs";
-  border-left: $border;
-}
 
 #right-content {
   display: grid;
@@ -32,21 +24,24 @@
   flex-flow: row wrap;
   justify-content: flex-start;
   align-content: flex-start;
-  align-items: flex-start;
 }
 
 .snovy-tag-item {
   border-radius: 20px;
   overflow: hidden;
-  margin: 5px;
+  margin: 4px;
   padding: 4px 4px 4px 10px;
   color: $colour-text-secondary; //settable   //TODO settables
-  background: red; //settable
+  background: #ff0000; //settable
   border: white; //settable
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   justify-items: flex-start;
+
+  &:hover {
+    background-color: rgba(255, 0, 0, 0.8);
+  }
 }
 
 .snovy-tag-item button {
@@ -56,8 +51,12 @@
   border: $border-thin;
   border-radius: 50%;
   text-align: center;
-  background: none;
+  background: transparent;
   color: $colour-text-secondary;
   font-weight: 600;
   font-size: 0.8em;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
 }

@@ -1,0 +1,45 @@
+@import "../theme";
+
+.snovy-tab-menu {
+  grid-area: tabs;
+  background-color: $colour-accent;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.snovy-tab-menu-item {
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  padding: 10px 0;
+  cursor: pointer;
+  border-top: $border-thin;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  &:first-child {
+    border-top: unset;
+  }
+}
+
+.snovy-tab-menu_left {
+  @extend .snovy-tab-menu;
+  border-right: $border;
+
+  .snovy-tab-menu-item {
+    writing-mode: sideways-lr;
+  }
+}
+
+.snovy-tab-menu_right {
+  @extend .snovy-tab-menu;
+  border-left: $border;
+
+  .snovy-tab-menu-item {
+    writing-mode: sideways-rl;
+  }
+}

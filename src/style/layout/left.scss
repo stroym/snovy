@@ -1,15 +1,7 @@
 @use "../common/list";
-@use "../common/sidebar-content";
+@use "../common/sidebar";
 
 @import "../theme";
-
-#snovy-bar-left {
-  grid-area: left;
-  display: grid;
-  grid-template-columns: 1fr 9fr;
-  grid-template-areas: "tabs main";
-  border-right: $border;
-}
 
 #left-content {
   display: grid;

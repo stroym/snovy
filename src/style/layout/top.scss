@@ -14,7 +14,8 @@
   grid-area: right;
   height: 100%;
   width: 100%;
-  display: grid;
+  //display: grid;
+  display: none;
   grid-gap: 1px;
   grid-template-columns: 3fr 1fr;
   grid-template-areas: "left right";
