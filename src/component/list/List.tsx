@@ -1,7 +1,8 @@
 import React, {useEffect, useRef, useState} from "react"
 import ListItem from "./ListItem"
 import {Item} from "../../model/Base"
-import ContextMenu, {Action} from "../context_menu/ContextMenu"
+import ContextMenu from "../context_menu/ContextMenu"
+import ContextMenuItem from "../context_menu/ContextMenuItem"
 
 //TODO mutliselect
 const List = <T extends Item>(props: {
@@ -9,7 +10,7 @@ const List = <T extends Item>(props: {
   defaultSelection?: boolean,
   onActiveChange: (active: T | undefined) => any,
   onContextChange: (active: T | null | undefined) => any,
-  contextActions?: Array<Action>,
+  contextChildren?: Array<React.ReactElement<typeof ContextMenuItem>>
   items: Array<T> | undefined
 }) => {
 
@@ -46,7 +47,9 @@ const List = <T extends Item>(props: {
                   onClick={(item: T) => {setActiveItem(item)}} onContext={(item: T) => {setActiveContext(item)}}
         />)
       }
-      <ContextMenu parentRef={selfRef} actions={props.contextActions} resetContext={() => setActiveContext(undefined)}/>
+      <ContextMenu parentRef={selfRef} resetContext={() => setActiveContext(undefined)}>
+        {props.contextChildren}
+      </ContextMenu>
     </div>
   )
 

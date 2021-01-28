@@ -1,18 +1,12 @@
 import React from "react"
-import {Action} from "./ContextMenu"
 
 export const ContextMenuItem = (props: {
-  action: Action,
+  text: string,
   onClick: () => any
 }) => {
 
-  const handleClick = () => {
-    props.action.execute()
-    props.onClick()
-  }
-
   return (
-    <div className="snovy-context-menu-item" onClick={handleClick}>{props.action.text}</div>
+    <div className="snovy-context-menu-item" onClick={props.onClick}>{props.text}</div>
   )
 
 }

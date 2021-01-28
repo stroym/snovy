@@ -1,9 +1,10 @@
 import React from "react"
+import TabMenuItem from "./TabMenuItem"
 
 const TabMenu = (props: {
   id?: string,
   position: Position,
-  children?: Array<any>
+  children?: Array<React.ReactElement<typeof TabMenuItem>>
 }) => {
 
   return (

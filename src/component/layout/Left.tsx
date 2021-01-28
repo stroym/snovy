@@ -7,8 +7,8 @@ import {OrderedItem} from "../../model/Base"
 import TabMenu, {Position} from "../tab_menu/TabMenu"
 import NotebookSelector from "../NotebookSelector"
 import Manager from "../../model/Manager"
-import {Action} from "../context_menu/ContextMenu"
 import TabMenuItem from "../tab_menu/TabMenuItem"
+import ContextMenuItem from "../context_menu/ContextMenuItem"
 
 export const LeftBar = (props: {
   onActiveNotebookChange: (active: Notebook | undefined) => any,
@@ -26,6 +26,7 @@ export const LeftBar = (props: {
     setActiveContext(target)
   }
 
+  //TODO autoselect previous item when currently selected is deleted
   return (
     <div id="snovy-bar-left" className="snovy-sidebar">
       <div className="sidebar-inner-content" id="left-content">
@@ -33,23 +34,24 @@ export const LeftBar = (props: {
         <List<Section> id="snovy-list-section" items={props.activeNotebook?.itemsSortedByOrder} defaultSelection
                        onActiveChange={props.onActiveSectionChange} onContextChange={onContextChange}
                        key={buildId(props.activeNotebook) ?? Notebook.prototype.name}
-                       contextActions={
+                       contextChildren={
                          props.activeNotebook ? [
-                           new Action("new", () => {
+                           <ContextMenuItem key={"new"} text={"new"} onClick={() => {
                              if (activeContext) {
                                props.activeNotebook!.insertAt(activeContext.order + 1)
                              } else {
                                props.activeNotebook!.insert()
                              }
-                           }),
+                           }}/>,
                            ...activeContext ? [
-                             new Action("delete", () => {
+                             <ContextMenuItem key={"delete"} text={"delete"} onClick={() => {
                                props.activeNotebook!.deleteById(activeContext.id)
 
                                if (props.activeSection == activeContext) {
                                  props.onActiveSectionChange(undefined)
                                }
-                             })
+                             }
+                             }/>
                            ] : []
                          ] : undefined
                        }
@@ -57,23 +59,24 @@ export const LeftBar = (props: {
         <List<Note> id="snovy-list-note" items={props.activeSection?.itemsSortedByOrder} defaultSelection
                     onActiveChange={props.onActiveNoteChange} onContextChange={onContextChange}
                     key={buildId(props.activeSection) ?? Section.prototype.name}
-                    contextActions={
+                    contextChildren={
                       props.activeSection ? [
-                        new Action("new", () => {
+                        <ContextMenuItem key={"new"} text={"new"} onClick={() => {
                           if (activeContext) {
                             props.activeSection!.insertAt(activeContext.order + 1)
                           } else {
                             props.activeSection!.insert()
                           }
-                        }),
+                        }}/>,
                         ...activeContext ? [
-                          new Action("delete", () => {
+                          <ContextMenuItem key={"delete"} text={"delete"} onClick={() => {
                             props.activeSection!.deleteById(activeContext.id)
 
                             if (props.activeNote == activeContext) {
                               props.onActiveNoteChange(undefined)
                             }
-                          })
+                          }
+                          }/>
                         ] : []
                       ] : undefined
                     }

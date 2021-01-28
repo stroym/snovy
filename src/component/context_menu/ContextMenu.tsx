@@ -1,12 +1,15 @@
 import React, {useEffect, useRef, useState} from "react"
 import ContextMenuItem from "./ContextMenuItem"
 
-//TODO allow for optionally passing child elements
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
-  actions?: Array<Action>,
-  resetContext: () => any
+  resetContext: () => any,
+  children?: Array<React.ReactElement<typeof ContextMenuItem>>
 }) => {
+
+  if (!props.children) {
+    return null
+  }
 
   const selfRef = useRef<HTMLDivElement>(null)
 
@@ -46,30 +49,17 @@ const ContextMenu = (props: {
     setVisible(true)
   }
 
-  if (!props.actions) {
-    return null
-  }
-
   return (
     <div className="snovy-context-menu" hidden={!visible} ref={selfRef}
+         onClick={() => onClickFinish()}
          style={{
            position: "absolute",
            top: y + "px",
            left: x + "px"
          }}>
-      {props.actions.map((a: Action, i: number) => <ContextMenuItem key={i} action={a} onClick={onClickFinish}/>)}
+      {props.children}
     </div>
   )
-
-}
-
-export class Action {
-
-  constructor(
-    public    text: string,
-    public execute: (...args: any) => any
-  ) {
-  }
 
 }
 

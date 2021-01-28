@@ -1,8 +1,8 @@
 import React, {useState} from "react"
 import Tag from "../../model/Tag"
 import List from "../list/List"
-import {Action} from "../context_menu/ContextMenu"
 import Notebook from "../../model/Notebook"
+import ContextMenuItem from "../context_menu/ContextMenuItem"
 
 const TagManager = (props: {
   activeNotebook: Notebook | undefined,
@@ -17,19 +17,18 @@ const TagManager = (props: {
       <List<Tag> items={props.activeNotebook?.tags}
                  onActiveChange={() => {}}
                  onContextChange={(target: any) => {setActiveContext(target)}}
-                 contextActions={
+                 contextChildren={
                    props.activeNotebook ? [
-                     new Action("new", () => {
-                       props.activeNotebook!.addTag()
-                     }),
+                     <ContextMenuItem key={"new"} text={"new"} onClick={() => { props.activeNotebook!.addTag()}}/>,
                      ...activeContext ? [
-                       new Action("delete", () => {
+                       <ContextMenuItem key={"delete"} text={"delete"} onClick={() => {
                          props.activeNotebook?.deleteTagById(activeContext.id)
 
                          if (props.activeTag == activeContext) {
                            props.onActiveTagChange(undefined)
                          }
-                       })
+                       }
+                       }/>
                      ] : []
                    ] : undefined
                  }

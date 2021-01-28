@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useState} from "react"
 import Tag from "../../model/Tag"
 import TagItem from "./TagItem"
 import Note from "../../model/Note"
@@ -13,12 +13,6 @@ const TagDisplay = (props: {
 
   //TODO find a better way to update this component
   const [updated, setUpdated] = useState<number>()
-
-  useEffect(
-    () => {
-      console.log("blob")
-    }, [props.activeNote, props.activeNote.tags]
-  )
 
   const onRemove = (tag: Tag) => {
     setUpdated(tag.id)
