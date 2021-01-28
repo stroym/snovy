@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react"
 import TabMenuItem from "./TabMenuItem"
 
+//TODO possibly alignment to top/bottom (left/right?) in tabs prop
 const TabMenu = (props: {
   id?: string,
   orientation: Orientation,

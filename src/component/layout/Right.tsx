@@ -1,47 +1,37 @@
 import React, {useState} from "react"
-import {Orientation} from "../tab_menu/TabMenu"
+import TabMenu, {Orientation} from "../tab_menu/TabMenu"
 import Notebook from "../../model/Notebook"
 import Tag from "../../model/Tag"
 import Sidebar from "./Sidebar"
+import TagManager from "../tag/TagManager"
+import TagDisplay from "../tag/TagDisplay"
 
-//intellij-esque side tab switcher:
-// note overview - state, tags
-// detailed information?
-// tag overview/manager - list of all tags + editor in the bottom part
-// complex filtering? - results on the left, most likely in a separate component
-// version history, if that's ever a thing
 const SidebarRight = (props: {
   activeNotebook: Notebook | undefined,
   activeTag: Tag | undefined,
   onActiveTagChange: (tag: Tag | undefined) => any
 }) => {
 
-  const [children, setChildren] = useState<Array<React.ReactElement> | React.ReactElement>([])
+  const [activeTab, setActiveTab] = useState<string | undefined>()
 
-  const onTabClick = (children: Array<React.ReactElement> | React.ReactElement) => {
-    setChildren(children)
+  const onTabClick = (active: string | undefined) => {
+    setActiveTab(active)
   }
 
   return (
     <Sidebar orientation={Orientation.RIGHT}
-      // tabs={
-      //   <TabMenu orientation={Orientation.RIGHT} onClick={onTabClick}>
-      //     <TabMenuItem text={"Note Tags"} defaultSelected>
-      //       <TagDisplay/>
-      //     </TabMenuItem>
-      //     <TabMenuItem text={"Tag Overview"}>
-      //       <TagManager activeNotebook={props.activeNotebook} activeTag={props.activeTag}
-      //                   onActiveTagChange={props.onActiveTagChange}
-      //       />
-      //     </TabMenuItem>
-      //     <TabMenuItem text={"Filtering Options"}>
-      //     </TabMenuItem>
-      //     <TabMenuItem text={"Note Details"}>
-      //     </TabMenuItem>
-      //   </TabMenu>
-      // }
+             tabs={<TabMenu orientation={Orientation.RIGHT} onClick={onTabClick}
+                            tabs={[
+                              {text: "Note Tags", default: true},
+                              {text: "Tag Manager"},
+                              {text: "Filtering Options"},
+                              {text: "Note Details"}
+                            ]}
+             />}
     >
-      {children}
+      {activeTab == "Note Tags" && <TagDisplay/> ||
+      activeTab == "Tag Manager" && <TagManager activeNotebook={props.activeNotebook} activeTag={props.activeTag}
+                                                onActiveTagChange={props.onActiveTagChange}/>}
     </Sidebar>
   )
 

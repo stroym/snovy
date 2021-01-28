@@ -38,6 +38,7 @@ export const LeftBar = (props: {
   }
 
   //TODO autoselect previous item when currently selected is deleted
+  //TODO remember selected notebook/section/note when switching tabs
   return (
     <Sidebar orientation={Orientation.LEFT}
              tabs={

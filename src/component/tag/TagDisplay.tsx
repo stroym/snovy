@@ -25,6 +25,7 @@ const TagDisplay = () => {
     noteContext.activeNote?.untag(tag)
   }
 
+  //TODO put state select above tags
   //TODO a way for adding new/existing tags (input/context/+ button)
   return (
     <div id="snovy-tag-display">

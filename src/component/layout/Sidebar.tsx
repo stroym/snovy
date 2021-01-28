@@ -1,6 +1,7 @@
 import React, {useEffect} from "react"
 import TabMenu, {Orientation} from "../tab_menu/TabMenu"
 
+//TODO try to move tabmenu in here
 const Sidebar = (props: {
   classList?: Array<string>,
   children: Array<React.ReactElement> | React.ReactElement | boolean,

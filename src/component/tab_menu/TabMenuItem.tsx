@@ -1,14 +1,12 @@
 import React, {useEffect} from "react"
 
-export type TabMenuItemProps = {
+const TabMenuItem = (props: {
   id?: string,
   text: string,
   onClick: (active: string) => any,
   active: boolean,
   defaultSelected?: boolean
-}
-
-const TabMenuItem = (props: TabMenuItemProps) => {
+}) => {
 
   useEffect(
     () => {
@@ -29,14 +27,6 @@ const TabMenuItem = (props: TabMenuItemProps) => {
     >
       {props.text}
     </div>
-  )
-
-}
-
-export const TabMenuItemInherit = (props: TabMenuItemProps) => {
-
-  return (
-    <></>
   )
 
 }
