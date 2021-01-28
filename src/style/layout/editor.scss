@@ -20,8 +20,8 @@
   color: $colour-text-primary;
   resize: none;
   overflow-y: auto;
-  outline: 0;
-  border: 0;
+  border: none;
+  outline: none;
   line-height: 1.5em;
   scrollbar-color: $scrollbar;
 }

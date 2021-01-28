@@ -3,7 +3,7 @@ import Tag from "../../model/Tag"
 
 const TagItem = (props: {
   mapped: Tag,
-  onRemove: (tag: Tag) => any
+  onRemove: (tag: Tag) => any,
 }) => {
 
   //TODO maybe, MAYBE, editable input... but since it needs to grow with content, it's probably not worth the hassle
