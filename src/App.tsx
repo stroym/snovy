@@ -19,10 +19,12 @@ function App() {
   const [activeTag, setActiveTag] = useState<Tag | undefined>()
 
   const selectNotebook = (active: Notebook | undefined) => {
+    console.log(active)
     setActiveNotebook(active)
   }
 
   const selectSection = (active: Section | undefined) => {
+    console.log(active)
     setActiveSection(active)
   }
 

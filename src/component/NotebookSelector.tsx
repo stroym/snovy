@@ -16,7 +16,7 @@ const NotebookSelector = (props: {
 
   useEffect(
     () => {
-      props.onActiveChange(active as Notebook)
+      props.onActiveChange(active)
     }, [active]
   )
 

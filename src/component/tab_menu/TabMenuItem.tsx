@@ -3,16 +3,8 @@ import React, {useEffect} from "react"
 export type TabMenuItemProps = {
   id?: string,
   text: string,
-  children: Array<React.ReactElement> | React.ReactElement
-  onClick?: (children: Array<React.ReactElement> | React.ReactElement) => any,
-  active?: boolean,
-  defaultSelected?: boolean
-}
-
-export type TabMenuItemPropsInherited = {
-  id?: string,
-  text: string,
-  children: Array<React.ReactElement> | React.ReactElement
+  onClick: (active: string) => any,
+  active: boolean,
   defaultSelected?: boolean
 }
 
@@ -21,13 +13,14 @@ const TabMenuItem = (props: TabMenuItemProps) => {
   useEffect(
     () => {
       if (props.defaultSelected) {
+        console.log("mount tab " + props.text)
         handleClick()
       }
     }, []
   )
 
   const handleClick = () => {
-    props.onClick!(props.children!)
+    props.onClick!(props.text)
   }
 
   return (

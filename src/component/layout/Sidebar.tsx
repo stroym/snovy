@@ -1,12 +1,18 @@
-import React from "react"
+import React, {useEffect} from "react"
 import TabMenu, {Orientation} from "../tab_menu/TabMenu"
 
 const Sidebar = (props: {
   classList?: Array<string>,
-  children: Array<React.ReactElement> | React.ReactElement,
+  children: Array<React.ReactElement> | React.ReactElement | boolean,
   tabs?: React.ReactElement<typeof TabMenu>,
   orientation: Orientation.LEFT | Orientation.RIGHT
 }) => {
+
+  useEffect(
+    () => {
+      console.log("blob")
+    }, [props.children, props.tabs]
+  )
 
   return (
     <div id={"snovy-sidebar-" + props.orientation}

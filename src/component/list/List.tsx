@@ -16,16 +16,22 @@ const List = <T extends Item>(props: {
 
   const selfRef = useRef<HTMLDivElement>(null)
 
-  const [activeItem, setActiveItem] = useState<T | undefined>()
+  const [activeItem, setActiveItem] = useState<T | undefined>(props.defaultSelection && props.items && props.items.length > 0 ? props.items[0] : undefined)
   const [activeContext, setActiveContext] = useState<T | undefined | null>()
 
   useEffect(
     () => {
-      if (props.defaultSelection && props.items && props.items.length > 0) {
-        setActiveItem(props.items[0])
-      }
-    }, [props.items]
+      console.log("mount list")
+    }, []
   )
+
+  // useEffect(
+  //   () => {
+  //     if (props.defaultSelection && props.items && props.items.length > 0) {
+  //       setActiveItem(props.items[0])
+  //     }
+  //   }, [props.items]
+  // )
 
   useEffect(
     () => {
