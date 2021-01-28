@@ -1,24 +1,30 @@
-import React, {useState} from "react"
+import React, {useContext, useState} from "react"
 import Note from "../../model/Note"
 import Section from "../../model/Section"
 import Notebook from "../../model/Notebook"
 import List from "../list/List"
 import {OrderedItem} from "../../model/Base"
-import {Orientation} from "../tab_menu/TabMenu"
+import TabMenu, {Orientation} from "../tab_menu/TabMenu"
 import NotebookSelector from "../NotebookSelector"
 import Manager from "../../model/Manager"
 import ContextMenuItem from "../context_menu/ContextMenuItem"
 import Sidebar from "./Sidebar"
+import {NoteContext} from "../../Context"
+import TabMenuItem from "../tab_menu/TabMenuItem"
 
 export const LeftBar = (props: {
   onActiveNotebookChange: (active: Notebook | undefined) => any,
   onActiveSectionChange: (active: Section | undefined) => any,
-  onActiveNoteChange: (active: Note | undefined) => any,
   manager: Manager,
   activeNotebook: Notebook | undefined,
   activeSection: Section | undefined,
-  activeNote: Note | undefined
 }) => {
+
+  const noteContext = useContext(NoteContext)
+
+  if (!noteContext) {
+    return null
+  }
 
   const [activeContext, setActiveContext] = useState<Notebook | Section | Note | undefined>()
 
@@ -29,12 +35,14 @@ export const LeftBar = (props: {
   //TODO autoselect previous item when currently selected is deleted
   return (
     <Sidebar orientation={Orientation.LEFT}
-      // tabs={
-      //   <TabMenu orientation={Orientation.LEFT}>
-      //     <TabMenuItem text={"Notes"}/>
-      //     <TabMenuItem text={"Search"}/>
-      //   </TabMenu>
-      // }
+             tabs={
+               <TabMenu orientation={Orientation.LEFT}>
+                 <TabMenuItem text={"Notes"}>
+                 </TabMenuItem>
+                 <TabMenuItem text={"Search"}>
+                 </TabMenuItem>
+               </TabMenu>
+             }
     >
       <NotebookSelector notebooks={props.manager.items} onActiveChange={props.onActiveNotebookChange}/>
       <List<Section> id="snovy-list-section" items={props.activeNotebook?.itemsSortedByOrder} defaultSelection
@@ -63,7 +71,7 @@ export const LeftBar = (props: {
                      }
       />
       <List<Note> id="snovy-list-note" items={props.activeSection?.itemsSortedByOrder} defaultSelection
-                  onActiveChange={props.onActiveNoteChange} onContextChange={onContextChange}
+                  onActiveChange={noteContext.setActiveNote} onContextChange={onContextChange}
                   key={buildId(props.activeSection) ?? Section.prototype.name}
                   contextChildren={
                     props.activeSection ? [
@@ -78,8 +86,8 @@ export const LeftBar = (props: {
                         <ContextMenuItem key={"delete"} text={"delete"} onClick={() => {
                           props.activeSection!.deleteById(activeContext.id)
 
-                          if (props.activeNote == activeContext) {
-                            props.onActiveNoteChange(undefined)
+                          if (noteContext.activeNote == activeContext) {
+                            noteContext.setActiveNote(undefined)
                           }
                         }
                         }/>

@@ -10,15 +10,6 @@ const TabMenu = (props: {
 
   const [activeTab, setActiveTab] = useState<any>()
 
-  // useEffect(
-  //   () => {
-  //     if (props.children && props.children.length > 0) {
-  //       setActiveTab(props.children[0].props.text)
-  //       props.children[0].props.onClick!(props.children[0].props.children)
-  //     }
-  //   }, [props.children]
-  // )
-
   return (
     <div id={props.id} className={"snovy-tab-menu-" + props.orientation}>
       {appendToChildren(props.children)}

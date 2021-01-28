@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from "react"
+import React, {useState} from "react"
 import TabMenu, {Orientation} from "../tab_menu/TabMenu"
-import Note from "../../model/Note"
 import Notebook from "../../model/Notebook"
 import Tag from "../../model/Tag"
 import TagDisplay from "../tag/TagDisplay"
@@ -16,7 +15,6 @@ import TagManager from "../tag/TagManager"
 // version history, if that's ever a thing
 const SidebarRight = (props: {
   activeNotebook: Notebook | undefined,
-  activeNote: Note | undefined,
   activeTag: Tag | undefined,
   onActiveTagChange: (tag: Tag | undefined) => any
 }) => {
@@ -27,18 +25,12 @@ const SidebarRight = (props: {
     setChildren(children)
   }
 
-  useEffect(
-    () => {
-      console.log("blob")
-    }, [props.activeNote]
-  )
-
   return (
     <Sidebar orientation={Orientation.RIGHT}
              tabs={
                <TabMenu orientation={Orientation.RIGHT} onClick={onTabClick}>
                  <TabMenuItem text={"Note Tags"} defaultSelected>
-                   <TagDisplay activeNote={props.activeNote}/>
+                   <TagDisplay/>
                  </TabMenuItem>
                  <TabMenuItem text={"Tag Overview"}>
                    <TagManager activeNotebook={props.activeNotebook} activeTag={props.activeTag}

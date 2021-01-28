@@ -1,34 +1,34 @@
-import React, {useEffect, useState} from "react"
+import React, {useContext, useState} from "react"
 import Tag from "../../model/Tag"
 import TagItem from "./TagItem"
-import Note from "../../model/Note"
+import {NoteContext} from "../../Context"
 
-const TagDisplay = (props: {
-  activeNote: Note | undefined
-}) => {
+const TagDisplay = () => {
 
-  if (!props.activeNote) {
+  const noteContext = useContext(NoteContext)
+
+  if (!noteContext) {
     return null
   }
 
   //TODO find a better way to update this component
   const [updated, setUpdated] = useState<number>()
 
-  useEffect(
-    () => {
-      console.log(props.activeNote)
-    }, [props.activeNote]
-  )
+  // useEffect(
+  //   () => {
+  //     console.log(noteContext.activeNote)
+  //   }, [noteContext.activeNote?.tags]
+  // )
 
   const onRemove = (tag: Tag) => {
     setUpdated(tag.id)
-    props.activeNote!.untag(tag)
+    noteContext.activeNote?.untag(tag)
   }
 
   //TODO a way for adding new/existing tags (input/context/+ button)
   return (
     <div id="snovy-tag-display">
-      {Array.from(props.activeNote.tagsSortedAlphabetically).map((item: Tag) =>
+      {noteContext.activeNote?.tagsSortedAlphabetically.map((item: Tag) =>
         <TagItem key={item.id} mapped={item} onRemove={onRemove}/>)
       }
     </div>
