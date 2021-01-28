@@ -1,10 +1,8 @@
 import React from "react"
-import {Position} from "./TabMenu"
 
 const TabMenuItem = (props: {
   id?: string,
-  text: string,
-  position?: Position
+  text: string
 }) => {
 
   return (
