@@ -31,16 +31,18 @@ export const LeftBar = (props: {
     setActiveContext(target)
   }
 
-  //TODO remember selected notebook/section/note when switching tabs
+  //TODO remember selected note when switching tabs
   return (
     <ManagedSidebar orientation={Orientation.LEFT} tabs={mappings}>
       {[{
         text: mappings[0].text, children: [
           <NotebookSelector key="notebook-selector" notebooks={props.manager.items}
                             onActiveChange={props.onActiveNotebookChange}
+                            selection={props.activeNotebook ?? props.manager.items.first()}
           />,
           <List<Section> key={buildKey(props.activeNotebook, sectionsId)} id={sectionsId}
-                         items={props.activeNotebook?.itemsSortedByOrder} defaultSelection
+                         items={props.activeNotebook?.itemsSortedByOrder}
+                         selection={props.activeSection} defaultFirst
                          onActiveChange={props.onActiveSectionChange} onContextChange={onContextChange}
                          contextChildren={buildContext(activeContext, props.activeNotebook, () => {
                            if (props.activeSection == activeContext) {
@@ -50,7 +52,8 @@ export const LeftBar = (props: {
                          }
           />,
           <List<Note> key={buildKey(props.activeSection, notesId)} id={notesId}
-                      items={props.activeSection?.itemsSortedByOrder} defaultSelection
+                      items={props.activeSection?.itemsSortedByOrder}
+                      selection={noteContext.activeNote} defaultFirst
                       onActiveChange={noteContext.setActiveNote} onContextChange={onContextChange}
                       contextChildren={buildContext(activeContext, props.activeSection, () => {
                         if (noteContext.activeNote == activeContext) {

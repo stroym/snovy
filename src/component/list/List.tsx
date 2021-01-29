@@ -7,17 +7,28 @@ import ContextMenuItem from "../context_menu/ContextMenuItem"
 //TODO mutliselect
 const List = <T extends Item>(props: {
   id?: string,
-  defaultSelection?: boolean,
   onActiveChange: (active: T | undefined) => any,
   onContextChange: (active: T | null | undefined) => any,
   contextChildren?: Array<React.ReactElement<typeof ContextMenuItem>>
-  items: Array<T> | undefined
+  items: Array<T> | undefined,
+  defaultFirst?: boolean,
+  selection?: T
 }) => {
 
   const selfRef = useRef<HTMLDivElement>(null)
 
-  const [activeItem, setActiveItem] = useState<T | undefined>(props.defaultSelection && props.items && props.items.length > 0 ? props.items[0] : undefined)
+  const [activeItem, setActiveItem] = useState<T | undefined>()
   const [activeContext, setActiveContext] = useState<T | undefined | null>()
+
+  useEffect(
+    () => {
+      if (props.items?.includes(props.selection!)) {
+        setActiveItem(props.selection)
+      } else if (props.defaultFirst) {
+        setActiveItem(props.items?.first())
+      }
+    }, [props.items]
+  )
 
   useEffect(
     () => {
