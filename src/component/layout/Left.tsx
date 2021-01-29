@@ -45,7 +45,7 @@ export const LeftBar = (props: {
           <NotebookSelector key="notebook-selector" notebooks={props.manager.items}
                             onActiveChange={props.onActiveNotebookChange}
           />,
-          <List<Section> key={buildId(props.activeNotebook) ?? Notebook.prototype.name} id="snovy-list-section"
+          <List<Section> key={buildKey(props.activeNotebook, "snovy-list-section")} id="snovy-list-section"
                          items={props.activeNotebook?.itemsSortedByOrder} defaultSelection
                          onActiveChange={props.onActiveSectionChange} onContextChange={onContextChange}
                          contextChildren={
@@ -70,7 +70,7 @@ export const LeftBar = (props: {
                            ] : undefined
                          }
           />,
-          <List<Note> key={buildId(props.activeSection) ?? Section.prototype.name} id="snovy-list-note"
+          <List<Note> key={buildKey(props.activeSection, "snovy-list-note")} id="snovy-list-note"
                       items={props.activeSection?.itemsSortedByOrder} defaultSelection
                       onActiveChange={noteContext.setActiveNote} onContextChange={onContextChange}
                       contextChildren={
@@ -102,8 +102,8 @@ export const LeftBar = (props: {
 
 }
 
-function buildId(parent: OrderedItem | undefined) {
-  return parent ? parent.constructor.name + parent?.id + "items" : undefined
+function buildKey(parent: OrderedItem | undefined, defaultKey: string) {
+  return parent ? parent.constructor.name + parent?.id + "items" : defaultKey
 }
 
 export default LeftBar
