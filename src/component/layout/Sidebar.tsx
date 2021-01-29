@@ -1,19 +1,12 @@
-import React, {useEffect} from "react"
+import React, {useState} from "react"
 import TabMenu, {Orientation} from "../tab_menu/TabMenu"
 
-//TODO try to move tabmenu in here
 const Sidebar = (props: {
   classList?: Array<string>,
   children: Array<React.ReactElement> | React.ReactElement | boolean,
   tabs?: React.ReactElement<typeof TabMenu>,
   orientation: Orientation.LEFT | Orientation.RIGHT
 }) => {
-
-  useEffect(
-    () => {
-      console.log("blob")
-    }, [props.children, props.tabs]
-  )
 
   return (
     <div id={"snovy-sidebar-" + props.orientation}
@@ -24,6 +17,31 @@ const Sidebar = (props: {
       </div>
       {props.tabs}
     </div>
+  )
+
+}
+
+export const ManagedSidebar = (props: {
+  classList?: Array<string>,
+  children: Array<{ text: string, children: Array<React.ReactElement> | React.ReactElement }>,
+  tabs: Array<{ text: string, default?: boolean }>,
+  orientation: Orientation.LEFT | Orientation.RIGHT
+}) => {
+
+  const [activeTab, setActiveTab] = useState<string | undefined>()
+
+  const onTabClick = (active: string | undefined) => {
+    setActiveTab(active)
+  }
+
+  return (
+    <Sidebar orientation={props.orientation} tabs={
+      <TabMenu orientation={props.orientation} tabs={props.tabs} onClick={onTabClick}/>
+    } classList={props.classList}>
+      {props.children.map(child =>
+        <React.Fragment key={child.text}>{child.text == activeTab && child.children}</React.Fragment>)
+      }
+    </Sidebar>
   )
 
 }

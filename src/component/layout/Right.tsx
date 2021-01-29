@@ -1,10 +1,10 @@
-import React, {useState} from "react"
-import TabMenu, {Orientation} from "../tab_menu/TabMenu"
+import React from "react"
+import {Orientation} from "../tab_menu/TabMenu"
 import Notebook from "../../model/Notebook"
 import Tag from "../../model/Tag"
-import Sidebar from "./Sidebar"
-import TagManager from "../tag/TagManager"
+import {ManagedSidebar} from "./Sidebar"
 import TagDisplay from "../tag/TagDisplay"
+import TagManager from "../tag/TagManager"
 
 const SidebarRight = (props: {
   activeNotebook: Notebook | undefined,
@@ -12,27 +12,22 @@ const SidebarRight = (props: {
   onActiveTagChange: (tag: Tag | undefined) => any
 }) => {
 
-  const [activeTab, setActiveTab] = useState<string | undefined>()
-
-  const onTabClick = (active: string | undefined) => {
-    setActiveTab(active)
-  }
+  const mappings = [
+    {text: "Note Tags", default: true},
+    {text: "Tag Manager"},
+    {text: "Filtering Options"},
+    {text: "Note Details"}
+  ]
 
   return (
-    <Sidebar orientation={Orientation.RIGHT}
-             tabs={<TabMenu orientation={Orientation.RIGHT} onClick={onTabClick}
-                            tabs={[
-                              {text: "Note Tags", default: true},
-                              {text: "Tag Manager"},
-                              {text: "Filtering Options"},
-                              {text: "Note Details"}
-                            ]}
-             />}
-    >
-      {activeTab == "Note Tags" && <TagDisplay/> ||
-      activeTab == "Tag Manager" && <TagManager activeNotebook={props.activeNotebook} activeTag={props.activeTag}
-                                                onActiveTagChange={props.onActiveTagChange}/>}
-    </Sidebar>
+    <ManagedSidebar orientation={Orientation.RIGHT} tabs={mappings}>
+      {[{
+        text: mappings[0].text, children: <TagDisplay/>
+      }, {
+        text: mappings[1].text, children: <TagManager activeNotebook={props.activeNotebook} activeTag={props.activeTag}
+                                                      onActiveTagChange={props.onActiveTagChange}/>
+      }]}
+    </ManagedSidebar>
   )
 
 }

@@ -41,15 +41,3 @@ export enum Orientation {
 }
 
 export default TabMenu
-//
-// {React.Children.map(props.tabs, (tab) =>
-//   React.createElement(typeof TabMenuItem, {
-//     text: tab.text,
-//     active: activeTab == tab.text,
-//     defaultSelected: tab.default,
-//     onClick: () => { setActiveTab(tab.text)}
-//   }, {}))}
-//
-// {React.Children.map(props.tabs, (tab) =>
-//   <TabMenuItem text={tab.text} active={activeTab == tab.text} defaultSelected={tab.default}
-//                onClick={() => { setActiveTab(tab.text)}}/>)}
