@@ -5,8 +5,6 @@ import Manager from "./Manager"
 
 export default class Notebook extends ItemWithParentAndChildren<Section, Manager> {
 
-  idCounterTag: number = 0
-
   tags: Array<Tag> = new Array<Tag>()
   states: Set<string> = new Set<string>()
 
@@ -23,33 +21,27 @@ export default class Notebook extends ItemWithParentAndChildren<Section, Manager
   }
 
   addTag() {
-    this.tags.push(new Tag(this.idCounterTag, ""))
-    this.idCounterTag++
+    this.tags.push(new Tag("", ""))
   }
 
-  deleteTagById(tagId: number) {
+  deleteTag(tag: Tag) {
     let item = this.tags.find(value => {
-      return value.id == tagId
+      return value.name == tag.name
     })
 
     if (item) {
-      this.deleteTag(item)
+      //TODO stream
+      for (let section of this.sections) {
+        for (let note of section.notes) {
+          note.untag(tag)
+        }
+      }
+
+      this.tags.splice(this.tags.indexOf(tag), 1)
       return true
     } else {
       return false
     }
-  }
-
-  deleteTag(tag: Tag) {
-
-    //TODO stream
-    for (let section of this.sections) {
-      for (let note of section.notes) {
-        note.untag(tag)
-      }
-    }
-
-    this.tags.splice(this.tags.indexOf(tag), 1)
   }
 
   deleteSection(section: Section) {

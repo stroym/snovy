@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useCallback, useEffect, useRef, useState} from "react"
-import {Item} from "../../model/Base"
+import {IdentifiedItem, Item} from "../../model/Base"
 
-const ListItem = <T extends Item>(props: {
+const ListItem = <T extends IdentifiedItem | Item>(props: {
   mapped: T,
   active: boolean,
   activeContext: boolean,

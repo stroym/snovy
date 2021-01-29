@@ -1,28 +1,28 @@
-import {Item} from "./Base"
+import {ColouredItem} from "./Base"
 
 //TODO add colour to both tag and category
-export default class Tag extends Item {
+export default class Tag extends ColouredItem {
 
   //owner - notebook | manager (if global) ? not sure if bidirectional relationship is necessary
   //linked notes
-  category?: Category
+  scope?: Scope
 
-  constructor(id: number, name: string, category?: Category) {
-    super(id, name.replace("#", ""))
-    this.category = category
+  constructor(name: string, colour: string, scope?: Scope) {
+    super(name, colour)
+    this.scope = scope
   }
 
   equals(tag: Tag): boolean {
-    return this.category === tag.category && this.name === tag.name
+    return this.scope === tag.scope && this.name === tag.name
   }
 
   toString(): string {
-    return this.category ? this.category + this.name : super.toString()
+    return this.scope ? this.scope.toString() + this.name : super.toString()
   }
 
 }
 
-export class Category {
+export class Scope {
 
   name: string
   exclusive: boolean

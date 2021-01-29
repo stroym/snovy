@@ -24,15 +24,12 @@ Array.prototype.delete = function <T>(item: T): number {
 
 export abstract class Item {
 
-  readonly id: number
+  name: string
 
   readonly createdAt: Date
   changedAt: Date //TODO wire up changes
 
-  name: string
-
-  protected constructor(id: number, name: string) {
-    this.id = id
+  protected constructor(name: string) {
     this.name = name
     this.createdAt = new Date()
     this.changedAt = this.createdAt
@@ -48,7 +45,29 @@ export abstract class Item {
 
 }
 
-export abstract class OrderedItem extends Item {
+export abstract class IdentifiedItem extends Item {
+
+  readonly id: number
+
+  protected constructor(id: number, name: string) {
+    super(name)
+    this.id = id
+  }
+
+}
+
+export abstract class ColouredItem extends Item {
+
+  colour: string
+
+  protected constructor(name: string, colour: string) {
+    super(name)
+    this.colour = colour
+  }
+
+}
+
+export abstract class OrderedItem extends IdentifiedItem {
 
   order: number
 

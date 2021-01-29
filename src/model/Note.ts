@@ -1,4 +1,4 @@
-import Tag, {Category} from "./Tag"
+import Tag, {Scope} from "./Tag"
 import {ItemWithParent} from "./Base"
 import Section from "./Section"
 
@@ -29,8 +29,8 @@ export default class Note extends ItemWithParent<Section> {
     })
   }
 
-  isExclusivelyTagged(category: Category) {
-    return this.tagsArray.find(tag => tag.category == category)
+  isExclusivelyTagged(category: Scope) {
+    return this.tagsArray.find(tag => tag.scope == category)
   }
 
   isState(state: string): boolean {

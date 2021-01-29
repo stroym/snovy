@@ -1,6 +1,6 @@
 import Notebook from "./Notebook"
 import {ParentInterface} from "./Base"
-import Tag, {Category} from "./Tag"
+import Tag, {Scope} from "./Tag"
 import Section from "./Section"
 import Note from "./Note"
 
@@ -24,7 +24,7 @@ export default class Manager implements ParentInterface<Notebook> {
       let notebook = this.items[i]
 
       for (let i = 0; i < 10; i++) {
-        this.addTestTag(notebook, "tag " + i)
+        this.addTestTag(notebook, "tag " + i, "", i % 3 ? new Scope("blob", !!(i % 2)) : undefined)
       }
 
       for (let j = 0; j < i + 4; j++) {
@@ -116,9 +116,8 @@ export default class Manager implements ParentInterface<Notebook> {
     target.addItem(temp)
   }
 
-  addTestTag(target: Notebook, name: string, category?: Category) {
-    target.tags.push(new Tag(target.idCounterTag, name, category))
-    target.idCounterTag++
+  addTestTag(target: Notebook, name: string, colour: string, scope?: Scope) {
+    target.tags.push(new Tag(name, colour, scope))
   }
 
   tagNote(notebook: Notebook, target: Note) {

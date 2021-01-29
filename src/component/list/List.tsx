@@ -1,11 +1,11 @@
 import React, {useEffect, useRef, useState} from "react"
 import ListItem from "./ListItem"
-import {Item} from "../../model/Base"
+import {IdentifiedItem, Item} from "../../model/Base"
 import ContextMenu from "../context_menu/ContextMenu"
 import ContextMenuItem from "../context_menu/ContextMenuItem"
 
 //TODO mutliselect
-const List = <T extends Item>(props: {
+const List = <T extends IdentifiedItem | Item>(props: {
   id?: string,
   onActiveChange: (active: T | undefined) => any,
   onContextChange: (active: T | null | undefined) => any,
@@ -46,7 +46,8 @@ const List = <T extends Item>(props: {
     <div id={props.id} ref={selfRef} className={"snovy-list".concat(props.items ? "" : " disabled")}
          onContextMenu={() => setActiveContext(null)}>
       {props.items?.map((item: T) =>
-        <ListItem key={item.id} mapped={item} active={item == activeItem} activeContext={item == activeContext}
+        <ListItem key={item instanceof IdentifiedItem ? item.id : item.name} mapped={item} active={item == activeItem}
+                  activeContext={item == activeContext}
                   onClick={(item: T) => {setActiveItem(item)}} onContext={(item: T) => {setActiveContext(item)}}
         />)
       }
