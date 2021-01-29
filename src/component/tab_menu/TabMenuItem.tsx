@@ -11,7 +11,6 @@ const TabMenuItem = (props: {
   useEffect(
     () => {
       if (props.defaultSelected) {
-        console.log("mount tab " + props.text)
         handleClick()
       }
     }, []

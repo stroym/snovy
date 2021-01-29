@@ -1,3 +1,27 @@
+declare global {
+  interface Array<T> {
+    first(): T | undefined,
+
+    last(): T | undefined
+
+    delete(item: T): number
+  }
+}
+
+Array.prototype.first = function <T>(): T | undefined {
+  return this.length > 0 ? this[0] : undefined
+}
+
+Array.prototype.last = function <T>(): T | undefined {
+  return this.length > 0 ? this[this.length - 1] : undefined
+}
+
+Array.prototype.delete = function <T>(item: T): number {
+  let index = this.indexOf(item)
+  this.splice(index, 1)
+  return index
+}
+
 export abstract class Item {
 
   readonly id: number
@@ -74,21 +98,21 @@ export abstract class ItemWithParentAndChildren<T extends OrderedItem, P extends
   }
 
   get itemsSortedById() {
-    return this.items.sort((a: T, b: T) => {
-      return a.id - b.id
-    })
+    return this.sortBy((a: T, b: T) => { return a.id - b.id})
   }
 
   get itemsSortedAlphabetically() {
-    return this.items.sort((a: T, b: T) => {
-      return a.name.localeCompare(b.name)
-    })
+    return this.sortBy((a: T, b: T) => {return a.name.localeCompare(b.name)})
   }
 
   get itemsSortedByOrder() {
-    return this.items.sort((a: T, b: T) => {
-      return a.order - b.order
-    })
+    return this.sortBy((a: T, b: T) => {return a.order - b.order})
+  }
+
+  deleteItem(item: T) {
+    let index = this.items.delete(item)
+
+    this.items.slice(index).forEach(value => { value.order--})
   }
 
   addItem(item: T, reorder: boolean = false) {
@@ -102,14 +126,8 @@ export abstract class ItemWithParentAndChildren<T extends OrderedItem, P extends
     this.idCounter++
   }
 
-  deleteItem(item: T) {
-    let index = this.items.indexOf(item)
-
-    this.items.splice(index, 1)
-
-    this.items.slice(index).forEach(value => {
-      value.order--
-    })
+  private sortBy(compareFn: (a: T, b: T) => number): Array<T> {
+    return this.items.sort(compareFn)
   }
 
   deleteById(id: number): boolean {

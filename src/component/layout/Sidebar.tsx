@@ -1,7 +1,7 @@
 import React, {useState} from "react"
 import TabMenu, {Orientation} from "../tab_menu/TabMenu"
 
-const Sidebar = (props: {
+export const Sidebar = (props: {
   classList?: Array<string>,
   children: Array<React.ReactElement> | React.ReactElement | boolean,
   tabs?: React.ReactElement<typeof TabMenu>,
@@ -45,5 +45,3 @@ export const ManagedSidebar = (props: {
   )
 
 }
-
-export default Sidebar

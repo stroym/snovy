@@ -24,8 +24,7 @@ const TabMenu = (props: {
   return (
     <div id={props.id} className={"snovy-tab-menu-" + props.orientation}>
       {props.tabs.map((tab) =>
-        <TabMenuItem key={tab.text} text={tab.text} active={activeTab == tab.text}
-                     onClick={handleClick}/>)}
+        <TabMenuItem key={tab.text} text={tab.text} active={activeTab == tab.text} onClick={handleClick}/>)}
     </div>
   )
 
