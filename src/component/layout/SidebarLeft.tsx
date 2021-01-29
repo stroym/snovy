@@ -11,18 +11,6 @@ import {NoteContext} from "../../Context"
 import NotebookSelector from "../NotebookSelector"
 import List from "../list/List"
 
-const mappings = [
-  {text: "Notes", default: true},
-  {text: "Search"}
-]
-
-const sectionsId = "snovy-list-section"
-const notesId = "snovy-list-note"
-
-function buildKey(parent: OrderedItem | undefined, defaultKey: string) {
-  return parent ? parent.constructor.name + parent?.id + "items" : defaultKey
-}
-
 export const LeftBar = (props: {
   onActiveNotebookChange: (active: Notebook | undefined) => any,
   onActiveSectionChange: (active: Section | undefined) => any,
@@ -54,7 +42,7 @@ export const LeftBar = (props: {
           <List<Section> key={buildKey(props.activeNotebook, sectionsId)} id={sectionsId}
                          items={props.activeNotebook?.itemsSortedByOrder} defaultSelection
                          onActiveChange={props.onActiveSectionChange} onContextChange={onContextChange}
-                         contextChildren={buildContext(props.activeNotebook, () => {
+                         contextChildren={buildContext(activeContext, props.activeNotebook, () => {
                            if (props.activeSection == activeContext) {
                              props.onActiveSectionChange(undefined)
                            }
@@ -64,7 +52,7 @@ export const LeftBar = (props: {
           <List<Note> key={buildKey(props.activeSection, notesId)} id={notesId}
                       items={props.activeSection?.itemsSortedByOrder} defaultSelection
                       onActiveChange={noteContext.setActiveNote} onContextChange={onContextChange}
-                      contextChildren={buildContext(props.activeSection, () => {
+                      contextChildren={buildContext(activeContext, props.activeSection, () => {
                         if (noteContext.activeNote == activeContext) {
                           noteContext.setActiveNote(undefined)
                         }
@@ -75,27 +63,39 @@ export const LeftBar = (props: {
     </ManagedSidebar>
   )
 
-  //TODO autoselect previous item when currently selected is deleted
-  function buildContext(target: Section | Notebook | undefined, deletion: () => any) {
-    return target ? [
-      <ContextMenuItem key={"new"} text={"new"} onClick={() => {
-        if (activeContext) {
-          target!.insertAt(activeContext.order + 1)
-        } else {
-          target!.insert()
-        }
-      }}/>,
-      ...activeContext ? [
-        <ContextMenuItem key={"delete"} text={"delete"} onClick={() => {
-          target!.deleteById(activeContext.id)
+}
 
-          deletion()
-        }
-        }/>
-      ] : []
-    ] : undefined
-  }
+const mappings = [
+  {text: "Notes", default: true},
+  {text: "Search"}
+]
 
+const sectionsId = "snovy-list-section"
+const notesId = "snovy-list-note"
+
+function buildKey(parent: OrderedItem | undefined, defaultKey: string) {
+  return parent ? parent.constructor.name + parent?.id + "items" : defaultKey
+}
+
+//TODO autoselect previous item when currently selected is deleted
+function buildContext(activeContext: Notebook | Section | Note | undefined, target: Section | Notebook | undefined, deletion: () => any) {
+  return target ? [
+    <ContextMenuItem key={"new"} text={"new"} onClick={() => {
+      if (activeContext) {
+        target!.insertAt(activeContext.order + 1)
+      } else {
+        target!.insert()
+      }
+    }}/>,
+    ...activeContext ? [
+      <ContextMenuItem key={"delete"} text={"delete"} onClick={() => {
+        target!.deleteById(activeContext.id)
+
+        deletion()
+      }
+      }/>
+    ] : []
+  ] : undefined
 }
 
 export default LeftBar

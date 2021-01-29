@@ -12,13 +12,6 @@ const SidebarRight = (props: {
   onActiveTagChange: (tag: Tag | undefined) => any
 }) => {
 
-  const mappings = [
-    {text: "Note Tags", default: true},
-    {text: "Tag Manager"},
-    {text: "Filtering Options"},
-    {text: "Note Details"}
-  ]
-
   return (
     <ManagedSidebar orientation={Orientation.RIGHT} tabs={mappings}>
       {[{
@@ -31,5 +24,12 @@ const SidebarRight = (props: {
   )
 
 }
+
+const mappings = [
+  {text: "Note Tags", default: true},
+  {text: "Tag Manager"},
+  {text: "Filtering Options"},
+  {text: "Note Details"}
+]
 
 export default SidebarRight
