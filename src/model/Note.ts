@@ -19,14 +19,42 @@ export default class Note extends ItemWithParent<Section> {
     this.tags.delete(tag)
   }
 
+  get unscopedTags() {
+    return Note.sortAlphabetically(this.tagsArray.filter(tag => !tag.scope))
+  }
+
   get tagsArray() {
     return Array.from(this.tags)
   }
 
-  get tagsSortedAlphabetically() {
-    return this.tagsArray.sort((a: Tag, b: Tag) => {
-      return a.name.localeCompare(b.name)
+  //TODO this should be possible with scope directly, not just the string
+  get scopedTags() {
+    let scopedTags = Note.sortAlphabetically(this.tagsArray.filter(tag => tag.scope))
+
+    let temp = new Map<string, Array<Tag>>()
+
+    scopedTags.forEach((tag) => {
+      if (!temp.has(tag.scope!.name!)) {
+        temp.set(tag.scope!.name!, [])
+      }
+
+      temp.get(tag.scope!.name!)!.push(tag)
+
     })
+
+    return temp
+  }
+
+  get tagsSortedAlphabetically() {
+    return Note.sortAlphabetically(this.tagsArray)
+  }
+
+  static sortAlphabetically(tags: Array<Tag>) {
+    return tags.sort((a: Tag, b: Tag) => { return a.name.localeCompare(b.name)})
+  }
+
+  untagAll(tags: Array<Tag>) {
+    tags.forEach(tag => this.tags.delete(tag))
   }
 
   isExclusivelyTagged(category: Scope) {

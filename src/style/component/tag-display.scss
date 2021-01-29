@@ -1,0 +1,140 @@
+@import "../theme";
+
+#snovy-tag-display {
+  display: grid;
+  grid-area: top / middle  / bottom / bottom;
+  grid-template-rows: 1fr 10fr 10fr;
+  grid-template-areas: "top" "middle" "bottom";
+}
+
+#tag-display-container {
+  grid-area: middle;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+}
+
+.tag-base {
+  padding: 1px 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: default;
+  border: 2px solid darkgreen; //colour1
+  border-radius: 20px;
+  background: beige; //colour3
+}
+
+.tag-scope {
+  @extend .tag-base;
+}
+
+.tag-name {
+  @extend .tag-base;
+}
+
+.snovy-tag-item {
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 2px;
+  color: $colour-text-secondary;
+  background: darkgreen; //colour1
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.snovy-tag-item-grouped {
+  //flex-grow: 1;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 2px;
+  color: $colour-text-secondary; //settable   //TODO settables
+  background: darkgreen; //colour1
+  flex-flow: column nowrap;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+  .tag-group-header {
+    display: flex;
+    width: 100%;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+
+    .tag-scope {
+      padding-top: unset;
+      background-color: beige; //colour3
+      border: 2px solid darkgreen; //colour1
+      border-radius: 10px;
+    }
+
+  }
+
+  .tag-container {
+    width: 100%;
+    background-color: lightgreen;
+    border-radius: 10px;
+    border: 2px solid darkgreen;
+    border-top: 0;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    justify-items: flex-start;
+  }
+}
+
+.snovy-tag-item-exclusive {
+
+  .snovy-tag-item .snovy-button {
+    display: none;
+  }
+}
+
+.snovy-button {
+  height: 16px;
+  width: 16px;
+  border: none;
+  outline: none;
+  border-radius: 50%;
+  text-align: center;
+  background: transparent;
+  color: $colour-text-secondary;
+  font-weight: 600;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+}
+
+.tag-remove-button {
+  margin-right: 2px;
+}
+
+.collapse-button {
+  margin-left: 2px;
+}
+
+//#tag-add-form {
+//  grid-area: top;
+//  display: flex;
+//  flex-flow: row nowrap;
+//  align-content: center;
+//
+//  input {
+//    flex: 1 1;
+//    font-size: inherit;
+//    color: $colour-text-primary;
+//    background: none;
+//    border: $border-thin;
+//    padding: 4px 10px;
+//  }
+//
+//  button {
+//    outline: none;
+//  }
+//
+//}

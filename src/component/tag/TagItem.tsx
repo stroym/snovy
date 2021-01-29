@@ -1,22 +1,55 @@
 import React from "react"
 import Tag from "../../model/Tag"
+import {CollapseButton, RemoveButton} from "./Button"
 
-const TagItem = (props: {
+export const TagItem = (props: {
   mapped: Tag,
   onRemove: (tag: Tag) => any,
 }) => {
 
-  //TODO maybe, MAYBE, editable input... but since it needs to grow with content, it's probably not worth the hassle
-  // yes, I could use a component that does that, but how useful would this really be here?
-  // I mean, this is supposed to just display the tags, after all - if I really want editing here (in addition to manager)
-  // it'd probably be much easier via a context menu & pop-up dialog
   return (
     <span className="snovy-tag-item">
-      <div>{props.mapped.name}</div>
-      <button onClick={() => props.onRemove(props.mapped)}>{"×"}</button>
+      <span className="tag-name"> {props.mapped.name}</span>
+      <RemoveButton onClick={() => props.onRemove(props.mapped)}/>
     </span>
   )
 
 }
 
-export default TagItem
+export const TagItemGrouped = (props: {
+  mapped: Array<Tag>,
+  onRemove: (tag: Tag) => any,
+  onRemoveParent: (tags: Array<Tag>) => any
+}) => {
+
+  //TODO collapse button
+  return (
+    <span className="snovy-tag-item-grouped">
+      <div className="tag-group-header">
+        <CollapseButton collapsed={false} onClick={() => ""}/>
+        <span className="tag-scope">{props.mapped[0].scope!.name}</span>
+        <RemoveButton onClick={() => props.onRemoveParent(props.mapped)}/>
+      </div>
+      <div className="tag-container">
+        {props.mapped.map((tag) => <TagItem key={tag.toString()} mapped={tag} onRemove={props.onRemove}/>)}
+      </div>
+    </span>
+  )
+
+}
+
+export const TagItemExclusive = (props: {
+  mapped: Tag,
+  onRemove: (tag: Tag) => any,
+  onRemoveParent: (tags: Tag) => any
+}) => {
+
+  return (
+    <span className="snovy-tag-item-exclusive">
+      <span className="tag-scope">{props.mapped.scope}</span>
+      <TagItem mapped={props.mapped} onRemove={props.onRemove}/>
+      <RemoveButton onClick={() => props.onRemoveParent(props.mapped)}/>
+    </span>
+  )
+
+}

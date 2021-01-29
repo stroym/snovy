@@ -22,7 +22,7 @@ const TagManager = (props: {
                      <ContextMenuItem key={"new"} text={"new"} onClick={() => { props.activeNotebook!.addTag()}}/>,
                      ...activeContext ? [
                        <ContextMenuItem key={"delete"} text={"delete"} onClick={() => {
-                         props.activeNotebook?.deleteTagById(activeContext.id)
+                         props.activeNotebook?.deleteTag(activeContext)
 
                          if (props.activeTag == activeContext) {
                            props.onActiveTagChange(undefined)

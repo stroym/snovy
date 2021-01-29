@@ -22,6 +22,8 @@ export default class Tag extends ColouredItem {
 
 }
 
+//TODO subclass scopedtag
+
 export class Scope {
 
   name: string

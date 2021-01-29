@@ -1,57 +1,14 @@
-@use "../common/sidebar";
+@use "../component/sidebar";
+@use "../component/tag-display";
 
 @import "../theme";
 
 #right-content {
   display: grid;
-  grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 10fr 10fr;
-  grid-template-areas: "top top" "middle middle" "bottom bottom";
+  grid-template-areas: "top" "middle" "bottom";
 }
 
-#snovy-tag-display,
 #snovy-tag-manager {
   grid-area: middle  / bottom / bottom;
-}
-
-#snovy-tag-display {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-start;
-  align-content: flex-start;
-}
-
-.snovy-tag-item {
-  border-radius: 20px;
-  overflow: hidden;
-  margin: 4px;
-  padding: 4px 4px 4px 10px;
-  color: $colour-text-secondary; //settable   //TODO settables
-  background: #ff0000; //settable
-  border: white; //settable
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  justify-items: flex-start;
-
-  &:hover {
-    background-color: rgba(255, 0, 0, 0.8);
-  }
-}
-
-.snovy-tag-item button {
-  height: 20px;
-  width: 20px;
-  margin-left: 5px;
-  border: $border-thin;
-  border-radius: 50%;
-  text-align: center;
-  background: transparent;
-  color: $colour-text-secondary;
-  font-weight: 600;
-  font-size: 0.8em;
-
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.5);
-  }
 }

@@ -23,8 +23,10 @@ export default class Manager implements ParentInterface<Notebook> {
     for (let i = 0; i < this.items.length; i++) {
       let notebook = this.items[i]
 
-      for (let i = 0; i < 10; i++) {
-        this.addTestTag(notebook, "tag " + i, "", i % 3 ? new Scope("blob", !!(i % 2)) : undefined)
+      for (let j = 0; j < 20; j++) {
+        let scope = new Scope("postava")
+
+        this.addTestTag(notebook, "tag " + j, "", j % 3 ? scope : undefined)
       }
 
       for (let j = 0; j < i + 4; j++) {
