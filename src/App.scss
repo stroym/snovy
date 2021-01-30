@@ -35,10 +35,11 @@ html, body, #root {
   grid-template-areas: "top" "middle" "bottom";
 }
 
+//TODO flex here too, probably, maybe?
 #snovy-middle {
   grid-area: middle;
   display: grid;
-  grid-template-columns: 20% 60% 20%;
+  grid-template-columns: 1fr 3fr 1fr;
   grid-template-rows: 100%;
   grid-template-areas: "left centre right";
 }

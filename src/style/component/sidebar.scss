@@ -1,25 +1,20 @@
 @import "../theme";
 
 .snovy-sidebar {
-  display: grid;
+  display: inline-flex;
 }
 
+//TODO add class, not subclass
 #snovy-sidebar-left {
-  grid-area: left;
-  grid-template-columns: 1fr 9fr;
-  grid-template-areas: "tabs main";
   border-right: $border;
 }
 
 #snovy-sidebar-right {
-  grid-area: right;
-  grid-template-columns: 9fr 1fr;
-  grid-template-areas: "main tabs";
   border-left: $border;
 }
 
 .sidebar-content {
-  grid-area: main;
+  flex: 1 1;
   background-color: $colour-primary;
   min-height: 0;
   min-width: 0;

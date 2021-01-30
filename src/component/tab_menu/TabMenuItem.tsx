@@ -21,10 +21,8 @@ const TabMenuItem = (props: {
   }
 
   return (
-    <div id={props.id} className={"snovy-tab-menu-item".concat(props.active ? " active" : "")}
-         onClick={handleClick}
-    >
-      {props.text}
+    <div id={props.id} className={"snovy-tab-menu-item".concat(props.active ? " active" : "")} onClick={handleClick}>
+      <span>{props.text}</span>
     </div>
   )
 

@@ -12,10 +12,11 @@ export const Sidebar = (props: {
     <div id={"snovy-sidebar-" + props.orientation}
          className={"snovy-sidebar".concat(props.classList ? " " + props.classList?.join(" ") : "")}
     >
+      {props.orientation == Orientation.LEFT && props.tabs}
       <div className="sidebar-content" id={props.orientation + "-content"}>
         {props.children}
       </div>
-      {props.tabs}
+      {props.orientation == Orientation.RIGHT && props.tabs}
     </div>
   )
 

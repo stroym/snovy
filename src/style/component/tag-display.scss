@@ -31,9 +31,8 @@
   grid-area: middle;
   display: flex;
   flex-flow: row wrap;
-  justify-content: flex-start;
   align-content: flex-start;
-  flex-wrap: wrap;
+  justify-content: flex-start;
   align-items: flex-start;
 }
 
@@ -41,12 +40,12 @@
   border-radius: 20px;
   overflow: hidden;
   margin: 2px;
+  font-size: 1.3em;
   color: $colour-text-secondary;
   background: darkgreen; //colour1
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  justify-content: flex-start;
 }
 
 .snovy-tag-item-grouped {
@@ -55,19 +54,17 @@
   margin: 2px;
   color: $colour-text-secondary; //settable   //TODO settables
   background: darkgreen; //colour1
-  flex-flow: column nowrap;
-  align-items: center;
   display: flex;
-  justify-content: center;
+  flex-flow: column nowrap;
 
   .tag-group-header {
     display: flex;
-    width: 100%;
     flex-flow: row nowrap;
     align-items: center;
     justify-content: space-between;
 
     .tag-scope {
+      font-size: 1.1em;
       background-color: beige; //colour3
       border-radius: 10px;
     }
@@ -75,15 +72,15 @@
   }
 
   .tag-container {
-    width: 100%;
     background-color: lightgreen;
     border-radius: 10px;
-    border: 2px solid darkgreen;
+    border: 2px solid darkgreen; //TODO maybe no border and instead curve header
     border-top: 0;
     display: flex;
     flex-flow: row wrap;
+    align-content: flex-start;
+    justify-content: flex-start;
     align-items: flex-start;
-    justify-items: flex-start;
   }
 }
 
