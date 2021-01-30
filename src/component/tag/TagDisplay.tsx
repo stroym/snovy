@@ -26,6 +26,7 @@ const TagDisplay = () => {
 
   //TODO new tag picker (checkbox scope, input && colour picker scope && exclusive checkbox || parse single input
   // - might be nice to provide both as an option down the line), input && colour picker tag)
+  // also: something fancier would be nice for scoped tags
   return (
     <div id="snovy-tag-display">
       <div id="tag-display-container">
