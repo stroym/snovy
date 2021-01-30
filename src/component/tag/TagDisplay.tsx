@@ -24,8 +24,8 @@ const TagDisplay = () => {
     noteContext.activeNote?.untagAll(tags)
   }
 
-  //TODO put state select above tags
-  //TODO a way for adding new/existing tags (input/context/+ button)
+  //TODO new tag picker (checkbox scope, input && colour picker scope && exclusive checkbox || parse single input
+  // - might be nice to provide both as an option down the line), input && colour picker tag)
   return (
     <div id="snovy-tag-display">
       <div id="tag-display-container">

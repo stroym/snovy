@@ -6,6 +6,14 @@
   flex-flow: column nowrap;
   justify-content: flex-start;
   align-items: stretch;
+
+  &.left {
+    border-right: $border;
+  }
+
+  &.right {
+    border-left: $border;
+  }
 }
 
 .snovy-tab-menu-item {
@@ -25,30 +33,19 @@
     white-space: nowrap;
   }
 
+  &.left {
+    writing-mode: sideways-lr;
+  }
+
+  &.right {
+    writing-mode: sideways-rl;
+  }
+
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
   }
 
   &.active {
     background-color: $colour-active;
-  }
-}
-
-//TODO also add class, not subclass
-.snovy-tab-menu-left {
-  @extend .snovy-tab-menu;
-  border-right: $border;
-
-  .snovy-tab-menu-item {
-    writing-mode: sideways-lr;
-  }
-}
-
-.snovy-tab-menu-right {
-  @extend .snovy-tab-menu;
-  border-left: $border;
-
-  .snovy-tab-menu-item {
-    writing-mode: sideways-rl;
   }
 }

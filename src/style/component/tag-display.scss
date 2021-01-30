@@ -21,7 +21,6 @@
 
 #snovy-tag-display {
   display: grid;
-  grid-area: top / middle  / bottom / bottom;
   grid-template-rows: 1fr 10fr 10fr;
   grid-template-areas: "top" "middle" "bottom";
 }
@@ -68,7 +67,6 @@
       background-color: beige; //colour3
       border-radius: 10px;
     }
-
   }
 
   .tag-container {

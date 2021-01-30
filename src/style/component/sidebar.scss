@@ -2,20 +2,42 @@
 
 .snovy-sidebar {
   display: inline-flex;
+
+  .sidebar-content {
+    flex: 1 1;
+    background-color: $colour-primary;
+    min-height: 0;
+    min-width: 0;
+
+    &.left {
+      border-right: $border;
+
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 20fr;
+      grid-template-areas: "notebook notebook" "section note";
+    }
+
+    &.right {
+      border-left: $border;
+      //TODO, I guess
+      display: flex;
+    }
+  }
 }
 
-//TODO add class, not subclass
-#snovy-sidebar-left {
-  border-right: $border;
+#snovy-selector-notebook {
+  font-size: 1.2em;
+  grid-area: notebook;
+  border-bottom: $border;
 }
 
-#snovy-sidebar-right {
-  border-left: $border;
+#snovy-list-section {
+  grid-area: section;
+  border-right: $border-thin;
 }
 
-.sidebar-content {
-  flex: 1 1;
-  background-color: $colour-primary;
-  min-height: 0;
-  min-width: 0;
+#snovy-list-note {
+  grid-area: note;
+  border-left: $border-thin;
 }
