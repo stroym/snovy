@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react"
-import Tag from "../../model/Tag"
+import Tag from "../../model/coloured/Tag"
 import {NoteContext} from "../../Context"
 import {TagItem, TagItemGrouped} from "./TagItem"
 

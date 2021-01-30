@@ -1,6 +1,6 @@
 import Note from "./Note"
 import Notebook from "./Notebook"
-import {ItemWithParentAndChildren} from "./Base"
+import {ItemWithParentAndChildren} from "./common/Base"
 
 export default class Section extends ItemWithParentAndChildren<Note, Notebook> {
 

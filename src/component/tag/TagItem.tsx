@@ -1,5 +1,5 @@
 import React from "react"
-import Tag from "../../model/Tag"
+import Tag from "../../model/coloured/Tag"
 import {CollapseButton, RemoveButton} from "./Button"
 
 export const TagItem = (props: {

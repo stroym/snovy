@@ -1,5 +1,6 @@
 import React, {useState} from "react"
 import "./App.scss"
+import "./Augments"
 import TopBar from "./component/layout/Top"
 import LeftBar from "./component/layout/SidebarLeft"
 import RightBar from "./component/layout/SidebarRight"
@@ -8,7 +9,7 @@ import Editor from "./component/layout/Editor"
 import Notebook from "./model/Notebook"
 import Section from "./model/Section"
 import Manager from "./model/Manager"
-import Tag from "./model/Tag"
+import Tag from "./model/coloured/Tag"
 import {NoteProvider} from "./Context"
 
 function App() {

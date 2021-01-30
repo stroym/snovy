@@ -1,5 +1,6 @@
-import Tag, {Scope} from "./Tag"
-import {ItemWithParent} from "./Base"
+import Category from "./coloured/Category"
+import Tag from "./coloured/Tag"
+import {ItemWithParent} from "./common/Base"
 import Section from "./Section"
 
 export default class Note extends ItemWithParent<Section> {
@@ -20,16 +21,12 @@ export default class Note extends ItemWithParent<Section> {
   }
 
   get unscopedTags() {
-    return Note.sortAlphabetically(this.tagsArray.filter(tag => !tag.scope))
-  }
-
-  get tagsArray() {
-    return Array.from(this.tags)
+    return Note.sortAlphabetically(this.tags.toArray().filter(tag => !tag.scope))
   }
 
   //TODO this should be possible with scope directly, not just the string
   get scopedTags() {
-    let scopedTags = Note.sortAlphabetically(this.tagsArray.filter(tag => tag.scope))
+    let scopedTags = Note.sortAlphabetically(this.tags.toArray().filter(tag => tag.scope))
 
     let temp = new Map<string, Array<Tag>>()
 
@@ -46,7 +43,7 @@ export default class Note extends ItemWithParent<Section> {
   }
 
   get tagsSortedAlphabetically() {
-    return Note.sortAlphabetically(this.tagsArray)
+    return Note.sortAlphabetically(this.tags.toArray())
   }
 
   static sortAlphabetically(tags: Array<Tag>) {
@@ -57,8 +54,8 @@ export default class Note extends ItemWithParent<Section> {
     tags.forEach(tag => this.tags.delete(tag))
   }
 
-  isExclusivelyTagged(category: Scope) {
-    return this.tagsArray.find(tag => tag.scope == category)
+  isExclusivelyTagged(category: Category) {
+    return this.tags.toArray().find(tag => tag.scope == category)
   }
 
   isState(state: string): boolean {

@@ -1,12 +1,11 @@
 import Section from "./Section"
-import Tag from "./Tag"
-import {ItemWithParentAndChildren} from "./Base"
+import Tag from "./coloured/Tag"
+import {ItemWithParentAndChildren} from "./common/Base"
 import Manager from "./Manager"
 
 export default class Notebook extends ItemWithParentAndChildren<Section, Manager> {
 
   tags: Array<Tag> = new Array<Tag>()
-  states: Set<string> = new Set<string>()
 
   get sections(): Array<Section> {
     return this.items

@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import Tag from "../../model/Tag"
+import Tag from "../../model/coloured/Tag"
 import List from "../list/List"
 import Notebook from "../../model/Notebook"
 import ContextMenuItem from "../context_menu/ContextMenuItem"

@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react"
 import ListItem from "./ListItem"
-import {IdentifiedItem, Item} from "../../model/Base"
+import {IdentifiedItem, Item} from "../../model/common/Base"
 import ContextMenu from "../context_menu/ContextMenu"
 import ContextMenuItem from "../context_menu/ContextMenuItem"
 

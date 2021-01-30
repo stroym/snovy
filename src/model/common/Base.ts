@@ -1,27 +1,3 @@
-declare global {
-  interface Array<T> {
-    first(): T | undefined,
-
-    last(): T | undefined
-
-    delete(item: T): number
-  }
-}
-
-Array.prototype.first = function <T>(): T | undefined {
-  return this.length > 0 ? this[0] : undefined
-}
-
-Array.prototype.last = function <T>(): T | undefined {
-  return this.length > 0 ? this[this.length - 1] : undefined
-}
-
-Array.prototype.delete = function <T>(item: T): number {
-  let index = this.indexOf(item)
-  this.splice(index, 1)
-  return index
-}
-
 export abstract class Item {
 
   name: string
