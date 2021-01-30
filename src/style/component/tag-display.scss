@@ -1,25 +1,10 @@
 @import "../theme";
 
-#snovy-tag-display {
-  display: grid;
-  grid-area: top / middle  / bottom / bottom;
-  grid-template-rows: 1fr 10fr 10fr;
-  grid-template-areas: "top" "middle" "bottom";
-}
-
-#tag-display-container {
-  grid-area: middle;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-start;
-  align-content: flex-start;
-}
-
 .tag-base {
   padding: 1px 4px;
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
+  white-space: nowrap;
   cursor: default;
   border: 2px solid darkgreen; //colour1
   border-radius: 20px;
@@ -32,6 +17,24 @@
 
 .tag-name {
   @extend .tag-base;
+}
+
+#snovy-tag-display {
+  display: grid;
+  grid-area: top / middle  / bottom / bottom;
+  grid-template-rows: 1fr 10fr 10fr;
+  grid-template-areas: "top" "middle" "bottom";
+}
+
+#tag-display-container {
+  min-width: 0;
+  grid-area: middle;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  align-items: flex-start;
 }
 
 .snovy-tag-item {
@@ -47,7 +50,6 @@
 }
 
 .snovy-tag-item-grouped {
-  //flex-grow: 1;
   border-radius: 10px;
   overflow: hidden;
   margin: 2px;
@@ -66,9 +68,7 @@
     justify-content: space-between;
 
     .tag-scope {
-      padding-top: unset;
       background-color: beige; //colour3
-      border: 2px solid darkgreen; //colour1
       border-radius: 10px;
     }
 
@@ -92,30 +92,6 @@
   .snovy-tag-item .snovy-button {
     display: none;
   }
-}
-
-.snovy-button {
-  height: 16px;
-  width: 16px;
-  border: none;
-  outline: none;
-  border-radius: 50%;
-  text-align: center;
-  background: transparent;
-  color: $colour-text-secondary;
-  font-weight: 600;
-
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.3);
-  }
-}
-
-.tag-remove-button {
-  margin-right: 2px;
-}
-
-.collapse-button {
-  margin-left: 2px;
 }
 
 //#tag-add-form {
