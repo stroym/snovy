@@ -1,9 +1,9 @@
-import Category from "../coloured/Category"
+import Scope from "../coloured/Scope"
 import Tag from "../coloured/Tag"
 
 export default class Sets {
 
-  categories: Set<Category> = new Set<Category>()
+  categories: Set<Scope> = new Set<Scope>()
   tags: Set<Tag> = new Set<Tag>()
   states: Set<string> = new Set<string>()
 
@@ -13,10 +13,9 @@ export default class Sets {
 
   deleteTag(tag: Tag) {
     for (const it of this.tags) {
-      if (it.name == tag.name) {
-
-        tag.taggedNotes.forEach(note => note.untag(tag))
-        this.tags.delete(tag)
+      if (it.equals(tag)) {
+        it.untagNoteAll()
+        this.tags.delete(it)
       }
     }
   }

@@ -1,6 +1,6 @@
 import {ColouredItem} from "../common/Base"
 
-export default class Category extends ColouredItem {
+export default class Scope extends ColouredItem {
 
   name: string
   exclusive: boolean

@@ -1,9 +1,9 @@
 import Notebook from "./Notebook"
-import {ParentInterface} from "./common/Base"
+import {IdentifiedItem, Item, OrderedItem, ParentInterface} from "./common/Base"
 import Tag from "./coloured/Tag"
 import Section from "./Section"
 import Note from "./Note"
-import Category from "./coloured/Category"
+import Scope from "./coloured/Scope"
 
 export default class Manager implements ParentInterface<Notebook> {
 
@@ -25,7 +25,7 @@ export default class Manager implements ParentInterface<Notebook> {
       let notebook = this.items[i]
 
       for (let j = 0; j < 20; j++) {
-        let scope = new Category("postava", "")
+        let scope = new Scope("postava", "")
 
         this.addTestTag(notebook, "tag " + j, "", j % 3 ? scope : undefined)
       }
@@ -43,21 +43,15 @@ export default class Manager implements ParentInterface<Notebook> {
   }
 
   get itemsSortedById() {
-    return this.items.sort((a: Notebook, b: Notebook) => {
-      return a.id - b.id
-    })
+    return this.items.sort(IdentifiedItem.compareById)
   }
 
   get itemsSortedAlphabetically() {
-    return this.items.sort((a: Notebook, b: Notebook) => {
-      return a.name.localeCompare(b.name)
-    })
+    return this.items.sort(Item.compareByName)
   }
 
   get itemsSortedByOrder() {
-    return this.items.sort((a: Notebook, b: Notebook) => {
-      return a.order - b.order
-    })
+    return this.items.sort(OrderedItem.compareByOrder)
   }
 
   get notebooks() {
@@ -119,7 +113,7 @@ export default class Manager implements ParentInterface<Notebook> {
     target.addItem(temp)
   }
 
-  addTestTag(target: Notebook, name: string, colour: string, scope?: Category) {
+  addTestTag(target: Notebook, name: string, colour: string, scope?: Scope) {
     target.tags.push(new Tag(name, colour, scope))
   }
 

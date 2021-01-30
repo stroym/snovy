@@ -19,6 +19,8 @@ export abstract class Item {
     return this.name
   }
 
+  static compareByName = (a: Item, b: Item) => { return a.name.localeCompare(b.name, undefined, {numeric: true})}
+
 }
 
 export abstract class IdentifiedItem extends Item {
@@ -29,6 +31,8 @@ export abstract class IdentifiedItem extends Item {
     super(name)
     this.id = id
   }
+
+  static compareById = (a: IdentifiedItem, b: IdentifiedItem) => { return a.id - b.id}
 
 }
 
@@ -51,6 +55,8 @@ export abstract class OrderedItem extends IdentifiedItem {
     super(id, name)
     this.order = order
   }
+
+  static compareByOrder = (a: OrderedItem, b: OrderedItem) => {return a.order - b.order}
 
 }
 
@@ -93,15 +99,15 @@ export abstract class ItemWithParentAndChildren<T extends OrderedItem, P extends
   }
 
   get itemsSortedById() {
-    return this.sortBy((a: T, b: T) => { return a.id - b.id})
+    return this.sortBy(IdentifiedItem.compareById)
   }
 
   get itemsSortedAlphabetically() {
-    return this.sortBy((a: T, b: T) => {return a.name.localeCompare(b.name)})
+    return this.sortBy(Item.compareByName)
   }
 
   get itemsSortedByOrder() {
-    return this.sortBy((a: T, b: T) => {return a.order - b.order})
+    return this.sortBy(OrderedItem.compareByOrder)
   }
 
   deleteItem(item: T) {

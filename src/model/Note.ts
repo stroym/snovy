@@ -1,6 +1,6 @@
-import Category from "./coloured/Category"
+import Scope from "./coloured/Scope"
 import Tag from "./coloured/Tag"
-import {ItemWithParent} from "./common/Base"
+import {Item, ItemWithParent} from "./common/Base"
 import Section from "./Section"
 
 export default class Note extends ItemWithParent<Section> {
@@ -10,23 +10,13 @@ export default class Note extends ItemWithParent<Section> {
   state: string = "" //class/list in notebook
   tags: Set<Tag> = new Set<Tag>()
 
-  tag(tag: Tag): void {
-    if (!this.tags.has(tag)) {
-      this.tags.add(tag)
-    }
-  }
-
-  untag(tag: Tag): void {
-    this.tags.delete(tag)
-  }
-
   get unscopedTags() {
-    return Note.sortAlphabetically(this.tags.toArray().filter(tag => !tag.scope))
+    return this.tags.toArray().filter(tag => !tag.scope).sort(Item.compareByName)
   }
 
   //TODO this should be possible with scope directly, not just the string
   get scopedTags() {
-    let scopedTags = Note.sortAlphabetically(this.tags.toArray().filter(tag => tag.scope))
+    let scopedTags = this.tags.toArray().filter(tag => tag.scope).sort(Item.compareByName)
 
     let temp = new Map<string, Array<Tag>>()
 
@@ -42,20 +32,20 @@ export default class Note extends ItemWithParent<Section> {
     return temp
   }
 
-  get tagsSortedAlphabetically() {
-    return Note.sortAlphabetically(this.tags.toArray())
+  tag(tag: Tag): void {
+    tag.tagNote(this)
   }
 
-  static sortAlphabetically(tags: Array<Tag>) {
-    return tags.sort((a: Tag, b: Tag) => { return a.name.localeCompare(b.name)})
+  untag(tag: Tag): void {
+    tag.untagNote(this)
   }
 
   untagAll(tags: Array<Tag>) {
     tags.forEach(tag => this.tags.delete(tag))
   }
 
-  isExclusivelyTagged(category: Category) {
-    return this.tags.toArray().find(tag => tag.scope == category)
+  isExclusivelyTagged(scope: Scope) {
+    return this.tags.toArray().find(tag => tag.scope == scope)
   }
 
   isState(state: string): boolean {
