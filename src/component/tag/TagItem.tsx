@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState} from "react"
 import Tag from "../../model/coloured/Tag"
 import {CollapseButton, RemoveButton} from "./Button"
 
@@ -22,17 +22,18 @@ export const TagItemGrouped = (props: {
   onRemoveParent: (tags: Array<Tag>) => any
 }) => {
 
-  //TODO collapse button
+  const [collapsed, setCollapsed] = useState(false)
+
   return (
     <span className="snovy-tag-item-grouped">
       <div className="tag-group-header">
-        <CollapseButton collapsed={false} onClick={() => ""}/>
+        <CollapseButton onClick={() => {setCollapsed(!collapsed)}}/>
         <span className="tag-scope">{props.mapped[0].scope!.name}</span>
         <RemoveButton onClick={() => props.onRemoveParent(props.mapped)}/>
       </div>
-      <div className="tag-container">
+      {!collapsed && <div className="tag-container">
         {props.mapped.map((tag) => <TagItem key={tag.toString()} mapped={tag} onRemove={props.onRemove}/>)}
-      </div>
+      </div>}
     </span>
   )
 

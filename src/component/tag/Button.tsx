@@ -1,7 +1,7 @@
 import React from "react"
 
 export const RemoveButton = (props: {
-  onClick: () => {}
+  onClick: () => any
 }) => {
 
   return (
@@ -11,8 +11,8 @@ export const RemoveButton = (props: {
 }
 
 export const CollapseButton = (props: {
-  collapsed: boolean,
-  onClick: () => {}
+  collapsed?: boolean,
+  onClick: () => any
 }) => {
 
   return (
