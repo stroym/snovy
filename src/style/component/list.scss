@@ -19,21 +19,12 @@
   cursor: default;
   padding: 4px 10px;
   user-select: none;
-}
 
-.snovy-list .editable {
-  cursor: text;
-  user-select: text;
-}
+  &:hover {
+    background-color: $colour-hover;
+  }
 
-.snovy-list .active {
-  background-color: $colour-active;
-}
-
-.snovy-list-item:hover {
-  background-color: $colour-hover;
-}
-
-.snovy-list .active-context {
-  opacity: 0.8;
+  &.active-context {
+    opacity: 0.8;
+  }
 }

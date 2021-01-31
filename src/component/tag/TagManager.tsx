@@ -7,7 +7,7 @@ import ContextMenuItem from "../context_menu/ContextMenuItem"
 const TagManager = (props: {
   activeNotebook: Notebook | undefined,
   activeTag: Tag | undefined,
-  onActiveTagChange: (tag: Tag | undefined) => any
+  onActiveChange: (tag: Tag | undefined) => any
 }) => {
 
   const [activeContext, setActiveContext] = useState<Tag | undefined>()
@@ -25,7 +25,7 @@ const TagManager = (props: {
                          props.activeNotebook?.deleteTag(activeContext)
 
                          if (props.activeTag == activeContext) {
-                           props.onActiveTagChange(undefined)
+                           props.onActiveChange(undefined)
                          }
                        }
                        }/>

@@ -46,22 +46,22 @@ const ListItem = <T extends IdentifiedItem | Item>(props: {
     }, [editable]
   )
 
-  const handleContext = (event: React.MouseEvent) => {
-    event.stopPropagation()
+  const handleContext = (e: React.MouseEvent) => {
+    e.stopPropagation()
     props.onContext(props.mapped)
   }
 
   const handleOutsideClick = useCallback(
-    (event) => {
-      if (!selfRef.current?.contains(event.target)) {
+    (e) => {
+      if (!selfRef.current?.contains(e.target)) {
         setEditable(false)
       }
     }, []
   )
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value)
-    props.mapped.name = event.target.value
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value)
+    props.mapped.name = e.target.value
   }
 
   const makeClassName = () => {

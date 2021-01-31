@@ -3,6 +3,10 @@
 .snovy-context-menu {
   border: $border-thin;
   background-color: $colour-primary;
+
+  &:last-child {
+    border-bottom: none;
+  }
 }
 
 .snovy-context-menu-item {
@@ -12,12 +16,8 @@
   width: 100%;
 
   padding: 4px 10px;
-}
 
-.snovy-context-menu-item:hover {
-  background-color: $colour-hover;
-}
-
-.snovy-context-menu:last-child {
-  border-bottom: none;
+  &:hover {
+    background-color: $colour-hover;
+  }
 }

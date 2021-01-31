@@ -18,10 +18,10 @@ const Editor = () => {
     }, [noteContext]
   )
 
-  const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     if (noteContext.activeNote) {
-      setValue(event.target.value)
-      noteContext.activeNote.content = event.target.value
+      setValue(e.target.value)
+      noteContext.activeNote.content = e.target.value
     }
   }
 

@@ -7,12 +7,12 @@ const TabMenuItem = (props: {
   text: string,
   onClick: (active: string) => any,
   active: boolean,
-  defaultSelected?: boolean
+  default?: boolean
 }) => {
 
   useEffect(
     () => {
-      if (props.defaultSelected) {
+      if (props.default) {
         handleClick()
       }
     }, []
@@ -24,7 +24,8 @@ const TabMenuItem = (props: {
 
   return (
     <div id={props.id} className={"snovy-tab-menu-item ".concat(props.orientation, props.active ? " active" : "")}
-         onClick={handleClick}>
+         onClick={handleClick}
+    >
       <span>{props.text}</span>
     </div>
   )

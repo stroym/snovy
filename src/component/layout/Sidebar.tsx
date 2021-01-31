@@ -29,14 +29,13 @@ export const ManagedSidebar = (props: {
 
   const [activeTab, setActiveTab] = useState<string | undefined>()
 
-  const onTabClick = (active: string | undefined) => {
-    setActiveTab(active)
-  }
-
   return (
-    <Sidebar orientation={props.orientation} tabs={
-      <TabMenu orientation={props.orientation} tabs={props.tabs} onClick={onTabClick}/>
-    } classList={props.classList}>
+    <Sidebar orientation={props.orientation} classList={props.classList}
+             tabs={
+               <TabMenu orientation={props.orientation} tabs={props.tabs}
+                        onClick={(active: string | undefined) => {setActiveTab(active)}}
+               />}
+    >
       {props.children.map(child =>
         <React.Fragment key={child.text}>{child.text == activeTab && child.children}</React.Fragment>)
       }

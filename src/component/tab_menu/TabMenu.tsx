@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
 import TabMenuItem from "./TabMenuItem"
 
-//TODO possibly alignment to top/bottom (left/right?) in tabs prop
+//TODO possibly start/end aligned menus (but probably not
 const TabMenu = (props: {
   id?: string,
   orientation: Orientation,
@@ -9,11 +9,7 @@ const TabMenu = (props: {
   onClick: (active: string | undefined) => any,
 }) => {
 
-  const [activeTab, setActiveTab] = useState<string | undefined>(props.tabs.find(value => value.default)?.text)
-
-  const handleClick = (active: string) => {
-    setActiveTab(active)
-  }
+  const [activeTab, setActiveTab] = useState<string>()
 
   useEffect(
     () => {
@@ -25,7 +21,9 @@ const TabMenu = (props: {
     <div id={props.id} className={"snovy-tab-menu " + props.orientation}>
       {props.tabs.map((tab) =>
         <TabMenuItem key={tab.text} text={tab.text} orientation={props.orientation} active={activeTab == tab.text}
-                     onClick={handleClick}/>)}
+                     default={tab.default} onClick={(active: string) => {setActiveTab(active)}}
+        />)
+      }
     </div>
   )
 

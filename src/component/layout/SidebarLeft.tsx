@@ -95,8 +95,7 @@ function buildContext(activeContext: Notebook | Section | Note | undefined, targ
         target!.deleteById(activeContext.id)
 
         deletion()
-      }
-      }/>
+      }}/>
     ] : []
   ] : undefined
 }
