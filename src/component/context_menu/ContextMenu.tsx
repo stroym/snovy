@@ -29,8 +29,8 @@ const ContextMenu = (props: {
     }, []
   )
 
-  const handleOutsideClick = (event: any) => {
-    if (!selfRef.current?.contains(event.target)) {
+  const handleOutsideClick = (e: any) => {
+    if (!selfRef.current?.contains(e.target)) {
       onClickFinish()
     }
   }
@@ -40,25 +40,31 @@ const ContextMenu = (props: {
     props.resetContext()
   }
 
-  const handleContextMenu = (event: any) => {
-    event.preventDefault()
+  const handleContextMenu = (e: any) => {
+    e.preventDefault()
 
-    setX(event.pageX)
-    setY(event.pageY)
+    if (!selfRef.current?.contains(e.target)) {
+      setX(e.pageX)
+      setY(e.pageY)
 
-    setVisible(true)
+      setVisible(true)
+    }
   }
 
   return (
-    <div className="snovy-context-menu" hidden={!visible} ref={selfRef}
-         onClick={() => onClickFinish()}
-         style={{
-           position: "absolute",
-           top: y + "px",
-           left: x + "px"
-         }}>
-      {props.children}
-    </div>
+    <>
+      {visible &&
+      <div className="snovy-context-menu" ref={selfRef} onClick={() => onClickFinish()}
+           style={{
+             position: "absolute",
+             top: y + "px",
+             left: x + "px"
+           }}
+      >
+        {props.children}
+      </div>
+      }
+    </>
   )
 
 }
