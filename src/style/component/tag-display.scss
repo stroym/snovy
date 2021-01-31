@@ -39,12 +39,15 @@
   border-radius: 20px;
   overflow: hidden;
   margin: 2px;
-  font-size: 1.3em;
   color: $colour-text-secondary;
   background: darkgreen; //colour1
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
+
+  .tag-name {
+    border-right: none;
+  }
 }
 
 .snovy-tag-item-grouped {
@@ -66,6 +69,8 @@
       font-size: 1.1em;
       background-color: beige; //colour3
       border-radius: 10px;
+      border-left: none;
+      border-right: none;
     }
   }
 
@@ -79,6 +84,11 @@
     align-content: flex-start;
     justify-content: flex-start;
     align-items: flex-start;
+
+
+    .tag-name {
+      font-size: 1.2em;
+    }
   }
 }
 

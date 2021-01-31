@@ -1,6 +1,6 @@
 @import "../theme";
 
-$size-small-round-button: 16px;
+$size-small-round-button: 0.8em;
 
 //TODO also scale these
 .snovy-button {
@@ -10,23 +10,17 @@ $size-small-round-button: 16px;
   height: $size-small-round-button;
   min-height: $size-small-round-button;
   max-height: $size-small-round-button;
+  line-height: $size-small-round-button;
+  font-size: 1em;
+  margin: 1px;
   border: none;
   outline: none;
   border-radius: 50%;
   text-align: center;
   background: transparent;
   color: $colour-text-secondary;
-  font-weight: 600;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.3);
   }
-}
-
-.tag-remove-button {
-  margin-right: 2px;
-}
-
-.collapse-button {
-  margin-left: 2px;
 }
