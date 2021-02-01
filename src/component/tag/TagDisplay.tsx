@@ -30,6 +30,7 @@ const TagDisplay = () => {
   // also: something fancier would be nice for scoped tags
   return (
     <div id="snovy-tag-display">
+      <TagAddForm/>
       {noteContext.activeNote && Array.from(noteContext.activeNote.scopedTags.entries())
         .map(([key, value]: [string, Tag[]]) =>
           <TagItemGrouped key={key} mapped={value} onRemove={onRemove} onRemoveParent={onRemoveScoped}/>
@@ -38,7 +39,6 @@ const TagDisplay = () => {
       {noteContext.activeNote?.unscopedTags.map((item: Tag) =>
         <TagItem key={item.toString()} mapped={item} onRemove={onRemove}/>)
       }
-      <TagAddForm/>
     </div>
   )
 

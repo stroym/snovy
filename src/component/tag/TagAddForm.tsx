@@ -25,13 +25,7 @@ const TagAddForm = () => {
     <div ref={selfRef} id={"add-wrapper"}>
       <AddButton onClick={handleClick}/>
       {visible &&
-      <form id="tag-add-form" style={{
-        zIndex: 10,
-        position: "fixed",
-        top: y + "px",
-        left: x + "px"
-      }}
-      >
+      <form id="tag-add-form">
         <span>
           <input type="checkbox"/>
           <input placeholder="New scope name..."/>

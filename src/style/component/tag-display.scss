@@ -98,6 +98,8 @@
 }
 
 #tag-add-form {
+  position: absolute;
+  z-index: 10;
   background-color: darkgray;
   display: flex;
   flex-flow: column nowrap;
