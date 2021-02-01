@@ -34,7 +34,7 @@ function App() {
   return (
     <div id="snovy-app">
       <TopBar/>
-      <div id="snovy-middle">
+      <span id="snovy-middle">
         <NoteProvider>
           <LeftBar onActiveSectionChange={selectSection}
                    onActiveNotebookChange={selectNotebook} manager={manager}
@@ -44,7 +44,7 @@ function App() {
           <RightBar activeNotebook={activeNotebook} activeTag={activeTag} onActiveTagChange={selectTag}
           />
         </NoteProvider>
-      </div>
+      </span>
       <BottomBar/>
     </div>
   )
