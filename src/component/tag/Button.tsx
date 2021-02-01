@@ -2,16 +2,26 @@ import React from "react"
 
 const Button = (props: {
   className?: string,
-  onClick: () => any,
+  onClick: (e: React.MouseEvent) => any,
   icon: string
 }) => {
 
   return (
-    <button className={"snovy-button".concat(props.className ? " " + props.className : "")}
-            onClick={() => props.onClick()}
+    <button type="button" className={"snovy-button".concat(props.className ? " " + props.className : "")}
+            onClick={(e) => props.onClick(e)}
     >
       {props.icon}
     </button>
+  )
+
+}
+
+export const AddButton = (props: {
+  onClick: (e: React.MouseEvent) => any
+}) => {
+
+  return (
+    <Button className={"tag-add-button"} onClick={props.onClick} icon={"+"}/>
   )
 
 }
@@ -36,3 +46,13 @@ export const CollapseButton = (props: {
   )
 
 }
+
+// export const ColourButton = (props: {
+//   onClick: () => any
+// }) => {
+//
+//   return (
+//     <Button className={"collapse-button"} onClick={props.onClick} icon={"▲" : "▼"}/>
+//   )
+//
+// }
