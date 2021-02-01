@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from "react"
 import ContextMenuItem from "./ContextMenuItem"
+import {useOutsideClick} from "../../Hooks"
 
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
@@ -13,32 +14,27 @@ const ContextMenu = (props: {
 
   const selfRef = useRef<HTMLDivElement>(null)
 
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useOutsideClick(selfRef)
   const [x, setX] = useState(0)
   const [y, setY] = useState(0)
 
   useEffect(
     () => {
-      document.addEventListener("mousedown", handleOutsideClick)
       props.parentRef.current?.addEventListener("contextmenu", handleContextMenu)
 
       return () => {
-        document.removeEventListener("mousedown", handleOutsideClick)
         props.parentRef.current?.removeEventListener("contextmenu", handleContextMenu)
       }
     }, []
   )
 
-  const handleOutsideClick = (e: any) => {
-    if (!selfRef.current?.contains(e.target)) {
-      onClickFinish()
-    }
-  }
-
-  const onClickFinish = () => {
-    setVisible(false)
-    props.resetContext()
-  }
+  useEffect(
+    () => {
+      if (!visible) {
+        props.resetContext()
+      }
+    }, [visible]
+  )
 
   const handleContextMenu = (e: any) => {
     e.preventDefault()
@@ -54,7 +50,7 @@ const ContextMenu = (props: {
   return (
     <>
       {visible &&
-      <div className="snovy-context-menu" ref={selfRef} onClick={() => onClickFinish()}
+      <div className="snovy-context-menu" ref={selfRef} onClick={() => setVisible(false)}
            style={{
              position: "absolute",
              top: y + "px",

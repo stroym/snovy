@@ -1,29 +1,14 @@
-import React, {useEffect, useRef, useState} from "react"
+import React, {useRef, useState} from "react"
 import {AddButton} from "./Button"
+import {useOutsideClick} from "../../Hooks"
 
 const TagAddForm = () => {
 
-  const selfRef = useRef<HTMLDivElement>()
+  const selfRef = useRef<HTMLDivElement>(null)
 
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useOutsideClick(selfRef)
   const [x, setX] = useState(0)
   const [y, setY] = useState(0)
-
-  useEffect(
-    () => {
-      document.addEventListener("mousedown", handleOutsideClick)
-
-      return () => {
-        document.removeEventListener("mousedown", handleOutsideClick)
-      }
-    }, []
-  )
-
-  const handleOutsideClick = (e: any) => {
-    if (!selfRef.current?.contains(e.target)) {
-      setVisible(false)
-    }
-  }
 
   const handleClick = (e: React.MouseEvent) => {
     let negate = !visible
@@ -34,11 +19,10 @@ const TagAddForm = () => {
     }
 
     setVisible(negate)
-
   }
 
   return (
-    <div id={"add-wrapper"}>
+    <div ref={selfRef} id={"add-wrapper"}>
       <AddButton onClick={handleClick}/>
       {visible &&
       <form id="tag-add-form" style={{

@@ -1,5 +1,6 @@
-import React, {ChangeEvent, useCallback, useEffect, useRef, useState} from "react"
+import React, {ChangeEvent, useEffect, useRef, useState} from "react"
 import {IdentifiedItem, Item} from "../../model/common/Base"
+import {useOutsideClick} from "../../Hooks"
 
 const ListItem = <T extends IdentifiedItem | Item>(props: {
   mapped: T,
@@ -12,17 +13,7 @@ const ListItem = <T extends IdentifiedItem | Item>(props: {
   const selfRef = useRef<HTMLInputElement>(null)
 
   const [value, setValue] = useState<string>("")
-  const [editable, setEditable] = useState<boolean>(false)
-
-  useEffect(
-    () => {
-      document.addEventListener("mousedown", handleOutsideClick)
-
-      return () => {
-        document.removeEventListener("mousedown", handleOutsideClick)
-      }
-    }, []
-  )
+  const [editable, setEditable] = useOutsideClick(selfRef)
 
   useEffect(
     () => {
@@ -50,14 +41,6 @@ const ListItem = <T extends IdentifiedItem | Item>(props: {
     e.stopPropagation()
     props.onContext(props.mapped)
   }
-
-  const handleOutsideClick = useCallback(
-    (e) => {
-      if (!selfRef.current?.contains(e.target)) {
-        setEditable(false)
-      }
-    }, []
-  )
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value)
