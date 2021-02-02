@@ -3,6 +3,7 @@ import Tag from "../../model/coloured/Tag"
 import {NoteContext} from "../../Context"
 import {TagItem, TagItemScoped} from "./TagItem"
 import Scope from "../../model/coloured/Scope"
+import TagAddForm from "./TagAddForm"
 
 const TagDisplay = () => {
 
@@ -30,7 +31,7 @@ const TagDisplay = () => {
   // also: something fancier would be nice for scoped tags
   return (
     <div id="snovy-tag-display">
-      {/*<TagAddForm/>*/}
+      <TagAddForm/>
       {noteContext.activeNote && Array.from(noteContext.activeNote.scopedTags.entries())
         .map(([scope, tags]: [Scope, Tag[]]) =>
           <TagItemScoped key={scope.name} scope={scope} mapped={tags} onRemove={onRemove}

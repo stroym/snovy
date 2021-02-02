@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useState} from "react"
 import Tag from "../../model/coloured/Tag"
 import {CollapseButton, RemoveButton} from "./Button"
 import Scope from "../../model/coloured/Scope"
@@ -24,18 +24,7 @@ export const TagItemScoped = (props: {
   onRemoveParent: (tags: Array<Tag>) => any
 }) => {
 
-  useEffect(
-    () => {
-      console.log(props.mapped)
-    }, [props.mapped]
-  )
-
   return (
-    // <>
-    //   {props.mapped.map(it => <ExclusiveScopedTagItem key={props.scope.name+it.name} scope={props.scope} mapped={[it]}
-    //                                                   onRemove={props.onRemove}
-    //                                                   onRemoveParent={props.onRemoveParent}/>)}
-    // </>
     <>
       {props.scope.exclusive ?
         <ExclusiveScopedTagItem scope={props.scope} mapped={props.mapped} onRemove={props.onRemove}
@@ -58,7 +47,7 @@ export const ScopedTagItem = (props: {
   const [collapsed, setCollapsed] = useState(false)
 
   return (
-    <span className="snovy-tag-item-grouped">
+    <span className="snovy-tag-item tag-grouped">
       <div className="tag-group-header">
         <CollapseButton onClick={() => {setCollapsed(!collapsed)}}/>
         <span className="tag-scope">{props.scope.name}</span>
@@ -80,7 +69,7 @@ export const ExclusiveScopedTagItem = (props: {
 }) => {
 
   return (
-    <span className="snovy-tag-item">
+    <span className="snovy-tag-item tag-exclusive">
       <span className="tag-scope">{props.scope.name}</span>
       <span className="tag-name"> {props.mapped[0].name}</span>
       <RemoveButton onClick={() => props.onRemove(props.mapped[0])}/>

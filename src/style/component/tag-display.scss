@@ -7,7 +7,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   cursor: default;
-  border: 2px solid darkgreen; //colour1
+  border: 2px solid $tag-colour-primary;
   border-radius: 20px;
 }
 
@@ -17,7 +17,7 @@
 
 .tag-name {
   @extend .tag-base;
-  background: beige; //colour3
+  background: beige;
 }
 
 #snovy-tag-display {
@@ -39,7 +39,7 @@
   overflow: hidden;
   margin: 2px;
   color: $colour-text-secondary;
-  background: darkgreen; //colour1
+  background: $tag-colour-primary;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -49,14 +49,15 @@
   }
 }
 
-.snovy-tag-item-grouped {
+.tag-exclusive {
   border-radius: 10px;
-  overflow: hidden;
-  margin: 2px;
-  color: $colour-text-secondary; //settable   //TODO settables
-  background: darkgreen; //colour1
-  display: flex;
+}
+
+.tag-grouped {
+  border-radius: 10px;
+  flex-grow: 1;
   flex-flow: column nowrap;
+  align-items: unset;
 
   .tag-group-header {
     display: flex;
@@ -65,8 +66,6 @@
     justify-content: space-between;
 
     .tag-scope {
-      font-size: 1.1em;
-      //background-color: beige; //colour3
       border-radius: 10px;
       border-left: none;
       border-right: none;
@@ -74,9 +73,9 @@
   }
 
   .tag-container {
-    background-color: lightgreen;
+    background-color: $tag-colour-secondary;
     border-radius: 10px;
-    border: 2px solid darkgreen; //TODO maybe no border and instead curve header
+    border: 2px solid $tag-colour-primary; //TODO maybe no border and instead curve header
     border-top: 0;
     display: flex;
     flex-flow: row wrap;
