@@ -1,13 +1,13 @@
-import Scope from "./coloured/Scope"
 import Tag from "./coloured/Tag"
 import {Item, ItemWithParent} from "./common/Base"
 import Section from "./Section"
+import State from "./coloured/State"
 
 export default class Note extends ItemWithParent<Section> {
 
   content: string = ""
   archived: boolean = false
-  state: string = "" //class/list in notebook
+  state?: State
   tags: Set<Tag> = new Set<Tag>()
 
   get unscopedTags() {
@@ -44,12 +44,18 @@ export default class Note extends ItemWithParent<Section> {
     tags.forEach(tag => this.tags.delete(tag))
   }
 
-  isExclusivelyTagged(scope: Scope) {
-    return this.tags.toArray().find(tag => tag.scope == scope)
+  //TODO search helpers - isTagged, isTaggedAll etc.
+
+  setState(state: State) {
+    state.addToNote(this)
   }
 
-  isState(state: string): boolean {
-    return this.state === state
+  unsetState(state: State) {
+    state.removeFromNote(this)
+  }
+
+  isInState(state: State): boolean {
+    return this.state == state
   }
 
 }

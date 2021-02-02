@@ -1,6 +1,5 @@
 import Notebook from "./Notebook"
 import {IdentifiedItem, Item, OrderedItem, ParentInterface} from "./common/Base"
-import Tag from "./coloured/Tag"
 import Section from "./Section"
 import Note from "./Note"
 import Scope from "./coloured/Scope"
@@ -24,10 +23,16 @@ export default class Manager implements ParentInterface<Notebook> {
     for (let i = 0; i < this.items.length; i++) {
       let notebook = this.items[i]
 
-      for (let j = 0; j < 20; j++) {
-        let scope = new Scope("postava", "")
+      for (let j = 0; j < 10; j++) {
+        let scope = new Scope("scope " + j, "", j % 4 == 0)
 
-        this.addTestTag(notebook, "tag " + j, "", j % 3 ? scope : undefined)
+        for (let j = 0; j < 20; j++) {
+          this.addTestTag(notebook, "tag " + j, "", j % 3 ? scope : undefined)
+
+          if (scope.exclusive) {
+            break
+          }
+        }
       }
 
       for (let j = 0; j < i + 4; j++) {
@@ -114,12 +119,12 @@ export default class Manager implements ParentInterface<Notebook> {
   }
 
   addTestTag(target: Notebook, name: string, colour: string, scope?: Scope) {
-    target.tags.push(new Tag(name, colour, scope))
+    target.sets.addTag(name, colour, scope)
   }
 
   tagNote(notebook: Notebook, target: Note) {
-    for (let i = 0; i < Math.floor(Math.random() * (notebook.tags.length)); i++) {
-      target.tag(notebook.tags[Math.floor(Math.random() * (notebook.tags.length))])
+    for (let i = 0; i < Math.floor(Math.random() * (notebook.sets.tags.length)); i++) {
+      target.tag(notebook.sets.tags[Math.floor(Math.random() * (notebook.sets.tags.length))])
     }
   }
 

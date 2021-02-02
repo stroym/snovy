@@ -14,15 +14,16 @@ const TagManager = (props: {
 
   return (
     <div id="snovy-tag-manager">
-      <List<Tag> items={props.activeNotebook?.tags}
+      <List<Tag> items={props.activeNotebook?.sets.tags}
                  onActiveChange={() => {}}
                  onContextChange={(target: any) => {setActiveContext(target)}}
                  contextChildren={
                    props.activeNotebook ? [
-                     <ContextMenuItem key={"new"} text={"new"} onClick={() => { props.activeNotebook!.addTag()}}/>,
+                     <ContextMenuItem key={"new"} text={"new"}
+                                      onClick={() => { props.activeNotebook!.sets.addTag("", "")}}/>,
                      ...activeContext ? [
                        <ContextMenuItem key={"delete"} text={"delete"} onClick={() => {
-                         props.activeNotebook?.deleteTag(activeContext)
+                         props.activeNotebook?.sets.deleteTag(activeContext)
 
                          if (props.activeTag == activeContext) {
                            props.onActiveChange(undefined)

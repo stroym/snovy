@@ -2,7 +2,6 @@ import {ColouredItem} from "../common/Base"
 import Note from "../Note"
 import Scope from "./Scope"
 
-//TODO add colour to both tag and category
 export default class Tag extends ColouredItem {
 
   //owner - notebook | manager (if global) ? not sure if bidirectional relationship is necessary
@@ -26,6 +25,14 @@ export default class Tag extends ColouredItem {
 
   untagNoteAll() {
     this.taggedNotes.forEach(note => note.untag(this))
+  }
+
+  addScope(scope: Scope) {
+    this.scope = scope
+  }
+
+  removeScope() {
+    this.scope = undefined
   }
 
   equals(tag: Tag): boolean {

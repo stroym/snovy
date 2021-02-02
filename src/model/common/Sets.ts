@@ -1,23 +1,61 @@
 import Scope from "../coloured/Scope"
 import Tag from "../coloured/Tag"
+import State from "../coloured/State"
 
 export default class Sets {
 
-  categories: Set<Scope> = new Set<Scope>()
-  tags: Set<Tag> = new Set<Tag>()
-  states: Set<string> = new Set<string>()
+  scopes: Array<Scope> = new Array<Scope>()
+  tags: Array<Tag> = new Array<Tag>()
+  states: Array<State> = new Array<State>()
 
-  addTag() {
-    this.tags.add(new Tag("", ""))
+  addTag(name: string, colour: string, scope?: Scope) {
+    this.tags.push(new Tag(name, colour, scope))
   }
 
   deleteTag(tag: Tag) {
-    for (const it of this.tags) {
-      if (it.equals(tag)) {
-        it.untagNoteAll()
-        this.tags.delete(it)
+    this.tags.find(it => {
+        if (it.equals(tag)) {
+          it.untagNoteAll()
+          this.tags.delete(it)
+        }
       }
-    }
+    )
+  }
+
+  addScope(name: string, colour: string, exclusive?: boolean) {
+    this.scopes.push(new Scope(name, colour, exclusive))
+  }
+
+  deleteScope(scope: Scope, keepTags: boolean) {
+    this.scopes.find(it => {
+        if (it.name == scope.name) {
+          if (keepTags) {
+            this.tags.forEach(it => {
+              if (it.scope == scope) {
+                it.removeScope()
+              }
+            })
+          } else {
+            this.tags.forEach(it => {
+              if (it.scope == scope) {
+                it.untagNoteAll()
+                this.tags.delete(it)
+              }
+            })
+          }
+
+          this.scopes.delete(it)
+        }
+      }
+    )
+  }
+
+  addState(name: string, colour: string) {
+    this.states.push(new State(name, colour))
+  }
+
+  deleteState(state: State) {
+    this.states.delete(state)
   }
 
 }
