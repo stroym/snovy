@@ -16,23 +16,28 @@ export default class Manager implements ParentInterface<Notebook> {
 
   //testing data
   constructor() {
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 1; i++) {
       this.addNotebook("notebook " + i, i)
     }
 
     for (let i = 0; i < this.items.length; i++) {
       let notebook = this.items[i]
 
-      for (let j = 0; j < 10; j++) {
-        let scope = new Scope("scope " + j, "", j % 4 == 0)
+      for (let j = 0; j < 6; j++) {
+        this.addTestScope(notebook, "scope" + j, "", j % 2 == 0)
+        let scope = notebook.sets.scopes[j]
 
-        for (let j = 0; j < 20; j++) {
-          this.addTestTag(notebook, "tag " + j, "", j % 3 ? scope : undefined)
+        for (let k = 0; k < 6; k++) {
+          this.addTestTag(notebook, j + "t" + k, "", scope)
 
           if (scope.exclusive) {
             break
           }
         }
+      }
+
+      for (let k = 0; k < 10; k++) {
+        this.addTestTag(notebook, "t" + k, "", undefined)
       }
 
       for (let j = 0; j < i + 4; j++) {
@@ -122,9 +127,14 @@ export default class Manager implements ParentInterface<Notebook> {
     target.sets.addTag(name, colour, scope)
   }
 
+  addTestScope(target: Notebook, name: string, colour: string, exclusive?: boolean) {
+    target.sets.addScope(name, colour, exclusive)
+  }
+
   tagNote(notebook: Notebook, target: Note) {
-    for (let i = 0; i < Math.floor(Math.random() * (notebook.sets.tags.length)); i++) {
-      target.tag(notebook.sets.tags[Math.floor(Math.random() * (notebook.sets.tags.length))])
+    for (let i = 0; i < 50; i++) {
+      let tag = notebook.sets.tags[Math.floor(Math.random() * (notebook.sets.tags.length))]
+      target.tag(tag)
     }
   }
 

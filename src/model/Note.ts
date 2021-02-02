@@ -2,6 +2,7 @@ import Tag from "./coloured/Tag"
 import {Item, ItemWithParent} from "./common/Base"
 import Section from "./Section"
 import State from "./coloured/State"
+import Scope from "./coloured/Scope"
 
 export default class Note extends ItemWithParent<Section> {
 
@@ -18,15 +19,14 @@ export default class Note extends ItemWithParent<Section> {
   get scopedTags() {
     let scopedTags = this.tags.toArray().filter(tag => tag.scope).sort(Item.compareByName)
 
-    let temp = new Map<string, Array<Tag>>()
+    let temp = new Map<Scope, Array<Tag>>()
 
     scopedTags.forEach((tag) => {
-      if (!temp.has(tag.scope!.name!)) {
-        temp.set(tag.scope!.name!, [])
+      if (!temp.has(tag.scope!)) {
+        temp.set(tag.scope!, [])
       }
 
-      temp.get(tag.scope!.name!)!.push(tag)
-
+      temp.get(tag.scope!)!.push(tag)
     })
 
     return temp
@@ -37,7 +37,7 @@ export default class Note extends ItemWithParent<Section> {
   }
 
   untag(tag: Tag): void {
-    tag.untagNote(this)
+    tag.unTagNote(this)
   }
 
   untagAll(tags: Array<Tag>) {

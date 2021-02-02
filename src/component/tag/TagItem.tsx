@@ -1,6 +1,7 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import Tag from "../../model/coloured/Tag"
 import {CollapseButton, RemoveButton} from "./Button"
+import Scope from "../../model/coloured/Scope"
 
 export const TagItem = (props: {
   mapped: Tag,
@@ -16,7 +17,39 @@ export const TagItem = (props: {
 
 }
 
-export const TagItemGrouped = (props: {
+export const TagItemScoped = (props: {
+  scope: Scope,
+  mapped: Array<Tag>,
+  onRemove: (tag: Tag) => any,
+  onRemoveParent: (tags: Array<Tag>) => any
+}) => {
+
+  useEffect(
+    () => {
+      console.log(props.mapped)
+    }, [props.mapped]
+  )
+
+  return (
+    // <>
+    //   {props.mapped.map(it => <ExclusiveScopedTagItem key={props.scope.name+it.name} scope={props.scope} mapped={[it]}
+    //                                                   onRemove={props.onRemove}
+    //                                                   onRemoveParent={props.onRemoveParent}/>)}
+    // </>
+    <>
+      {props.scope.exclusive ?
+        <ExclusiveScopedTagItem scope={props.scope} mapped={props.mapped} onRemove={props.onRemove}
+                                onRemoveParent={props.onRemoveParent}/> :
+        <ScopedTagItem scope={props.scope} mapped={props.mapped} onRemove={props.onRemove}
+                       onRemoveParent={props.onRemoveParent}/>
+      }
+    </>
+  )
+
+}
+
+export const ScopedTagItem = (props: {
+  scope: Scope,
   mapped: Array<Tag>,
   onRemove: (tag: Tag) => any,
   onRemoveParent: (tags: Array<Tag>) => any
@@ -28,7 +61,7 @@ export const TagItemGrouped = (props: {
     <span className="snovy-tag-item-grouped">
       <div className="tag-group-header">
         <CollapseButton onClick={() => {setCollapsed(!collapsed)}}/>
-        <span className="tag-scope">{props.mapped[0].scope!.name}</span>
+        <span className="tag-scope">{props.scope.name}</span>
         <RemoveButton onClick={() => props.onRemoveParent(props.mapped)}/>
       </div>
       {!collapsed && <div className="tag-container">
@@ -39,17 +72,18 @@ export const TagItemGrouped = (props: {
 
 }
 
-export const TagItemExclusive = (props: {
-  mapped: Tag,
+export const ExclusiveScopedTagItem = (props: {
+  scope: Scope,
+  mapped: Array<Tag>,
   onRemove: (tag: Tag) => any,
-  onRemoveParent: (tags: Tag) => any
+  onRemoveParent: (tags: Array<Tag>) => any
 }) => {
 
   return (
-    <span className="snovy-tag-item-exclusive">
-      <span className="tag-scope">{props.mapped.scope}</span>
-      <TagItem mapped={props.mapped} onRemove={props.onRemove}/>
-      <RemoveButton onClick={() => props.onRemoveParent(props.mapped)}/>
+    <span className="snovy-tag-item">
+      <span className="tag-scope">{props.scope.name}</span>
+      <span className="tag-name"> {props.mapped[0].name}</span>
+      <RemoveButton onClick={() => props.onRemove(props.mapped[0])}/>
     </span>
   )
 

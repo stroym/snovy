@@ -15,7 +15,7 @@ export default class Sets {
   deleteTag(tag: Tag) {
     this.tags.find(it => {
         if (it.equals(tag)) {
-          it.untagNoteAll()
+          it.unTagNoteAll()
           this.tags.delete(it)
         }
       }
@@ -32,13 +32,13 @@ export default class Sets {
           if (keepTags) {
             this.tags.forEach(it => {
               if (it.scope == scope) {
-                it.removeScope()
+                it.removeScope(scope)
               }
             })
           } else {
             this.tags.forEach(it => {
               if (it.scope == scope) {
-                it.untagNoteAll()
+                it.unTagNoteAll()
                 this.tags.delete(it)
               }
             })

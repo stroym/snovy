@@ -1,8 +1,8 @@
 import React, {useContext, useState} from "react"
 import Tag from "../../model/coloured/Tag"
 import {NoteContext} from "../../Context"
-import {TagItem, TagItemGrouped} from "./TagItem"
-import TagAddForm from "./TagAddForm"
+import {TagItem, TagItemScoped} from "./TagItem"
+import Scope from "../../model/coloured/Scope"
 
 const TagDisplay = () => {
 
@@ -30,10 +30,11 @@ const TagDisplay = () => {
   // also: something fancier would be nice for scoped tags
   return (
     <div id="snovy-tag-display">
-      <TagAddForm/>
+      {/*<TagAddForm/>*/}
       {noteContext.activeNote && Array.from(noteContext.activeNote.scopedTags.entries())
-        .map(([key, value]: [string, Tag[]]) =>
-          <TagItemGrouped key={key} mapped={value} onRemove={onRemove} onRemoveParent={onRemoveScoped}/>
+        .map(([scope, tags]: [Scope, Tag[]]) =>
+          <TagItemScoped key={scope.name} scope={scope} mapped={tags} onRemove={onRemove}
+                         onRemoveParent={onRemoveScoped}/>
         )
       }
       {noteContext.activeNote?.unscopedTags.map((item: Tag) =>
@@ -45,3 +46,4 @@ const TagDisplay = () => {
 }
 
 export default TagDisplay
+

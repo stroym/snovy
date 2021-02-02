@@ -10,7 +10,10 @@ export default class Tag extends ColouredItem {
 
   constructor(name: string, colour: string, scope?: Scope) {
     super(name, colour)
-    this.scope = scope
+
+    if (scope) {
+      this.addScope(scope)
+    }
   }
 
   tagNote(note: Note) {
@@ -18,21 +21,21 @@ export default class Tag extends ColouredItem {
     this.taggedNotes.add(note)
   }
 
-  untagNote(note: Note) {
+  unTagNote(note: Note) {
     this.taggedNotes.delete(note)
     note.tags.delete(this)
   }
 
-  untagNoteAll() {
+  unTagNoteAll() {
     this.taggedNotes.forEach(note => note.untag(this))
   }
 
   addScope(scope: Scope) {
-    this.scope = scope
+    scope?.scopeTag(this)
   }
 
-  removeScope() {
-    this.scope = undefined
+  removeScope(scope: Scope) {
+    scope.unScopeTag(this)
   }
 
   equals(tag: Tag): boolean {
