@@ -15,9 +15,10 @@ export default class Note extends ItemWithParent<Section> {
     return this.tags.toArray().filter(tag => !tag.scope).sort(Item.compareByName)
   }
 
-  //TODO this should be possible with scope directly, not just the string
   get scopedTags() {
-    let scopedTags = this.tags.toArray().filter(tag => tag.scope).sort(Item.compareByName)
+    let scopedTags = this.tags.toArray()
+      .sort(Item.compareByName).filter(tag => tag.scope)
+      .sort(Tag.compareByExclusivity)
 
     let temp = new Map<Scope, Array<Tag>>()
 
