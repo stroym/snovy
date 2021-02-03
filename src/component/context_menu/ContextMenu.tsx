@@ -4,7 +4,7 @@ import {useHideOnOutsideClick} from "../../Hooks"
 
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
-  resetContext: () => any,
+  resetContext: () => void,
   children?: Array<React.ReactElement<typeof ContextMenuItem>>
 }) => {
 

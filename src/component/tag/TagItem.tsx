@@ -5,7 +5,7 @@ import Scope from "../../model/coloured/Scope"
 
 export const TagItem = (props: {
   mapped: Tag,
-  onRemove: (tag: Tag) => any,
+  onRemove: (tag: Tag) => void,
 }) => {
 
   return (
@@ -17,12 +17,7 @@ export const TagItem = (props: {
 
 }
 
-export const TagItemScoped = (props: {
-  scope: Scope,
-  mapped: Array<Tag>,
-  onRemove: (tag: Tag) => any,
-  onRemoveParent: (tags: Array<Tag>) => any
-}) => {
+export const TagItemScoped = (props: TagItemProps) => {
 
   return (
     <>
@@ -37,12 +32,7 @@ export const TagItemScoped = (props: {
 
 }
 
-export const ScopedTagItem = (props: {
-  scope: Scope,
-  mapped: Array<Tag>,
-  onRemove: (tag: Tag) => any,
-  onRemoveParent: (tags: Array<Tag>) => any
-}) => {
+export const ScopedTagItem = (props: TagItemProps) => {
 
   const [collapsed, setCollapsed] = useState(false)
 
@@ -61,12 +51,7 @@ export const ScopedTagItem = (props: {
 
 }
 
-export const ExclusiveScopedTagItem = (props: {
-  scope: Scope,
-  mapped: Array<Tag>,
-  onRemove: (tag: Tag) => any,
-  onRemoveParent: (tags: Array<Tag>) => any
-}) => {
+export const ExclusiveScopedTagItem = (props: TagItemProps) => {
 
   return (
     <span className="snovy-tag-item tag-exclusive">
@@ -76,4 +61,11 @@ export const ExclusiveScopedTagItem = (props: {
     </span>
   )
 
+}
+
+type TagItemProps = {
+  scope: Scope,
+  mapped: Array<Tag>,
+  onRemove: (tag: Tag) => void,
+  onRemoveParent: (tags: Array<Tag>) => void
 }

@@ -8,7 +8,7 @@ export default class Scope extends ColouredItem {
 
   scopedTags: Set<Tag> = new Set<Tag>()
 
-  constructor(name: string, colour: string, exclusive: boolean = false) {
+  constructor(name: string, colour: string, exclusive = false) {
     super(name, colour)
     this.name = name
     this.exclusive = exclusive

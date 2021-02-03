@@ -14,9 +14,7 @@ function randomString(len: number) {
 
 export default class Manager implements ParentInterface<Notebook> {
 
-  idCounter: number = 0
-
-  singleNotebook: boolean = false //probably should be in an options class
+  idCounter = 0
 
   items: Array<Notebook> = new Array<Notebook>()
 
@@ -27,11 +25,11 @@ export default class Manager implements ParentInterface<Notebook> {
     }
 
     for (let i = 0; i < this.items.length; i++) {
-      let notebook = this.items[i]
+      const notebook = this.items[i]
 
       for (let j = 0; j < 6; j++) {
         this.addTestScope(notebook, randomString(20) + j, "", j % 2 == 0)
-        let scope = notebook.sets.scopes[j]
+        const scope = notebook.sets.scopes[j]
 
         for (let k = 0; k < 6; k++) {
           this.addTestTag(notebook, j + randomString(10) + k, "", scope)
@@ -49,7 +47,7 @@ export default class Manager implements ParentInterface<Notebook> {
       for (let j = 0; j < i + 4; j++) {
         this.addSection(notebook)
 
-        let section = notebook.sections[j]
+        const section = notebook.sections[j]
 
         for (let k = 0; k < 5 + j * 10; k++) {
           this.addNote(section)
@@ -58,23 +56,23 @@ export default class Manager implements ParentInterface<Notebook> {
     }
   }
 
-  get itemsSortedById() {
+  get itemsSortedById(): Array<Notebook> {
     return this.items.sort(IdentifiedItem.compareById)
   }
 
-  get itemsSortedAlphabetically() {
+  get itemsSortedAlphabetically(): Array<Notebook> {
     return this.items.sort(Item.compareByName)
   }
 
-  get itemsSortedByOrder() {
+  get itemsSortedByOrder(): Array<Notebook> {
     return this.items.sort(OrderedItem.compareByOrder)
   }
 
-  get notebooks() {
+  get notebooks(): Array<Notebook> {
     return this.itemsSortedById
   }
 
-  addItem(item: Notebook, reorder: boolean = false) {
+  addItem(item: Notebook, reorder = false): void {
     if (reorder) {
       this.itemsSortedByOrder.slice(item.order).forEach(value => {
         value.order++
@@ -85,8 +83,8 @@ export default class Manager implements ParentInterface<Notebook> {
     this.idCounter++
   }
 
-  deleteItem(item: Notebook) {
-    let index = this.items.indexOf(item)
+  deleteItem(item: Notebook): void {
+    const index = this.items.indexOf(item)
 
     this.items.splice(index, 1)
 
@@ -96,7 +94,7 @@ export default class Manager implements ParentInterface<Notebook> {
   }
 
   deleteById(id: number): boolean {
-    let item = this.items.find(value => {
+    const item = this.items.find(value => {
       return value.id == id
     })
 
@@ -108,38 +106,38 @@ export default class Manager implements ParentInterface<Notebook> {
     }
   }
 
-  removeNotebook(item: Notebook) {
+  removeNotebook(item: Notebook): void {
     this.deleteItem(item)
   }
 
   //for testing purposes
-  addNotebook(name: string, order: number) {
+  addNotebook(name: string, order: number): void {
     this.addItem(new Notebook(this, this.idCounter, name, order))
   }
 
-  addSection(target: Notebook) {
+  addSection(target: Notebook): void {
     target.addItem(new Section(target, target.idCounter, "section " + target.idCounter, target.items.length))
   }
 
-  addNote(target: Section) {
-    let temp = new Note(target, target.idCounter, "note " + target.idCounter, target.items.length)
+  addNote(target: Section): void {
+    const temp = new Note(target, target.idCounter, "note " + target.idCounter, target.items.length)
     temp.content = "content " + target.idCounter
     this.tagNote(target.parent, temp)
 
     target.addItem(temp)
   }
 
-  addTestTag(target: Notebook, name: string, colour: string, scope?: Scope) {
+  addTestTag(target: Notebook, name: string, colour: string, scope?: Scope): void {
     target.sets.addTag(name, colour, scope)
   }
 
-  addTestScope(target: Notebook, name: string, colour: string, exclusive?: boolean) {
+  addTestScope(target: Notebook, name: string, colour: string, exclusive?: boolean): void {
     target.sets.addScope(name, colour, exclusive)
   }
 
-  tagNote(notebook: Notebook, target: Note) {
+  tagNote(notebook: Notebook, target: Note): void {
     for (let i = 0; i < 50; i++) {
-      let tag = notebook.sets.tags[Math.floor(Math.random() * (notebook.sets.tags.length))]
+      const tag = notebook.sets.tags[Math.floor(Math.random() * (notebook.sets.tags.length))]
       target.tag(tag)
     }
   }

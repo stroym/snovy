@@ -6,8 +6,8 @@ import Scope from "./coloured/Scope"
 
 export default class Note extends ItemWithParent<Section> {
 
-  content: string = ""
-  archived: boolean = false
+  content = ""
+  archived = false
   state?: State
   tags: Set<Tag> = new Set<Tag>()
 
@@ -16,13 +16,15 @@ export default class Note extends ItemWithParent<Section> {
   }
 
   get scopedTags() {
-    let scopedTags = this.tags.toArray()
+    const scopedTags = this.tags.toArray()
       .sort(Item.compareByName).filter(tag => tag.scope)
       .sort(Tag.compareByExclusivity)
 
-    let temp = new Map<Scope, Array<Tag>>()
+    const temp = new Map<Scope, Array<Tag>>()
 
     scopedTags.forEach((tag) => {
+      console.assert(tag.scope!)
+
       if (!temp.has(tag.scope!)) {
         temp.set(tag.scope!, [])
       }

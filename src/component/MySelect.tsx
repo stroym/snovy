@@ -7,7 +7,7 @@ import {useHideOnOutsideClick} from "../Hooks"
 const MySelect = <T extends Notebook>(props: {
   items: Array<T> | undefined,
   selection?: T | undefined
-  onActiveChange: (active: T | undefined) => any
+  onActiveChange: (active: T | undefined) => void
 }) => {
 
   const selfRef = useRef(null)

@@ -13,7 +13,7 @@ const TagNoteForm = () => {
   const [create, setCreate] = useState(false)
 
   const handleClick = (e: React.MouseEvent) => {
-    let negate = !visible
+    const negate = !visible
 
     if (negate) {
       setX(e.pageX)

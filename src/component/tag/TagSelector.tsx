@@ -1,6 +1,6 @@
 import React from "react"
 
-export const TagSelector = (props: {}) => {
+export const TagSelector = () => {
 
   return (
     <span className="snovy-tag-selector">

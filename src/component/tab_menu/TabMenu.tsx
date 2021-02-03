@@ -6,7 +6,7 @@ const TabMenu = (props: {
   id?: string,
   orientation: Orientation,
   tabs: Array<{ text: string, default?: boolean }>
-  onClick: (active: string | undefined) => any,
+  onClick: (active: string | undefined) => void,
 }) => {
 
   const [activeTab, setActiveTab] = useState<string>()

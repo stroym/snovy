@@ -12,8 +12,8 @@ import List from "../list/List"
 import MySelect from "../MySelect"
 
 export const LeftBar = (props: {
-  onActiveNotebookChange: (active: Notebook | undefined) => any,
-  onActiveSectionChange: (active: Section | undefined) => any,
+  onActiveNotebookChange: (active: Notebook | undefined) => void,
+  onActiveSectionChange: (active: Section | undefined) => void,
   manager: Manager,
   activeNotebook: Notebook | undefined,
   activeSection: Section | undefined,
@@ -25,9 +25,9 @@ export const LeftBar = (props: {
     return null
   }
 
-  const [activeContext, setActiveContext] = useState<Notebook | Section | Note | undefined>()
+  const [activeContext, setActiveContext] = useState<Notebook | Section | Note | undefined | null>()
 
-  const onContextChange = (target: any) => {
+  const onContextChange = (target: Notebook | Section | Note | undefined | null) => {
     setActiveContext(target)
   }
 
@@ -85,7 +85,7 @@ function buildKey(parent: OrderedItem | undefined, defaultKey: string) {
 }
 
 //TODO autoselect previous item when currently selected is deleted
-function buildContext(activeContext: Notebook | Section | Note | undefined, target: Section | Notebook | undefined, deletion: () => any) {
+function buildContext(activeContext: Notebook | Section | Note | undefined | null, target: Section | Notebook | undefined, deletion: () => void) {
   return target ? [
     <ContextMenuItem key={"new"} text={"new"} onClick={() => {
       if (activeContext) {

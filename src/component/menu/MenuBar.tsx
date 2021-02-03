@@ -1,9 +1,9 @@
 import React from "react"
 
-const MenuBar = (props: {}) => {
+const MenuBar = () => {
 
   return (
-    <div></div>
+    <div/>
   )
 
 }

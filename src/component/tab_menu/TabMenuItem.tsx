@@ -5,7 +5,7 @@ const TabMenuItem = (props: {
   id?: string,
   orientation: Orientation,
   text: string,
-  onClick: (active: string) => any,
+  onClick: (active: string) => void,
   active: boolean,
   default?: boolean
 }) => {

@@ -6,8 +6,8 @@ const ListItem = <T extends IdentifiedItem | Item>(props: {
   mapped: T,
   active: boolean,
   activeContext: boolean,
-  onClick: (item: T) => any,
-  onContext: (item: T) => any
+  onClick: (item: T) => void,
+  onContext: (item: T) => void
 }) => {
 
   const selfRef = useRef<HTMLInputElement>(null)

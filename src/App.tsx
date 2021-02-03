@@ -14,7 +14,7 @@ import {NoteProvider} from "./Context"
 
 function App() {
 
-  const [manager, setManager] = useState<Manager>(new Manager())
+  const [manager, _setManager] = useState<Manager>(new Manager())
   const [activeNotebook, setActiveNotebook] = useState<Notebook | undefined>()
   const [activeSection, setActiveSection] = useState<Section | undefined>()
   const [activeTag, setActiveTag] = useState<Tag | undefined>()

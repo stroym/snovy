@@ -90,7 +90,7 @@ export abstract class ItemWithParent<P extends ParentInterface<any>> extends Ord
 
 export abstract class ItemWithParentAndChildren<T extends OrderedItem, P extends ParentInterface<any>> extends ItemWithParent<P> implements ParentInterface<T> {
 
-  idCounter: number = 0
+  idCounter = 0
 
   items: Array<T> = new Array<T>()
 
@@ -111,12 +111,12 @@ export abstract class ItemWithParentAndChildren<T extends OrderedItem, P extends
   }
 
   deleteItem(item: T) {
-    let index = this.items.delete(item)
+    const index = this.items.delete(item)
 
     this.items.slice(index).forEach(value => { value.order--})
   }
 
-  addItem(item: T, reorder: boolean = false) {
+  addItem(item: T, reorder = false) {
     if (reorder) {
       this.itemsSortedByOrder.slice(item.order).forEach(value => {
         value.order++
@@ -132,7 +132,7 @@ export abstract class ItemWithParentAndChildren<T extends OrderedItem, P extends
   }
 
   deleteById(id: number): boolean {
-    let item = this.items.find(value => {
+    const item = this.items.find(value => {
       return value.id == id
     })
 

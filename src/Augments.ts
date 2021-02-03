@@ -21,7 +21,7 @@ Array.prototype.last = function <T>(): T | undefined {
 }
 
 Array.prototype.delete = function <T>(item: T): number {
-  let index = this.indexOf(item)
+  const index = this.indexOf(item)
   this.splice(index, 1)
   return index
 }

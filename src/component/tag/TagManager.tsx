@@ -7,16 +7,16 @@ import ContextMenuItem from "../context_menu/ContextMenuItem"
 const TagManager = (props: {
   activeNotebook: Notebook | undefined,
   activeTag: Tag | undefined,
-  onActiveChange: (tag: Tag | undefined) => any
+  onActiveChange: (tag: Tag | undefined) => void
 }) => {
 
-  const [activeContext, setActiveContext] = useState<Tag | undefined>()
+  const [activeContext, setActiveContext] = useState<Tag | undefined | null>()
 
   return (
     <div id="snovy-tag-manager">
       <List<Tag> items={props.activeNotebook?.sets.tags}
                  onActiveChange={() => {}}
-                 onContextChange={(target: any) => {setActiveContext(target)}}
+                 onContextChange={(target: Tag | undefined | null) => {setActiveContext(target)}}
                  contextChildren={
                    props.activeNotebook ? [
                      <ContextMenuItem key={"new"} text={"new"}

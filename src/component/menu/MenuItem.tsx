@@ -1,9 +1,9 @@
 import React from "react"
 
-const MenuItem = (props: {}) => {
+const MenuItem = () => {
 
   return (
-    <div></div>
+    <div/>
   )
 
 }

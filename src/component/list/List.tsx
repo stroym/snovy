@@ -8,13 +8,13 @@ import ContextMenuItem from "../context_menu/ContextMenuItem"
 const List = <T extends IdentifiedItem | Item>(props: {
   id?: string,
   className?: string,
-  onActiveChange: (active: T | undefined) => any,
-  onContextChange?: (active: T | null | undefined) => any,
+  onActiveChange: (active: T | undefined) => void,
+  onContextChange?: (active: T | null | undefined) => void,
   contextChildren?: Array<React.ReactElement<typeof ContextMenuItem>>
   items: Array<T> | undefined,
   defaultFirst?: boolean,
   selection?: T,
-  style?: any
+  style?: void
 }) => {
 
   const selfRef = useRef<HTMLDivElement>(null)

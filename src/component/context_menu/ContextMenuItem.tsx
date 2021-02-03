@@ -2,7 +2,7 @@ import React from "react"
 
 export const ContextMenuItem = (props: {
   text: string,
-  onClick: () => any
+  onClick: () => void
 }) => {
 
   return (

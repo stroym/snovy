@@ -13,7 +13,7 @@ const NoteDetail = () => {
   }
 
   //TODO find a better way to update this component
-  const [updated, setUpdated] = useState<string>()
+  const [, setUpdated] = useState<string>()
 
   const onRemove = (tag: Tag) => {
     setUpdated(tag.toString())

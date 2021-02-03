@@ -11,16 +11,12 @@ export default class Notebook extends ItemWithParentAndChildren<Section, Manager
     return this.items
   }
 
-  insert() {
+  insert(): void {
     this.addItem(new Section(this, this.idCounter, "", this.items.length))
   }
 
-  insertAt(order: number) {
+  insertAt(order: number): void {
     this.addItem(new Section(this, this.idCounter, "", order), true)
-  }
-
-  deleteSection(section: Section) {
-    this.deleteItem(section)
   }
 
 }

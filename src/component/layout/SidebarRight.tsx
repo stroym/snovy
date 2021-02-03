@@ -9,7 +9,7 @@ import TagManager from "../tag/TagManager"
 const SidebarRight = (props: {
   activeNotebook: Notebook | undefined,
   activeTag: Tag | undefined,
-  onActiveTagChange: (tag: Tag | undefined) => any
+  onActiveTagChange: (tag: Tag | undefined) => void
 }) => {
 
   return (
