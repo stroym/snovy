@@ -28,6 +28,7 @@ export default class Tag extends ColouredItem {
 
   unTagNoteAll() {
     this.taggedNotes.forEach(note => note.untag(this))
+    return this
   }
 
   addScope(scope: Scope) {

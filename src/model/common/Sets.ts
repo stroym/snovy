@@ -13,13 +13,7 @@ export default class Sets {
   }
 
   deleteTag(tag: Tag) {
-    this.tags.find(it => {
-        if (it.equals(tag)) {
-          it.unTagNoteAll()
-          this.tags.delete(it)
-        }
-      }
-    )
+    this.tags.delete(this.tags.find(it => it.equals(tag))!.unTagNoteAll())
   }
 
   addScope(name: string, colour: string, exclusive?: boolean) {
