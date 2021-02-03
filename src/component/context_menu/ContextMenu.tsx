@@ -14,7 +14,7 @@ const ContextMenu = (props: {
 
   const selfRef = useRef<HTMLDivElement>(null)
 
-  const [visible, setVisible] = useHideOnOutsideClick(selfRef)
+  const [visible, , flip] = useHideOnOutsideClick(selfRef)
   const [x, setX] = useState(0)
   const [y, setY] = useState(0)
 
@@ -43,14 +43,14 @@ const ContextMenu = (props: {
       setX(e.pageX)
       setY(e.pageY)
 
-      setVisible(true)
+      flip()
     }
   }
 
   return (
     <>
       {visible &&
-      <div className="snovy-context-menu" ref={selfRef} onClick={() => setVisible(false)}
+      <div className="snovy-context-menu" ref={selfRef} onClick={flip}
            style={{
              position: "absolute",
              top: y + "px",

@@ -13,7 +13,7 @@ const ListItem = <T extends IdentifiedItem | Item>(props: {
   const selfRef = useRef<HTMLInputElement>(null)
 
   const [value, setValue] = useState<string>("")
-  const [editable, setEditable] = useHideOnOutsideClick(selfRef)
+  const [editable, , flip] = useHideOnOutsideClick(selfRef)
 
   useEffect(
     () => {
@@ -55,7 +55,7 @@ const ListItem = <T extends IdentifiedItem | Item>(props: {
     <input className={makeClassName()} ref={selfRef} type="text" value={value} placeholder={"Name..."}
            onChange={handleChange} readOnly={!editable}
            onClick={() => {props.onClick(props.mapped)}}
-           onDoubleClick={() => {setEditable(true)}}
+           onDoubleClick={flip}
            onContextMenu={handleContext}
     />
   )

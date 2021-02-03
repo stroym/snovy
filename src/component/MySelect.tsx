@@ -14,7 +14,7 @@ const MySelect = <T extends Notebook>(props: {
 
   const [active, setActive] = useState<T | undefined>(props.selection)
   const [value, setValue] = useState<string | undefined>(props.selection?.name)
-  const [visible, setVisible] = useHideOnOutsideClick(selfRef)
+  const [visible, setVisible, flip] = useHideOnOutsideClick(selfRef)
 
   useEffect(
     () => {
@@ -30,16 +30,12 @@ const MySelect = <T extends Notebook>(props: {
     setValue(e.target.value)
   }
 
-  const handleOptions = () => {
-    setVisible(!visible)
-  }
-
   return (
     <span ref={selfRef} id="snovy-selector-notebook">
       <span id="outer-span">
-        <span id="inner-span" onClick={handleOptions}>
+        <span id="inner-span" onClick={flip}>
           <input className="snovy-combobox" type="text" value={value} onChange={handleChange}/>
-        <CollapseButton onClick={handleOptions}/>
+        <CollapseButton onClick={flip}/>
         </span>
         <AddButton onClick={() => {}}/>
       </span>

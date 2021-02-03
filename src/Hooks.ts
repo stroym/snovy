@@ -1,9 +1,13 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react"
 
 export function useHideOnOutsideClick(elementRef: React.RefObject<Element | undefined>, initialState?: boolean):
-  [boolean, Dispatch<SetStateAction<boolean>>] {
+  [boolean, Dispatch<SetStateAction<boolean>>, () => void] {
 
   const [visible, setVisible] = useState(initialState ?? false)
+
+  const flip = () => {
+    setVisible(!visible)
+  }
 
   useEffect(
     () => {
@@ -21,7 +25,7 @@ export function useHideOnOutsideClick(elementRef: React.RefObject<Element | unde
     }
   }
 
-  return [visible, setVisible]
+  return [visible, setVisible, flip]
 }
 
 export function useCollapse(elementRef: React.RefObject<HTMLElement | undefined>):
