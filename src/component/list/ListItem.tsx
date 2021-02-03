@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useEffect, useRef, useState} from "react"
 import {IdentifiedItem, Item} from "../../model/common/Base"
-import {useOutsideClick} from "../../Hooks"
+import {useHideOnOutsideClick} from "../../Hooks"
 
 const ListItem = <T extends IdentifiedItem | Item>(props: {
   mapped: T,
@@ -13,7 +13,7 @@ const ListItem = <T extends IdentifiedItem | Item>(props: {
   const selfRef = useRef<HTMLInputElement>(null)
 
   const [value, setValue] = useState<string>("")
-  const [editable, setEditable] = useOutsideClick(selfRef)
+  const [editable, setEditable] = useHideOnOutsideClick(selfRef)
 
   useEffect(
     () => {

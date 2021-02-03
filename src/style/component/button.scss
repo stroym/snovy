@@ -1,18 +1,17 @@
 @import "../theme";
 
-$size-small-round-button: 0.8em;
+$button-size: 1.2em;
 
 //TODO also scale these
 .snovy-button {
-  width: $size-small-round-button;
-  min-width: $size-small-round-button;
-  max-width: $size-small-round-button;
-  height: $size-small-round-button;
-  min-height: $size-small-round-button;
-  max-height: $size-small-round-button;
-  line-height: $size-small-round-button;
-  font-size: 1em;
-  margin: 1px;
+  flex-shrink: 0;
+  max-width: $button-size;
+  width: $button-size;
+  max-height: $button-size;
+  height: $button-size;
+  line-height: $button-size;
+  font-size: $button-size;
+  margin: 0.1em;
   border: none;
   outline: none;
   border-radius: 50%;
@@ -27,12 +26,12 @@ $size-small-round-button: 0.8em;
 
 .tag-add-button {
   background-color: beige;
-  max-width: 1.2em;
-  width: 1.2em;
-  max-height: 1.2em;
-  height: 1.2em;
-  line-height: 1.2em;
-  font-size: 1.2em;
+  max-width: $button-size;
+  width: $button-size;
+  max-height: $button-size;
+  height: $button-size;
+  line-height: $button-size;
+  font-size: $button-size;
   align-self: center;
 
   &:hover {

@@ -40,27 +40,31 @@ export const LeftBar = (props: {
                             onActiveChange={props.onActiveNotebookChange}
                             selection={props.activeNotebook ?? props.manager.items.first()}
           />,
-          <List<Section> key={buildKey(props.activeNotebook, sectionsId)} id={sectionsId}
-                         items={props.activeNotebook?.itemsSortedByOrder}
-                         selection={props.activeSection} defaultFirst
-                         onActiveChange={props.onActiveSectionChange} onContextChange={onContextChange}
-                         contextChildren={buildContext(activeContext, props.activeNotebook, () => {
-                           if (props.activeSection == activeContext) {
-                             props.onActiveSectionChange(undefined)
-                           }
-                         })
-                         }
-          />,
-          <List<Note> key={buildKey(props.activeSection, notesId)} id={notesId}
-                      items={props.activeSection?.itemsSortedByOrder}
-                      selection={noteContext.activeNote} defaultFirst
-                      onActiveChange={noteContext.setActiveNote} onContextChange={onContextChange}
-                      contextChildren={buildContext(activeContext, props.activeSection, () => {
-                        if (noteContext.activeNote == activeContext) {
-                          noteContext.setActiveNote(undefined)
-                        }
-                      })}
-          />
+          <span key="lists-span" id="lists-span">
+            <>
+              <List<Section> key={buildKey(props.activeNotebook, sectionsId)} id={sectionsId}
+                             items={props.activeNotebook?.itemsSortedByOrder}
+                             selection={props.activeSection} defaultFirst
+                             onActiveChange={props.onActiveSectionChange} onContextChange={onContextChange}
+                             contextChildren={buildContext(activeContext, props.activeNotebook, () => {
+                               if (props.activeSection == activeContext) {
+                                 props.onActiveSectionChange(undefined)
+                               }
+                             })
+                             }
+              />
+              <List<Note> key={buildKey(props.activeSection, notesId)} id={notesId}
+                          items={props.activeSection?.itemsSortedByOrder}
+                          selection={noteContext.activeNote} defaultFirst
+                          onActiveChange={noteContext.setActiveNote} onContextChange={onContextChange}
+                          contextChildren={buildContext(activeContext, props.activeSection, () => {
+                            if (noteContext.activeNote == activeContext) {
+                              noteContext.setActiveNote(undefined)
+                            }
+                          })}
+              />
+            </>
+          </span>
         ]
       }]}
     </ManagedSidebar>

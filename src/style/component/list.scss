@@ -13,14 +13,14 @@
 .snovy-list-item {
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 1.1vw;
+  font-size: $font-medium;
   color: $colour-text-primary;
+  padding: 0.5vh 0.5vw;
   background: none;
   border: none;
   outline: none;
   width: 100%;
   cursor: default;
-  padding: 0.2vh 0.2vw;
   user-select: none;
 
   &:hover {

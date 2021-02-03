@@ -10,8 +10,12 @@ $colour-hover: darkkhaki; //rgba(0, 0, 0, 0.1) something like this, maybe?
 
 $scrollbar: darkgreen $colour-accent;
 
-$border: $colour-border solid 0.1vw;
-$border-thin: $colour-border solid 0.05vw;
+$border: $colour-border solid 2px;
+$border-thin: $colour-border solid 1px;
+
+$font-big: calc(16px + 0.5vw);
+$font-medium: calc(12px + 0.5vw);
+$font-small: calc(8px + 0.5vw);
 
 //temp
 $tag-colour-primary: darkgreen;

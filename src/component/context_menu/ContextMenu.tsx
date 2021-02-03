@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react"
 import ContextMenuItem from "./ContextMenuItem"
-import {useOutsideClick} from "../../Hooks"
+import {useHideOnOutsideClick} from "../../Hooks"
 
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
@@ -14,7 +14,7 @@ const ContextMenu = (props: {
 
   const selfRef = useRef<HTMLDivElement>(null)
 
-  const [visible, setVisible] = useOutsideClick(selfRef)
+  const [visible, setVisible] = useHideOnOutsideClick(selfRef)
   const [x, setX] = useState(0)
   const [y, setY] = useState(0)
 

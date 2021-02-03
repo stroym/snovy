@@ -1,13 +1,13 @@
 import React, {useRef, useState} from "react"
 import {AddButton} from "./Button"
-import {useOutsideClick} from "../../Hooks"
+import {useHideOnOutsideClick} from "../../Hooks"
 import TagSelector from "./TagSelector"
 
 const TagNoteForm = () => {
 
   const selfRef = useRef<HTMLDivElement>(null)
 
-  const [visible, setVisible] = useOutsideClick(selfRef)
+  const [visible, setVisible] = useHideOnOutsideClick(selfRef)
   const [x, setX] = useState(0)
   const [y, setY] = useState(0)
   const [create, setCreate] = useState(false)

@@ -4,6 +4,14 @@ import Section from "./Section"
 import Note from "./Note"
 import Scope from "./coloured/Scope"
 
+function dec2hex(dec: number) {
+  return dec.toString(36).padStart(2, "0")
+}
+
+function randomString(len: number) {
+  return Array.from(window.crypto.getRandomValues(new Uint8Array(Math.floor(Math.random() * (len - 3) + 3))), dec2hex).join("")
+}
+
 export default class Manager implements ParentInterface<Notebook> {
 
   idCounter: number = 0
@@ -11,8 +19,6 @@ export default class Manager implements ParentInterface<Notebook> {
   singleNotebook: boolean = false //probably should be in an options class
 
   items: Array<Notebook> = new Array<Notebook>()
-  // tags: Array<Tag> = new Array<Tag>()         //global tags
-  // states: Array<string> = new Array<string>() //global states
 
   //testing data
   constructor() {
@@ -24,11 +30,11 @@ export default class Manager implements ParentInterface<Notebook> {
       let notebook = this.items[i]
 
       for (let j = 0; j < 6; j++) {
-        this.addTestScope(notebook, "scope" + j, "", j % 2 == 0)
+        this.addTestScope(notebook, randomString(20) + j, "", j % 2 == 0)
         let scope = notebook.sets.scopes[j]
 
         for (let k = 0; k < 6; k++) {
-          this.addTestTag(notebook, j + "t" + k, "", scope)
+          this.addTestTag(notebook, j + randomString(10) + k, "", scope)
 
           if (scope.exclusive) {
             break
@@ -37,7 +43,7 @@ export default class Manager implements ParentInterface<Notebook> {
       }
 
       for (let k = 0; k < 10; k++) {
-        this.addTestTag(notebook, "t" + k, "", undefined)
+        this.addTestTag(notebook, randomString(10), "", undefined)
       }
 
       for (let j = 0; j < i + 4; j++) {

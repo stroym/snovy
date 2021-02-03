@@ -17,10 +17,10 @@
 }
 
 .snovy-tab-menu-item {
-  max-width: 1.4vw;
-  min-width: 1.4vw;
-  font-size: 1.2vw;
-  line-height: 1.4vw;
+  max-width: $font-big;
+  min-width: $font-big;
+  font-size: $font-big;
+  line-height: $font-big;
   padding: 0.4em 0;
   cursor: default;
   user-select: none;

@@ -10,7 +10,7 @@ export const TagItem = (props: {
 
   return (
     <span className="snovy-tag-item">
-      <span className="tag-name"> {props.mapped.name}</span>
+      <span className="tag-name">{props.mapped.name}</span>
       <RemoveButton onClick={() => props.onRemove(props.mapped)}/>
     </span>
   )

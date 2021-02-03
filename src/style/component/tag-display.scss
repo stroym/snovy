@@ -2,15 +2,18 @@
 
 @import "../theme";
 
+$border-rad1: 2vw;
+$border-rad2: calc(#{$border-rad1} / 2);
+
 .tag-base {
-  font-size: 1.2em;
-  padding: 1px 4px;
+  font-size: $font-big;
+  padding: 0.1em 0.1em 0.1em 0.2em;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: center;
   white-space: nowrap;
   cursor: default;
-  border: 2px solid $tag-colour-primary;
-  border-radius: 20px;
+  border-radius: $border-rad1;
 }
 
 .tag-scope {
@@ -20,9 +23,13 @@
 .tag-name {
   @extend .tag-base;
   background: beige;
+  flex-grow: 1; //maybe?
 }
 
-//TODO blowout?
+#snovy-note-detail {
+  max-width: 100%;
+}
+
 #snovy-tag-display {
   min-width: 0;
   min-height: 0;
@@ -39,9 +46,12 @@
 }
 
 .snovy-tag-item {
-  border-radius: 20px;
+  border-radius: $border-rad1;
   overflow: hidden;
-  margin: 2px;
+  margin: 0.1em;
+  flex-grow: 1; //maybe?
+  border: 2px solid $tag-colour-primary;
+  max-width: calc(50% - 0.2em);
   color: $colour-text-secondary;
   background: $tag-colour-primary;
   display: flex;
@@ -55,10 +65,19 @@
 
 .tag-exclusive {
   border-radius: 10px;
+
+  .tag-scope {
+    max-width: 40%;
+  }
+
+  .tag-name {
+    flex-grow: 1;
+  }
 }
 
 .tag-grouped {
-  border-radius: 10px;
+  max-width: calc(100% - 0.2em);
+  border-radius: $border-rad2;
   flex-grow: 1;
   flex-flow: column nowrap;
   align-items: unset;
@@ -68,18 +87,11 @@
     flex-flow: row nowrap;
     align-items: center;
     justify-content: space-between;
-
-    .tag-scope {
-      border-radius: 10px;
-      border-left: none;
-      border-right: none;
-    }
   }
 
   .tag-container {
     background-color: $tag-colour-secondary;
-    border-radius: 10px;
-    border: 2px solid $tag-colour-primary; //TODO maybe no border and instead curve header
+    border-radius: $border-rad2;
     border-top: 0;
     display: flex;
     flex-flow: row wrap;

@@ -43,7 +43,7 @@ html, body, #root {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-rows: 5% 92% 3%;
+  grid-template-rows: 4vh 94vh 2vh;
   grid-template-areas: "top" "middle" "bottom";
 }
 
@@ -51,7 +51,7 @@ html, body, #root {
 #snovy-middle {
   grid-area: middle;
   display: grid;
-  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-columns: 20vw 60vw 20vw;
   grid-template-rows: 100%;
   grid-template-areas: "left centre right";
 }

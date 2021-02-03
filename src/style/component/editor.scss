@@ -22,7 +22,7 @@
   overflow-y: auto;
   border: none;
   outline: none;
-  font-size: 1vw;
-  line-height: 1.2vw;
+  font-size: $font-small;
+  line-height: $font-medium + 0.1vw;
   scrollbar-color: $scrollbar;
 }
