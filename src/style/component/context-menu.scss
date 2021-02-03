@@ -11,11 +11,11 @@
 
 .snovy-context-menu-item {
   color: $colour-text-primary;
+  font-size: 1vw;
   user-select: none;
   border-bottom: $border-thin;
   width: 100%;
-
-  padding: 4px 10px;
+  padding: 0.5vh 1vw;
 
   &:hover {
     background-color: $colour-hover;

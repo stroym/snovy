@@ -16,7 +16,7 @@ export default class Manager implements ParentInterface<Notebook> {
 
   //testing data
   constructor() {
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 3; i++) {
       this.addNotebook("notebook " + i, i)
     }
 

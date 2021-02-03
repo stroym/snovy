@@ -3,7 +3,7 @@ import {Orientation} from "../tab_menu/TabMenu"
 import Notebook from "../../model/Notebook"
 import Tag from "../../model/coloured/Tag"
 import {ManagedSidebar} from "./Sidebar"
-import TagDisplay from "../tag/TagDisplay"
+import NoteDetail from "../NoteDetail"
 import TagManager from "../tag/TagManager"
 
 const SidebarRight = (props: {
@@ -16,7 +16,7 @@ const SidebarRight = (props: {
     <ManagedSidebar orientation={Orientation.RIGHT} tabs={mappings}>
       {[
         {
-          text: mappings[0].text, children: <TagDisplay/>
+          text: mappings[0].text, children: <NoteDetail/>
         },
         {
           text: mappings[1].text,
@@ -31,10 +31,9 @@ const SidebarRight = (props: {
 }
 
 const mappings = [
-  {text: "Note Tags", default: true},
+  {text: "Note Detail", default: true},
   {text: "Tag Manager"},
-  {text: "Filtering Options"},
-  {text: "Note Details"}
+  {text: "Filtering Options"}
 ]
 
 export default SidebarRight

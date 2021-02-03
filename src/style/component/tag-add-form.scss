@@ -1,0 +1,37 @@
+@import "../theme";
+
+#tag-add-wrapper {
+
+}
+
+#tag-add-form {
+  position: absolute;
+  z-index: 10;
+  background-color: darkgray;
+  display: flex;
+  flex-flow: column nowrap;
+  align-content: center;
+
+  span {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+
+    input {
+      font-size: 0.6em;
+      color: $colour-text-primary;
+      background: none;
+      border: $border-thin;
+      padding: 2px;
+      margin: 4px 2px;
+    }
+
+    button {
+      align-self: unset;
+    }
+  }
+
+  button {
+    align-self: center;
+  }
+}

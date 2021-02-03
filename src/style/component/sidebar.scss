@@ -13,7 +13,8 @@
       border-right: $border;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 20fr;
+      grid-template-rows: fit-content(100px) 10fr;
+      //grid-auto-rows: min-content;
       grid-template-areas: "notebook notebook" "section note";
     }
 
@@ -26,7 +27,9 @@
 }
 
 #snovy-selector-notebook {
-  font-size: 1.2vw;
+  min-width: 0;
+  //max-height: 100%;
+  //overflow: hidden;
   grid-area: notebook;
   border-bottom: $border;
 }
