@@ -16,7 +16,7 @@ $button-size: 1.2em;
   outline: none;
   border-radius: 50%;
   text-align: center;
-  background: transparent;
+  background-color: transparent;
   color: $colour-text-secondary;
 
   &:hover {
@@ -24,17 +24,17 @@ $button-size: 1.2em;
   }
 }
 
-.tag-add-button {
-  background-color: beige;
-  max-width: $button-size;
-  width: $button-size;
-  max-height: $button-size;
-  height: $button-size;
-  line-height: $button-size;
-  font-size: $button-size;
-  align-self: center;
-
-  &:hover {
-    background-color: transparentize(beige, 0.1);
-  }
-}
+//.tag-add-button {
+//  background-color: beige;
+//  max-width: $button-size;
+//  width: $button-size;
+//  max-height: $button-size;
+//  height: $button-size;
+//  line-height: $button-size;
+//  font-size: $button-size;
+//  align-self: center;
+//
+//  &:hover {
+//    background-color: transparentize(beige, 0.1);
+//  }
+//}

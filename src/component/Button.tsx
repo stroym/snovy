@@ -21,7 +21,7 @@ export const AddButton = (props: {
 }) => {
 
   return (
-    <Button className={"tag-add-button"} onClick={props.onClick} icon={"+"}/>
+    <Button className={"snovy-add-button"} onClick={props.onClick} icon={"+"}/>
   )
 
 }
@@ -31,7 +31,7 @@ export const RemoveButton = (props: {
 }) => {
 
   return (
-    <Button className={"tag-remove-button"} onClick={props.onClick} icon={"×"}/>
+    <Button className={"snovy-remove-button"} onClick={props.onClick} icon={"×"}/>
   )
 
 }
@@ -42,7 +42,7 @@ export const CollapseButton = (props: {
 }) => {
 
   return (
-    <Button className={"collapse-button"} onClick={props.onClick} icon={props.collapsed ? "▲" : "▼"}/>
+    <Button className={"snovy-collapse-button"} onClick={props.onClick} icon={props.collapsed ? "▲" : "▼"}/>
   )
 
 }

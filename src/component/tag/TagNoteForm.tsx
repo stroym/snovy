@@ -1,5 +1,5 @@
 import React, {useRef, useState} from "react"
-import {AddButton} from "./Button"
+import {AddButton} from "../Button"
 import {useHideOnOutsideClick} from "../../Hooks"
 import TagSelector from "./TagSelector"
 

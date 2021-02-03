@@ -29,11 +29,58 @@
 #snovy-selector-notebook {
   grid-area: notebook;
   border-bottom: $border;
-  min-width: 0;
-  max-height: 100%;
-  overflow: hidden;
-  padding: 0.2vh 0;
+  font-size: $font-big;
 
+  #outer-span {
+    min-width: 0;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  #inner-span {
+    min-width: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0.2vh 0 0.2vh 0.5vw;
+  }
+
+  .snovy-combobox {
+    flex-grow: 1;
+    text-overflow: ellipsis;
+    min-width: 0;
+    font-size: $font-big;
+    color: $colour-text-primary;
+    background-color: transparent;
+    outline: none;
+    border: none;
+  }
+
+  .snovy-button {
+    color: $colour-text-primary;
+    background-color: $colour-primary;
+    margin: unset;
+
+    &:hover {
+      background-color: transparentize($colour-text-primary, 0.5);
+    }
+  }
+
+  #notebook-selector-list {
+    z-index: 10;
+    position: absolute;
+    background-color: black;
+    flex-flow: column nowrap;
+    flex-shrink: 1;
+
+    .snovy-list-item {
+      flex-shrink: 1;
+    }
+  }
 }
 
 #lists-span {
@@ -42,6 +89,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-areas: "section note";
+  min-height: 0;
 }
 
 #snovy-list-section {

@@ -1,9 +1,9 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react"
 
-export function useHideOnOutsideClick(elementRef: React.RefObject<Element | undefined>):
+export function useHideOnOutsideClick(elementRef: React.RefObject<Element | undefined>, initialState?: boolean):
   [boolean, Dispatch<SetStateAction<boolean>>] {
 
-  const [hidden, setHidden] = useState(false)
+  const [visible, setVisible] = useState(initialState ?? false)
 
   useEffect(
     () => {
@@ -17,11 +17,11 @@ export function useHideOnOutsideClick(elementRef: React.RefObject<Element | unde
 
   const handleOutsideClick = (e: any) => {
     if (!elementRef.current?.contains(e.target)) {
-      setHidden(false)
+      setVisible(false)
     }
   }
 
-  return [hidden, setHidden]
+  return [visible, setVisible]
 }
 
 export function useCollapse(elementRef: React.RefObject<HTMLElement | undefined>):

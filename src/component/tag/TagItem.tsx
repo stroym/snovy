@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 import Tag from "../../model/coloured/Tag"
-import {CollapseButton, RemoveButton} from "./Button"
+import {CollapseButton, RemoveButton} from "../Button"
 import Scope from "../../model/coloured/Scope"
 
 export const TagItem = (props: {

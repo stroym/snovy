@@ -8,8 +8,8 @@ import Manager from "../../model/Manager"
 import ContextMenuItem from "../context_menu/ContextMenuItem"
 import {ManagedSidebar} from "./Sidebar"
 import {NoteContext} from "../../Context"
-import NotebookSelector from "../NotebookSelector"
 import List from "../list/List"
+import MySelect from "../MySelect"
 
 export const LeftBar = (props: {
   onActiveNotebookChange: (active: Notebook | undefined) => any,
@@ -36,9 +36,9 @@ export const LeftBar = (props: {
     <ManagedSidebar orientation={Orientation.LEFT} tabs={mappings}>
       {[{
         text: mappings[0].text, children: [
-          <NotebookSelector key="notebook-selector" notebooks={props.manager.items}
-                            onActiveChange={props.onActiveNotebookChange}
-                            selection={props.activeNotebook ?? props.manager.items.first()}
+          <MySelect key="notebook-selector" items={props.manager.items}
+                    onActiveChange={props.onActiveNotebookChange}
+                    selection={props.activeNotebook ?? props.manager.items.first()}
           />,
           <span key="lists-span" id="lists-span">
             <>
