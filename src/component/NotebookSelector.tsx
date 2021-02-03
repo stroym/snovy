@@ -22,15 +22,13 @@ const NotebookSelector = <T extends Notebook>(props: {
   )
 
   return (
-    <span id="snovy-selector-notebook">
-    <Creatable<T> className="react-select-container" classNamePrefix="react-select"
+    <Creatable<T> id="snovy-selector-notebook" className="react-select-container" classNamePrefix="react-select"
                   placeholder="Select notebook or add new..."
                   value={active}
                   options={props.notebooks}
                   getOptionLabel={(option) => option.name} getOptionValue={((option) => option.name)}
                   onChange={handleChange}
     />
-    </span>
   )
 
 }

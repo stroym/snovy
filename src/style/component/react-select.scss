@@ -2,21 +2,59 @@
 
 .react-select-container,
 .react-select-container .react-select__control {
-  height: 100%;
+  min-width: 0;
+  min-height: 30px;
+  max-height: 30px;
+  font-size: 1.1vw;
   border: 0;
   box-shadow: none;
   border-radius: 0;
   background-color: $colour-primary;
+  transition: height 0.66s ease-out;
 }
 
 .react-select-container .react-select__value-container > * {
   color: $colour-text-primary;
 }
 
+.react-select__value-container {
+  padding: 0.1vh 0.2vw !important;
+}
+
+.react-select__input {
+}
+
+.react-select-container .react-select__value-container .react-select__single-value {
+  padding: unset !important;
+}
+
 .react-select-container .react-select__menu {
   padding-top: 0;
   padding-bottom: 0;
   margin-top: 0;
+}
+
+.react-select__indicator-separator {
+  display: none;
+}
+
+.react-select__dropdown-indicator {
+  padding: unset !important;
+}
+
+.react-select__option {
+  padding: 0.5vh 0.5vw !important;
+}
+
+.react-select__control,
+.react-select__control .react-select__indicators {
+  min-height: 0 !important;
+  align-self: center;
+}
+
+.react-select-container .react-select__value-container > * {
+  //padding: unset;
+  margin: unset;
 }
 
 .react-select-container .react-select__menu-list {
@@ -33,4 +71,10 @@
 
 .react-select-container .react-select__option--is-focused {
   background-color: $colour-hover;
+}
+
+svg {
+  width: 2vw;
+  height: auto;
+  padding: 0.2vh 0.2vw !important;
 }
