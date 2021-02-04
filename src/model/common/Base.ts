@@ -1,4 +1,4 @@
-export abstract class Item {
+export class Item {
 
   name: string
 
@@ -20,6 +20,10 @@ export abstract class Item {
   }
 
   static compareByName = (a: Item, b: Item) => { return a.name.localeCompare(b.name, undefined, {numeric: true})}
+
+  static make(name: string) {
+    return new Item(name)
+  }
 
 }
 

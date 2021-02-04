@@ -20,8 +20,8 @@ export default class Manager implements ParentInterface<Notebook> {
 
   //testing data
   constructor() {
-    for (let i = 0; i < 3; i++) {
-      this.addNotebook("notebook " + i, i)
+    for (let i = 0; i < 10; i++) {
+      this.addNotebook("" + Math.floor(Math.random() * (1000)), i)
     }
 
     for (let i = 0; i < this.items.length; i++) {
@@ -72,6 +72,10 @@ export default class Manager implements ParentInterface<Notebook> {
     return this.itemsSortedById
   }
 
+  insert(name: string) {
+    this.addItem(new Notebook(this, this.idCounter, name, this.items.length))
+  }
+
   addItem(item: Notebook, reorder = false): void {
     if (reorder) {
       this.itemsSortedByOrder.slice(item.order).forEach(value => {
@@ -111,7 +115,7 @@ export default class Manager implements ParentInterface<Notebook> {
   }
 
   //for testing purposes
-  addNotebook(name: string, order: number): void {
+  addNotebook(name: string, order = 999): void {
     this.addItem(new Notebook(this, this.idCounter, name, order))
   }
 

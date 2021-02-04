@@ -2,8 +2,9 @@ import React, {useEffect, useState} from "react"
 import {useCombobox, UseComboboxState, UseComboboxStateChangeOptions} from "downshift"
 import {CollapseButton} from "./Button"
 import {IdentifiedItem, Item} from "../model/common/Base"
+import {Key} from "ts-key-enum"
 
-const ComboBox = <T extends IdentifiedItem | Item>(props: {
+const ComboBox = <T extends Item>(props: {
   id?: string,
   className?: string,
   onActiveChange: (active: T | undefined) => void,
@@ -11,10 +12,11 @@ const ComboBox = <T extends IdentifiedItem | Item>(props: {
   // contextChildren?: Array<React.ReactElement<typeof ContextMenuItem>>
   items: Array<T> | undefined,
   selection?: T,
-  // style?: void
+  createItem?: (value: string) => void
 }) => {
 
   const [inputItems, setInputItems] = useState(props.items)
+  const [isCreating, setIsCreating] = useState(false)
 
   const stateReducer = (state: UseComboboxState<T>, actionAndChanges: UseComboboxStateChangeOptions<T>) => {
     const {type, changes} = actionAndChanges
@@ -32,31 +34,37 @@ const ComboBox = <T extends IdentifiedItem | Item>(props: {
   }
 
   const {
-    isOpen,
-    selectedItem,
-    getToggleButtonProps,
-    getMenuProps,
-    getInputProps,
-    getComboboxProps,
-    highlightedIndex,
-    getItemProps,
-    setInputValue
+    isOpen, getToggleButtonProps, getMenuProps, getInputProps, getComboboxProps, getItemProps, inputValue,
+    selectedItem, highlightedIndex, setInputValue, setHighlightedIndex, closeMenu
   } = useCombobox({
     items: props.items ?? [],
     initialSelectedItem: props.selection,
     stateReducer: stateReducer,
     onInputValueChange: ({inputValue}) => {
-      setInputItems(
-        props.items!.filter(item =>
-          item.toString().toLowerCase().startsWith(inputValue!.toLowerCase())
-        ).sort(Item.compareByName)
+      const filteredItems = props.items?.filter(item =>
+        item.toString().toLowerCase().startsWith(inputValue!.toLowerCase())
       )
+
+      setInputItems(filteredItems)
+
+      if (filteredItems) {
+        const item = filteredItems.first()
+
+        if (item) {
+          setHighlightedIndex(filteredItems.indexOf(item))
+        }
+      }
     },
     onIsOpenChange: ({selectedItem}) => {
       if (!isOpen) {
         setInputValue("")
       } else {
         setInputValue(selectedItem?.toString() ?? "")
+      }
+    },
+    scrollIntoView: () => {
+      if (isCreating) {
+        return
       }
     }
   })
@@ -67,11 +75,29 @@ const ComboBox = <T extends IdentifiedItem | Item>(props: {
     }, [selectedItem]
   )
 
+  useEffect(
+    () => {
+      if (props?.createItem && inputItems?.length == 0) {
+        setIsCreating(true)
+      } else {
+        setIsCreating(false)
+      }
+    }, [inputItems]
+  )
+
+  const createItem = () => {
+    props.createItem!(inputValue)
+    closeMenu()
+  }
+
   return (
     <>
       <div className={"snovy-combo-box"} {...getComboboxProps()}>
         <span className="snovy-combo-box-wrapper" {...getToggleButtonProps()}>
-          <input {...getInputProps()} className="snovy-combo-box-input" readOnly={props.items == undefined}/>
+          <input
+            className="snovy-combo-box-input" readOnly={props.items == undefined}
+            {...getInputProps({onKeyDown: (e) => { isCreating && e.key == Key.Enter && createItem()}})}
+          />
           <CollapseButton aria-label={"toggle menu"}/>
         </span>
         <ul {...getMenuProps()} className="snovy-dropdown" id="notebook-dropdown" hidden={!isOpen}>
@@ -85,6 +111,11 @@ const ComboBox = <T extends IdentifiedItem | Item>(props: {
               {item.toString()}
             </li>
           ))}
+          {isCreating &&
+          <li className={"snovy-list-item".concat(isCreating && " hover")} onClick={() => createItem()}>
+            {`Create ${inputValue}`}
+          </li>
+          }
         </ul>
       </div>
     </>

@@ -38,8 +38,9 @@ export const LeftBar = (props: {
         text: mappings[0].text, children: [
           <ComboBox
             id="notebook-selector"
-            key="notebook-selector" items={props.manager.items}
+            key="notebook-selector" items={props.manager.itemsSortedAlphabetically}
             onActiveChange={props.onActiveNotebookChange}
+            createItem={(name: string) => {props.manager.insert(name)}}
             selection={props.activeNotebook ?? props.manager.items.first()}
           />,
           <span key="lists-span" id="lists-span">
