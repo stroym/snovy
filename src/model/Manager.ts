@@ -73,7 +73,7 @@ export default class Manager implements ParentInterface<Notebook> {
   }
 
   insert(name: string) {
-   return this.addItem(new Notebook(this, this.idCounter, name, this.items.length))
+    return this.addItem(new Notebook(this, this.idCounter, name, this.items.length))
   }
 
   addItem(item: Notebook, reorder = false) {
@@ -89,27 +89,20 @@ export default class Manager implements ParentInterface<Notebook> {
     return item
   }
 
-  deleteItem(item: Notebook): void {
-    const index = this.items.indexOf(item)
+  deleteItem(item?: Notebook) {
+    if (!item) {
+      return null
+    } else {
+      const index = this.items.delete(item)
 
-    this.items.splice(index, 1)
+      this.items.slice(index).forEach(value => { value.order--})
 
-    this.items.slice(index).forEach(value => {
-      value.order--
-    })
+      return index > 0 ? this.items[index - 1] : null
+    }
   }
 
-  deleteById(id: number): boolean {
-    const item = this.items.find(value => {
-      return value.id == id
-    })
-
-    if (item) {
-      this.deleteItem(item)
-      return true
-    } else {
-      return false
-    }
+  deleteById(id: number) {
+    return this.deleteItem(this.items.find(value => {return value.id == id}))
   }
 
   removeNotebook(item: Notebook): void {

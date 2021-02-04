@@ -76,8 +76,8 @@ export interface ParentInterface<T extends OrderedItem> {
 
   addItem: (item: T, reorder: boolean) => void
 
-  deleteItem: (item: T) => void
-  deleteById: (id: number) => boolean
+  deleteItem: (item?: T) => T | null
+  deleteById: (id: number) => T | null
 
 }
 
@@ -114,10 +114,8 @@ export abstract class ItemWithParentAndChildren<T extends OrderedItem, P extends
     return this.sortBy(OrderedItem.compareByOrder)
   }
 
-  deleteItem(item: T) {
-    const index = this.items.delete(item)
-
-    this.items.slice(index).forEach(value => { value.order--})
+  private sortBy(compareFn: (a: T, b: T) => number): Array<T> {
+    return this.items.sort(compareFn)
   }
 
   addItem(item: T, reorder = false) {
@@ -131,21 +129,26 @@ export abstract class ItemWithParentAndChildren<T extends OrderedItem, P extends
     this.idCounter++
   }
 
-  private sortBy(compareFn: (a: T, b: T) => number): Array<T> {
-    return this.items.sort(compareFn)
+  deleteItem(item?: T) {
+    if (!item) {
+      return null
+    } else {
+      const index = this.items.delete(item)
+
+      this.items.slice(index).forEach(value => { value.order--})
+
+      if (index > 0) {
+        return this.items[index - 1]
+      } else if (index == 0 && this.items.length > 0) {
+        return this.items[index]
+      } else {
+        return null
+      }
+    }
   }
 
-  deleteById(id: number): boolean {
-    const item = this.items.find(value => {
-      return value.id == id
-    })
-
-    if (item) {
-      this.deleteItem(item)
-      return true
-    } else {
-      return false
-    }
+  deleteById(id: number) {
+    return this.deleteItem(this.items.find(value => {return value.id == id}))
   }
 
   abstract insertAt(order: number): void;

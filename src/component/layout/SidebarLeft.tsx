@@ -54,6 +54,8 @@ export const LeftBar = (props: {
                   if (props.activeSection == activeContext) {
                     props.onActiveSectionChange(undefined)
                   }
+
+                  return props.activeSection == activeContext
                 })
                 }
               />
@@ -66,6 +68,8 @@ export const LeftBar = (props: {
                   if (noteContext.activeNote == activeContext) {
                     noteContext.setActiveNote(undefined)
                   }
+
+                  return noteContext.activeNote == activeContext
                 })}
               />
             </>
@@ -90,24 +94,26 @@ function buildKey(parent: OrderedItem | undefined, defaultKey: string) {
 }
 
 //TODO autoselect previous item when currently selected is deleted
-function buildContext(activeContext: Notebook | Section | Note | undefined | null, target: Section | Notebook | undefined, deletion: () => void) {
+function buildContext(activeContext: Notebook | Section | Note | undefined | null, target: Section | Notebook | undefined, deletion: () => boolean) {
   return target ? [
     <ContextMenuItem
-      key={"new"} text={"new"} onClick={() => {
-      if (activeContext) {
-        target!.insertAt(activeContext.order + 1)
-      } else {
-        target!.insert()
-      }
-    }}
+      key={"new"} text={"new"} onClick={
+      () => {
+        if (activeContext) {
+          target!.insertAt(activeContext.order + 1)
+        } else {
+          target!.insert()
+        }
+      }}
     />,
     ...activeContext ? [
       <ContextMenuItem
-        key={"delete"} text={"delete"} onClick={() => {
-        target!.deleteById(activeContext.id)
+        key={"delete"} text={"delete"} onClick={
+        () => {
+          console.log(target!.deleteById(activeContext.id))
 
-        deletion()
-      }}
+          deletion()
+        }}
       />
     ] : []
   ] : undefined
