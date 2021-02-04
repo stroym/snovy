@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import {useCombobox} from "downshift"
+import {useCombobox, UseComboboxState, UseComboboxStateChangeOptions} from "downshift"
 import {CollapseButton} from "./Button"
 import {IdentifiedItem, Item} from "../model/common/Base"
 
@@ -16,6 +16,21 @@ const ComboBox = <T extends IdentifiedItem | Item>(props: {
 
   const [inputItems, setInputItems] = useState(props.items)
 
+  const stateReducer = (state: UseComboboxState<T>, actionAndChanges: UseComboboxStateChangeOptions<T>) => {
+    const {type, changes} = actionAndChanges
+
+    switch (type) {
+      case useCombobox.stateChangeTypes.InputKeyDownEscape: //on esc press revert to last selected value
+        return {
+          ...changes,
+          selectedItem: state.selectedItem,
+          inputValue: state.inputValue
+        }
+      default:
+        return changes
+    }
+  }
+
   const {
     isOpen,
     selectedItem,
@@ -29,6 +44,7 @@ const ComboBox = <T extends IdentifiedItem | Item>(props: {
   } = useCombobox({
     items: props.items ?? [],
     initialSelectedItem: props.selection,
+    stateReducer: stateReducer,
     onInputValueChange: ({inputValue}) => {
       setInputItems(
         props.items!.filter(item =>
