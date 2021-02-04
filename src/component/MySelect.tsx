@@ -34,14 +34,14 @@ const MySelect = <T extends Notebook>(props: {
     <span ref={selfRef} id="snovy-selector-notebook">
       <span id="outer-span">
         <span id="inner-span" onClick={flip}>
-          <input className="snovy-combobox" type="text" value={value} onChange={handleChange}/>
+          <input className="snovy-combo-box-input" type="text" value={value} onChange={handleChange}/>
         <CollapseButton onClick={flip}/>
         </span>
         <AddButton onClick={() => {}}/>
       </span>
       {visible &&
       <List<T> items={props.items} id="notebook-selector-list" selection={active}
-               onActiveChange={(it) => setActive(it)}
+               onActiveChange={(it: T | undefined) => setActive(it)}
       />
       }
     </span>

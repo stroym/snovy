@@ -12,6 +12,7 @@
   "license": "GNU GPL V3",
   "dependencies": {
     "@types/react-color": "^3.0.4",
+    "downshift": "^6.1.0",
     "react": "^17.0.1",
     "react-color": "^2.19.3",
     "react-colorful": "^4.4.4",

@@ -2,13 +2,14 @@ import React from "react"
 
 const Button = (props: {
   className?: string,
-  onClick: (e: React.MouseEvent) => void,
+  onClick?: (e: React.MouseEvent) => void,
   icon: string
 }) => {
 
   return (
-    <button type="button" className={"snovy-button".concat(props.className ? " " + props.className : "")}
-            onClick={(e) => props.onClick(e)}
+    <button
+      type="button" className={"snovy-button".concat(props.className ? " " + props.className : "")}
+      onClick={(e) => props.onClick != undefined ? props.onClick(e) : null}
     >
       {props.icon}
     </button>
@@ -17,7 +18,7 @@ const Button = (props: {
 }
 
 export const AddButton = (props: {
-  onClick: (e: React.MouseEvent) => void
+  onClick?: (e: React.MouseEvent) => void
 }) => {
 
   return (
@@ -27,7 +28,7 @@ export const AddButton = (props: {
 }
 
 export const RemoveButton = (props: {
-  onClick: () => void
+  onClick?: () => void
 }) => {
 
   return (
@@ -38,7 +39,7 @@ export const RemoveButton = (props: {
 
 export const CollapseButton = (props: {
   collapsed?: boolean,
-  onClick: () => void
+  onClick?: () => void
 }) => {
 
   return (

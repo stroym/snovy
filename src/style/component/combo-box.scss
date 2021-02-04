@@ -1,0 +1,48 @@
+@import "../theme";
+
+.snovy-combo-box {
+  grid-area: notebook;
+  border-bottom: $border;
+  font-size: $font-big;
+  position: relative;
+  min-width: 0;
+
+  .snovy-combo-box-wrapper {
+    min-width: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0.2vh 0 0.2vh 0.5vw;
+  }
+
+  .snovy-combo-box-input {
+    flex-grow: 1;
+    text-overflow: ellipsis;
+    min-width: 0;
+    font-size: $font-medium;
+    color: $colour-text-primary;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    padding: 0.1vh 0 0.1vh 0;
+  }
+
+  .snovy-button {
+    color: $colour-text-primary;
+    background-color: $colour-primary;
+
+    &:hover {
+      background-color: transparentize($colour-text-primary, 0.5);
+    }
+  }
+}
+
+.snovy-dropdown {
+  z-index: 10;
+  width: 100%;
+  position: absolute;
+  background-color: $colour-primary;
+  border: $border-thin-inverted;
+}

@@ -9,7 +9,7 @@ import ContextMenuItem from "../context_menu/ContextMenuItem"
 import {ManagedSidebar} from "./Sidebar"
 import {NoteContext} from "../../Context"
 import List from "../list/List"
-import MySelect from "../MySelect"
+import ComboBox from "../ComboBox"
 
 export const LeftBar = (props: {
   onActiveNotebookChange: (active: Notebook | undefined) => void,
@@ -36,32 +36,36 @@ export const LeftBar = (props: {
     <ManagedSidebar orientation={Orientation.LEFT} tabs={mappings}>
       {[{
         text: mappings[0].text, children: [
-          <MySelect key="notebook-selector" items={props.manager.items}
-                    onActiveChange={props.onActiveNotebookChange}
-                    selection={props.activeNotebook ?? props.manager.items.first()}
+          <ComboBox
+            id="notebook-selector"
+            key="notebook-selector" items={props.manager.items}
+            onActiveChange={props.onActiveNotebookChange}
+            selection={props.activeNotebook ?? props.manager.items.first()}
           />,
           <span key="lists-span" id="lists-span">
             <>
-              <List<Section> key={buildKey(props.activeNotebook, sectionsId)} id={sectionsId}
-                             items={props.activeNotebook?.itemsSortedByOrder}
-                             selection={props.activeSection} defaultFirst
-                             onActiveChange={props.onActiveSectionChange} onContextChange={onContextChange}
-                             contextChildren={buildContext(activeContext, props.activeNotebook, () => {
-                               if (props.activeSection == activeContext) {
-                                 props.onActiveSectionChange(undefined)
-                               }
-                             })
-                             }
+              <List<Section>
+                key={buildKey(props.activeNotebook, sectionsId)} id={sectionsId}
+                items={props.activeNotebook?.itemsSortedByOrder}
+                selection={props.activeSection} defaultFirst
+                onActiveChange={props.onActiveSectionChange} onContextChange={onContextChange}
+                contextChildren={buildContext(activeContext, props.activeNotebook, () => {
+                  if (props.activeSection == activeContext) {
+                    props.onActiveSectionChange(undefined)
+                  }
+                })
+                }
               />
-              <List<Note> key={buildKey(props.activeSection, notesId)} id={notesId}
-                          items={props.activeSection?.itemsSortedByOrder}
-                          selection={noteContext.activeNote} defaultFirst
-                          onActiveChange={noteContext.setActiveNote} onContextChange={onContextChange}
-                          contextChildren={buildContext(activeContext, props.activeSection, () => {
-                            if (noteContext.activeNote == activeContext) {
-                              noteContext.setActiveNote(undefined)
-                            }
-                          })}
+              <List<Note>
+                key={buildKey(props.activeSection, notesId)} id={notesId}
+                items={props.activeSection?.itemsSortedByOrder}
+                selection={noteContext.activeNote} defaultFirst
+                onActiveChange={noteContext.setActiveNote} onContextChange={onContextChange}
+                contextChildren={buildContext(activeContext, props.activeSection, () => {
+                  if (noteContext.activeNote == activeContext) {
+                    noteContext.setActiveNote(undefined)
+                  }
+                })}
               />
             </>
           </span>
@@ -87,7 +91,8 @@ function buildKey(parent: OrderedItem | undefined, defaultKey: string) {
 //TODO autoselect previous item when currently selected is deleted
 function buildContext(activeContext: Notebook | Section | Note | undefined | null, target: Section | Notebook | undefined, deletion: () => void) {
   return target ? [
-    <ContextMenuItem key={"new"} text={"new"} onClick={() => {
+    <ContextMenuItem
+      key={"new"} text={"new"} onClick={() => {
       if (activeContext) {
         target!.insertAt(activeContext.order + 1)
       } else {
@@ -96,7 +101,8 @@ function buildContext(activeContext: Notebook | Section | Note | undefined | nul
     }}
     />,
     ...activeContext ? [
-      <ContextMenuItem key={"delete"} text={"delete"} onClick={() => {
+      <ContextMenuItem
+        key={"delete"} text={"delete"} onClick={() => {
         target!.deleteById(activeContext.id)
 
         deletion()

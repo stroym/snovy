@@ -11,11 +11,11 @@
 
     &.left {
       border-right: $border;
-      display: flex;
-      flex-flow: column nowrap;
-      //grid-template-rows: 1fr 10fr;
-      //grid-auto-flow: column dense;
-      //grid-template-areas: "notebook" "lists";
+      //display: flex;
+      //flex-flow: column nowrap;
+      display: grid;
+      grid-template-rows: fit-content(10%) 1fr;
+      grid-template-areas: "notebook" "lists";
     }
 
     &.right {
@@ -26,61 +26,8 @@
   }
 }
 
-#snovy-selector-notebook {
+#notebook-selector {
   grid-area: notebook;
-  border-bottom: $border;
-  font-size: $font-big;
-
-  #outer-span {
-    min-width: 0;
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: flex-start;
-  }
-
-  #inner-span {
-    min-width: 0;
-    flex-grow: 1;
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 0.2vh 0 0.2vh 0.5vw;
-  }
-
-  .snovy-combobox {
-    flex-grow: 1;
-    text-overflow: ellipsis;
-    min-width: 0;
-    font-size: $font-big;
-    color: $colour-text-primary;
-    background-color: transparent;
-    outline: none;
-    border: none;
-  }
-
-  .snovy-button {
-    color: $colour-text-primary;
-    background-color: $colour-primary;
-    margin: unset;
-
-    &:hover {
-      background-color: transparentize($colour-text-primary, 0.5);
-    }
-  }
-
-  #notebook-selector-list {
-    z-index: 10;
-    position: absolute;
-    background-color: black;
-    flex-flow: column nowrap;
-    flex-shrink: 1;
-
-    .snovy-list-item {
-      flex-shrink: 1;
-    }
-  }
 }
 
 #lists-span {
