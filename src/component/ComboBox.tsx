@@ -77,11 +77,7 @@ const ComboBox = <T extends Item>(props: {
 
   useEffect(
     () => {
-      if (props?.createItem && inputItems?.length == 0) {
-        setIsCreating(true)
-      } else {
-        setIsCreating(false)
-      }
+      props?.createItem && inputItems?.length == 0 ? setIsCreating(true) : setIsCreating(false)
     }, [inputItems]
   )
 
@@ -95,7 +91,7 @@ const ComboBox = <T extends Item>(props: {
       <div className={"snovy-combo-box"} {...getComboboxProps()}>
         <span className="snovy-combo-box-wrapper" {...getToggleButtonProps()}>
           <input
-            className="snovy-combo-box-input" readOnly={props.items == undefined}
+            className="snovy-combo-box-input"
             {...getInputProps({onKeyDown: (e) => { isCreating && e.key == Key.Enter && createItem()}})}
           />
           <CollapseButton aria-label={"toggle menu"}/>
