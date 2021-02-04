@@ -1,6 +1,6 @@
-import React, {useEffect, useRef, useState} from "react"
+import React, {useEffect, useRef} from "react"
 import ContextMenuItem from "./ContextMenuItem"
-import {useHideOnOutsideClick} from "../../Hooks"
+import {useHide} from "../../Hooks"
 
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
@@ -14,9 +14,7 @@ const ContextMenu = (props: {
 
   const selfRef = useRef<HTMLDivElement>(null)
 
-  const [visible, , flip] = useHideOnOutsideClick(selfRef)
-  const [x, setX] = useState(0)
-  const [y, setY] = useState(0)
+  const {visible, x, y, handleClick, flip} = useHide(selfRef)
 
   useEffect(
     () => {
@@ -39,23 +37,19 @@ const ContextMenu = (props: {
   const handleContextMenu = (e: any) => {
     e.preventDefault()
 
-    if (!selfRef.current?.contains(e.target)) {
-      setX(e.pageX)
-      setY(e.pageY)
-
-      flip()
-    }
+    handleClick(e)
   }
 
   return (
     <>
       {visible &&
-      <div className="snovy-context-menu" ref={selfRef} onClick={flip}
-           style={{
-             position: "absolute",
-             top: y + "px",
-             left: x + "px"
-           }}
+      <div
+        className="snovy-context-menu" ref={selfRef} onClick={flip}
+        style={{
+          position: "absolute",
+          top: y + "px",
+          left: x + "px"
+        }}
       >
         {props.children}
       </div>

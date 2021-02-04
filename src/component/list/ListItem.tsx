@@ -52,11 +52,12 @@ const ListItem = <T extends IdentifiedItem | Item>(props: {
   }
 
   return (
-    <input className={makeClassName()} ref={selfRef} type="text" value={value} placeholder={"Name..."}
-           onChange={handleChange} readOnly={!editable}
-           onClick={() => {props.onClick(props.mapped)}}
-           onDoubleClick={flip}
-           onContextMenu={handleContext}
+    <input
+      className={makeClassName()} ref={selfRef} type="text" value={value} placeholder={"Name..."}
+      onChange={handleChange} readOnly={!editable}
+      onClick={() => {props.onClick(props.mapped)}}
+      onDoubleClick={flip}
+      onContextMenu={handleContext}
     />
   )
 

@@ -28,6 +28,26 @@ export function useHideOnOutsideClick(elementRef: React.RefObject<Element | unde
   return [visible, setVisible, flip]
 }
 
+export function useHide(elementRef: React.RefObject<Element | undefined>, initialState?: boolean) {
+
+  const [visible, setVisible, flip] = useHideOnOutsideClick(elementRef, initialState)
+  const [x, setX] = useState(0)
+  const [y, setY] = useState(0)
+
+  const handleClick = (e: React.MouseEvent) => {
+    const negate = !visible
+
+    if (negate) {
+      setX(e.pageX)
+      setY(e.pageY)
+    }
+
+    setVisible(negate)
+  }
+
+  return {visible, x, y, setVisible, setX, setY, handleClick, flip}
+}
+
 export function useCollapse(elementRef: React.RefObject<HTMLElement | undefined>):
   [boolean, Dispatch<SetStateAction<boolean>>] {
 
