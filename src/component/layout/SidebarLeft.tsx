@@ -40,7 +40,7 @@ export const LeftBar = (props: {
             id="notebook-selector"
             key="notebook-selector" items={props.manager.itemsSortedAlphabetically}
             onActiveChange={props.onActiveNotebookChange}
-            createItem={(name: string) => {props.manager.insert(name)}}
+            createItem={(name: string) => {return props.manager.insert(name)}}
             selection={props.activeNotebook ?? props.manager.items.first()}
           />,
           <span key="lists-span" id="lists-span">

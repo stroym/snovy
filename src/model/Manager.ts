@@ -73,10 +73,10 @@ export default class Manager implements ParentInterface<Notebook> {
   }
 
   insert(name: string) {
-    this.addItem(new Notebook(this, this.idCounter, name, this.items.length))
+   return this.addItem(new Notebook(this, this.idCounter, name, this.items.length))
   }
 
-  addItem(item: Notebook, reorder = false): void {
+  addItem(item: Notebook, reorder = false) {
     if (reorder) {
       this.itemsSortedByOrder.slice(item.order).forEach(value => {
         value.order++
@@ -85,6 +85,8 @@ export default class Manager implements ParentInterface<Notebook> {
 
     this.items.push(item)
     this.idCounter++
+
+    return item
   }
 
   deleteItem(item: Notebook): void {

@@ -12,7 +12,7 @@ const ComboBox = <T extends Item>(props: {
   // contextChildren?: Array<React.ReactElement<typeof ContextMenuItem>>
   items: Array<T> | undefined,
   selection?: T,
-  createItem?: (value: string) => void
+  createItem?: (value: string) => T
 }) => {
 
   const [inputItems, setInputItems] = useState(props.items)
@@ -35,7 +35,7 @@ const ComboBox = <T extends Item>(props: {
 
   const {
     isOpen, getToggleButtonProps, getMenuProps, getInputProps, getComboboxProps, getItemProps, inputValue,
-    selectedItem, highlightedIndex, setInputValue, setHighlightedIndex, closeMenu
+    selectedItem, highlightedIndex, selectItem, setInputValue, setHighlightedIndex, closeMenu
   } = useCombobox({
     items: props.items ?? [],
     initialSelectedItem: props.selection,
@@ -86,7 +86,7 @@ const ComboBox = <T extends Item>(props: {
   )
 
   const createItem = () => {
-    props.createItem!(inputValue)
+    selectItem(props.createItem!(inputValue))
     closeMenu()
   }
 
