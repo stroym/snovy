@@ -1,6 +1,6 @@
-import React, {useEffect, useRef} from "react"
+import React, {useRef} from "react"
 import ContextMenuItem from "./ContextMenuItem"
-import {useHide} from "../../Hooks"
+import {useContextMenu} from "../../Hooks"
 
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
@@ -14,43 +14,12 @@ const ContextMenu = (props: {
 
   const selfRef = useRef<HTMLDivElement>(null)
 
-  const {visible, x, y, handleClick, flip} = useHide(selfRef)
-
-  useEffect(
-    () => {
-      props.parentRef.current?.addEventListener("contextmenu", handleContextMenu)
-
-      return () => {
-        props.parentRef.current?.removeEventListener("contextmenu", handleContextMenu)
-      }
-    }, []
-  )
-
-  useEffect(
-    () => {
-      if (!visible) {
-        props.resetContext()
-      }
-    }, [visible]
-  )
-
-  const handleContextMenu = (e: any) => {
-    e.preventDefault()
-
-    handleClick(e)
-  }
+  const {visible, flip, position} = useContextMenu(selfRef, props.parentRef, props.resetContext)
 
   return (
     <>
       {visible &&
-      <div
-        className="snovy-context-menu" ref={selfRef} onClick={flip}
-        style={{
-          position: "absolute",
-          top: y + "px",
-          left: x + "px"
-        }}
-      >
+      <div className="snovy-context-menu" ref={selfRef} onClick={flip} style={position}>
         {props.children}
       </div>
       }

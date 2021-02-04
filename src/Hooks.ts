@@ -34,6 +34,12 @@ export function useHide(elementRef: React.RefObject<Element | undefined>, initia
   const [x, setX] = useState(0)
   const [y, setY] = useState(0)
 
+  const position: React.CSSProperties = {
+    position: "absolute",
+    top: y + "px",
+    left: x + "px"
+  }
+
   const handleClick = (e: React.MouseEvent) => {
     const negate = !visible
 
@@ -45,7 +51,38 @@ export function useHide(elementRef: React.RefObject<Element | undefined>, initia
     setVisible(negate)
   }
 
-  return {visible, x, y, setVisible, setX, setY, handleClick, flip}
+  return {visible, x, y, position, setVisible, setX, setY, handleClick, flip}
+}
+
+export function useContextMenu(elementRef: React.RefObject<Element | undefined>, parentRef: React.RefObject<Element | undefined>, resetContext?: () => void) {
+
+  const {visible, position, handleClick, flip} = useHide(elementRef)
+
+  useEffect(
+    () => {
+      parentRef.current?.addEventListener("contextmenu", handleContextMenu)
+
+      return () => {
+        parentRef.current?.removeEventListener("contextmenu", handleContextMenu)
+      }
+    }, []
+  )
+
+  useEffect(
+    () => {
+      if (!visible && resetContext) {
+        resetContext()
+      }
+    }, [visible]
+  )
+
+  const handleContextMenu = (e: any) => {
+    e.preventDefault()
+
+    handleClick(e)
+  }
+
+  return {visible, flip, position}
 }
 
 export function useCollapse(elementRef: React.RefObject<HTMLElement | undefined>):

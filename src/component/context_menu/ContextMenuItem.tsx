@@ -6,7 +6,7 @@ export const ContextMenuItem = (props: {
 }) => {
 
   return (
-    <div className="snovy-context-menu-item" onClick={props.onClick} onContextMenu={(e) => {e.stopPropagation()}}>
+    <div className="snovy-context-menu-item" onClick={props.onClick}>
       {props.text}
     </div>
   )
