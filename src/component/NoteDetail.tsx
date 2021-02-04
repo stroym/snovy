@@ -36,7 +36,8 @@ const NoteDetail = () => {
         {noteContext.activeNote && Array.from(noteContext.activeNote.scopedTags.entries())
           .map(([scope, tags]: [Scope, Tag[]]) =>
             <TagItemScoped key={scope.name} scope={scope} mapped={tags} onRemove={onRemove}
-                           onRemoveParent={onRemoveScoped}/>
+                           onRemoveParent={onRemoveScoped}
+            />
           )
         }
         {noteContext.activeNote?.unscopedTags.map((item: Tag) =>

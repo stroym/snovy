@@ -49,7 +49,8 @@ const List = <T extends IdentifiedItem | Item>(props: {
   return (
     <div id={props.id} ref={selfRef}
          className={"snovy-list".concat(props?.className ?? "", props.items ? "" : " disabled")}
-         onContextMenu={() => setActiveContext(null)}>
+         onContextMenu={() => setActiveContext(null)}
+    >
       {props.items?.map((item: T) =>
         <ListItem key={item instanceof IdentifiedItem ? item.id : item.name} mapped={item} active={item == activeItem}
                   activeContext={item == activeContext}

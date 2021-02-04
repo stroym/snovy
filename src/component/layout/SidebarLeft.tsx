@@ -93,13 +93,15 @@ function buildContext(activeContext: Notebook | Section | Note | undefined | nul
       } else {
         target!.insert()
       }
-    }}/>,
+    }}
+    />,
     ...activeContext ? [
       <ContextMenuItem key={"delete"} text={"delete"} onClick={() => {
         target!.deleteById(activeContext.id)
 
         deletion()
-      }}/>
+      }}
+      />
     ] : []
   ] : undefined
 }

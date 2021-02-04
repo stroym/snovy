@@ -23,15 +23,18 @@ export const TagItemScoped = (props: TagItemProps) => {
     <>
       {props.scope.exclusive ?
         <ExclusiveScopedTagItem scope={props.scope} mapped={props.mapped} onRemove={props.onRemove}
-                                onRemoveParent={props.onRemoveParent}/> :
+                                onRemoveParent={props.onRemoveParent}
+        /> :
         <ScopedTagItem scope={props.scope} mapped={props.mapped} onRemove={props.onRemove}
-                       onRemoveParent={props.onRemoveParent}/>
+                       onRemoveParent={props.onRemoveParent}
+        />
       }
     </>
   )
 
 }
 
+//TODO on mouse over show containing tags
 export const ScopedTagItem = (props: TagItemProps) => {
 
   const [collapsed, setCollapsed] = useState(false)

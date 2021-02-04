@@ -20,7 +20,8 @@ const TagManager = (props: {
                  contextChildren={
                    props.activeNotebook ? [
                      <ContextMenuItem key={"new"} text={"new"}
-                                      onClick={() => { props.activeNotebook!.sets.addTag("", "")}}/>,
+                                      onClick={() => { props.activeNotebook!.sets.addTag("", "")}}
+                     />,
                      ...activeContext ? [
                        <ContextMenuItem key={"delete"} text={"delete"} onClick={() => {
                          props.activeNotebook?.sets.deleteTag(activeContext)
@@ -29,7 +30,8 @@ const TagManager = (props: {
                            props.onActiveChange(undefined)
                          }
                        }
-                       }/>
+                       }
+                       />
                      ] : []
                    ] : undefined
                  }
