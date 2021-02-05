@@ -3,6 +3,7 @@ import {useCombobox, UseComboboxState, UseComboboxStateChangeOptions} from "down
 import {CollapseButton} from "./Button"
 import {IdentifiedItem, Item} from "../model/common/Base"
 import {Key} from "ts-key-enum"
+import {useDefaultEmpty} from "../Hooks"
 
 const ComboBox = <T extends Item>(props: {
   id?: string,
@@ -15,7 +16,7 @@ const ComboBox = <T extends Item>(props: {
   createItem?: (value: string) => T
 }) => {
 
-  const [inputItems, setInputItems] = useState(props.items ?? [])
+  const [inputItems, setInputItems] = useDefaultEmpty(props.items)
   const [isCreating, setIsCreating] = useState(false)
 
   const stateReducer = (state: UseComboboxState<T>, actionAndChanges: UseComboboxStateChangeOptions<T>) => {
@@ -45,7 +46,7 @@ const ComboBox = <T extends Item>(props: {
         item.toString().toLowerCase().startsWith(inputValue!.toLowerCase())
       )
 
-      setInputItems(filteredItems ?? [])
+      setInputItems(filteredItems)
 
       if (filteredItems) {
         const item = filteredItems.first()

@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useEffect, useState} from "react"
+import React, {Dispatch, SetStateAction, useEffect, useReducer, useState} from "react"
 
 export function useHideOnOutsideClick(elementRef: React.RefObject<Element | undefined>, initialState?: boolean):
   [boolean, Dispatch<SetStateAction<boolean>>, () => void] {
@@ -29,7 +29,6 @@ export function useHideOnOutsideClick(elementRef: React.RefObject<Element | unde
 }
 
 export function useHide(elementRef: React.RefObject<Element | undefined>, initialState?: boolean) {
-
   const [visible, setVisible, flip] = useHideOnOutsideClick(elementRef, initialState)
   const [x, setX] = useState(0)
   const [y, setY] = useState(0)
@@ -54,8 +53,11 @@ export function useHide(elementRef: React.RefObject<Element | undefined>, initia
   return {visible, x, y, position, setVisible, setX, setY, handleClick, flip}
 }
 
-export function useContextMenu(elementRef: React.RefObject<Element | undefined>, parentRef: React.RefObject<Element | undefined>, resetContext?: () => void) {
-
+export function useContextMenu(
+  elementRef: React.RefObject<Element | undefined>,
+  parentRef: React.RefObject<Element | undefined>,
+  resetContext?: () => void
+) {
   const {visible, position, handleClick, flip} = useHide(elementRef)
 
   useEffect(
@@ -83,6 +85,13 @@ export function useContextMenu(elementRef: React.RefObject<Element | undefined>,
   }
 
   return {visible, flip, position}
+}
+
+export function useDefaultEmpty<T>(array: Array<T> | undefined) {
+  return useReducer(
+    (prevState: Array<T>, newState: Array<T> | undefined): Array<T> => {return newState ? newState : []},
+    array ?? []
+  )
 }
 
 export function useCollapse(elementRef: React.RefObject<HTMLElement | undefined>):
