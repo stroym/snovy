@@ -1,16 +1,9 @@
 @import "../theme";
+@import "../mixins";
 
-$button-size: 1.2em;
-
-//TODO also scale these
 .snovy-button {
+  @include button-size($font-medium);
   flex-shrink: 0;
-  max-width: $button-size;
-  width: $button-size;
-  max-height: $button-size;
-  height: $button-size;
-  line-height: $button-size;
-  font-size: $button-size;
   margin: 0.1em;
   border: none;
   outline: none;
@@ -23,18 +16,3 @@ $button-size: 1.2em;
     background-color: rgba(0, 0, 0, 0.3);
   }
 }
-
-//.tag-add-button {
-//  background-color: beige;
-//  max-width: $button-size;
-//  width: $button-size;
-//  max-height: $button-size;
-//  height: $button-size;
-//  line-height: $button-size;
-//  font-size: $button-size;
-//  align-self: center;
-//
-//  &:hover {
-//    background-color: transparentize(beige, 0.1);
-//  }
-//}

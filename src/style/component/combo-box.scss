@@ -1,4 +1,5 @@
 @import "../theme";
+@import "../mixins";
 
 .snovy-combo-box {
   grid-area: notebook;
@@ -30,6 +31,8 @@
   }
 
   .snovy-button {
+    @include button-size($font-big);
+
     color: $colour-text-primary;
     background-color: $colour-primary;
 

@@ -1,0 +1,17 @@
+@mixin autosize-margin($margin, $width) {
+  margin: $margin;
+  max-width: calc(#{$width} - 2 * #{$margin});
+}
+
+@mixin button-size($size) {
+  @include text-height($size);
+  max-width: $size;
+  width: $size;
+  max-height: $size;
+  height: $size;
+}
+
+@mixin text-height($size) {
+  font-size: $size;
+  line-height: $size;
+}
