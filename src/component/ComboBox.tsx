@@ -15,7 +15,7 @@ const ComboBox = <T extends Item>(props: {
   createItem?: (value: string) => T
 }) => {
 
-  const [inputItems, setInputItems] = useState(props.items)
+  const [inputItems, setInputItems] = useState(props.items ?? [])
   const [isCreating, setIsCreating] = useState(false)
 
   const stateReducer = (state: UseComboboxState<T>, actionAndChanges: UseComboboxStateChangeOptions<T>) => {
@@ -37,7 +37,7 @@ const ComboBox = <T extends Item>(props: {
     isOpen, getToggleButtonProps, getMenuProps, getInputProps, getComboboxProps, getItemProps, inputValue,
     selectedItem, highlightedIndex, selectItem, setInputValue, setHighlightedIndex, closeMenu
   } = useCombobox({
-    items: props.items ?? [],
+    items: inputItems,
     initialSelectedItem: props.selection,
     stateReducer: stateReducer,
     onInputValueChange: ({inputValue}) => {
@@ -45,7 +45,7 @@ const ComboBox = <T extends Item>(props: {
         item.toString().toLowerCase().startsWith(inputValue!.toLowerCase())
       )
 
-      setInputItems(filteredItems)
+      setInputItems(filteredItems ?? [])
 
       if (filteredItems) {
         const item = filteredItems.first()
