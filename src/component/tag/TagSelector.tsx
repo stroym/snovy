@@ -1,6 +1,10 @@
 import React from "react"
+import Scope from "../../model/coloured/Scope"
 
-export const TagSelector = () => {
+export const TagSelector = (props: {
+  initialValue?: string,
+  scope?: Scope
+}) => {
 
   return (
     <span className="snovy-tag-selector">

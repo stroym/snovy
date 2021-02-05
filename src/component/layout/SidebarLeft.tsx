@@ -8,7 +8,7 @@ import Manager from "../../model/Manager"
 import ContextMenuItem from "../context_menu/ContextMenuItem"
 import {ManagedSidebar} from "./Sidebar"
 import List from "../list/List"
-import ComboBox from "../ComboBox"
+import ComboBox from "../combo_box/ComboBox"
 
 export const LeftBar = (props: {
   onActiveNotebookChange: (active: Notebook | undefined) => void,

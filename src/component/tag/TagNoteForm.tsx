@@ -1,10 +1,22 @@
-import React, {useRef} from "react"
-import {useHide} from "../../Hooks"
+import React, {useRef, useState} from "react"
 import TagSelector from "./TagSelector"
-import ComboBox from "../ComboBox"
+import ComboBox from "../combo_box/ComboBox"
 import Notebook from "../../model/Notebook"
 import Tag from "../../model/coloured/Tag"
 import Note from "../../model/Note"
+
+class Stringer {
+
+  name: string
+  scopeName?: string
+
+  constructor(str: string) {
+    const parts = str.split(":")
+    this.name = parts.pop()!
+    this.scopeName = parts.pop()
+  }
+
+}
 
 const TagNoteForm = (props: {
   note: Note,
@@ -14,11 +26,14 @@ const TagNoteForm = (props: {
 
   const selfRef = useRef<HTMLDivElement>(null)
 
-  const {visible, x, y, handleClick, flip} = useHide(selfRef)
+  const [inputValue, setInputValue] = useState("")
 
-  //TODO new tag picker (checkbox scope, input && colour picker scope && exclusive checkbox || parse single input
-  // - might be nice to provide both as an option down the line), input && colour picker tag)
-  // also: something fancier would be nice for scoped tags
+  const populateDropdown = (str: string) => {
+    const temp = new Stringer(str)
+  }
+
+  //TODO on tab apply scope if applicable, maybe?
+  // and also probably different combobox...
   return (
     <span ref={selfRef} id={"tag-add-wrapper"}>
         <ComboBox
@@ -28,7 +43,7 @@ const TagNoteForm = (props: {
             props.onUpdate()
           }}
         />
-      {visible &&
+      {inputValue &&
       <TagSelector/>
       }
     </span>
