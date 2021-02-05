@@ -10,42 +10,50 @@ import Notebook from "./model/Notebook"
 import Section from "./model/Section"
 import Manager from "./model/Manager"
 import Tag from "./model/coloured/Tag"
-import {NoteProvider} from "./Context"
+import Note from "./model/Note"
 
 const man = new Manager()
 
 function App() {
 
   const [manager, _setManager] = useState<Manager>(man)
-  const [activeNotebook, setActiveNotebook] = useState<Notebook | undefined>()
-  const [activeSection, setActiveSection] = useState<Section | undefined>()
-  const [activeTag, setActiveTag] = useState<Tag | undefined>()
+  const [notebook, setNotebook] = useState<Notebook | undefined>()
+  const [section, setSection] = useState<Section | undefined>()
+  const [note, setNote] = useState<Note | undefined>()
+  const [tag, setTag] = useState<Tag | undefined>()
 
   const selectNotebook = (active: Notebook | undefined) => {
-    setActiveNotebook(active)
+    setNotebook(active)
   }
 
   const selectSection = (active: Section | undefined) => {
-    setActiveSection(active)
+    setSection(active)
+  }
+
+  const selectNote = (active: Note | undefined) => {
+    setNote(active)
   }
 
   const selectTag = (active: Tag | undefined) => {
-    setActiveTag(active)
+    setTag(active)
+  }
+
+  const untag = (note: Note, tag: Tag) => {
+    note.untag(tag)
+    console.log("click")
   }
 
   return (
     <div id="snovy-app">
       <TopBar/>
       <span id="snovy-middle">
-        <NoteProvider>
-          <LeftBar onActiveSectionChange={selectSection}
-                   onActiveNotebookChange={selectNotebook} manager={manager}
-                   activeNotebook={activeNotebook} activeSection={activeSection}
+          <LeftBar
+            onActiveSectionChange={selectSection} onActiveNoteChange={selectNote}
+            onActiveNotebookChange={selectNotebook} manager={manager}
+            activeNotebook={notebook} activeSection={section} activeNote={note}
           />
-          <Editor/>
-          <RightBar activeNotebook={activeNotebook} activeTag={activeTag} onActiveTagChange={selectTag}
-          />
-        </NoteProvider>
+          <Editor activeNote={note}/>
+          <RightBar onTagRemove={untag} note={note} notebook={notebook} tag={tag} onTagChange={selectTag}/>
       </span>
       <BottomBar/>
     </div>

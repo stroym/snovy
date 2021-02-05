@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react"
+import React, {useState} from "react"
 import Note from "../../model/Note"
 import Section from "../../model/Section"
 import Notebook from "../../model/Notebook"
@@ -7,19 +7,18 @@ import {Orientation} from "../tab_menu/TabMenu"
 import Manager from "../../model/Manager"
 import ContextMenuItem from "../context_menu/ContextMenuItem"
 import {ManagedSidebar} from "./Sidebar"
-import {NoteContext} from "../../Context"
 import List from "../list/List"
 import ComboBox from "../ComboBox"
 
 export const LeftBar = (props: {
   onActiveNotebookChange: (active: Notebook | undefined) => void,
   onActiveSectionChange: (active: Section | undefined) => void,
+  onActiveNoteChange: (active: Note | undefined) => void,
   manager: Manager,
   activeNotebook: Notebook | undefined,
   activeSection: Section | undefined,
+  activeNote: Note | undefined
 }) => {
-
-  const noteContext = useContext(NoteContext)
 
   const [activeContext, setActiveContext] = useState<Notebook | Section | Note | undefined | null>()
 
@@ -27,7 +26,6 @@ export const LeftBar = (props: {
     setActiveContext(target)
   }
 
-  //TODO remember selected note when switching tabs
   return (
     <ManagedSidebar orientation={Orientation.LEFT} tabs={mappings}>
       {[{
@@ -58,14 +56,14 @@ export const LeftBar = (props: {
               <List<Note>
                 key={buildKey(props.activeSection, notesId)} id={notesId}
                 items={props.activeSection?.itemsSortedByOrder}
-                selection={noteContext?.activeNote} defaultFirst
-                onActiveChange={noteContext?.setActiveNote} onContextChange={onContextChange}
+                selection={props.activeNote} defaultFirst
+                onActiveChange={props.onActiveNoteChange} onContextChange={onContextChange}
                 contextChildren={buildContext(activeContext, props.activeSection, () => {
-                  if (noteContext?.activeNote == activeContext) {
-                    noteContext?.setActiveNote(undefined)
+                  if (props.activeNote == activeContext) {
+                    props.onActiveNoteChange(undefined)
                   }
 
-                  return noteContext?.activeNote == activeContext
+                  return props.activeNote == activeContext
                 })}
               />
             </>

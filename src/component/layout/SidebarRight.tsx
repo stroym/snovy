@@ -5,11 +5,14 @@ import Tag from "../../model/coloured/Tag"
 import {ManagedSidebar} from "./Sidebar"
 import NoteDetail from "../NoteDetail"
 import TagManager from "../tag/TagManager"
+import Note from "../../model/Note"
 
 const SidebarRight = (props: {
-  activeNotebook: Notebook | undefined,
-  activeTag: Tag | undefined,
-  onActiveTagChange: (tag: Tag | undefined) => void
+  notebook: Notebook | undefined,
+  note: Note | undefined,
+  tag: Tag | undefined,
+  onTagChange: (tag?: Tag) => void
+  onTagRemove: (note: Note, tag: Tag) => void
 }) => {
 
   return (
@@ -17,15 +20,11 @@ const SidebarRight = (props: {
       {[
         {
           text: mappings[0].text,
-          children:
-            <NoteDetail activeNotebook={props.activeNotebook}/>
+          children: props.notebook && props.note && <NoteDetail note={props.note} notebook={props.notebook}/>
         },
         {
           text: mappings[1].text,
-          children: <TagManager
-            activeNotebook={props.activeNotebook} activeTag={props.activeTag}
-            onActiveChange={props.onActiveTagChange}
-          />
+          children: <TagManager notebook={props.notebook} tag={props.tag} onTagChange={props.onTagChange}/>
         }
       ]}
     </ManagedSidebar>

@@ -1,35 +1,33 @@
-import React, {useContext, useState} from "react"
+import React, {useState} from "react"
 import Tag from "../model/coloured/Tag"
-import {NoteContext} from "../Context"
 import {TagItem, TagItemScoped} from "./tag/TagItem"
 import Scope from "../model/coloured/Scope"
 import Notebook from "../model/Notebook"
 import TagNoteForm from "./tag/TagNoteForm"
+import Note from "../model/Note"
 
 const NoteDetail = (props: {
-  activeNotebook: Notebook | undefined
+  note: Note,
+  notebook: Notebook
 }) => {
-
-  const noteContext = useContext(NoteContext)
 
   const [change, flip] = useState(false)
 
   const onRemove = (tag: Tag) => {
-    noteContext?.activeNote?.untag(tag)
+    props.note?.untag(tag)
     flip(!change)
   }
 
   const onRemoveScoped = (tags: Array<Tag>) => {
-    noteContext?.activeNote?.untagAll(tags)
+    props.note?.untagAll(tags)
     flip(!change)
   }
 
   return (
     <div id="snovy-note-detail">
-      <TagNoteForm notebook={props.activeNotebook} onUpdate={() => flip(!change)}/>
-      {noteContext && noteContext.activeNote &&
+      <TagNoteForm note={props.note} notebook={props.notebook} onUpdate={() => flip(!change)}/>
       <div id="snovy-tag-display">
-        {Array.from(noteContext.activeNote.scopedTags.entries())
+        {Array.from(props.note.scopedTags.entries())
           .map(([scope, tags]: [Scope, Tag[]]) =>
             <TagItemScoped
               key={scope.name} scope={scope} mapped={tags} onRemove={onRemove}
@@ -37,11 +35,10 @@ const NoteDetail = (props: {
             />
           )
         }
-        {noteContext.activeNote.unscopedTags.map((item: Tag) =>
+        {props.note.unscopedTags.map((item: Tag) =>
           <TagItem key={item.toString()} mapped={item} onRemove={onRemove}/>)
         }
       </div>
-      }
     </div>
   )
 

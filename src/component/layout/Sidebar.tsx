@@ -22,7 +22,7 @@ export const Sidebar = (props: {
 
 export const ManagedSidebar = (props: {
   classList?: Array<string>,
-  children: Array<{ text: string, children: Array<React.ReactElement> | React.ReactElement }>,
+  children: Array<{ text: string, children: Array<React.ReactElement> | React.ReactElement | undefined }>,
   tabs: Array<{ text: string, default?: boolean }>,
   orientation: Orientation.LEFT | Orientation.RIGHT
 }) => {
@@ -30,14 +30,16 @@ export const ManagedSidebar = (props: {
   const [activeTab, setActiveTab] = useState<string | undefined>()
 
   return (
-    <Sidebar orientation={props.orientation} classList={props.classList}
-             tabs={
-               <TabMenu orientation={props.orientation} tabs={props.tabs}
-                        onClick={(active: string | undefined) => {setActiveTab(active)}}
-               />}
+    <Sidebar
+      orientation={props.orientation} classList={props.classList}
+      tabs={
+        <TabMenu
+          orientation={props.orientation} tabs={props.tabs}
+          onClick={(active: string | undefined) => {setActiveTab(active)}}
+        />}
     >
       {props.children.map(child =>
-        <React.Fragment key={child.text}>{child.text == activeTab && child.children}</React.Fragment>)
+        child && <React.Fragment key={child.text}>{child.text == activeTab && child.children}</React.Fragment>)
       }
     </Sidebar>
   )

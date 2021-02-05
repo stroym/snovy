@@ -1,31 +1,27 @@
-import React, {ChangeEvent, useContext, useEffect, useState} from "react"
-import Toolbar from "../Toolbar"
-import {NoteContext} from "../../Context"
+import React, {ChangeEvent, useEffect, useState} from "react"
+import Note from "../../model/Note"
 
-const Editor = () => {
-
-  const noteContext = useContext(NoteContext)
+const Editor = (props: {
+  activeNote: Note | undefined
+}) => {
 
   const [value, setValue] = useState<string>("")
 
   useEffect(
     () => {
-      setValue(noteContext?.activeNote?.content ?? "")
-    }, [noteContext]
+      setValue(props.activeNote?.content ?? "")
+    }, [props.activeNote]
   )
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    if (noteContext?.activeNote) {
+    if (props.activeNote) {
       setValue(e.target.value)
-      noteContext.activeNote.content = e.target.value
+      props.activeNote.content = e.target.value
     }
   }
 
   return (
-    <div id="snovy-editor-container">
-      <Toolbar id="snovy-editor-toolbar"/>
-      <textarea id="snovy-editor" onChange={handleChange} value={value} disabled={!noteContext?.activeNote}/>
-    </div>
+    <textarea id="snovy-editor" onChange={handleChange} value={value} disabled={!props.activeNote}/>
   )
 
 }
