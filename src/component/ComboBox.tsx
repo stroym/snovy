@@ -8,7 +8,7 @@ import {useDefaultEmpty} from "../Hooks"
 const ComboBox = <T extends Item>(props: {
   id?: string,
   className?: string,
-  onActiveChange: (active: T | undefined) => void,
+  onActiveChange: (active: T) => void,
   // onContextChange?: (active: T | null | undefined) => void,
   // contextChildren?: Array<React.ReactElement<typeof ContextMenuItem>>
   items: Array<T> | undefined,
@@ -72,7 +72,7 @@ const ComboBox = <T extends Item>(props: {
 
   useEffect(
     () => {
-      props.onActiveChange(selectedItem ?? undefined)
+      selectedItem && props.onActiveChange(selectedItem)
     }, [selectedItem]
   )
 

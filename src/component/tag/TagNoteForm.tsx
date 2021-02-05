@@ -18,12 +18,18 @@ const TagNoteForm = (props: {
 
   const [create, setCreate] = useState(false)
 
+  //TODO new tag picker (checkbox scope, input && colour picker scope && exclusive checkbox || parse single input
+  // - might be nice to provide both as an option down the line), input && colour picker tag)
+  // also: something fancier would be nice for scoped tags
   return (
     <span ref={selfRef} id={"tag-add-wrapper"}>
-      <ComboBox
-        items={props.notebook?.sets.tags}
-        onActiveChange={(tag: Tag | undefined) => {tag && noteContext?.activeNote?.tag(tag)}}
-      />
+      {
+        props.notebook && noteContext && noteContext.activeNote &&
+        <ComboBox
+          items={props.notebook.sets.tags}
+          onActiveChange={(tag: Tag) => noteContext.activeNote!.tag(tag)}
+        />
+      }
       {visible &&
       <TagSelector/>
       }

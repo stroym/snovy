@@ -12,23 +12,19 @@ const NoteDetail = (props: {
 
   const noteContext = useContext(NoteContext)
 
-  //TODO find a better way to update this component
-  const [, setUpdated] = useState<string>()
+  //TODO better, but there has to be a cleaner way
+  const [change, flip] = useState(false)
 
   const onRemove = (tag: Tag) => {
-    setUpdated(tag.toString())
     noteContext?.activeNote?.untag(tag)
+    flip(!change)
   }
 
   const onRemoveScoped = (tags: Array<Tag>) => {
-    setUpdated(tags[0].scope!.name)
     noteContext?.activeNote?.untagAll(tags)
+    flip(!change)
   }
 
-  //TODO make it a grid or something
-  //TODO new tag picker (checkbox scope, input && colour picker scope && exclusive checkbox || parse single input
-  // - might be nice to provide both as an option down the line), input && colour picker tag)
-  // also: something fancier would be nice for scoped tags
   return (
     <div id="snovy-note-detail">
       <TagNoteForm notebook={props.activeNotebook}/>
