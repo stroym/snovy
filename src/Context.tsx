@@ -17,7 +17,7 @@ export const NoteProvider = (props: {
     <NoteContext.Provider
       value={{
         activeNote,
-        setActiveNote,
+        setActiveNote
       }}
     >
       {props.children}

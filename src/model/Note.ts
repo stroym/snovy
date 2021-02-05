@@ -23,7 +23,6 @@ export default class Note extends ItemWithParent<Section> {
     const temp = new Map<Scope, Array<Tag>>()
 
     scopedTags.forEach((tag) => {
-      console.assert(tag.scope!)
 
       if (!temp.has(tag.scope!)) {
         temp.set(tag.scope!, [])

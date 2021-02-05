@@ -8,7 +8,7 @@ import ContextMenuItem from "../context_menu/ContextMenuItem"
 const List = <T extends IdentifiedItem | Item>(props: {
   id?: string,
   className?: string,
-  onActiveChange: (active: T | undefined) => void,
+  onActiveChange?: (active: T | undefined) => void,
   onContextChange?: (active: T | null | undefined) => void,
   contextChildren?: Array<React.ReactElement<typeof ContextMenuItem>>
   items: Array<T> | undefined,
@@ -34,7 +34,7 @@ const List = <T extends IdentifiedItem | Item>(props: {
 
   useEffect(
     () => {
-      props.onActiveChange(activeItem)
+      props.onActiveChange && props.onActiveChange(activeItem)
     }, [activeItem]
   )
 
@@ -47,14 +47,16 @@ const List = <T extends IdentifiedItem | Item>(props: {
   )
 
   return (
-    <div id={props.id} ref={selfRef}
-         className={"snovy-list".concat(props?.className ?? "", props.items ? "" : " disabled")}
-         onContextMenu={() => setActiveContext(null)}
+    <div
+      id={props.id} ref={selfRef}
+      className={"snovy-list".concat(props?.className ?? "", props.items ? "" : " disabled")}
+      onContextMenu={() => setActiveContext(null)}
     >
       {props.items?.map((item: T) =>
-        <ListItem key={item instanceof IdentifiedItem ? item.id : item.name} mapped={item} active={item == activeItem}
-                  activeContext={item == activeContext}
-                  onClick={(item: T) => {setActiveItem(item)}} onContext={(item: T) => {setActiveContext(item)}}
+        <ListItem
+          key={item instanceof IdentifiedItem ? item.id : item.name} mapped={item} active={item == activeItem}
+          activeContext={item == activeContext}
+          onClick={(item: T) => {setActiveItem(item)}} onContext={(item: T) => {setActiveContext(item)}}
         />)
       }
       <ContextMenu parentRef={selfRef} resetContext={() => setActiveContext(undefined)}>

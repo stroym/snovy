@@ -22,11 +22,13 @@ export const TagItemScoped = (props: TagItemProps) => {
   return (
     <>
       {props.scope.exclusive ?
-        <ExclusiveScopedTagItem scope={props.scope} mapped={props.mapped} onRemove={props.onRemove}
-                                onRemoveParent={props.onRemoveParent}
+        <ExclusiveScopedTagItem
+          scope={props.scope} mapped={props.mapped} onRemove={props.onRemove}
+          onRemoveParent={props.onRemoveParent}
         /> :
-        <ScopedTagItem scope={props.scope} mapped={props.mapped} onRemove={props.onRemove}
-                       onRemoveParent={props.onRemoveParent}
+        <ScopedTagItem
+          scope={props.scope} mapped={props.mapped} onRemove={props.onRemove}
+          onRemoveParent={props.onRemoveParent}
         />
       }
     </>

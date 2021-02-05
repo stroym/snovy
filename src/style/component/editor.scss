@@ -1,4 +1,5 @@
 @import "../theme";
+@import "../mixins";
 
 #snovy-editor-container {
   grid-area: centre;
@@ -14,15 +15,14 @@
 }
 
 #snovy-editor {
+  @include scrollbar;
   grid-area: editor;
   padding: 0.5%;
   background-color: $colour-primary;
   color: $colour-text-primary;
   resize: none;
-  overflow-y: auto;
   border: none;
   outline: none;
   font-size: $font-small;
   line-height: $font-medium + 0.1vw;
-  scrollbar-color: $scrollbar;
 }

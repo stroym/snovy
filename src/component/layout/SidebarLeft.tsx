@@ -21,10 +21,6 @@ export const LeftBar = (props: {
 
   const noteContext = useContext(NoteContext)
 
-  if (!noteContext) {
-    return null
-  }
-
   const [activeContext, setActiveContext] = useState<Notebook | Section | Note | undefined | null>()
 
   const onContextChange = (target: Notebook | Section | Note | undefined | null) => {
@@ -62,14 +58,14 @@ export const LeftBar = (props: {
               <List<Note>
                 key={buildKey(props.activeSection, notesId)} id={notesId}
                 items={props.activeSection?.itemsSortedByOrder}
-                selection={noteContext.activeNote} defaultFirst
-                onActiveChange={noteContext.setActiveNote} onContextChange={onContextChange}
+                selection={noteContext?.activeNote} defaultFirst
+                onActiveChange={noteContext?.setActiveNote} onContextChange={onContextChange}
                 contextChildren={buildContext(activeContext, props.activeSection, () => {
-                  if (noteContext.activeNote == activeContext) {
-                    noteContext.setActiveNote(undefined)
+                  if (noteContext?.activeNote == activeContext) {
+                    noteContext?.setActiveNote(undefined)
                   }
 
-                  return noteContext.activeNote == activeContext
+                  return noteContext?.activeNote == activeContext
                 })}
               />
             </>

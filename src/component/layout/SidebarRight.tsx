@@ -16,12 +16,15 @@ const SidebarRight = (props: {
     <ManagedSidebar orientation={Orientation.RIGHT} tabs={mappings}>
       {[
         {
-          text: mappings[0].text, children: <NoteDetail/>
+          text: mappings[0].text,
+          children:
+            <NoteDetail activeNotebook={props.activeNotebook}/>
         },
         {
           text: mappings[1].text,
-          children: <TagManager activeNotebook={props.activeNotebook} activeTag={props.activeTag}
-                                onActiveChange={props.onActiveTagChange}
+          children: <TagManager
+            activeNotebook={props.activeNotebook} activeTag={props.activeTag}
+            onActiveChange={props.onActiveTagChange}
           />
         }
       ]}

@@ -1,0 +1,33 @@
+@use "tag-add-form";
+@use "tags";
+
+@import "../theme";
+@import "../mixins";
+
+#snovy-note-detail {
+  max-width: 100%;
+  max-height: 100%;
+
+  display: grid;
+  grid-template-rows: fit-content(10%) 4fr 1fr;
+  grid-template-areas: "tag-add" "tags" "rest";
+}
+
+#tag-add-wrapper {
+  grid-area: tag-add;
+  min-width: 0;
+}
+
+#snovy-tag-display {
+  @include scrollbar;
+  grid-area: tags;
+  min-width: 0;
+  min-height: 0;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  align-content: flex-start;
+  justify-content: flex-start;
+  align-items: flex-start;
+}

@@ -6,20 +6,16 @@ const Editor = () => {
 
   const noteContext = useContext(NoteContext)
 
-  if (!noteContext) {
-    return null
-  }
-
   const [value, setValue] = useState<string>("")
 
   useEffect(
     () => {
-      setValue(noteContext.activeNote?.content ?? "")
+      setValue(noteContext?.activeNote?.content ?? "")
     }, [noteContext]
   )
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    if (noteContext.activeNote) {
+    if (noteContext?.activeNote) {
       setValue(e.target.value)
       noteContext.activeNote.content = e.target.value
     }
@@ -28,7 +24,7 @@ const Editor = () => {
   return (
     <div id="snovy-editor-container">
       <Toolbar id="snovy-editor-toolbar"/>
-      <textarea id="snovy-editor" onChange={handleChange} value={value} disabled={!noteContext.activeNote}/>
+      <textarea id="snovy-editor" onChange={handleChange} value={value} disabled={!noteContext?.activeNote}/>
     </div>
   )
 

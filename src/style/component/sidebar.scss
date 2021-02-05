@@ -11,8 +11,6 @@
 
     &.left {
       border-right: $border;
-      //display: flex;
-      //flex-flow: column nowrap;
       display: grid;
       grid-template-rows: fit-content(10%) 1fr;
       grid-template-areas: "notebook" "lists";
@@ -20,8 +18,6 @@
 
     &.right {
       border-left: $border;
-      //TODO, I guess
-      display: flex;
     }
   }
 }

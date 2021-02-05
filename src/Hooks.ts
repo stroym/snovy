@@ -87,7 +87,7 @@ export function useContextMenu(
   return {visible, flip, position}
 }
 
-export function useDefaultEmpty<T>(array: Array<T> | undefined) {
+export function useDefaultEmpty<T>(array?: Array<T> | undefined) {
   return useReducer(
     (prevState: Array<T>, newState: Array<T> | undefined): Array<T> => {return newState ? newState : []},
     array ?? []

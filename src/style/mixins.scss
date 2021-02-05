@@ -1,3 +1,5 @@
+@import "theme";
+
 @mixin autosize-margin($margin, $width) {
   margin: $margin;
   max-width: calc(#{$width} - 2 * #{$margin});
@@ -14,4 +16,11 @@
 @mixin text-height($size) {
   font-size: $size;
   line-height: $size;
+}
+
+@mixin scrollbar() {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: $scrollbar
 }
