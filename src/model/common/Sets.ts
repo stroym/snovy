@@ -1,6 +1,7 @@
 import Scope from "../coloured/Scope"
 import Tag from "../coloured/Tag"
 import State from "../coloured/State"
+import Note from "../Note"
 
 export default class Sets {
 
@@ -16,15 +17,19 @@ export default class Sets {
     this.tags.delete(this.tags.find(it => it.equals(tag))!.unTagNoteAll())
   }
 
+  availableTags(note: Note) {
+    return this.tags.filter(it => !note.tags.has(it))
+  }
+
   addScope(name: string, colour: string, exclusive?: boolean) {
     this.scopes.push(new Scope(name, colour, exclusive))
   }
 
   deleteScope(scope: Scope, keepTags: boolean) {
     this.scopes.find(it => {
-        if (it.name == scope.name) {
-          if (keepTags) {
-            this.tags.forEach(it => {
+      if (it.name == scope.name) {
+        if (keepTags) {
+          this.tags.forEach(it => {
               if (it.scope == scope) {
                 it.removeScope(scope)
               }

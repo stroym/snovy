@@ -47,7 +47,6 @@ export default class Note extends ItemWithParent<Section> {
   }
 
   //TODO search helpers - isTagged, isTaggedAll etc.
-
   setState(state: State) {
     state.addToNote(this)
   }

@@ -12,7 +12,6 @@ const NoteDetail = (props: {
 
   const noteContext = useContext(NoteContext)
 
-  //TODO better, but there has to be a cleaner way
   const [change, flip] = useState(false)
 
   const onRemove = (tag: Tag) => {
@@ -27,7 +26,7 @@ const NoteDetail = (props: {
 
   return (
     <div id="snovy-note-detail">
-      <TagNoteForm notebook={props.activeNotebook}/>
+      <TagNoteForm notebook={props.activeNotebook} onUpdate={() => flip(!change)}/>
       {noteContext && noteContext.activeNote &&
       <div id="snovy-tag-display">
         {Array.from(noteContext.activeNote.scopedTags.entries())

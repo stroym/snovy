@@ -12,9 +12,11 @@ import Manager from "./model/Manager"
 import Tag from "./model/coloured/Tag"
 import {NoteProvider} from "./Context"
 
+const man = new Manager()
+
 function App() {
 
-  const [manager, _setManager] = useState<Manager>(new Manager())
+  const [manager, _setManager] = useState<Manager>(man)
   const [activeNotebook, setActiveNotebook] = useState<Notebook | undefined>()
   const [activeSection, setActiveSection] = useState<Section | undefined>()
   const [activeTag, setActiveTag] = useState<Tag | undefined>()

@@ -7,7 +7,8 @@ import {NoteContext} from "../../Context"
 import Tag from "../../model/coloured/Tag"
 
 const TagNoteForm = (props: {
-  notebook?: Notebook
+  notebook?: Notebook,
+  onUpdate: () => void
 }) => {
 
   const noteContext = useContext(NoteContext)
@@ -26,8 +27,11 @@ const TagNoteForm = (props: {
       {
         props.notebook && noteContext && noteContext.activeNote &&
         <ComboBox
-          items={props.notebook.sets.tags}
-          onActiveChange={(tag: Tag) => noteContext.activeNote!.tag(tag)}
+          items={props.notebook.sets.availableTags(noteContext.activeNote)}
+          onActiveChange={(tag: Tag) => {
+            noteContext.activeNote!.tag(tag)
+            props.onUpdate()
+          }}
         />
       }
       {visible &&
