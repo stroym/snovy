@@ -1,8 +1,16 @@
 @import "../theme";
 
+//TODO size this properly
 .snovy-context-menu {
-  border: $border-thin;
+  z-index: 20;
+  border: $border-thin-inverted;
   background-color: $colour-primary;
+  max-height: 100%;
+  width: 100px;
+
+  &:first-child {
+    border-top: $border-thin-inverted;
+  }
 
   &:last-child {
     border-bottom: none;
@@ -12,10 +20,10 @@
 .snovy-context-menu-item {
   color: $colour-text-primary;
   font-size: $font-small;
+  line-height: $font-small;
   user-select: none;
-  border-bottom: $border-thin;
-  width: 100%;
-  padding: 0.5vh 0.5vw;
+  border-bottom: $border-thin-inverted;
+  padding: 2% 10%;
 
   &:hover {
     background-color: $colour-hover;

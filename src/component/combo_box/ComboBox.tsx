@@ -30,6 +30,13 @@ const ComboBox = <T extends Item>(props: {
           selectedItem: state.selectedItem,
           inputValue: state.inputValue
         }
+      case useCombobox.stateChangeTypes.FunctionOpenMenu:
+      case useCombobox.stateChangeTypes.FunctionToggleMenu:
+        console.log(state.selectedItem)
+        return {
+          ...changes,
+          highlightedIndex: state.selectedItem ? options.indexOf(state.selectedItem) : -1
+        }
       default:
         return changes
     }
@@ -62,11 +69,6 @@ const ComboBox = <T extends Item>(props: {
         setInputValue("")
       } else {
         setInputValue(selectedItem?.toString() ?? "")
-      }
-    },
-    scrollIntoView: () => {
-      if (options.isEmpty()) {
-        return
       }
     }
   })

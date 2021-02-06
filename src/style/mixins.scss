@@ -22,5 +22,6 @@
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
-  scrollbar-color: $scrollbar
+  scrollbar-color: $scrollbar;
+  scroll-snap-type: y mandatory;
 }
