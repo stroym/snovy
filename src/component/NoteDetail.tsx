@@ -12,28 +12,32 @@ const NoteDetail = (props: {
   notebook: Notebook
 }) => {
 
+  //TODO probably wouldn't hurt to somehow get all of this in one field... maybe custom holder on note?
   const [unscopedTags, setUnscopedTags] = useDefaultEmpty<Tag>()
   const [scoopedTags, setScopedTags] = useDefaultEmpty<[Scope, Array<Tag>]>()
 
   useEffect(
     () => {
-      setUnscopedTags(props.note.unscopedTags)
-      setScopedTags(Array.from(props.note.scopedTags.entries()))
+      refreshTags()
     }, [props.note, props.note.tags]
   )
 
   const onRemove = (tag: Tag) => {
     props.note.untag(tag)
-    setUnscopedTags(props.note.unscopedTags)
+    refreshTags()
   }
 
   const onRemoveScoped = (tags: Array<Tag>) => {
     props.note?.untagAll(tags)
-    setScopedTags(Array.from(props.note.scopedTags.entries()))
+    refreshTags()
   }
 
   const onTag = (tag: Tag) => {
     props.note!.tag(tag)
+    refreshTags()
+  }
+
+  const refreshTags = () => {
     setUnscopedTags(props.note.unscopedTags)
     setScopedTags(Array.from(props.note.scopedTags.entries()))
   }
@@ -47,8 +51,7 @@ const NoteDetail = (props: {
             key={scope.name} scope={scope} mapped={tags} onRemove={onRemove}
             onRemoveScope={onRemoveScoped}
           />
-        )
-        }
+        )}
         {unscopedTags.map((item: Tag) =>
           <TagItem key={item.toString()} mapped={item} onRemove={onRemove}/>)
         }

@@ -69,6 +69,7 @@ $tag-outer-margin: 0.1em;
 .tag-grouped {
   @include autosize-margin($tag-outer-margin, 100%);
   @include rounded-border;
+  min-width: calc(100% - 2 * #{$tag-outer-margin});
   flex-grow: 1;
   flex-flow: column nowrap;
   align-items: unset;

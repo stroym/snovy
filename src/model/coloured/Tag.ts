@@ -47,6 +47,9 @@ export default class Tag extends ColouredItem {
     return this.scope ? this.scope.toString() + this.name : super.toString()
   }
 
+  static compareByScope =
+    (a: Tag, b: Tag) => { return Number(a.scope) - Number(b.scope)}
+
   static compareByExclusivity =
     (a: Tag, b: Tag) => { return Number(a.scope?.exclusive) - Number(b.scope?.exclusive)}
 

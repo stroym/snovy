@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect} from "react"
 import {useCombobox} from "downshift"
 import {CollapseButton} from "../Button"
 import {IdentifiedItem} from "../../model/common/Base"
@@ -11,12 +11,11 @@ const TagComboBox = (props: {
   className?: string,
   onActiveChange: (active: Tag) => void,
   items: Array<Tag> | undefined,
-  createItem?: (value: string) => Tag,
+  createTag: (value: string) => void,
   getInputValue?: (value: string) => void
 }) => {
 
   const [options, setOptions] = useDefaultEmpty<Tag>()
-  const [selected, setSelected] = useState<Tag | null>()
 
   useEffect(
     () => {
@@ -24,9 +23,10 @@ const TagComboBox = (props: {
     }, [props.items]
   )
 
+  //TODO try to prevent tag text from flashing in input on select
   const {
     isOpen, getToggleButtonProps, getMenuProps, getInputProps, getComboboxProps, getItemProps, inputValue,
-    highlightedIndex, selectItem, setInputValue, setHighlightedIndex, closeMenu
+    highlightedIndex, setInputValue, setHighlightedIndex, closeMenu
   } = useCombobox({
     items: options,
     onInputValueChange: ({inputValue}) => {
@@ -53,19 +53,13 @@ const TagComboBox = (props: {
       }
     },
     onSelectedItemChange: ({selectedItem}) => {
-      setSelected(selectedItem)
+      selectedItem && props.onActiveChange(selectedItem)
       return
     }
   })
 
-  useEffect(
-    () => {
-      selected && props.onActiveChange(selected)
-    }, [selected]
-  )
-
-  const createItem = () => {
-    selectItem(props.createItem!(inputValue))
+  const createTag = () => {
+    props.createTag!(inputValue)
     closeMenu()
   }
 
@@ -74,8 +68,8 @@ const TagComboBox = (props: {
       <div className={"snovy-combo-box"} {...getComboboxProps()}>
         <span className="snovy-combo-box-wrapper" {...getToggleButtonProps()}>
           <input
-            className="snovy-combo-box-input"
-            {...getInputProps({onKeyDown: (e) => { options.isEmpty() && e.key == Key.Enter && createItem()}})}
+            className="snovy-combo-box-input" placeholder="Select or create tag..."
+            {...getInputProps({onKeyDown: (e) => { options.isEmpty() && e.key == Key.Enter && createTag()}})}
           />
           <CollapseButton aria-label={"toggle menu"}/>
         </span>
@@ -95,8 +89,8 @@ const TagComboBox = (props: {
             {"No items available."}
           </li>
           }
-          {options.isEmpty() && props.createItem &&
-          <li className="snovy-list-item hover" onClick={() => createItem()}>
+          {options.isEmpty() && props.createTag &&
+          <li className="snovy-list-item hover" onClick={() => createTag()}>
             {`Create ${inputValue}`}
           </li>
           }

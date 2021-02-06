@@ -1,5 +1,5 @@
 import Tag from "./coloured/Tag"
-import {Item, ItemWithParent} from "./common/Base"
+import {ItemWithParent} from "./common/Base"
 import Section from "./Section"
 import State from "./coloured/State"
 import Scope from "./coloured/Scope"
@@ -12,12 +12,12 @@ export default class Note extends ItemWithParent<Section> {
   tags: Set<Tag> = new Set<Tag>()
 
   get unscopedTags() {
-    return this.tags.toArray().filter(tag => !tag.scope).sort(Item.compareByName)
+    return this.tags.toArray().filter(tag => !tag.scope)
   }
 
   get scopedTags() {
     const scopedTags = this.tags.toArray()
-      .sort(Item.compareByName).filter(tag => tag.scope)
+      .filter(tag => tag.scope)
       .sort(Tag.compareByExclusivity)
 
     const temp = new Map<Scope, Array<Tag>>()
