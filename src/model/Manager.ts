@@ -9,7 +9,12 @@ function dec2hex(dec: number) {
 }
 
 function randomString(len: number) {
+  // return Array(len).fill(0).map(x => Math.random().toString(36).charAt(2)).join("")
   return Array.from(window.crypto.getRandomValues(new Uint8Array(Math.floor(Math.random() * (len - 3) + 3))), dec2hex).join("")
+}
+
+function randomNumber(max: number, min = 1) {
+  return Math.floor(Math.random() * (max - min) + min)
 }
 
 export default class Manager implements ParentInterface<Notebook> {
@@ -27,12 +32,12 @@ export default class Manager implements ParentInterface<Notebook> {
     for (let i = 0; i < this.items.length; i++) {
       const notebook = this.items[i]
 
-      for (let j = 0; j < 6; j++) {
-        this.addTestScope(notebook, randomString(20) + j, "", j % 2 == 0)
+      for (let j = 0; j < randomNumber(8, 4); j++) {
+        this.addTestScope(notebook, randomString(randomNumber(20)) + j, "", j % 2 == 0)
         const scope = notebook.sets.scopes[j]
 
-        for (let k = 0; k < 6; k++) {
-          this.addTestTag(notebook, j + randomString(10) + k, "", scope)
+        for (let k = 0; k < randomNumber(8, 2); k++) {
+          this.addTestTag(notebook, j + randomString(randomNumber(8)) + k, "", scope)
 
           if (scope.exclusive) {
             break
@@ -40,8 +45,8 @@ export default class Manager implements ParentInterface<Notebook> {
         }
       }
 
-      for (let k = 0; k < 10; k++) {
-        this.addTestTag(notebook, randomString(10), "", undefined)
+      for (let k = 0; k < randomNumber(12, 6); k++) {
+        this.addTestTag(notebook, randomString(randomNumber(8)), "", undefined)
       }
 
       for (let j = 0; j < i + 4; j++) {
