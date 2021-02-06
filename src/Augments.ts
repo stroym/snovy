@@ -5,6 +5,8 @@ declare global {
     last(): T | undefined
 
     delete(item: T): number
+
+    isEmpty(): boolean
   }
 
   interface Set<T> {
@@ -24,6 +26,10 @@ Array.prototype.delete = function <T>(item: T): number {
   const index = this.indexOf(item)
   this.splice(index, 1)
   return index
+}
+
+Array.prototype.isEmpty = function (): boolean {
+  return this.length == 0
 }
 
 Set.prototype.toArray = function <T>(): Array<T> {
