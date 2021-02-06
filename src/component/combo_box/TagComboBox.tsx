@@ -5,6 +5,7 @@ import {IdentifiedItem} from "../../model/common/Base"
 import {Key} from "ts-key-enum"
 import {useDefaultEmpty} from "../../Hooks"
 import Tag from "../../model/coloured/Tag"
+import ComboCreateItem from "./ComboCreateItem"
 
 const TagComboBox = (props: {
   id?: string,
@@ -73,26 +74,24 @@ const TagComboBox = (props: {
           />
           <CollapseButton aria-label={"toggle menu"}/>
         </span>
-        <ul {...getMenuProps()} className="snovy-dropdown" id="notebook-dropdown" hidden={!isOpen}>
+        <ul {...getMenuProps()} className="snovy-dropdown" id="tag-dropdown" hidden={!isOpen}>
           {isOpen &&
           options?.map((item, index) => (
             <li
-              className={"snovy-list-item".concat(highlightedIndex == index ? " hover" : "")}
+              className={"snovy-dropdown-item".concat(highlightedIndex == index ? " hover" : "")}
               key={item instanceof IdentifiedItem ? item.id : item.name}
               {...getItemProps({item, index})}
             >
               {item.toString()}
             </li>
           ))}
-          {options.isEmpty() &&
-          <li className="snovy-list-item">
-            {"No items available."}
-          </li>
-          }
+          {/*{options.isEmpty() &&*/}
+          {/*<li className="snovy-dropdown-item">*/}
+          {/*  {"No items available."}*/}
+          {/*</li>*/}
+          {/*}*/}
           {options.isEmpty() && props.createTag &&
-          <li className="snovy-list-item hover" onClick={() => createTag()}>
-            {`Create ${inputValue}`}
-          </li>
+          <ComboCreateItem onClick={createTag} inputValue={inputValue} itemName="tag"/>
           }
         </ul>
       </div>

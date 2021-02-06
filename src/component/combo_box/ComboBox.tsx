@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect} from "react"
 import {useCombobox, UseComboboxState, UseComboboxStateChangeOptions} from "downshift"
 import {CollapseButton} from "../Button"
 import {IdentifiedItem, Item} from "../../model/common/Base"
 import {Key} from "ts-key-enum"
 import {useDefaultEmpty} from "../../Hooks"
+import ComboCreateItem from "./ComboCreateItem"
 
 const ComboBox = <T extends Item>(props: {
   id?: string,
@@ -18,7 +19,6 @@ const ComboBox = <T extends Item>(props: {
 }) => {
 
   const [options, setOptions] = useDefaultEmpty(props.items)
-  const [optionsEmpty, setOptionsEmpty] = useState(false)
 
   const stateReducer = (state: UseComboboxState<T>, actionAndChanges: UseComboboxStateChangeOptions<T>) => {
     const {type, changes} = actionAndChanges
@@ -65,7 +65,7 @@ const ComboBox = <T extends Item>(props: {
       }
     },
     scrollIntoView: () => {
-      if (optionsEmpty) {
+      if (options.isEmpty()) {
         return
       }
     }
@@ -75,12 +75,6 @@ const ComboBox = <T extends Item>(props: {
     () => {
       selectedItem && props.onActiveChange(selectedItem)
     }, [selectedItem]
-  )
-
-  useEffect(
-    () => {
-      props?.createItem && options.isEmpty() ? setOptionsEmpty(true) : setOptionsEmpty(false)
-    }, [options]
   )
 
   const createItem = () => {
@@ -94,7 +88,7 @@ const ComboBox = <T extends Item>(props: {
         <span className="snovy-combo-box-wrapper" {...getToggleButtonProps()}>
           <input
             className="snovy-combo-box-input"
-            {...getInputProps({onKeyDown: (e) => { optionsEmpty && e.key == Key.Enter && createItem()}})}
+            {...getInputProps({onKeyDown: (e) => { options.isEmpty() && e.key == Key.Enter && createItem()}})}
           />
           <CollapseButton aria-label={"toggle menu"}/>
         </span>
@@ -102,17 +96,15 @@ const ComboBox = <T extends Item>(props: {
           {isOpen &&
           options?.map((item, index) => (
             <li
-              className={"snovy-list-item".concat(selectedItem == item ? " active" : "", highlightedIndex == index ? " hover" : "")}
+              className={"snovy-dropdown-item".concat(selectedItem == item ? " active" : "", highlightedIndex == index ? " hover" : "")}
               key={item instanceof IdentifiedItem ? item.id : item.name}
               {...getItemProps({item, index})}
             >
               {item.toString()}
             </li>
           ))}
-          {optionsEmpty &&
-          <li className={"snovy-list-item".concat(optionsEmpty && " hover")} onClick={() => createItem()}>
-            {`Create ${inputValue}`}
-          </li>
+          {options.isEmpty() &&
+          <ComboCreateItem onClick={createItem} highlight inputValue={inputValue} itemName="notebook"/>
           }
         </ul>
       </div>

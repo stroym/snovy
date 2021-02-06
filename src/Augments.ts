@@ -1,4 +1,5 @@
 declare global {
+
   interface Array<T> {
     first(): T | undefined,
 
@@ -12,6 +13,11 @@ declare global {
   interface Set<T> {
     toArray(): Array<T>
   }
+
+  interface String {
+    isBlank(): boolean
+  }
+
 }
 
 Array.prototype.first = function <T>(): T | undefined {
@@ -34,6 +40,10 @@ Array.prototype.isEmpty = function (): boolean {
 
 Set.prototype.toArray = function <T>(): Array<T> {
   return this.size > 0 ? Array.from(this) : []
+}
+
+String.prototype.isBlank = function (): boolean {
+  return this.length == 0 || this.trim().length == 0
 }
 
 export {}

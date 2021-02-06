@@ -51,3 +51,21 @@
   background-color: $colour-primary;
   border: $border-thin-inverted;
 }
+
+.snovy-dropdown-item {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: $font-medium;
+  color: $colour-text-primary;
+  padding: 0.5vh 0.5vw;
+  cursor: default;
+  user-select: none;
+
+  &:hover {
+    background-color: $colour-hover;
+  }
+
+  &.active-context {
+    opacity: 0.8;
+  }
+}
