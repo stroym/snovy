@@ -1,4 +1,5 @@
 import React, {Dispatch, SetStateAction, useEffect, useReducer, useState} from "react"
+import {Key} from "ts-key-enum"
 
 export function useHideOnOutsideClick(elementRef: React.RefObject<Element | undefined>, initialState?: boolean):
   [boolean, Dispatch<SetStateAction<boolean>>, () => void] {
@@ -12,15 +13,23 @@ export function useHideOnOutsideClick(elementRef: React.RefObject<Element | unde
   useEffect(
     () => {
       document.addEventListener("mousedown", handleOutsideClick)
+      document.addEventListener("keydown", handleKey)
 
       return () => {
         document.removeEventListener("mousedown", handleOutsideClick)
+        document.removeEventListener("keydown", handleKey)
       }
     }, []
   )
 
-  const handleOutsideClick = (e: any) => {
-    if (!elementRef.current?.contains(e.target)) {
+  const handleOutsideClick = (e: MouseEvent) => {
+    if (!elementRef.current?.contains(e.target as Node)) {
+      setVisible(false)
+    }
+  }
+
+  const handleKey = (e: KeyboardEvent) => {
+    if (e.key == Key.Escape) {
       setVisible(false)
     }
   }
