@@ -8,6 +8,16 @@
   display: flex;
   flex-flow: row wrap;
   align-content: flex-start;
+
+  .snovy-list-item {
+    &:hover {
+      background-color: $colour-hover;
+    }
+
+    &.active-context {
+      opacity: 0.8;
+    }
+  }
 }
 
 .snovy-list-item {
@@ -21,12 +31,4 @@
   outline: none;
   cursor: default;
   user-select: none;
-
-  &:hover {
-    background-color: $colour-hover;
-  }
-
-  &.active-context {
-    opacity: 0.8;
-  }
 }

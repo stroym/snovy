@@ -51,7 +51,6 @@ html, body, #root {
   grid-template-areas: "top" "middle" "bottom";
 }
 
-//TODO flex here too, probably, maybe?
 #snovy-middle {
   grid-area: middle;
   display: grid;

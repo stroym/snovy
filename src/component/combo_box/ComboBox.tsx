@@ -79,7 +79,7 @@ const ComboBox = <T extends Item>(props: {
 
   useEffect(
     () => {
-      props?.createItem && options?.length == 0 ? setOptionsEmpty(true) : setOptionsEmpty(false)
+      props?.createItem && options.isEmpty() ? setOptionsEmpty(true) : setOptionsEmpty(false)
     }, [options]
   )
 

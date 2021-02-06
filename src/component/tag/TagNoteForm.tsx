@@ -1,9 +1,7 @@
 import React, {useRef, useState} from "react"
 import TagSelector from "./TagSelector"
-import ComboBox from "../combo_box/ComboBox"
-import Notebook from "../../model/Notebook"
 import Tag from "../../model/coloured/Tag"
-import Note from "../../model/Note"
+import TagComboBox from "../combo_box/TagComboBox"
 
 class Stringer {
 
@@ -19,9 +17,8 @@ class Stringer {
 }
 
 const TagNoteForm = (props: {
-  note: Note,
-  notebook: Notebook,
-  onUpdate: () => void
+  tags: Array<Tag>,
+  onTag: (tag: Tag) => void
 }) => {
 
   const selfRef = useRef<HTMLDivElement>(null)
@@ -33,15 +30,11 @@ const TagNoteForm = (props: {
   }
 
   //TODO on tab apply scope if applicable, maybe?
-  // and also probably different combobox...
   return (
     <span ref={selfRef} id={"tag-add-wrapper"}>
-        <ComboBox
-          items={props.notebook.sets.availableTags(props.note)}
-          onActiveChange={(tag: Tag) => {
-            props.note!.tag(tag)
-            props.onUpdate()
-          }}
+        <TagComboBox
+          items={props.tags}
+          onActiveChange={props.onTag}
         />
       {inputValue &&
       <TagSelector/>
