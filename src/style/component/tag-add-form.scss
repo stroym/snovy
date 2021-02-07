@@ -1,37 +1,58 @@
 @import "../theme";
+@import "../mixins";
 
 .snovy-form {
 
 }
 
 #snovy-tag-create-form {
+  width: 100%;
   position: absolute;
   z-index: 10;
-  background-color: darkgray;
-  display: flex;
-  flex-flow: column nowrap;
-  align-content: center;
+  background-color: $colour-primary;
+  text-align: center;
 
-  span {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-end;
+  & > * {
+    margin: 0.5em 0;
+  }
 
-    input {
-      font-size: 0.6em;
-      color: $colour-text-primary;
-      background: none;
-      border: $border-thin;
-      padding: 2px;
-      margin: 4px 2px;
+  .coloured-wrapper {
+    width: 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-areas: "colour input check";
+    grid-template-columns: 1fr 4fr 1fr;
+    justify-items: center;
+
+    .snovy-colour-picker {
+      display: block;
+      grid-area: colour;
+      min-width: 0;
+
+      .colour-wrapper {
+        display: block !important;
+        position: absolute;
+      }
     }
 
-    button {
-      align-self: unset;
+    input {
+      @include text-height($font-medium);
+      grid-area: input;
+      vertical-align: middle;
+      width: 100%;
+      color: $colour-text-primary;
+      background: none;
+      border: $border-thin-inverted;
+      padding: 0 0.1vw;
+    }
+
+    .snovy-check-button {
+      grid-area: check;
+      min-width: 0;
     }
   }
 
-  button {
-    align-self: center;
+  .snovy-confirm-button {
+    margin-top: 0 !important;
   }
 }

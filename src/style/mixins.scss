@@ -7,15 +7,18 @@
 
 @mixin button-size($size) {
   @include text-height($size);
-  max-width: $size;
   width: $size;
-  max-height: $size;
   height: $size;
 }
 
 @mixin text-height($size) {
   font-size: $size;
   line-height: $size;
+}
+
+@mixin text-height-padded($size, $n) {
+  font-size: $size;
+  line-height: calc(#{$n} * #{$size});
 }
 
 @mixin scrollbar() {

@@ -27,7 +27,7 @@
     background-color: transparent;
     outline: none;
     border: none;
-    padding: 0.1vh 0 0.1vh 0;
+    padding: 0.1vh 0 0.1vh 0.4vw;
   }
 
   .snovy-button {
@@ -56,12 +56,11 @@
 }
 
 .snovy-dropdown-item {
+  @include text-height-padded($font-big, 2);
   scroll-snap-align: start;
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: $font-big;
-  line-height: calc(2 * #{$font-big});
   color: $colour-text-primary;
   padding: 0 5%;
   cursor: default;

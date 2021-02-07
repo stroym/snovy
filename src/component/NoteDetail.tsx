@@ -3,9 +3,9 @@ import Tag from "../model/coloured/Tag"
 import {TagItem, TagItemScoped} from "./tag/TagItem"
 import Scope from "../model/coloured/Scope"
 import Notebook from "../model/Notebook"
-import TagDropdown from "./tag/TagDropdown"
 import Note from "../model/Note"
 import {useDefaultEmpty} from "../util/Hooks"
+import TagComboBox from "./tag/TagComboBox"
 
 const NoteDetail = (props: {
   note: Note,
@@ -42,9 +42,27 @@ const NoteDetail = (props: {
     setScopedTags(Array.from(props.note.scopedTags.entries()))
   }
 
+  const tagCreation = (tagText: string, tagColour: string, scopeText: string, scopeColour: string, scopeExclusive: boolean) => {
+    const maybeScope = props.notebook.sets.scopes.find(it => it.name == scopeText)
+
+    if (maybeScope) {
+      const tag = new Tag(tagText, tagColour, maybeScope)
+    } else {
+      const scope = new Scope(scopeText, scopeColour, scopeExclusive)
+
+      const tag = new Tag(tagText, tagColour)
+    }
+
+    console.log(tagText)
+    console.log(tagColour)
+    console.log(scopeText)
+    console.log(scopeColour)
+    console.log(scopeExclusive)
+  }
+
   return (
     <div id="snovy-note-detail">
-      <TagDropdown tags={props.notebook.sets.availableTags(props.note)} onTag={onTag}/>
+      <TagComboBox tags={props.notebook.sets.availableTags(props.note)} onTag={onTag} onNewTag={tagCreation}/>
       <div id="snovy-tag-display">
         {scoopedTags.map(([scope, tags]: [Scope, Tag[]]) =>
           <TagItemScoped

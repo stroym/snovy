@@ -5,7 +5,7 @@ import {IdentifiedItem, Item} from "../../model/common/Base"
 import {Key} from "ts-key-enum"
 import {useDefaultEmpty} from "../../util/Hooks"
 import ComboCreateItem from "./ComboCreateItem"
-import TagComboBoxItem from "./TagComboBoxItem"
+import TagComboBoxItem from "../tag/TagComboBoxItem"
 
 const ComboBox = <T extends Item>(props: {
   id?: string,

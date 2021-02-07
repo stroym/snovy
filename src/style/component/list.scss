@@ -11,12 +11,11 @@
 }
 
 .snovy-list-item {
+  @include text-height-padded($font-medium, 2);
   scroll-snap-align: start;
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: $font-medium;
-  line-height: calc(2 * #{$font-medium});
   color: $colour-text-primary;
   padding: 0 10%;
   background: none;

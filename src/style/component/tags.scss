@@ -1,8 +1,6 @@
 @import "../theme";
 @import "../mixins";
 
-$border-rad1: 20px;
-$border-rad2: calc(#{$border-rad1} / 2);
 $tag-outer-margin: 0.1em;
 
 @mixin tag-base {
@@ -13,15 +11,15 @@ $tag-outer-margin: 0.1em;
   text-align: center;
   white-space: nowrap;
   cursor: default;
-  border-radius: $border-rad1;
+  border-radius: $border-rad-round;
 }
 
 @mixin round-border {
-  border-radius: $border-rad1
+  border-radius: $border-rad-round
 }
 
 @mixin rounded-border {
-  border-radius: $border-rad2
+  border-radius: $border-rad-rounded
 }
 
 .tag-scope {

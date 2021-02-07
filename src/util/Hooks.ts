@@ -41,8 +41,10 @@ export function useHideOnOutsideClick(elementRef: React.RefObject<Element | unde
   return [visible, setVisible, flip]
 }
 
-export function useHide(elementRef: React.RefObject<Element | undefined>) {
-  const [visible, setVisible, flip] = useHideOnOutsideClick(elementRef)
+export function useHide(elementRef: React.RefObject<Element | undefined>,
+                        otherRefs?: Array<React.RefObject<Element | undefined>>,
+                        initialState?: boolean) {
+  const [visible, setVisible, flip] = useHideOnOutsideClick(elementRef, otherRefs, initialState)
   const [x, setX] = useState(0)
   const [y, setY] = useState(0)
 
@@ -137,3 +139,12 @@ export function useCollapse(elementRef: React.RefObject<HTMLElement | undefined>
 
   return [collapsed, setCollapsed]
 }
+
+export function useColoured(str?: string, colourStr?: string):
+  [string, string, React.Dispatch<React.SetStateAction<string>>, React.Dispatch<React.SetStateAction<string>>] {
+  const [text, setText] = useState(str ?? "")
+  const [colour, setColour] = useState(colourStr ?? "#ffffff")
+
+  return [text, colour, setText, setColour]
+}
+
