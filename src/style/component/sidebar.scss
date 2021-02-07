@@ -6,7 +6,8 @@
   .sidebar-content {
     background-color: $colour-primary;
     min-height: 0;
-    min-width: 0;
+    width: 100%;
+    height: 100%;
 
     &.left {
       border-right: $border;
@@ -26,7 +27,6 @@
 }
 
 #lists-span {
-  height: 100%;
   grid-area: lists;
   display: grid;
   grid-template-columns: 1fr 1fr;

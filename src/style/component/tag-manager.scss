@@ -1,2 +1,8 @@
+@import "../theme";
+@import "../mixins";
+
 #snovy-tag-manager {
+  @include scrollbar;
+  min-height: 0;
+  max-height: 100%;
 }

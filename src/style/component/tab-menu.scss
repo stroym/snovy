@@ -18,9 +18,9 @@
 }
 
 .snovy-tab-menu-item {
-  @include text-height($font-big);
-  max-width: $font-big;
-  min-width: $font-big;
+  width: $font-medium;
+  font-size: $font-small;
+  line-height: $font-medium;
   padding: 0.4em 0;
   cursor: default;
   user-select: none;
