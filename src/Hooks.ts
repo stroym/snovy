@@ -1,7 +1,9 @@
 import React, {Dispatch, SetStateAction, useEffect, useReducer, useState} from "react"
 import {Key} from "ts-key-enum"
 
-export function useHideOnOutsideClick(elementRef: React.RefObject<Element | undefined>, initialState?: boolean):
+export function useHideOnOutsideClick(elementRef: React.RefObject<Element | undefined>,
+                                      otherRefs?: Array<React.RefObject<Element | undefined>>,
+                                      initialState?: boolean):
   [boolean, Dispatch<SetStateAction<boolean>>, () => void] {
 
   const [visible, setVisible] = useState(initialState ?? false)
@@ -23,7 +25,9 @@ export function useHideOnOutsideClick(elementRef: React.RefObject<Element | unde
   )
 
   const handleOutsideClick = (e: MouseEvent) => {
-    if (!elementRef.current?.contains(e.target as Node)) {
+    if (!elementRef.current?.contains(e.target as Node) &&
+      !otherRefs?.find((it: React.RefObject<Element | undefined>) => it.current?.contains((e.target as Node)))
+    ) {
       setVisible(false)
     }
   }
@@ -37,8 +41,8 @@ export function useHideOnOutsideClick(elementRef: React.RefObject<Element | unde
   return [visible, setVisible, flip]
 }
 
-export function useHide(elementRef: React.RefObject<Element | undefined>, initialState?: boolean) {
-  const [visible, setVisible, flip] = useHideOnOutsideClick(elementRef, initialState)
+export function useHide(elementRef: React.RefObject<Element | undefined>) {
+  const [visible, setVisible, flip] = useHideOnOutsideClick(elementRef)
   const [x, setX] = useState(0)
   const [y, setY] = useState(0)
 
