@@ -30,7 +30,7 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
     const [tagText, tagColour, setTagText, setTagColour] = useColoured()
     const [exclusive, setExclusive] = useState(false)
 
-    //TODO probably display table
+    //TODO wrap colour, input and checkbox in its own object to better manage where the colour picker spawns
     return (
       <form ref={ref} id="snovy-tag-create-form" className="snovy-form">
         <span className="coloured-wrapper">

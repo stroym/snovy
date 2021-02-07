@@ -24,15 +24,12 @@
     grid-template-columns: 1fr 4fr 1fr;
     justify-items: center;
 
-    .snovy-colour-picker {
-      display: block;
+    .snovy-colour-button {
       grid-area: colour;
-      min-width: 0;
+    }
 
-      .colour-wrapper {
-        display: block !important;
-        position: absolute;
-      }
+    .colour-wrapper {
+      //position: absolute;
     }
 
     input {

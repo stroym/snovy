@@ -40,7 +40,7 @@ $tag-outer-margin: 0.1em;
   overflow: hidden;
   flex-grow: 1;
   color: $colour-text-secondary;
-  background: $tag-colour-primary;
+  background-color: beige; //fallback if there's somehow no colour
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -86,7 +86,7 @@ $tag-outer-margin: 0.1em;
 
   .tag-container {
     @include rounded-border;
-    background-color: $tag-colour-secondary;
+    background-color: whitesmoke; //fallback if there's somehow no colour
     border-top: 0;
     display: flex;
     flex-flow: row wrap;

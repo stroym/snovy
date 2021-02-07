@@ -17,6 +17,10 @@ function randomNumber(max: number, min = 1) {
   return Math.floor(Math.random() * (max - min) + min)
 }
 
+function randomColour() {
+  return "#" + Math.floor(Math.random() * 16777215).toString(16)
+}
+
 export default class Manager implements ParentInterface<Notebook> {
 
   idCounter = 0
@@ -33,11 +37,11 @@ export default class Manager implements ParentInterface<Notebook> {
       const notebook = this.items[i]
 
       for (let j = 0; j < randomNumber(8, 4); j++) {
-        this.addTestScope(notebook, randomString(randomNumber(20)) + j, "", j % 2 == 0)
+        this.addTestScope(notebook, randomString(randomNumber(20)) + j, randomColour(), j % 2 == 0)
         const scope = notebook.sets.scopes[j]
 
         for (let k = 0; k < randomNumber(8, 2); k++) {
-          this.addTestTag(notebook, j + randomString(randomNumber(8)) + k, "", scope)
+          this.addTestTag(notebook, j + randomString(randomNumber(8)) + k, randomColour(), scope)
 
           if (scope.exclusive) {
             break
@@ -46,7 +50,7 @@ export default class Manager implements ParentInterface<Notebook> {
       }
 
       for (let k = 0; k < randomNumber(12, 6); k++) {
-        this.addTestTag(notebook, randomString(randomNumber(8)), "", undefined)
+        this.addTestTag(notebook, randomString(randomNumber(8)), randomColour(), undefined)
       }
 
       for (let j = 0; j < i + 4; j++) {
