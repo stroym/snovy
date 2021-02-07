@@ -43,21 +43,23 @@ const NoteDetail = (props: {
   }
 
   const tagCreation = (tagText: string, tagColour: string, scopeText: string, scopeColour: string, scopeExclusive: boolean) => {
-    const maybeScope = props.notebook.sets.scopes.find(it => it.name == scopeText)
+    let tag
 
-    if (maybeScope) {
-      const tag = new Tag(tagText, tagColour, maybeScope)
+    if (scopeText) {
+      const maybeScope = props.notebook.sets.scopes.find(it => it.name == scopeText)
+
+      if (maybeScope) {
+        tag = props.notebook.sets.addTag(tagText, tagColour, maybeScope)
+      } else {
+        const scope = props.notebook.sets.addScope(scopeText, scopeColour, scopeExclusive)
+        tag = props.notebook.sets.addTag(tagText, tagColour, scope)
+      }
     } else {
-      const scope = new Scope(scopeText, scopeColour, scopeExclusive)
-
-      const tag = new Tag(tagText, tagColour)
+      tag = props.notebook.sets.addTag(tagText, tagColour)
     }
 
-    console.log(tagText)
-    console.log(tagColour)
-    console.log(scopeText)
-    console.log(scopeColour)
-    console.log(scopeExclusive)
+    props.note.tag(tag)
+    refreshTags()
   }
 
   return (

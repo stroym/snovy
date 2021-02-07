@@ -64,9 +64,14 @@ const TagComboBox = (props: {
     }, [props.tags, closeMenu]
   )
 
-  const createTag = () => {
+  const willCreateTag = () => {
     setFormVisible(true)
     closeMenu()
+  }
+
+  const createTag = (tagText: string, tagColour: string, scopeText: string, scopeColour: string, scopeExclusive: boolean) => {
+    props.onNewTag(tagText, tagColour, scopeText, scopeColour, scopeExclusive)
+    setFormVisible(false)
   }
 
   return (
@@ -76,7 +81,7 @@ const TagComboBox = (props: {
           <AddButton ref={buttonRef} onClick={flip}/>
           <input {...getToggleButtonProps()}
                  className="snovy-combo-box-input" placeholder="Select or create tag..."
-                 {...getInputProps({onKeyDown: (e) => { options.isEmpty() && e.key == Key.Enter && createTag()}})}
+                 {...getInputProps({onKeyDown: (e) => { options.isEmpty() && e.key == Key.Enter && willCreateTag()}})}
           />
           <CollapseButton {...getToggleButtonProps()} aria-label={"toggle menu"}/>
         </span>
@@ -89,12 +94,12 @@ const TagComboBox = (props: {
             />
           ))}
           {isOpen && options.isEmpty() &&
-          <ComboCreateItem onClick={createTag} highlight inputValue={inputValue} itemName="tag"/>
+          <ComboCreateItem onClick={willCreateTag} highlight inputValue={inputValue} itemName="tag"/>
           }
         </ul>
       </div>
       {formVisible &&
-      <TagForm ref={formRef} initialValue={inputValue} onConfirm={props.onNewTag}/>
+      <TagForm ref={formRef} initialValue={inputValue} onConfirm={createTag}/>
       }
     </span>
   )

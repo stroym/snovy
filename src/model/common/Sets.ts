@@ -10,7 +10,9 @@ export default class Sets {
   states: Array<State> = new Array<State>()
 
   addTag(name: string, colour: string, scope?: Scope) {
-    this.tags.push(new Tag(name, colour, scope))
+    const tag = new Tag(name, colour, scope)
+    this.tags.push(tag)
+    return tag
   }
 
   deleteTag(tag: Tag) {
@@ -22,7 +24,9 @@ export default class Sets {
   }
 
   addScope(name: string, colour: string, exclusive?: boolean) {
-    this.scopes.push(new Scope(name, colour, exclusive))
+    const scope = new Scope(name, colour, exclusive)
+    this.scopes.push(scope)
+    return scope
   }
 
   deleteScope(scope: Scope, keepTags: boolean) {
@@ -30,16 +34,16 @@ export default class Sets {
       if (it.name == scope.name) {
         if (keepTags) {
           this.tags.forEach(it => {
-              if (it.scope == scope) {
-                it.removeScope(scope)
-              }
-            })
-          } else {
-            this.tags.forEach(it => {
-              if (it.scope == scope) {
-                it.unTagNoteAll()
-                this.tags.delete(it)
-              }
+            if (it.scope == scope) {
+              it.removeScope(scope)
+            }
+          })
+        } else {
+          this.tags.forEach(it => {
+            if (it.scope == scope) {
+              it.unTagNoteAll()
+              this.tags.delete(it)
+            }
             })
           }
 
