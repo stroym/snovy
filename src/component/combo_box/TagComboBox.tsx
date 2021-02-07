@@ -1,6 +1,6 @@
 import React, {useEffect} from "react"
 import {useCombobox} from "downshift"
-import {CollapseButton} from "../Button"
+import {AddButton, CollapseButton} from "../Button"
 import {IdentifiedItem} from "../../model/common/Base"
 import {Key} from "ts-key-enum"
 import {useDefaultEmpty} from "../../util/Hooks"
@@ -15,6 +15,8 @@ const TagComboBox = (props: {
   items: Array<Tag> | undefined,
   createTag: (value: string) => void,
   getInputValue?: (value: string) => void,
+  buttonRef: React.RefObject<HTMLButtonElement>,
+  flip: () => void
 }) => {
 
   const [options, setOptions] = useDefaultEmpty<Tag>()
@@ -68,12 +70,13 @@ const TagComboBox = (props: {
   return (
     <>
       <div className={"snovy-combo-box"} {...getComboboxProps()}>
-        <span className="snovy-combo-box-wrapper" {...getToggleButtonProps()}>
-          <input
-            className="snovy-combo-box-input" placeholder="Select or create tag..."
-            {...getInputProps({onKeyDown: (e) => { options.isEmpty() && e.key == Key.Enter && createTag()}})}
+        <span className="snovy-combo-box-wrapper">
+          <AddButton ref={props.buttonRef} onClick={props.flip}/>
+          <input {...getToggleButtonProps()}
+                 className="snovy-combo-box-input" placeholder="Select or create tag..."
+                 {...getInputProps({onKeyDown: (e) => { options.isEmpty() && e.key == Key.Enter && createTag()}})}
           />
-          <CollapseButton aria-label={"toggle menu"}/>
+          <CollapseButton {...getToggleButtonProps()} aria-label={"toggle menu"}/>
         </span>
         <ul {...getMenuProps()} className="snovy-dropdown" id="tag-dropdown" hidden={!isOpen}>
           {isOpen && options.map((item, index) => (

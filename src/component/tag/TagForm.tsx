@@ -1,5 +1,6 @@
 import React, {forwardRef} from "react"
 import Scope from "../../model/coloured/Scope"
+import {ColourButton} from "../Button"
 
 interface FormProps {
   initialValue?: string
@@ -20,20 +21,18 @@ class Stringer {
 
 }
 
-const TagSelector = forwardRef<HTMLFormElement, FormProps>(
+const TagForm = forwardRef<HTMLFormElement, FormProps>(
   function TagSelector(props: FormProps, ref: React.Ref<HTMLFormElement>) {
     return (
       <form ref={ref} id="snovy-tag-create-form" className="snovy-form">
         <span>
           <input type="checkbox"/>
           <input placeholder="New scope name..."/>
-          <button type="button"/>
-          {/*<SketchPicker presetColors={[]}></SketchPicker>*/}
+          <ColourButton/>
         </span>
         <span>
           <input placeholder="New tag Name..." defaultValue={props.initialValue}/>
-          <button type="button"/>
-          {/*<SketchPicker presetColors={[]}></SketchPicker>*/}
+          <ColourButton/>
         </span>
         <button type="button">{"add"}</button>
       </form>
@@ -41,4 +40,4 @@ const TagSelector = forwardRef<HTMLFormElement, FormProps>(
   }
 )
 
-export default TagSelector
+export default TagForm

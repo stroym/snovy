@@ -3,7 +3,7 @@ import Tag from "../model/coloured/Tag"
 import {TagItem, TagItemScoped} from "./tag/TagItem"
 import Scope from "../model/coloured/Scope"
 import Notebook from "../model/Notebook"
-import AddTagForm from "./tag/AddTagForm"
+import TagDropdown from "./tag/TagDropdown"
 import Note from "../model/Note"
 import {useDefaultEmpty} from "../util/Hooks"
 
@@ -44,7 +44,7 @@ const NoteDetail = (props: {
 
   return (
     <div id="snovy-note-detail">
-      <AddTagForm tags={props.notebook.sets.availableTags(props.note)} onTag={onTag}/>
+      <TagDropdown tags={props.notebook.sets.availableTags(props.note)} onTag={onTag}/>
       <div id="snovy-tag-display">
         {scoopedTags.map(([scope, tags]: [Scope, Tag[]]) =>
           <TagItemScoped

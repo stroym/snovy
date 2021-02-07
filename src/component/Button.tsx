@@ -10,7 +10,7 @@ interface Clickable {
 
 interface ClickableRoot extends Clickable {
   className?: string
-  icon: string
+  icon?: string
 }
 
 const Button = forwardRef<HTMLButtonElement, ClickableRoot>(
@@ -40,20 +40,17 @@ export const RemoveButton = forwardRef<HTMLButtonElement, Clickable>(
 
 export const CollapseButton = forwardRef<HTMLButtonElement, Clickable>(
   function CollapseButton(props: Clickable, ref?: buttonRef) {
-    return (
-      <Button
-        ref={ref} className={Buttons.Collapse} onClick={props.onClick} icon={props.toggle ? "▲" : "▼"}
-      />
-    )
+    return <Button ref={ref} className={Buttons.Collapse} onClick={props.onClick} icon={props.toggle ? "▲" : "▼"}/>
   }
 )
 
-// export const ColourButton = (props: {
-//   onClick: () => any
-// }) => {
-//
-//   return (
-//     <Button className={"collapse-button"} onClick={props.onClick} icon={"▲" : "▼"}/>
-//   )
-//
-// }
+export const ColourButton = forwardRef<HTMLButtonElement, Clickable>(
+  function ColourButton(props: Clickable, ref?: buttonRef) {
+    return (
+      <>
+        <Button ref={ref} className={Buttons.Colour} onClick={props.onClick}/>
+        {/*<TwitterPicker/>*/}
+      </>
+    )
+  }
+)
