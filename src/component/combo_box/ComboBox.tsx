@@ -5,6 +5,7 @@ import {IdentifiedItem, Item} from "../../model/common/Base"
 import {Key} from "ts-key-enum"
 import {useDefaultEmpty} from "../../Hooks"
 import ComboCreateItem from "./ComboCreateItem"
+import TagComboBoxItem from "./TagComboBoxItem"
 
 const ComboBox = <T extends Item>(props: {
   id?: string,
@@ -30,13 +31,6 @@ const ComboBox = <T extends Item>(props: {
           selectedItem: state.selectedItem,
           inputValue: state.inputValue
         }
-      case useCombobox.stateChangeTypes.FunctionOpenMenu:
-      case useCombobox.stateChangeTypes.FunctionToggleMenu:
-        console.log(state.selectedItem)
-        return {
-          ...changes,
-          highlightedIndex: state.selectedItem ? options.indexOf(state.selectedItem) : -1
-        }
       default:
         return changes
     }
@@ -49,18 +43,25 @@ const ComboBox = <T extends Item>(props: {
     items: options,
     initialSelectedItem: props.selection,
     stateReducer: stateReducer,
-    onInputValueChange: ({inputValue}) => {
-      const filteredItems = props.items?.filter(item =>
-        item.toString().toLowerCase().startsWith(inputValue!.toLowerCase())
-      )
+    onInputValueChange: ({inputValue, selectedItem}) => {
+      const target = inputValue ?? ""
 
-      setOptions(filteredItems)
+      if (target.isBlank() && selectedItem) {
+        setOptions(props.items)
+        setHighlightedIndex(props.items?.indexOf(selectedItem) ?? -1)
+      } else {
+        const filteredItems = props.items?.filter(item =>
+          item.toString().toLowerCase().startsWith(target.toLowerCase())
+        )
 
-      if (filteredItems) {
-        const item = filteredItems.first()
+        setOptions(filteredItems)
 
-        if (item) {
-          setHighlightedIndex(filteredItems.indexOf(item))
+        if (filteredItems) {
+          const item = filteredItems.first()
+
+          if (item) {
+            setHighlightedIndex(filteredItems.indexOf(item))
+          }
         }
       }
     },
@@ -97,15 +98,13 @@ const ComboBox = <T extends Item>(props: {
         <ul {...getMenuProps()} className="snovy-dropdown" id="notebook-dropdown" hidden={!isOpen}>
           {isOpen &&
           options?.map((item, index) => (
-            <li
-              className={"snovy-dropdown-item".concat(selectedItem == item ? " active" : "", highlightedIndex == index ? " hover" : "")}
+            <TagComboBoxItem
               key={item instanceof IdentifiedItem ? item.id : item.name}
               {...getItemProps({item, index})}
-            >
-              {item.toString()}
-            </li>
+              item={item} highlighted={highlightedIndex == index} selected={selectedItem == item}
+            />
           ))}
-          {options.isEmpty() &&
+          {isOpen && options.isEmpty() &&
           <ComboCreateItem onClick={createItem} highlight inputValue={inputValue} itemName="notebook"/>
           }
         </ul>

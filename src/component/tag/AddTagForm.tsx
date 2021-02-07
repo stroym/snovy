@@ -16,7 +16,7 @@ class Stringer {
 
 }
 
-const TagNoteForm = (props: {
+const AddTagForm = (props: {
   tags: Array<Tag>,
   onTag: (tag: Tag) => void
 }) => {
@@ -53,4 +53,4 @@ const TagNoteForm = (props: {
 
 }
 
-export default TagNoteForm
+export default AddTagForm
