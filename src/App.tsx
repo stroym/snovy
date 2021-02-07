@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 import "./App.scss"
-import "./Augments"
+import "./util/Augments"
 import TopBar from "./component/layout/Top"
 import LeftBar from "./component/layout/SidebarLeft"
 import RightBar from "./component/layout/SidebarRight"

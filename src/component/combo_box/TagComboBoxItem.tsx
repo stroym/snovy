@@ -22,19 +22,19 @@ interface ComboBoxItemProps {
   highlighted?: boolean
 }
 
-const TagComboBoxItem = forwardRef<HTMLLIElement, ComboBoxItemProps>((props: ComboBoxItemProps, ref: React.Ref<HTMLLIElement>) => {
+const TagComboBoxItem = forwardRef<HTMLLIElement, ComboBoxItemProps>(
+  function TagComboBoxItem(props: ComboBoxItemProps, ref: React.Ref<HTMLLIElement>) {
 
-  const {item, selected, highlighted, ...rest} = props
+    const {item, selected, highlighted, ...rest} = props
 
-  return (
-    <li {...rest} ref={ref}
-        className={"snovy-dropdown-item".concat(selected ? " active" : "", highlighted ? " hover" : "")}
-    >
-      {item.toString()}
-    </li>
-  )
-})
-
-TagComboBoxItem.displayName = "TagComboBoxItem"
+    return (
+      <li {...rest} ref={ref}
+          className={"snovy-dropdown-item".concat(selected ? " active" : "", highlighted ? " hover" : "")}
+      >
+        {item.toString()}
+      </li>
+    )
+  }
+)
 
 export default TagComboBoxItem

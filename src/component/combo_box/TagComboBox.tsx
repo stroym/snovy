@@ -3,7 +3,7 @@ import {useCombobox} from "downshift"
 import {CollapseButton} from "../Button"
 import {IdentifiedItem} from "../../model/common/Base"
 import {Key} from "ts-key-enum"
-import {useDefaultEmpty} from "../../Hooks"
+import {useDefaultEmpty} from "../../util/Hooks"
 import Tag from "../../model/coloured/Tag"
 import ComboCreateItem from "./ComboCreateItem"
 import TagComboBoxItem from "./TagComboBoxItem"
@@ -14,7 +14,7 @@ const TagComboBox = (props: {
   onActiveChange: (active: Tag) => void,
   items: Array<Tag> | undefined,
   createTag: (value: string) => void,
-  getInputValue?: (value: string) => void
+  getInputValue?: (value: string) => void,
 }) => {
 
   const [options, setOptions] = useDefaultEmpty<Tag>()

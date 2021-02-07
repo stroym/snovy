@@ -5,7 +5,7 @@ import Scope from "../model/coloured/Scope"
 import Notebook from "../model/Notebook"
 import AddTagForm from "./tag/AddTagForm"
 import Note from "../model/Note"
-import {useDefaultEmpty} from "../Hooks"
+import {useDefaultEmpty} from "../util/Hooks"
 
 const NoteDetail = (props: {
   note: Note,

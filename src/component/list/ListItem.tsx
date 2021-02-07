@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useEffect, useRef, useState} from "react"
 import {IdentifiedItem, Item} from "../../model/common/Base"
-import {useHideOnOutsideClick} from "../../Hooks"
+import {useHideOnOutsideClick} from "../../util/Hooks"
 
 const ListItem = <T extends IdentifiedItem | Item>(props: {
   mapped: T,
