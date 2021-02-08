@@ -1,0 +1,12 @@
+@import "../theme";
+@import "../mixins";
+
+.snovy-input {
+  @include text-height($font-medium);
+  width: 100%;
+  vertical-align: middle;
+  color: $colour-text-primary;
+  background: none;
+  border: $border-thin-inverted;
+  padding: 0 0.1vw;
+}

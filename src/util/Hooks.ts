@@ -25,11 +25,9 @@ export function useHideOnOutsideClick(elementRef: React.RefObject<Element | unde
   )
 
   const handleOutsideClick = (e: MouseEvent) => {
-    if (!elementRef.current?.contains(e.target as Node) &&
-      !otherRefs?.find((it: React.RefObject<Element | undefined>) => it.current?.contains((e.target as Node)))
-    ) {
-      setVisible(false)
-    }
+    !elementRef.current?.contains(e.target as Node) &&
+    !otherRefs?.find(it => it.current?.contains((e.target as Node))) &&
+    setVisible(false)
   }
 
   const handleKey = (e: KeyboardEvent) => {

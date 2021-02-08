@@ -1,8 +1,6 @@
 @import "../theme";
 @import "../mixins";
 
-$tag-outer-margin: 0.1em;
-
 @mixin tag-base {
   @include text-height($font-medium);
   flex-grow: 1;
@@ -12,14 +10,6 @@ $tag-outer-margin: 0.1em;
   text-align: center;
   white-space: nowrap;
   cursor: default;
-}
-
-@mixin round-border {
-  border-radius: $border-rad-round
-}
-
-@mixin rounded-border {
-  border-radius: $border-rad-rounded
 }
 
 .tag-scope {
@@ -35,8 +25,8 @@ $tag-outer-margin: 0.1em;
 
 
 .snovy-tag-item {
-  @include autosize-margin($tag-outer-margin, 100%);
-  @include round-border;
+  @include autosize-margin(0.2em, 100%);
+  border-radius: $border-rad-round;
   overflow: hidden;
   flex-grow: 1;
   color: $colour-text-secondary;
@@ -50,7 +40,7 @@ $tag-outer-margin: 0.1em;
 }
 
 .tag-exclusive {
-  @include rounded-border;
+  border-radius: $border-rad-round;
 
   .tag-scope {
     padding-right: unset;
@@ -63,8 +53,7 @@ $tag-outer-margin: 0.1em;
 }
 
 .tag-grouped {
-  @include rounded-border;
-  min-width: calc(100% - 2 * #{$tag-outer-margin});
+  border-radius: $border-rad-rounded;
   flex-grow: 1;
   flex-flow: column nowrap;
   align-items: unset;
@@ -82,7 +71,7 @@ $tag-outer-margin: 0.1em;
   }
 
   .tag-container {
-    @include rounded-border;
+    border-radius: $border-rad-rounded;
     border-top: 0;
     display: flex;
     flex-flow: row wrap;

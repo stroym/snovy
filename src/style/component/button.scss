@@ -20,6 +20,7 @@
 
 .snovy-colour-button {
   @include button-size($font-big);
+  //padding: 0.8em;
 }
 
 .snovy-confirm-button {

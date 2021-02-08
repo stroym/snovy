@@ -6,7 +6,9 @@
 }
 
 #snovy-tag-create-form {
+  @include scrollbar();
   width: 100%;
+  max-height: 50vh;
   position: absolute;
   z-index: 10;
   background-color: $colour-primary;
@@ -16,40 +18,60 @@
     margin: 0.5em 0;
   }
 
-  .coloured-wrapper {
-    width: 100%;
-    min-width: 0;
-    display: grid;
-    grid-template-areas: "colour input check";
-    grid-template-columns: 1fr 4fr 1fr;
-    justify-items: center;
-
-    .snovy-colour-button {
-      grid-area: colour;
-    }
-
-    .colour-wrapper {
-      //position: absolute;
-    }
-
-    input {
-      @include text-height($font-medium);
-      grid-area: input;
-      vertical-align: middle;
-      width: 100%;
-      color: $colour-text-primary;
-      background: none;
-      border: $border-thin-inverted;
-      padding: 0 0.1vw;
-    }
-
-    .snovy-check-button {
-      grid-area: check;
-      min-width: 0;
-    }
+  :last-child {
+    margin-top: 0;
   }
 
-  .snovy-confirm-button {
-    margin-top: 0 !important;
+  .tag-form-item {
+    display: grid;
+    grid-template-areas: "input" "picker";
+    grid-template-rows: fit-content(1fr) fit-content(1fr);
+    justify-items: center;
+
+    & > * {
+      margin: 0.5em 0;
+    }
+
+    .coloured-wrapper {
+      grid-area: input;
+      display: grid;
+      grid-template-areas: "colour input check";
+      grid-template-columns: 1fr 4fr 1fr;
+      justify-items: center;
+
+      .snovy-colour-button {
+        grid-area: colour;
+      }
+
+      input {
+        grid-area: input;
+      }
+
+      .snovy-check-button {
+        grid-area: check;
+      }
+    }
+
+    .snovy-colour-picker {
+      text-align: start;
+      display: grid;
+      grid-template-areas: "spacer1 colour spacer2";
+      grid-template-columns: 1fr 4fr 1fr;
+      justify-items: center;
+      align-items: start;
+
+      .colour-container {
+        grid-area: colour;
+        display: flex;
+        flex-flow: row wrap;
+        align-items: flex-start;
+        justify-content: space-evenly;
+
+        input {
+          width: 9ch;
+          margin: 0.1em;
+        }
+      }
+    }
   }
 }

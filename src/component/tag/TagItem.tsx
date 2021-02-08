@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 import Tag from "../../model/coloured/Tag"
-import {CollapseButton, RemoveButton} from "../Button"
+import {CollapseButton, RemoveButton} from "../inputs/Button"
 import Scope from "../../model/coloured/Scope"
 
 export const TagItem = (props: {
@@ -41,7 +41,7 @@ export const ScopedTagItem = (props: TagItemProps) => {
   return (
     <span className="snovy-tag-item tag-grouped" style={{backgroundColor: props.scope.colour}}>
       <div className="tag-group-header">
-        <CollapseButton onClick={() => {setCollapsed(!collapsed)}}/>
+        <CollapseButton onClick={() => {setCollapsed(!collapsed)}} toggle={collapsed}/>
         <span className="tag-scope">{props.scope.name}</span>
         <RemoveButton onClick={() => props.onRemoveScope(props.mapped)}/>
       </div>

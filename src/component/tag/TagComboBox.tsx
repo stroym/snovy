@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from "react"
 import {useCombobox} from "downshift"
-import {AddButton, CollapseButton} from "../Button"
+import {AddButton, CollapseButton} from "../inputs/Button"
 import {IdentifiedItem} from "../../model/common/Base"
 import {Key} from "ts-key-enum"
 import {useDefaultEmpty, useHideOnOutsideClick} from "../../util/Hooks"
@@ -20,7 +20,7 @@ const TagComboBox = (props: {
   const formRef = useRef<HTMLFormElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
 
-  const [formVisible, setFormVisible, flip] = useHideOnOutsideClick(formRef, [buttonRef])
+  const [formVisible, setFormVisible, flipForm] = useHideOnOutsideClick(formRef, [buttonRef])
   const [options, setOptions] = useDefaultEmpty<Tag>()
 
   //TODO try to prevent tag text from flashing in input on select
@@ -78,7 +78,12 @@ const TagComboBox = (props: {
     <span id={"tag-add-wrapper"}>
       <div className={"snovy-combo-box"} {...getComboboxProps()}>
         <span className="snovy-combo-box-wrapper">
-          <AddButton ref={buttonRef} onClick={flip}/>
+          <AddButton
+            ref={buttonRef} onClick={() => {
+            flipForm()
+            closeMenu()
+          }}
+          />
           <input {...getToggleButtonProps()}
                  className="snovy-combo-box-input" placeholder="Select or create tag..."
                  {...getInputProps({onKeyDown: (e) => { options.isEmpty() && e.key == Key.Enter && willCreateTag()}})}

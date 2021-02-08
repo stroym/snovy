@@ -1,7 +1,9 @@
-import React, {forwardRef, useState} from "react"
+import React, {forwardRef, useRef, useState} from "react"
 import Scope from "../../model/coloured/Scope"
-import {CheckButton, ColourButton, ConfirmButton} from "../Button"
-import {useColoured} from "../../util/Hooks"
+import {CheckButton, ColourButton, ConfirmButton} from "../inputs/Button"
+import {useColoured, useHideOnOutsideClick} from "../../util/Hooks"
+import {Input} from "../inputs/Input"
+import ColourPicker from "../inputs/ColourPicker"
 
 interface FormProps {
   initialValue?: string
@@ -30,28 +32,66 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
     const [tagText, tagColour, setTagText, setTagColour] = useColoured()
     const [exclusive, setExclusive] = useState(false)
 
-    //TODO wrap colour, input and checkbox in its own object to better manage where the colour picker spawns
+    const createTag = () => {
+      if (tagText || scopeText) {
+        props.onConfirm(tagText, tagColour, scopeText, scopeColour, exclusive)
+      }
+    }
+
     return (
       <form ref={ref} id="snovy-tag-create-form" className="snovy-form">
-        <span className="coloured-wrapper">
-          <ColourButton getColour={(str: string) => {setScopeColour(str)}} defaultColour={scopeColour}/>
-          <input
-            type="text" placeholder="New scope name..." autoComplete="false"
-            onChange={(e) => setScopeText(e.target.value)}
-          />
-          <CheckButton toggle={exclusive} onClick={() => setExclusive(!exclusive)}/>
-        </span>
-        <span className="coloured-wrapper">
-          <ColourButton getColour={(str: string) => {setTagColour(str)}} defaultColour={tagColour}/>
-          <input
-            type="text" placeholder="New tag Name..." defaultValue={props.initialValue} autoComplete="false"
-            onChange={(e) => setTagText(e.target.value)}
-          />
-        </span>
-        <ConfirmButton onClick={() => props.onConfirm(tagText, tagColour, scopeText, scopeColour, exclusive)}/>
+        <TagFormItem
+          key="scope-item"
+          defaultColour={scopeColour} getColour={setScopeColour} getText={setScopeText}
+          scope={{exclusive, setExclusive}}
+        />
+        <TagFormItem key="tag-item" defaultColour={tagColour} getColour={setTagColour} getText={setTagText}/>
+        <ConfirmButton onClick={() => createTag()}/>
       </form>
     )
+
   }
 )
+
+const TagFormItem = (props: {
+  defaultColour: string,
+  getColour: (colour: string) => void,
+  getText: (text: string) => void,
+  scope?: { exclusive: boolean, setExclusive: (set: boolean) => void }
+}) => {
+
+  const selfRef = useRef<HTMLButtonElement>(null)
+  const pickerRef = useRef<HTMLDivElement>(null)
+
+  const [visible, , flip] = useHideOnOutsideClick(selfRef, [pickerRef])
+
+  const [colour, setColour] = useState(props.defaultColour)
+
+  const getColour = (colour: string) => {
+    getInputColour(colour)
+    flip()
+  }
+
+  const getInputColour = (colour: string) => {
+    setColour(colour)
+    props.getColour(colour)
+  }
+
+  return (
+    <span className="tag-form-item">
+      <span className="coloured-wrapper">
+        <ColourButton ref={selfRef} onMouseDown={flip} style={{backgroundColor: colour}}/>
+        <Input placeholder="New scope name..." getText={props.getText}/>
+        {props.scope &&
+        <CheckButton toggle={props.scope.exclusive} onClick={() => props.scope!.setExclusive(!props.scope!.exclusive)}/>
+        }
+      </span>
+      {visible &&
+      <ColourPicker ref={pickerRef} getColour={getColour} getInputColour={getInputColour}/>
+      }
+    </span>
+  )
+
+}
 
 export default TagForm

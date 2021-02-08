@@ -1,6 +1,6 @@
 import React, {useEffect} from "react"
 import {useCombobox, UseComboboxState, UseComboboxStateChangeOptions} from "downshift"
-import {CollapseButton} from "../Button"
+import {CollapseButton} from "../inputs/Button"
 import {IdentifiedItem, Item} from "../../model/common/Base"
 import {Key} from "ts-key-enum"
 import {useDefaultEmpty} from "../../util/Hooks"
