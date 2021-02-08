@@ -5,13 +5,13 @@ $tag-outer-margin: 0.1em;
 
 @mixin tag-base {
   @include text-height($font-medium);
-  padding: 0 0.2em;
+  flex-grow: 1;
+  padding: 0 0.1em;
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
   white-space: nowrap;
   cursor: default;
-  border-radius: $border-rad-round;
 }
 
 @mixin round-border {
@@ -29,18 +29,17 @@ $tag-outer-margin: 0.1em;
 .tag-name {
   @include tag-base;
   background: beige;
-  flex-grow: 1;
+  border-radius: $border-rad-round;
   margin-left: 0.1em;
 }
 
 
 .snovy-tag-item {
-  @include autosize-margin($tag-outer-margin, 50%);
+  @include autosize-margin($tag-outer-margin, 100%);
   @include round-border;
   overflow: hidden;
   flex-grow: 1;
   color: $colour-text-secondary;
-  background-color: beige; //fallback if there's somehow no colour
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -54,18 +53,16 @@ $tag-outer-margin: 0.1em;
   @include rounded-border;
 
   .tag-scope {
-    max-width: 40%;
-    font-size: $font-small;
     padding-right: unset;
   }
 
   .tag-name {
-    margin-left: unset;
+    border-radius: 0 $border-rad-rounded $border-rad-rounded 0;
+    padding-left: unset;
   }
 }
 
 .tag-grouped {
-  @include autosize-margin($tag-outer-margin, 100%);
   @include rounded-border;
   min-width: calc(100% - 2 * #{$tag-outer-margin});
   flex-grow: 1;
@@ -86,7 +83,6 @@ $tag-outer-margin: 0.1em;
 
   .tag-container {
     @include rounded-border;
-    background-color: whitesmoke; //fallback if there's somehow no colour
     border-top: 0;
     display: flex;
     flex-flow: row wrap;
