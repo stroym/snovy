@@ -1,4 +1,5 @@
 import React, {forwardRef} from "react"
+import {concatUnknown} from "../../util/ComponentNames"
 
 interface InputProps extends React.HTMLProps<HTMLInputElement> {
   getText: (text: string) => void
@@ -11,8 +12,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <input
-        onChange={(e) => getText(e.target.value)}
-        ref={ref} {...rest} type="text" className={`snovy-input ${props.className ?? ""}`} autoComplete="off"
+        {...rest} ref={ref} type="text" className={concatUnknown("snovy-input", props.className)}
+        autoComplete="off" onChange={(e) => getText(e.target.value)}
       />
     )
 

@@ -1,6 +1,8 @@
-import React, {ChangeEvent, useEffect, useRef, useState} from "react"
+import React, {useEffect, useRef, useState} from "react"
 import {IdentifiedItem, Item} from "../../model/common/Base"
 import {useHideOnOutsideClick} from "../../util/Hooks"
+import {Input} from "../inputs/Input"
+import {append, Extras} from "../../util/ComponentNames"
 
 const ListItem = <T extends IdentifiedItem | Item>(props: {
   mapped: T,
@@ -26,11 +28,11 @@ const ListItem = <T extends IdentifiedItem | Item>(props: {
       if (editable) {
         if (selfRef.current) {
           selfRef.current.selectionStart = selfRef.current.selectionEnd = -1
-          selfRef.current.classList.add("editable")
+          selfRef.current.classList.add(Extras.EDITABLE)
         }
       } else {
         if (selfRef.current) {
-          selfRef.current.classList.remove("editable")
+          selfRef.current.classList.remove(Extras.EDITABLE)
           selfRef.current.selectionStart = selfRef.current.selectionEnd = 0
         }
       }
@@ -42,21 +44,19 @@ const ListItem = <T extends IdentifiedItem | Item>(props: {
     props.onContext(props.mapped)
   }
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value)
-    props.mapped.name = e.target.value
+  const handleChange = (text: string) => {
+    setValue(text)
+    props.mapped.name = text
   }
 
   const makeClassName = () => {
-    return "snovy-list-item".concat(props.active ? " active " : "", props.activeContext ? " active-context " : "")
+    return "snovy-list-item".concat(append(props.active, Extras.ACTIVE), append(props.activeContext, Extras.CONTEXT))
   }
 
   return (
-    <input
-      className={makeClassName()} ref={selfRef} type="text" value={value} placeholder={"Name..."}
-      onChange={handleChange} readOnly={!editable}
-      onClick={() => {props.onClick(props.mapped)}}
-      onDoubleClick={flip}
+    <Input
+      ref={selfRef} className={makeClassName()} value={value} placeholder={"Name..."} readOnly={!editable}
+      getText={handleChange} onClick={() => {props.onClick(props.mapped)}} onDoubleClick={flip}
       onContextMenu={handleContext}
     />
   )

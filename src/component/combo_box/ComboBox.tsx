@@ -5,7 +5,7 @@ import {IdentifiedItem, Item} from "../../model/common/Base"
 import {Key} from "ts-key-enum"
 import {useDefaultEmpty} from "../../util/Hooks"
 import ComboCreateItem from "./ComboCreateItem"
-import TagComboBoxItem from "../tag/TagComboBoxItem"
+import ComboBoxItem from "./ComboBoxItem"
 
 const ComboBox = <T extends Item>(props: {
   id?: string,
@@ -87,7 +87,7 @@ const ComboBox = <T extends Item>(props: {
 
   return (
     <>
-      <div className={"snovy-combo-box"} {...getComboboxProps()}>
+      <div className="snovy-combo-box" {...getComboboxProps()}>
         <span className="snovy-combo-box-wrapper" {...getToggleButtonProps()}>
           <input
             className="snovy-combo-box-input"
@@ -95,10 +95,10 @@ const ComboBox = <T extends Item>(props: {
           />
           <CollapseButton aria-label={"toggle menu"}/>
         </span>
-        <ul {...getMenuProps()} className="snovy-dropdown" id="notebook-dropdown" hidden={!isOpen}>
+        <ul {...getMenuProps()} className="snovy-dropdown" hidden={!isOpen}>
           {isOpen &&
           options?.map((item, index) => (
-            <TagComboBoxItem
+            <ComboBoxItem
               key={item instanceof IdentifiedItem ? item.id : item.name}
               {...getItemProps({item, index})}
               item={item} highlighted={highlightedIndex == index} selected={selectedItem == item}

@@ -1,15 +1,13 @@
-@use "style/layout/top";
-@use "style/layout/bottom";
+@use "style/component/input";
+@use "style/component/combo-box";
+@use "style/component/button";
 @use "style/component/editor";
 @use "style/component/sidebar";
 @use "style/component/list";
 @use "style/component/context-menu";
 @use "style/component/tab-menu";
-@use "style/component/button";
 @use "style/component/note-detail";
 @use "style/component/tag-manager";
-@use "style/component/combo-box";
-@use "style/component/input";
 
 @import "./style/theme";
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
@@ -52,10 +50,22 @@ html, body, #root {
   grid-template-areas: "top" "middle" "bottom";
 }
 
+#snovy-bar-top {
+  grid-area: top;
+  background-color: $colour-accent;
+  border-bottom: $border;
+}
+
 #snovy-middle {
   grid-area: middle;
   display: grid;
   grid-template-columns: 20vw 60vw 20vw;
   grid-template-rows: 100%;
   grid-template-areas: "left centre right";
+}
+
+#snovy-bar-bottom {
+  grid-area: bottom;
+  background-color: $colour-accent;
+  border-top: $border;
 }

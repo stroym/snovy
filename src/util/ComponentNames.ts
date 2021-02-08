@@ -1,9 +1,15 @@
-export enum Buttons {
-  Button = "snovy-button",
-  Add = "snovy-add-button",
-  Remove = "snovy-remove-button",
-  Collapse = "snovy-collapse-button",
-  Colour = "snovy-colour-button",
-  Confirm = "snovy-confirm-button",
-  Check = "snovy-check-button"
+export enum Extras {
+  ACTIVE = "active",
+  HOVER = "hover",
+  CONTEXT = "active-context",
+  EDITABLE = "editable",
+  DISABLED = "disabled"
+}
+
+export function append(condition: any, value: string) {
+  return condition ? " " + value : ""
+}
+
+export function concatUnknown(name: string, rest: string | undefined) {
+  return name + (rest ? " " + rest : "")
 }

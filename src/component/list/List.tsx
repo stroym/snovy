@@ -3,11 +3,10 @@ import ListItem from "./ListItem"
 import {IdentifiedItem, Item} from "../../model/common/Base"
 import ContextMenu from "../context_menu/ContextMenu"
 import ContextMenuItem from "../context_menu/ContextMenuItem"
+import {append, Extras} from "../../util/ComponentNames"
 
 //TODO mutliselect
 const List = <T extends IdentifiedItem | Item>(props: {
-  id?: string,
-  className?: string,
   onActiveChange?: (active: T | undefined) => void,
   onContextChange?: (active: T | null | undefined) => void,
   contextChildren?: Array<React.ReactElement<typeof ContextMenuItem>>
@@ -48,8 +47,7 @@ const List = <T extends IdentifiedItem | Item>(props: {
 
   return (
     <div
-      id={props.id} ref={selfRef}
-      className={"snovy-list".concat(props?.className ?? "", props.items ? "" : " disabled")}
+      ref={selfRef} className={"snovy-list".concat(append(props.items, Extras.DISABLED))}
       onContextMenu={() => setActiveContext(null)}
     >
       {props.items?.map((item: T) =>

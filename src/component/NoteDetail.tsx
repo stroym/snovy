@@ -12,7 +12,7 @@ const NoteDetail = (props: {
   notebook: Notebook
 }) => {
 
-  //TODO probably wouldn't hurt to somehow get all of this in one field... maybe custom holder on note?
+  //TODO probably wouldn't hurt to somehow get all of this in one field... maybe custom holder on note? - or maybe go back to flicking a boolean
   const [unscopedTags, setUnscopedTags] = useDefaultEmpty<Tag>()
   const [scoopedTags, setScopedTags] = useDefaultEmpty<[Scope, Array<Tag>]>()
 

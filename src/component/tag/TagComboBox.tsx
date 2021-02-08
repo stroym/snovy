@@ -6,7 +6,7 @@ import {Key} from "ts-key-enum"
 import {useDefaultEmpty, useHideOnOutsideClick} from "../../util/Hooks"
 import Tag from "../../model/coloured/Tag"
 import ComboCreateItem from "../combo_box/ComboCreateItem"
-import TagComboBoxItem from "./TagComboBoxItem"
+import ComboBoxItem from "../combo_box/ComboBoxItem"
 import TagForm from "./TagForm"
 
 const TagComboBox = (props: {
@@ -92,7 +92,7 @@ const TagComboBox = (props: {
         </span>
         <ul {...getMenuProps()} className="snovy-dropdown" id="tag-dropdown" hidden={!isOpen}>
           {isOpen && options.map((item, index) => (
-            <TagComboBoxItem
+            <ComboBoxItem
               key={item instanceof IdentifiedItem ? item.id : item.name}
               {...getItemProps({item, index})}
               item={item} highlighted={highlightedIndex == index}
@@ -107,8 +107,8 @@ const TagComboBox = (props: {
       <TagForm ref={formRef} initialValue={inputValue} onConfirm={createTag}/>
       }
     </span>
-  )
 
+  )
 }
 
 export default TagComboBox

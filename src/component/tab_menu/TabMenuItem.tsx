@@ -1,5 +1,6 @@
 import React, {useEffect} from "react"
 import {Orientation} from "./TabMenu"
+import {append, Extras} from "../../util/ComponentNames"
 
 const TabMenuItem = (props: {
   id?: string,
@@ -23,8 +24,9 @@ const TabMenuItem = (props: {
   }
 
   return (
-    <div id={props.id} className={"snovy-tab-menu-item ".concat(props.orientation, props.active ? " active" : "")}
-         onClick={handleClick}
+    <div
+      id={props.id} className={"snovy-tab-menu-item ".concat(props.orientation, append(props.active, Extras.ACTIVE))}
+      onClick={handleClick}
     >
       {props.text}
     </div>

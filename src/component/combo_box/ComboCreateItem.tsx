@@ -1,4 +1,5 @@
 import React from "react"
+import {append, Extras} from "../../util/ComponentNames"
 
 const ComboCreateItem = (props: {
   inputValue: string,
@@ -15,7 +16,7 @@ const ComboCreateItem = (props: {
 
   return (
     <li
-      className={"snovy-dropdown-item".concat(props.highlight ? " hover" : "")}
+      className={"snovy-dropdown-item".concat(append(props.highlight, Extras.HOVER))}
       onClick={() => !props.inputValue.isBlank() && props.onClick(props.inputValue)}
     >
       {buildMessage()}

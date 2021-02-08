@@ -40,7 +40,7 @@ export const LeftBar = (props: {
           <span key="lists-span" id="lists-span">
             <>
               <List<Section>
-                key={buildKey(props.activeNotebook, sectionsId)} id={sectionsId}
+                key={buildKey(props.activeNotebook, sectionsId)}
                 items={props.activeNotebook?.itemsSortedByOrder}
                 selection={props.activeSection} defaultFirst
                 onActiveChange={props.onActiveSectionChange} onContextChange={onContextChange}
@@ -54,7 +54,7 @@ export const LeftBar = (props: {
                 }
               />
               <List<Note>
-                key={buildKey(props.activeSection, notesId)} id={notesId}
+                key={buildKey(props.activeSection, notesId)}
                 items={props.activeSection?.itemsSortedByOrder}
                 selection={props.activeNote} defaultFirst
                 onActiveChange={props.onActiveNoteChange} onContextChange={onContextChange}
