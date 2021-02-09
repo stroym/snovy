@@ -23,6 +23,8 @@ function randomColour() {
 
 export default class Manager implements ParentInterface<Notebook> {
 
+  childName = "notebook"
+
   idCounter = 0
 
   items: Array<Notebook> = new Array<Notebook>()
@@ -41,7 +43,7 @@ export default class Manager implements ParentInterface<Notebook> {
         const scope = notebook.sets.scopes[j]
 
         for (let k = 0; k < randomNumber(8, 2); k++) {
-          this.addTestTag(notebook, j + randomString(randomNumber(8)) + k, randomColour(), scope)
+          this.addTestTag(notebook, j + randomString(randomNumber(8)) + k, scope.colour, scope)
 
           if (scope.exclusive) {
             break
@@ -81,8 +83,8 @@ export default class Manager implements ParentInterface<Notebook> {
     return this.itemsSortedById
   }
 
-  insert(name: string) {
-    return this.addItem(new Notebook(this, this.idCounter, name, this.items.length))
+  insert(order?: number, name = "") {
+    return this.addItem(new Notebook(this, this.idCounter, name, order ? order : this.items.length), order != undefined)
   }
 
   addItem(item: Notebook, reorder = false) {
@@ -100,13 +102,13 @@ export default class Manager implements ParentInterface<Notebook> {
 
   deleteItem(item?: Notebook) {
     if (!item) {
-      return null
+      return undefined
     } else {
       const index = this.items.delete(item)
 
       this.items.slice(index).forEach(value => { value.order--})
 
-      return index > 0 ? this.items[index - 1] : null
+      return index > 0 ? this.items[index - 1] : undefined
     }
   }
 

@@ -67,6 +67,7 @@ export abstract class OrderedItem extends IdentifiedItem {
 export interface ParentInterface<T extends OrderedItem> {
 
   idCounter: number
+  childName?: string
 
   items: Array<T>
 
@@ -75,9 +76,10 @@ export interface ParentInterface<T extends OrderedItem> {
   itemsSortedByOrder: Array<T>
 
   addItem: (item: T, reorder: boolean) => void
+  insert: (order?: number, name?: string) => T
 
-  deleteItem: (item?: T) => T | null
-  deleteById: (id: number) => T | null
+  deleteItem: (item?: T) => T | undefined
+  deleteById: (id: number) => T | undefined
 
 }
 
@@ -95,6 +97,8 @@ export abstract class ItemWithParent<P extends ParentInterface<any>> extends Ord
 export abstract class ItemWithParentAndChildren<T extends OrderedItem, P extends ParentInterface<any>> extends ItemWithParent<P> implements ParentInterface<T> {
 
   idCounter = 0
+
+  childName?: string
 
   items: Array<T> = new Array<T>()
 
@@ -127,11 +131,13 @@ export abstract class ItemWithParentAndChildren<T extends OrderedItem, P extends
 
     this.items.push(item)
     this.idCounter++
+
+    return item
   }
 
   deleteItem(item?: T) {
     if (!item) {
-      return null
+      return undefined
     } else {
       const index = this.items.delete(item)
 
@@ -142,7 +148,7 @@ export abstract class ItemWithParentAndChildren<T extends OrderedItem, P extends
       } else if (index == 0 && this.items.length > 0) {
         return this.items[index]
       } else {
-        return null
+        return undefined
       }
     }
   }
@@ -151,8 +157,6 @@ export abstract class ItemWithParentAndChildren<T extends OrderedItem, P extends
     return this.deleteItem(this.items.find(value => {return value.id == id}))
   }
 
-  abstract insertAt(order: number): void;
-
-  abstract insert(): void;
+  abstract insert(order?: number, name?: string): T;
 
 }

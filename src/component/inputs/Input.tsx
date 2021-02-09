@@ -1,5 +1,5 @@
 import React, {forwardRef} from "react"
-import {concatUnknown} from "../../util/ComponentNames"
+import {concatUnknown} from "../../util/ComponentUtils"
 
 interface InputProps extends React.HTMLProps<HTMLInputElement> {
   getText: (text: string) => void

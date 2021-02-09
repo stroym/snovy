@@ -32,7 +32,6 @@ export const TagItemScoped = (props: TagItemProps) => {
   )
 }
 
-//TODO on mouse over show containing tags
 //TODO adjust dark colours to be lighter and vice versa + maybe invert button colours
 export const ScopedTagItem = (props: TagItemProps) => {
 

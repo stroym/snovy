@@ -2,7 +2,7 @@ import React, {useState} from "react"
 import Note from "../../model/Note"
 import Section from "../../model/Section"
 import Notebook from "../../model/Notebook"
-import {OrderedItem} from "../../model/common/Base"
+import {ItemWithParent, OrderedItem, ParentInterface} from "../../model/common/Base"
 import {Orientation} from "../tab_menu/TabMenu"
 import Manager from "../../model/Manager"
 import ContextMenuItem from "../context_menu/ContextMenuItem"
@@ -20,9 +20,9 @@ export const LeftBar = (props: {
   activeNote: Note | undefined
 }) => {
 
-  const [activeContext, setActiveContext] = useState<Notebook | Section | Note | undefined | null>()
+  const [activeContext, setActiveContext] = useState<Section | Note | undefined | null>()
 
-  const onContextChange = (target: Notebook | Section | Note | undefined | null) => {
+  const onContextChange = (target: Section | Note | undefined | null) => {
     setActiveContext(target)
   }
 
@@ -34,37 +34,24 @@ export const LeftBar = (props: {
             id="notebook-selector"
             key="notebook-selector" items={props.manager.itemsSortedAlphabetically}
             onActiveChange={props.onActiveNotebookChange}
-            createItem={(name: string) => {return props.manager.insert(name)}}
+            createItem={(name: string) => {return props.manager.insert(undefined, name)}}
             selection={props.activeNotebook ?? props.manager.items.first()}
           />,
           <span key="lists-span" id="lists-span">
             <>
               <List<Section>
-                key={buildKey(props.activeNotebook, sectionsId)}
+                key={buildKey(props.activeNotebook, "snovy-list-section")}
                 items={props.activeNotebook?.itemsSortedByOrder}
                 selection={props.activeSection} defaultFirst
                 onActiveChange={props.onActiveSectionChange} onContextChange={onContextChange}
-                contextChildren={buildContext(activeContext, props.activeNotebook, () => {
-                  if (props.activeSection == activeContext) {
-                    props.onActiveSectionChange(undefined)
-                  }
-
-                  return props.activeSection == activeContext
-                })
-                }
+                contextChildren={buildContext(activeContext as Section, props.activeNotebook, props.activeSection, props.onActiveSectionChange)}
               />
               <List<Note>
-                key={buildKey(props.activeSection, notesId)}
+                key={buildKey(props.activeSection, "snovy-list-note")}
                 items={props.activeSection?.itemsSortedByOrder}
                 selection={props.activeNote} defaultFirst
                 onActiveChange={props.onActiveNoteChange} onContextChange={onContextChange}
-                contextChildren={buildContext(activeContext, props.activeSection, () => {
-                  if (props.activeNote == activeContext) {
-                    props.onActiveNoteChange(undefined)
-                  }
-
-                  return props.activeNote == activeContext
-                })}
+                contextChildren={buildContext(activeContext as Note, props.activeSection, props.activeNote, props.onActiveNoteChange)}
               />
             </>
           </span>
@@ -80,33 +67,37 @@ const mappings = [
   {text: "Search"}
 ]
 
-const sectionsId = "snovy-list-section"
-const notesId = "snovy-list-note"
-
 function buildKey(parent: OrderedItem | undefined, defaultKey: string) {
   return parent ? parent.constructor.name + parent?.id + "items" : defaultKey
 }
 
-//TODO autoselect previous item when currently selected is deleted
-function buildContext(activeContext: Notebook | Section | Note | undefined | null, target: Section | Notebook | undefined, deletion: () => boolean) {
-  return target ? [
+//TODO as is the split options are probably more annoying than useful - this behaviour should probably be configurable
+function buildContext<I extends ItemWithParent<P>, P extends ParentInterface<I>>(
+  contextItem: I | undefined,
+  parent: P | undefined,
+  activeItem: I | undefined,
+  setActive: (active: I | undefined) => void
+) {
+  return parent ? [
     <ContextMenuItem
-      key={"new"} text={"new"} onClick={
-      () => {
-        if (activeContext) {
-          target!.insertAt(activeContext.order + 1)
-        } else {
-          target!.insert()
-        }
-      }}
+      key={"new"} icon="+" text={`New ${parent.childName}`} specialText="& go"
+      onClick={() => {contextItem ? parent.insert(contextItem.order + 1) : parent.insert()}}
+      specialOnClick={() => {setActive(contextItem ? parent.insert(contextItem.order + 1) : parent.insert())}}
     />,
-    ...activeContext ? [
+    ...contextItem ? [
       <ContextMenuItem
-        key={"delete"} text={"delete"} onClick={
-        () => {
-          console.log(target!.deleteById(activeContext.id))
+        key={"new-at-end"} text={`New ${parent.childName} (as last)`} icon="+" specialText="& go"
+        onClick={() => {parent.insert()}}
+        specialOnClick={() => {setActive(parent.insert())}}
+      />,
+      <ContextMenuItem
+        key={"delete"} text={`Delete ${parent.childName}`} icon="×"
+        onClick={() => {
+          const neighbour = parent.deleteById(contextItem.id)
 
-          deletion()
+          if (contextItem == activeItem) {
+            setActive(neighbour)
+          }
         }}
       />
     ] : []

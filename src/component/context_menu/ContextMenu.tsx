@@ -16,6 +16,7 @@ const ContextMenu = (props: {
 
   const {visible, flip, position} = useContextMenu(selfRef, props.parentRef, props.resetContext)
 
+  //TODO you can move context menu and keep moving it to where you're not supposed to
   return (
     <>
       {visible &&

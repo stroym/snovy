@@ -12,8 +12,7 @@ const List = <T extends IdentifiedItem | Item>(props: {
   contextChildren?: Array<React.ReactElement<typeof ContextMenuItem>>
   items: Array<T> | undefined,
   defaultFirst?: boolean,
-  selection?: T,
-  style?: void
+  selection?: T
 }) => {
 
   const selfRef = useRef<HTMLDivElement>(null)
@@ -23,12 +22,18 @@ const List = <T extends IdentifiedItem | Item>(props: {
 
   useEffect(
     () => {
-      if (props.items?.includes(props.selection!)) {
-        // setActiveItem(props.selection)
-      } else if (props.defaultFirst) {
+      if (props.defaultFirst) {
         setActiveItem(props.items?.first())
       }
     }, [props.items]
+  )
+
+  useEffect(
+    () => {
+      if (props.items?.includes(props.selection!)) {
+        setActiveItem(props.selection)
+      }
+    }, [props.selection]
   )
 
   useEffect(

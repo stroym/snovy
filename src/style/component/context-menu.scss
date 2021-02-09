@@ -2,27 +2,55 @@
 @import "../mixins";
 
 .snovy-context-menu {
-  z-index: 20;
-  border: $border-thin-inverted;
+  z-index: 100;
   background-color: $colour-primary;
-  max-height: 100%;
-  width: 100px;
+  border: $border-thin-inverted;
+  border-radius: $border-rad-rounded;
+  overflow: hidden;
 
-  &:first-child {
-    border-top: $border-thin-inverted;
-  }
-
-  &:last-child {
+  :last-child {
     border-bottom: none;
   }
 }
 
 .snovy-context-menu-item {
-  @include text-height($font-small);
-  color: $colour-text-primary;
+  @include text-height-padded($font-small, 2);
+  display: flex;
+  flex-flow: row nowrap;
+  align-content: space-evenly;
   user-select: none;
   border-bottom: $border-thin-inverted;
-  padding: 2% 10%;
+  color: $colour-text-primary;
+
+  :last-child {
+    align-self: flex-start;
+    padding-right: 10px;
+  }
+
+  .context-icon {
+    text-align: center;
+    padding: 0 10px;
+    border-right: $border-thin-inverted;
+  }
+
+  .context-text {
+    padding: 0 0.5ch;
+    white-space: nowrap;
+
+    &:hover {
+      background-color: $colour-accent;
+    }
+  }
+
+  .context-text-special {
+    flex-grow: 1;
+    padding-left: 0.5ch;
+    white-space: nowrap;
+
+    &:hover {
+      background-color: $colour-accent;
+    }
+  }
 
   &:hover {
     background-color: $colour-hover;

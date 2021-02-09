@@ -5,18 +5,16 @@ import Sets from "./common/Sets"
 
 export default class Notebook extends ItemWithParentAndChildren<Section, Manager> {
 
+  childName = "section"
+
   sets: Sets = new Sets()
 
-  get sections(): Array<Section> {
+  get sections() {
     return this.items
   }
 
-  insert(): void {
-    this.addItem(new Section(this, this.idCounter, "", this.items.length))
-  }
-
-  insertAt(order: number): void {
-    this.addItem(new Section(this, this.idCounter, "", order), true)
+  insert(order?: number, name = "") {
+    return this.addItem(new Section(this, this.idCounter, name, order ? order : this.items.length), order != undefined)
   }
 
 }

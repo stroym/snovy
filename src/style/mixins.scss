@@ -14,6 +14,7 @@
 @mixin text-height($size) {
   font-size: $size;
   line-height: $size;
+  vertical-align: center;
 }
 
 @mixin text-height-padded($size, $n) {
