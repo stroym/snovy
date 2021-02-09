@@ -40,6 +40,8 @@ html, body, #root {
 
 .disabled {
   cursor: not-allowed;
+  opacity: 0.5;
+  background-color: #636363 !important;
 }
 
 #snovy-app {

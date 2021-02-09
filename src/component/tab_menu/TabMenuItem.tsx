@@ -1,6 +1,6 @@
 import React, {useEffect} from "react"
 import {Orientation} from "./TabMenu"
-import {append, Extras} from "../../util/ComponentNames"
+import {append, Extras} from "../../util/ComponentUtils"
 
 const TabMenuItem = (props: {
   id?: string,

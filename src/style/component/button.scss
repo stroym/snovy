@@ -20,7 +20,7 @@
 
 .snovy-colour-button {
   @include button-size($font-big);
-  //padding: 0.8em;
+  font-size: $font-small;
 }
 
 .snovy-confirm-button {
@@ -37,8 +37,8 @@
 }
 
 .snovy-check-button {
-  width: $font-big;
-  height: $font-big;
+  @include button-size($font-big);
+  font-size: $font-small;
   color: $colour-text-primary;
   background-color: $colour-text-primary;
 

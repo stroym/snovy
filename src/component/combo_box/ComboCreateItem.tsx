@@ -1,5 +1,5 @@
 import React from "react"
-import {append, Extras} from "../../util/ComponentNames"
+import {append, Extras} from "../../util/ComponentUtils"
 
 const ComboCreateItem = (props: {
   inputValue: string,

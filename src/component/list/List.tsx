@@ -3,7 +3,7 @@ import ListItem from "./ListItem"
 import {IdentifiedItem, Item} from "../../model/common/Base"
 import ContextMenu from "../context_menu/ContextMenu"
 import ContextMenuItem from "../context_menu/ContextMenuItem"
-import {append, Extras} from "../../util/ComponentNames"
+import {append, Extras} from "../../util/ComponentUtils"
 
 //TODO mutliselect
 const List = <T extends IdentifiedItem | Item>(props: {
@@ -47,7 +47,7 @@ const List = <T extends IdentifiedItem | Item>(props: {
 
   return (
     <div
-      ref={selfRef} className={"snovy-list".concat(append(props.items, Extras.DISABLED))}
+      ref={selfRef} className={"snovy-list".concat(append(!props.items, Extras.DISABLED))}
       onContextMenu={() => setActiveContext(null)}
     >
       {props.items?.map((item: T) =>

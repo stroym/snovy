@@ -1,5 +1,5 @@
 import React, {forwardRef} from "react"
-import {append, Extras} from "../../util/ComponentNames"
+import {append, Extras} from "../../util/ComponentUtils"
 import {Item} from "../../model/common/Base"
 
 interface ComboBoxItemProps {

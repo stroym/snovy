@@ -1,5 +1,5 @@
 import React, {forwardRef} from "react"
-import {append, concatUnknown, Extras} from "../../util/ComponentNames"
+import {append, concatUnknown, Extras} from "../../util/ComponentUtils"
 
 type buttonRef = React.Ref<HTMLButtonElement>
 
@@ -13,7 +13,10 @@ export const Button = forwardRef<HTMLButtonElement, ToggleButtonProps>(
     const {type, toggle, ...rest} = props
 
     return (
-      <button ref={ref} {...rest} type="button" className={concatUnknown("snovy-button", props.className)}>
+      <button
+        ref={ref} {...rest} type="button"
+        className={concatUnknown("snovy-button", props.className).concat(append(props.disabled, Extras.DISABLED))}
+      >
         {toggle ? props.value : props.defaultValue}
       </button>
     )

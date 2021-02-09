@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react"
 import {IdentifiedItem, Item} from "../../model/common/Base"
 import {useHideOnOutsideClick} from "../../util/Hooks"
 import {Input} from "../inputs/Input"
-import {append, Extras} from "../../util/ComponentNames"
+import {append, Extras} from "../../util/ComponentUtils"
 
 const ListItem = <T extends IdentifiedItem | Item>(props: {
   mapped: T,

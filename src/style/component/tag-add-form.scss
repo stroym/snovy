@@ -15,11 +15,7 @@
   text-align: center;
 
   & > * {
-    margin: 0.5em 0;
-  }
-
-  :last-child {
-    margin-top: 0;
+    margin: 1em 0;
   }
 
   .tag-form-item {
@@ -28,16 +24,13 @@
     grid-template-rows: fit-content(1fr) fit-content(1fr);
     justify-items: center;
 
-    & > * {
-      margin: 0.5em 0;
-    }
-
     .coloured-wrapper {
       grid-area: input;
       display: grid;
       grid-template-areas: "colour input check";
       grid-template-columns: 1fr 4fr 1fr;
       justify-items: center;
+      align-items: center;
 
       .snovy-colour-button {
         grid-area: colour;
@@ -53,6 +46,7 @@
     }
 
     .snovy-colour-picker {
+      margin-top: 0.5em;
       text-align: start;
       display: grid;
       grid-template-areas: "spacer1 colour spacer2";
@@ -73,5 +67,9 @@
         }
       }
     }
+  }
+
+  .snovy-confirm-button {
+    margin-top: 0;
   }
 }
