@@ -23,7 +23,6 @@ const TagComboBox = (props: {
   const [formVisible, setFormVisible, flipForm] = useHideOnOutsideClick(formRef, [buttonRef])
   const [options, setOptions] = useDefaultEmpty<Tag>()
 
-  //TODO try to prevent tag text from flashing in input on select
   const {
     isOpen, getToggleButtonProps, getMenuProps, getInputProps, getComboboxProps, getItemProps, inputValue,
     highlightedIndex, setInputValue, setHighlightedIndex, closeMenu

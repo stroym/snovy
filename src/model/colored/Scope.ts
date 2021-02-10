@@ -4,14 +4,14 @@ import Tag from "./Tag"
 export default class Scope extends ColoredItem {
 
   name: string
-  exclusive: boolean
+  unique: boolean
 
   scopedTags: Set<Tag> = new Set<Tag>()
 
-  constructor(name: string, color: string, exclusive = false) {
+  constructor(name: string, color: string, unique = false) {
     super(name, color)
     this.name = name
-    this.exclusive = exclusive
+    this.unique = unique
   }
 
   scopeTag(tag: Tag) {
@@ -25,7 +25,7 @@ export default class Scope extends ColoredItem {
   }
 
   toString(): string {
-    return this.exclusive ? this.name + "::" : this.name + ":"
+    return this.unique ? this.name + "::" : this.name + ":"
   }
 
 }

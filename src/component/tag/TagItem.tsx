@@ -17,23 +17,6 @@ export const TagItem = (props: {
 }
 
 export const TagItemScoped = (props: TagItemProps) => {
-  return (
-    <>
-      {props.scope.exclusive ?
-        <ExclusiveScopedTagItem
-          scope={props.scope} mapped={props.mapped} onRemove={props.onRemove}
-          onRemoveScope={props.onRemoveScope}
-        /> :
-        <ScopedTagItem
-          scope={props.scope} mapped={props.mapped} onRemove={props.onRemove}
-          onRemoveScope={props.onRemoveScope}
-        />
-      }
-    </>
-  )
-}
-
-export const ScopedTagItem = (props: TagItemProps) => {
 
   const [collapsed, setCollapsed] = useState(false)
 
@@ -51,9 +34,9 @@ export const ScopedTagItem = (props: TagItemProps) => {
   )
 }
 
-export const ExclusiveScopedTagItem = (props: TagItemProps) => {
+export const TagItemScopedUnique = (props: TagItemProps) => {
   return (
-    <span className="snovy-tag-item tag-exclusive" style={style(props.scope.color)}>
+    <span className="snovy-tag-item tag-unique" style={style(props.scope.color)}>
       <span className="tag-scope" style={style(props.scope.color, 30)}>{props.scope.name}</span>
       <span className="tag-name" style={style(props.scope.color, 10)}>{props.mapped[0].name}</span>
       <RemoveButton onClick={() => props.onRemoveScope(props.mapped)}/>

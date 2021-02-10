@@ -23,18 +23,18 @@ export default class Sets {
     return this.tags.filter(it => !note.tags.has(it))
   }
 
-  addScope(name: string, color: string, exclusive?: boolean) {
-    const scope = new Scope(name, color, exclusive)
+  addScope(name: string, color: string, unique?: boolean) {
+    const scope = new Scope(name, color, unique)
     this.scopes.push(scope)
     return scope
   }
 
   deleteScope(scope: Scope, keepTags: boolean) {
     this.scopes.find(it => {
-        if (it.name == scope.name) {
-          if (keepTags) {
-            this.tags.forEach(it => {
-              if (it.scope == scope) {
+      if (it.name == scope.name) {
+        if (keepTags) {
+          this.tags.forEach(it => {
+            if (it.scope == scope) {
               it.removeScope(scope)
             }
           })

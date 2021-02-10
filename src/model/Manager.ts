@@ -45,7 +45,7 @@ export default class Manager implements ParentInterface<Notebook> {
         for (let k = 0; k < randomNumber(8, 2); k++) {
           this.addTestTag(notebook, j + randomString(randomNumber(8)) + k, scope.color, scope)
 
-          if (scope.exclusive) {
+          if (scope.unique) {
             break
           }
         }
@@ -146,8 +146,8 @@ export default class Manager implements ParentInterface<Notebook> {
     target.sets.addTag(name, color, scope)
   }
 
-  addTestScope(target: Notebook, name: string, color: string, exclusive?: boolean): void {
-    target.sets.addScope(name, color, exclusive)
+  addTestScope(target: Notebook, name: string, color: string, unique?: boolean): void {
+    target.sets.addScope(name, color, unique)
   }
 
   tagNote(notebook: Notebook, target: Note): void {

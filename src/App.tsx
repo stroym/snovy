@@ -22,15 +22,11 @@ function App() {
   const [note, setNote] = useState<Note | undefined>()
   const [tag, setTag] = useState<Tag | undefined>()
 
-  //TODO there's a bug in the hook or something
   const [sections, setSections] = useState<Array<Section>>([])
   const [notes, setNotes] = useState<Array<Note>>([])
 
   const selectNotebook = (active: Notebook | undefined) => {
     setNotebook(active)
-    //TODO is there a better way to do this? - probably
-    // setSections([])
-    // setNotes([])
   }
 
   const selectSection = (active: Section | undefined) => {

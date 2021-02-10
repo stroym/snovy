@@ -51,6 +51,6 @@ export default class Tag extends ColoredItem {
     (a: Tag, b: Tag) => { return Number(a.scope) - Number(b.scope)}
 
   static compareByExclusivity =
-    (a: Tag, b: Tag) => { return Number(a.scope?.exclusive) - Number(b.scope?.exclusive)}
+    (a: Tag, b: Tag) => { return Number(a.scope?.unique) - Number(b.scope?.unique)}
 
 }

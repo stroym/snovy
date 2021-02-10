@@ -30,12 +30,12 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
 
     const [scopeText, scopeColor, setScopeText, setScopeColor] = useColored()
     const [tagText, tagColor, setTagText, setTagColor] = useColored()
-    const [exclusive, setExclusive] = useState(false)
+    const [unique, setExclusive] = useState(false)
     const [useScope, setUseScope] = useState(true)
 
     const createTag = () => {
       if (tagText || scopeText) {
-        props.onConfirm(tagText, tagColor, scopeText, scopeColor, exclusive)
+        props.onConfirm(tagText, tagColor, scopeText, scopeColor, unique)
       }
     }
 
@@ -53,11 +53,11 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
       <form ref={ref} id="snovy-tag-create-form" className="snovy-form">
         <TagFormItem
           placeholder="Scope name..." color={scopeColor} getColor={useScope ? setBoth : setScopeColor}
-          getText={setScopeText} useCheck={{toggled: exclusive, toggle: setExclusive}}
+          getText={setScopeText} useCheck={{toggled: unique, toggle: setExclusive}}
         />
         <TagFormItem
           placeholder="Tag name..." color={tagColor} getColor={useScope ? setBoth : setTagColor}
-          getText={setTagText} disableColor={exclusive} useCheck={{toggled: useScope, toggle: onBoth}}
+          getText={setTagText} disableColor={unique} useCheck={{toggled: useScope, toggle: onBoth}}
         />
         <ConfirmButton onClick={() => createTag()}/>
       </form>

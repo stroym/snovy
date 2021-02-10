@@ -11,16 +11,12 @@ export default class Note extends ItemWithParent<Section> {
   state?: State
   tags: Set<Tag> = new Set<Tag>()
 
-  get unscopedTags() {
-    return this.tags.toArray().filter(tag => !tag.scope)
-  }
-
-  get scopedTags() {
+  get tagMap() {
     const scopedTags = this.tags.toArray()
       .filter(tag => tag.scope)
       .sort(Tag.compareByExclusivity)
 
-    const temp = new Map<Scope, Array<Tag>>()
+    const temp = new Map<Scope | undefined, Array<Tag>>()
 
     scopedTags.forEach((tag) => {
 
@@ -31,7 +27,9 @@ export default class Note extends ItemWithParent<Section> {
       temp.get(tag.scope!)!.push(tag)
     })
 
-    return temp
+    temp.set(undefined, this.tags.toArray().filter(tag => !tag.scope))
+
+    return Array.from(temp.entries())
   }
 
   tag(tag: Tag): void {

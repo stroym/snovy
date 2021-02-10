@@ -1,10 +1,9 @@
-import React, {useEffect} from "react"
+import React, {useEffect, useState} from "react"
 import Tag from "../model/colored/Tag"
-import {TagItem, TagItemScoped} from "./tag/TagItem"
+import {TagItem, TagItemScoped, TagItemScopedUnique} from "./tag/TagItem"
 import Scope from "../model/colored/Scope"
 import Notebook from "../model/Notebook"
 import Note from "../model/Note"
-import {useDefaultEmpty} from "../util/Hooks"
 import TagComboBox from "./tag/TagComboBox"
 
 const NoteDetail = (props: {
@@ -12,9 +11,7 @@ const NoteDetail = (props: {
   notebook: Notebook
 }) => {
 
-  //TODO probably wouldn't hurt to somehow get all of this in one field... maybe custom holder on note? - or maybe go back to flicking a boolean
-  const [unscopedTags, setUnscopedTags] = useDefaultEmpty<Tag>()
-  const [scoopedTags, setScopedTags] = useDefaultEmpty<[Scope, Array<Tag>]>()
+  const [refresh, setRefresh] = useState(false)
 
   useEffect(
     () => {
@@ -22,24 +19,23 @@ const NoteDetail = (props: {
     }, [props.note, props.note.tags]
   )
 
-  const onRemove = (tag: Tag) => {
+  const remove = (tag: Tag) => {
     props.note.untag(tag)
     refreshTags()
   }
 
-  const onRemoveScoped = (tags: Array<Tag>) => {
+  const removeScoped = (tags: Array<Tag>) => {
     props.note?.untagAll(tags)
     refreshTags()
   }
 
   const onTag = (tag: Tag) => {
-    props.note!.tag(tag)
+    props.note?.tag(tag)
     refreshTags()
   }
 
   const refreshTags = () => {
-    setUnscopedTags(props.note.unscopedTags)
-    setScopedTags(Array.from(props.note.scopedTags.entries()))
+    setRefresh(!refresh)
   }
 
   const tagCreation = (tagText: string, tagColor: string, scopeText: string, scopeColor: string, scopeExclusive: boolean) => {
@@ -66,15 +62,11 @@ const NoteDetail = (props: {
     <div id="snovy-note-detail">
       <TagComboBox tags={props.notebook.sets.availableTags(props.note)} onTag={onTag} onNewTag={tagCreation}/>
       <div id="snovy-tag-display">
-        {scoopedTags.map(([scope, tags]: [Scope, Tag[]]) =>
-          <TagItemScoped
-            key={scope.name} scope={scope} mapped={tags} onRemove={onRemove}
-            onRemoveScope={onRemoveScoped}
-          />
+        {props.note.tagMap.map(([scope, tags]: [Scope | undefined, Tag[]]) => scope ? scope.unique ?
+          <TagItemScopedUnique scope={scope} mapped={tags} onRemove={remove} onRemoveScope={removeScoped}/> :
+          <TagItemScoped key={scope.name} scope={scope} mapped={tags} onRemove={remove} onRemoveScope={removeScoped}/> :
+          tags.map((item: Tag) => <TagItem key={item.toString()} mapped={item} onRemove={remove}/>)
         )}
-        {unscopedTags.map((item: Tag) =>
-          <TagItem key={item.toString()} mapped={item} onRemove={onRemove}/>)
-        }
       </div>
     </div>
   )
