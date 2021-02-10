@@ -3,6 +3,7 @@ import {IdentifiedItem, Item} from "../../model/common/Base"
 import {useHideOnOutsideClick} from "../../util/Hooks"
 import {Input} from "../inputs/Input"
 import {append, Extras} from "../../util/ComponentUtils"
+import {onLeft} from "../../util/Utils"
 
 const ListItem = <T extends IdentifiedItem | Item>(props: {
   mapped: T,
@@ -56,8 +57,8 @@ const ListItem = <T extends IdentifiedItem | Item>(props: {
   return (
     <Input
       ref={selfRef} className={makeClassName()} value={value} placeholder={"Name..."} readOnly={!editable}
-      getText={handleChange} onClick={() => {props.onClick(props.mapped)}} onDoubleClick={flip}
-      onContextMenu={handleContext}
+      getText={handleChange} onMouseUp={e => onLeft(e, props.onClick(props.mapped))}
+      onDoubleClick={flip} onContextMenu={handleContext}
     />
   )
 

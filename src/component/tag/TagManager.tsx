@@ -15,7 +15,7 @@ const TagManager = (props: {
   return (
     <div id="snovy-tag-manager">
       <List<Tag> items={props.notebook?.sets.tags}
-                 onActiveChange={() => {}}
+                 onActiveChange={() => false}
                  onContextChange={(target: Tag | undefined | null) => {setActiveContext(target)}}
                  contextChildren={
                    props.notebook ? [

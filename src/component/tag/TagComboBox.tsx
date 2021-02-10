@@ -85,7 +85,7 @@ const TagComboBox = (props: {
           />
           <input {...getToggleButtonProps()}
                  className="snovy-combo-box-input" placeholder="Select or create tag..."
-                 {...getInputProps({onKeyDown: (e) => { options.isEmpty() && e.key == Key.Enter && willCreateTag()}})}
+                 {...getInputProps({onKeyDown: e => { options.isEmpty() && e.key == Key.Enter && willCreateTag()}})}
           />
           <CollapseButton {...getToggleButtonProps()} aria-label={"toggle menu"}/>
         </span>

@@ -1,6 +1,6 @@
 import React, {Dispatch, SetStateAction, useEffect, useReducer, useState} from "react"
 import {Key} from "ts-key-enum"
-import {isArray, isItem} from "./UnionUtils"
+import {isArray, isItem} from "./Utils"
 
 export function useHideOnOutsideClick(elementRef: React.RefObject<Element | undefined>,
                                       otherRefs?: Array<React.RefObject<Element | undefined>>,

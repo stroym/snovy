@@ -12,6 +12,7 @@
     "emitDeclarationOnly": true,
     "isolatedModules": true,
     "esModuleInterop": true,
+    "noImplicitAny": false,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,

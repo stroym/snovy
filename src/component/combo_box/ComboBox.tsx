@@ -91,7 +91,7 @@ const ComboBox = <T extends Item>(props: {
         <span className="snovy-combo-box-wrapper" {...getToggleButtonProps()}>
           <input
             className="snovy-combo-box-input"
-            {...getInputProps({onKeyDown: (e) => { options.isEmpty() && e.key == Key.Enter && createItem()}})}
+            {...getInputProps({onKeyDown: e => options.isEmpty() && e.key == Key.Enter && createItem()})}
           />
           <CollapseButton aria-label={"toggle menu"}/>
         </span>

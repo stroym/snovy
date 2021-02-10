@@ -13,7 +13,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <input
         {...rest} ref={ref} type="text" className={concatUnknown("snovy-input", props.className)}
-        autoComplete="off" onChange={(e) => getText(e.target.value)}
+        autoComplete="off" onChange={e => getText(e.target.value)}
       />
     )
 

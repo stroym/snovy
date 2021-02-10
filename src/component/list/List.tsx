@@ -5,7 +5,7 @@ import ContextMenu from "../context_menu/ContextMenu"
 import ContextMenuItem from "../context_menu/ContextMenuItem"
 import {append, Extras} from "../../util/ComponentUtils"
 import {useMultiSelect} from "../../util/Hooks"
-import {isArray} from "../../util/UnionUtils"
+import {isArray} from "../../util/Utils"
 
 const List = <T extends IdentifiedItem | Item>(props: {
   onActiveChange?: (active: T | undefined) => void,
