@@ -5,7 +5,7 @@ import Notebook from "../../model/Notebook"
 import {ItemWithParent, ParentInterface} from "../../model/common/Base"
 import {Orientation} from "../tab_menu/TabMenu"
 import Manager from "../../model/Manager"
-import ContextMenuItem from "../context_menu/ContextMenuItem"
+import ContextMenuItem, {buildContext} from "../context_menu/ContextMenuItem"
 import {ManagedSidebar} from "./Sidebar"
 import List from "../list/List"
 import ComboBox from "../combo_box/ComboBox"
@@ -30,8 +30,8 @@ export const LeftBar = (props: {
     setActiveContext(target)
   }
 
-  const sectionContext = buildContext(activeContext as Section, props.notebook, props.multiSections, props.onSectionChange, props.onSectionMultiselect)
-  const noteContext = buildContext(activeContext as Note, props.section, props.multiNotes, props.onNoteChange, props.onNoteMultiselect)
+  const sectionContext = buildContextMenu(activeContext as Section, props.notebook, props.multiSections, props.onSectionChange, props.onSectionMultiselect)
+  const noteContext = buildContextMenu(activeContext as Note, props.section, props.multiNotes, props.onNoteChange, props.onNoteMultiselect)
 
   return (
     <ManagedSidebar orientation={Orientation.LEFT} tabs={mappings}>
@@ -76,8 +76,7 @@ const mappings = [
   {text: "Search"}
 ]
 
-//TODO as is the split options are probably more annoying than useful - this behaviour should probably be configurable
-function buildContext<I extends ItemWithParent<P>, P extends ParentInterface<I>>(
+function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface<I>>(
   contextItem: I | undefined,
   parent: P | undefined,
   selectedItems: Array<I>,
@@ -88,43 +87,50 @@ function buildContext<I extends ItemWithParent<P>, P extends ParentInterface<I>>
 
   if (parent) {
     contexts.push(
-      <ContextMenuItem
-        key={"new"} icon="+" text={`New ${parent.childName}`} specialText="& go"
-        onClick={() => {contextItem ? parent.insert(contextItem.order + 1) : parent.insert()}}
-        specialOnClick={() => {setActive(contextItem ? parent.insert(contextItem.order + 1) : parent.insert())}}
-      />
+      buildContext(
+        `New ${parent.childName}`,
+        () => {contextItem ? parent.insert(contextItem.order + 1) : parent.insert()},
+        "+",
+        "& go",
+        () => {setActive(contextItem ? parent.insert(contextItem.order + 1) : parent.insert())}
+      )
     )
 
     if (contextItem) {
       contexts.push(
-        <ContextMenuItem
-          key={"new-at-end"} text={`New ${parent.childName} (as last)`} icon="+" specialText="& go"
-          onClick={() => {parent.insert()}}
-          specialOnClick={() => {setActive(parent.insert())}}
-        />)
+        buildContext(
+          `New ${parent.childName} (as last)`,
+          () => {parent.insert()},
+          "+",
+          "& go",
+          () => {setActive(parent.insert())}
+        )
+      )
 
       if (!selectedItems.hasMore()) {
         contexts.push(
-          <ContextMenuItem
-            key={"delete"} text={`Delete ${parent.childName}`} icon="×"
-            onClick={() => {
+          buildContext(
+            `Delete ${parent.childName}`,
+            () => {
               const neighbour = parent.deleteItem(contextItem)
 
               if (contextItem == selectedItems.first()) {
                 setActive(neighbour)
               }
-            }}
-          />
+            },
+            "×"
+          )
         )
       } else {
         contexts.push(
-          <ContextMenuItem
-            key={"delete"} text={`Delete ${selectedItems.length} ${parent.childName}s`} icon="×"
-            onClick={() => {
+          buildContext(
+            `Delete ${selectedItems.length} ${parent.childName}s`,
+            () => {
               setMulti([])
               setActive(parent.deleteItems(selectedItems))
-            }}
-          />
+            },
+            "×"
+          )
         )
       }
     }
