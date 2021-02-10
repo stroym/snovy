@@ -11,8 +11,9 @@
   max-height: 50vh;
   position: absolute;
   z-index: 10;
-  background-color: $colour-primary;
   text-align: center;
+  background-color: $colour-primary;
+  color: $colour-text-primary;
 
   & > * {
     margin: 1em 0;
