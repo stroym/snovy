@@ -80,6 +80,7 @@ export interface ParentInterface<T extends OrderedItem> {
 
   deleteItem: (item?: T) => T | undefined
   deleteById: (id: number) => T | undefined
+  deleteItems: (items: Array<T>) => T | undefined
 
 }
 
@@ -151,6 +152,12 @@ export abstract class ItemWithParentAndChildren<T extends OrderedItem, P extends
         return undefined
       }
     }
+  }
+
+  deleteItems(items: Array<T>) {
+    let item
+    items.forEach(it => {item = this.deleteItem(it)})
+    return item
   }
 
   deleteById(id: number) {

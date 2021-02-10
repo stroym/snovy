@@ -22,8 +22,15 @@ function App() {
   const [note, setNote] = useState<Note | undefined>()
   const [tag, setTag] = useState<Tag | undefined>()
 
+  //TODO there's a bug in the hook or something
+  const [sections, setSections] = useState<Array<Section>>([])
+  const [notes, setNotes] = useState<Array<Note>>([])
+
   const selectNotebook = (active: Notebook | undefined) => {
     setNotebook(active)
+    //TODO is there a better way to do this? - probably
+    // setSections([])
+    // setNotes([])
   }
 
   const selectSection = (active: Section | undefined) => {
@@ -40,7 +47,6 @@ function App() {
 
   const untag = (note: Note, tag: Tag) => {
     note.untag(tag)
-    console.log("click")
   }
 
   return (
@@ -48,9 +54,11 @@ function App() {
       <TopBar/>
       <span id="snovy-middle">
           <LeftBar
-            onActiveSectionChange={selectSection} onActiveNoteChange={selectNote}
-            onActiveNotebookChange={selectNotebook} manager={manager}
-            activeNotebook={notebook} activeSection={section} activeNote={note}
+            manager={manager}
+            onNotebookChange={selectNotebook} notebook={notebook}
+            onSectionChange={selectSection} onSectionMultiselect={setSections} multiSections={sections}
+            section={section}
+            onNoteChange={selectNote} note={note} onNoteMultiselect={setNotes} multiNotes={notes}
           />
           <Editor activeNote={note}/>
           <RightBar onTagRemove={untag} note={note} notebook={notebook} tag={tag} onTagChange={selectTag}/>

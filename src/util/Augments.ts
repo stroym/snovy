@@ -12,6 +12,8 @@ declare global {
     isEmpty(): boolean
 
     includesAll(array: Array<T>): boolean
+
+    hasMore(): boolean
   }
 
   interface Set<T> {
@@ -55,6 +57,10 @@ Array.prototype.includesAll = function <T>(array: Array<T>): boolean {
   })
 
   return true
+}
+
+Array.prototype.hasMore = function (): boolean {
+  return this.length > 1
 }
 
 Set.prototype.toArray = function <T>(): Array<T> {

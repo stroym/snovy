@@ -112,6 +112,11 @@ export default class Manager implements ParentInterface<Notebook> {
     }
   }
 
+  deleteItems(items: Array<Notebook>) {
+    items.forEach(it => this.deleteItem(it))
+    return items.last()
+  }
+
   deleteById(id: number) {
     return this.deleteItem(this.items.find(value => {return value.id == id}))
   }

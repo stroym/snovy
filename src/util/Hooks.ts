@@ -1,5 +1,6 @@
 import React, {Dispatch, SetStateAction, useEffect, useReducer, useState} from "react"
 import {Key} from "ts-key-enum"
+import {isArray, isItem} from "./UnionUtils"
 
 export function useHideOnOutsideClick(elementRef: React.RefObject<Element | undefined>,
                                       otherRefs?: Array<React.RefObject<Element | undefined>>,
@@ -103,19 +104,10 @@ export function useContextMenu(
 export function useDefaultEmpty<T>(array?: Array<T> | T | null | undefined) {
   return useReducer(
     (prevState: Array<T>, newState: Array<T> | T | null | undefined): Array<T> => {
-      return isArray(array) ? array : isItem(array) ? [array] : []
+      return isArray(newState) ? newState : isItem(newState) ? [newState] : []
     },
     isArray(array) ? array : isItem(array) ? [array] : []
   )
-
-  function isArray(arg: Array<T> | T | null | undefined): arg is Array<T> {
-    return arg instanceof Array
-  }
-
-  function isItem(arg: T | null | undefined): arg is T {
-    return arg !== undefined
-  }
-
 }
 
 export function useCollapse(elementRef: React.RefObject<HTMLElement | undefined>):
@@ -159,39 +151,56 @@ export function useColoured(str?: string, colourStr?: string):
 
 export function useMultiSelect<T>() {
 
-  const [multi, setMulti] = useState(false)
+  const [ctrlMode, setCtrlMode] = useState(false)
+  const [shiftMode, setShiftMode] = useState(false)
 
-  const [multiItems, setMultiItems] = useState<Array<T>>([])
+  const [items, setItems] = useState<Array<T>>([])
 
   useEffect(
     () => {
       document.addEventListener("mousemove", handleKey)
+      document.addEventListener("keydown", handleEsc)
 
       return () => {
         document.removeEventListener("mousemove", handleKey)
+        document.removeEventListener("keydown", handleEsc)
+
       }
     }, []
   )
 
   const handleKey = (e: MouseEvent) => {
-    if (e.shiftKey) {
-      setMulti(true)
-    } else {
-      setMulti(false)
+    setShiftMode(e.shiftKey)
+    setCtrlMode(e.ctrlKey)
+  }
+
+  const handleEsc = (e: KeyboardEvent) => {
+    if (e.key == Key.Escape) {
+//active boolean?
     }
   }
 
   const handleItemClick = (item: T) => {
-    if (multi) {
-      if (multiItems.includes(item)) {
-        setMultiItems(Array.from(multiItems).remove(item))
+    if (ctrlMode) {
+      if (items.includes(item)) {
+        if (items.length > 1) {
+          setItems(Array.from(items).remove(item))
+        }
       } else {
-        setMultiItems(multiItems.concat(item))
+        setItems(items.concat(item))
+      }
+    } else if (shiftMode) {
+      if (items.includes(item)) {
+        if (items.length > 1) {
+          setItems(Array.from(items).remove(item))
+        }
+      } else {
+        setItems(items.concat(item))
       }
     } else {
-      setMultiItems([item])
+      setItems([item])
     }
   }
 
-  return {multi, setMulti, multiItems, setMultiItems, handleItemClick}
+  return {shiftMode, ctrlMode, items, setItems, handleItemClick}
 }

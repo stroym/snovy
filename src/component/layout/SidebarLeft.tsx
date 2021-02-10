@@ -2,36 +2,36 @@ import React, {useState} from "react"
 import Note from "../../model/Note"
 import Section from "../../model/Section"
 import Notebook from "../../model/Notebook"
-import {Item, ItemWithParent, OrderedItem, ParentInterface} from "../../model/common/Base"
+import {ItemWithParent, ParentInterface} from "../../model/common/Base"
 import {Orientation} from "../tab_menu/TabMenu"
 import Manager from "../../model/Manager"
 import ContextMenuItem from "../context_menu/ContextMenuItem"
 import {ManagedSidebar} from "./Sidebar"
 import List from "../list/List"
 import ComboBox from "../combo_box/ComboBox"
-import {useDefaultEmpty} from "../../util/Hooks"
 
 export const LeftBar = (props: {
-  onActiveNotebookChange: (active: Notebook | undefined) => void,
-  onActiveSectionChange: (active: Section | undefined) => void,
-  onActiveNoteChange: (active: Note | undefined) => void,
+  onNotebookChange: (active: Notebook | undefined) => void,
+  onSectionChange: (active: Section | undefined) => void,
+  onNoteChange: (active: Note | undefined) => void,
+  onSectionMultiselect: (active: Array<Section>) => void,
+  onNoteMultiselect: (active: Array<Note>) => void,
   manager: Manager,
-  activeNotebook: Notebook | undefined,
-  activeSection: Section | undefined,
-  activeNote: Note | undefined
+  notebook: Notebook | undefined,
+  section: Section | undefined,
+  note: Note | undefined,
+  multiSections: Array<Section>,
+  multiNotes: Array<Note>
 }) => {
 
   const [activeContext, setActiveContext] = useState<Section | Note | undefined | null>()
-
-  const [multiselect, setMultiselect] = useDefaultEmpty<Item>()
 
   const onContextChange = (target: Section | Note | undefined | null) => {
     setActiveContext(target)
   }
 
-  const onMultiple = (target: Array<Item>) => {
-    setMultiselect(target)
-  }
+  const sectionContext = buildContext(activeContext as Section, props.notebook, props.multiSections, props.onSectionChange, props.onSectionMultiselect)
+  const noteContext = buildContext(activeContext as Note, props.section, props.multiNotes, props.onNoteChange, props.onNoteMultiselect)
 
   return (
     <ManagedSidebar orientation={Orientation.LEFT} tabs={mappings}>
@@ -40,25 +40,27 @@ export const LeftBar = (props: {
           <ComboBox
             id="notebook-selector"
             key="notebook-selector" items={props.manager.itemsSortedAlphabetically}
-            onActiveChange={props.onActiveNotebookChange}
+            onActiveChange={props.onNotebookChange}
             createItem={(name: string) => {return props.manager.insert(undefined, name)}}
-            selection={props.activeNotebook ?? props.manager.items.first()}
+            selection={props.notebook ?? props.manager.items.first()}
           />,
           <span key="lists-span" id="lists-span">
             <>
               <List<Section>
                 key="snovy-list-section"
-                items={props.activeNotebook?.itemsSortedByOrder}
-                selection={props.activeSection} defaultFirst multipleSelection={onMultiple}
-                onActiveChange={props.onActiveSectionChange} onContextChange={onContextChange}
-                contextChildren={buildContext(activeContext as Section, props.activeNotebook, props.activeSection, props.onActiveSectionChange)}
+                items={props.notebook?.itemsSortedByOrder}
+                selection={props.multiSections.isEmpty() ? props.section : props.multiSections} defaultFirst
+                onActiveChange={props.onSectionChange} onContextChange={onContextChange}
+                onMultipleSelection={props.onSectionMultiselect}
+                contextChildren={sectionContext}
               />
               <List<Note>
                 key="snovy-list-note"
-                items={props.activeSection?.itemsSortedByOrder}
-                selection={props.activeNote} defaultFirst multipleSelection={onMultiple}
-                onActiveChange={props.onActiveNoteChange} onContextChange={onContextChange}
-                contextChildren={buildContext(activeContext as Note, props.activeSection, props.activeNote, props.onActiveNoteChange)}
+                items={props.section?.itemsSortedByOrder}
+                selection={props.multiNotes.isEmpty() ? props.note : props.multiNotes} defaultFirst
+                onMultipleSelection={props.onNoteMultiselect}
+                onActiveChange={props.onNoteChange} onContextChange={onContextChange}
+                contextChildren={noteContext}
               />
             </>
           </span>
@@ -74,41 +76,61 @@ const mappings = [
   {text: "Search"}
 ]
 
-function buildKey(parent: OrderedItem | undefined, defaultKey: string) {
-  return parent ? parent.constructor.name + parent?.id + "items" : defaultKey
-}
-
 //TODO as is the split options are probably more annoying than useful - this behaviour should probably be configurable
 function buildContext<I extends ItemWithParent<P>, P extends ParentInterface<I>>(
   contextItem: I | undefined,
   parent: P | undefined,
-  activeItem: I | undefined,
-  setActive: (active: I | undefined) => void
+  selectedItems: Array<I>,
+  setActive: (active: I | undefined) => void,
+  setMulti: (active: Array<I>) => void
 ) {
-  return parent ? [
-    <ContextMenuItem
-      key={"new"} icon="+" text={`New ${parent.childName}`} specialText="& go"
-      onClick={() => {contextItem ? parent.insert(contextItem.order + 1) : parent.insert()}}
-      specialOnClick={() => {setActive(contextItem ? parent.insert(contextItem.order + 1) : parent.insert())}}
-    />,
-    ...contextItem ? [
-      <ContextMenuItem
-        key={"new-at-end"} text={`New ${parent.childName} (as last)`} icon="+" specialText="& go"
-        onClick={() => {parent.insert()}}
-        specialOnClick={() => {setActive(parent.insert())}}
-      />,
-      <ContextMenuItem
-        key={"delete"} text={`Delete ${parent.childName}`} icon="×"
-        onClick={() => {
-          const neighbour = parent.deleteById(contextItem.id)
+  const contexts: Array<React.ReactElement<typeof ContextMenuItem>> = []
 
-          if (contextItem == activeItem) {
-            setActive(neighbour)
-          }
-        }}
+  if (parent) {
+    contexts.push(
+      <ContextMenuItem
+        key={"new"} icon="+" text={`New ${parent.childName}`} specialText="& go"
+        onClick={() => {contextItem ? parent.insert(contextItem.order + 1) : parent.insert()}}
+        specialOnClick={() => {setActive(contextItem ? parent.insert(contextItem.order + 1) : parent.insert())}}
       />
-    ] : []
-  ] : undefined
+    )
+
+    if (contextItem) {
+      contexts.push(
+        <ContextMenuItem
+          key={"new-at-end"} text={`New ${parent.childName} (as last)`} icon="+" specialText="& go"
+          onClick={() => {parent.insert()}}
+          specialOnClick={() => {setActive(parent.insert())}}
+        />)
+
+      if (!selectedItems.hasMore()) {
+        contexts.push(
+          <ContextMenuItem
+            key={"delete"} text={`Delete ${parent.childName}`} icon="×"
+            onClick={() => {
+              const neighbour = parent.deleteItem(contextItem)
+
+              if (contextItem == selectedItems.first()) {
+                setActive(neighbour)
+              }
+            }}
+          />
+        )
+      } else {
+        contexts.push(
+          <ContextMenuItem
+            key={"delete"} text={`Delete ${selectedItems.length} ${parent.childName}s`} icon="×"
+            onClick={() => {
+              setMulti([])
+              setActive(parent.deleteItems(selectedItems))
+            }}
+          />
+        )
+      }
+    }
+  }
+
+  return contexts
 }
 
 export default LeftBar
