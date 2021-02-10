@@ -18,7 +18,7 @@
   }
 }
 
-.snovy-colour-button {
+.snovy-color-button {
   @include button-size($font-big);
   font-size: $font-small;
 }
@@ -31,17 +31,17 @@
   border: $border-thin-inverted;
 
   &:hover {
-    background-color: $colour-hover;
+    background-color: $color-hover;
   }
 }
 
 .snovy-check-button {
   @include button-size($font-big);
   font-size: $font-small;
-  color: $colour-text-primary;
-  background-color: $colour-text-primary;
+  color: $color-text-primary;
+  background-color: $color-text-primary;
 
   &:hover {
-    background-color: $colour-accent;
+    background-color: $color-accent;
   }
 }

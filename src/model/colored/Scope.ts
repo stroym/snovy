@@ -1,15 +1,15 @@
-import {ColouredItem} from "../common/Base"
+import {ColoredItem} from "../common/Base"
 import Tag from "./Tag"
 
-export default class Scope extends ColouredItem {
+export default class Scope extends ColoredItem {
 
   name: string
   exclusive: boolean
 
   scopedTags: Set<Tag> = new Set<Tag>()
 
-  constructor(name: string, colour: string, exclusive = false) {
-    super(name, colour)
+  constructor(name: string, color: string, exclusive = false) {
+    super(name, color)
     this.name = name
     this.exclusive = exclusive
   }

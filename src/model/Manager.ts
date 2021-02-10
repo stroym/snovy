@@ -2,7 +2,7 @@ import Notebook from "./Notebook"
 import {IdentifiedItem, Item, OrderedItem, ParentInterface} from "./common/Base"
 import Section from "./Section"
 import Note from "./Note"
-import Scope from "./coloured/Scope"
+import Scope from "./colored/Scope"
 
 function dec2hex(dec: number) {
   return dec.toString(36).padStart(2, "0")
@@ -17,7 +17,7 @@ function randomNumber(max: number, min = 1) {
   return Math.floor(Math.random() * (max - min) + min)
 }
 
-function randomColour() {
+function randomColor() {
   return "#" + Math.floor(Math.random() * 16777215).toString(16)
 }
 
@@ -39,11 +39,11 @@ export default class Manager implements ParentInterface<Notebook> {
       const notebook = this.items[i]
 
       for (let j = 0; j < randomNumber(8, 4); j++) {
-        this.addTestScope(notebook, randomString(randomNumber(20)) + j, randomColour(), j % 2 == 0)
+        this.addTestScope(notebook, randomString(randomNumber(20)) + j, randomColor(), j % 2 == 0)
         const scope = notebook.sets.scopes[j]
 
         for (let k = 0; k < randomNumber(8, 2); k++) {
-          this.addTestTag(notebook, j + randomString(randomNumber(8)) + k, scope.colour, scope)
+          this.addTestTag(notebook, j + randomString(randomNumber(8)) + k, scope.color, scope)
 
           if (scope.exclusive) {
             break
@@ -52,7 +52,7 @@ export default class Manager implements ParentInterface<Notebook> {
       }
 
       for (let k = 0; k < randomNumber(12, 6); k++) {
-        this.addTestTag(notebook, randomString(randomNumber(8)), randomColour(), undefined)
+        this.addTestTag(notebook, randomString(randomNumber(8)), randomColor(), undefined)
       }
 
       for (let j = 0; j < i + 4; j++) {
@@ -142,12 +142,12 @@ export default class Manager implements ParentInterface<Notebook> {
     target.addItem(temp)
   }
 
-  addTestTag(target: Notebook, name: string, colour: string, scope?: Scope): void {
-    target.sets.addTag(name, colour, scope)
+  addTestTag(target: Notebook, name: string, color: string, scope?: Scope): void {
+    target.sets.addTag(name, color, scope)
   }
 
-  addTestScope(target: Notebook, name: string, colour: string, exclusive?: boolean): void {
-    target.sets.addScope(name, colour, exclusive)
+  addTestScope(target: Notebook, name: string, color: string, exclusive?: boolean): void {
+    target.sets.addScope(name, color, exclusive)
   }
 
   tagNote(notebook: Notebook, target: Note): void {

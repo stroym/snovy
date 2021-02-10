@@ -4,7 +4,7 @@ import {AddButton, CollapseButton} from "../inputs/Button"
 import {IdentifiedItem} from "../../model/common/Base"
 import {Key} from "ts-key-enum"
 import {useDefaultEmpty, useHideOnOutsideClick} from "../../util/Hooks"
-import Tag from "../../model/coloured/Tag"
+import Tag from "../../model/colored/Tag"
 import ComboCreateItem from "../combo_box/ComboCreateItem"
 import ComboBoxItem from "../combo_box/ComboBoxItem"
 import TagForm from "./TagForm"
@@ -14,7 +14,7 @@ const TagComboBox = (props: {
   className?: string,
   tags: Array<Tag>,
   onTag: (tag: Tag) => void,
-  onNewTag: (tagText: string, tagColour: string, scopeText: string, scopeColour: string, scopeExclusive: boolean) => void
+  onNewTag: (tagText: string, tagColor: string, scopeText: string, scopeColor: string, scopeExclusive: boolean) => void
 }) => {
 
   const formRef = useRef<HTMLFormElement>(null)
@@ -69,8 +69,8 @@ const TagComboBox = (props: {
     closeMenu()
   }
 
-  const createTag = (tagText: string, tagColour: string, scopeText: string, scopeColour: string, scopeExclusive: boolean) => {
-    props.onNewTag(tagText, tagColour, scopeText, scopeColour, scopeExclusive)
+  const createTag = (tagText: string, tagColor: string, scopeText: string, scopeColor: string, scopeExclusive: boolean) => {
+    props.onNewTag(tagText, tagColor, scopeText, scopeColor, scopeExclusive)
     setFormVisible(false)
   }
 

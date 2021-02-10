@@ -3,7 +3,7 @@
 
 .snovy-context-menu {
   z-index: 100;
-  background-color: $colour-primary;
+  background-color: $color-primary;
   border: $border-thin-inverted;
   border-radius: $border-rad-rounded;
   overflow: hidden;
@@ -20,7 +20,7 @@
   align-content: space-evenly;
   user-select: none;
   border-bottom: $border-thin-inverted;
-  color: $colour-text-primary;
+  color: $color-text-primary;
 
   :last-child {
     flex-grow: 1;
@@ -39,7 +39,7 @@
     white-space: nowrap;
 
     &:hover {
-      background-color: $colour-accent;
+      background-color: $color-accent;
     }
   }
 
@@ -48,11 +48,11 @@
     white-space: nowrap;
 
     &:hover {
-      background-color: $colour-accent;
+      background-color: $color-accent;
     }
   }
 
   &:hover {
-    background-color: $colour-hover;
+    background-color: $color-hover;
   }
 }

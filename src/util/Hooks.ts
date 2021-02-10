@@ -145,12 +145,12 @@ export function useCollapse(elementRef: React.RefObject<HTMLElement | undefined>
   return [collapsed, setCollapsed]
 }
 
-export function useColoured(str?: string, colourStr?: string):
+export function useColored(str?: string, colorStr?: string):
   [string, string, React.Dispatch<React.SetStateAction<string>>, React.Dispatch<React.SetStateAction<string>>] {
   const [text, setText] = useState(str ?? "")
-  const [colour, setColour] = useState(colourStr ?? "#ffffff")
+  const [color, setColor] = useState(colorStr ?? "#ffffff")
 
-  return [text, colour, setText, setColour]
+  return [text, color, setText, setColor]
 }
 
 export function useMultiSelect<T>() {

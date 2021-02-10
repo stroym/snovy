@@ -2,7 +2,7 @@
 @import "../mixins";
 
 .snovy-tab-menu {
-  background-color: $colour-accent;
+  background-color: $color-accent;
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;
@@ -36,6 +36,6 @@
   }
 
   &:hover {
-    background-color: $colour-hover;
+    background-color: $color-hover;
   }
 }

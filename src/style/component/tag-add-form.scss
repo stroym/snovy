@@ -12,8 +12,8 @@
   position: absolute;
   z-index: 10;
   text-align: center;
-  background-color: $colour-primary;
-  color: $colour-text-primary;
+  background-color: $color-primary;
+  color: $color-text-primary;
 
   & > * {
     margin: 1em 0;
@@ -25,16 +25,16 @@
     grid-template-rows: fit-content(1fr) fit-content(1fr);
     justify-items: center;
 
-    .coloured-wrapper {
+    .colored-wrapper {
       grid-area: input;
       display: grid;
-      grid-template-areas: "colour input check";
+      grid-template-areas: "color input check";
       grid-template-columns: 1fr 4fr 1fr;
       justify-items: center;
       align-items: center;
 
-      .snovy-colour-button {
-        grid-area: colour;
+      .snovy-color-button {
+        grid-area: color;
       }
 
       input {
@@ -46,17 +46,17 @@
       }
     }
 
-    .snovy-colour-picker {
+    .snovy-color-picker {
       margin-top: 0.5em;
       text-align: start;
       display: grid;
-      grid-template-areas: "spacer1 colour spacer2";
+      grid-template-areas: "spacer1 color spacer2";
       grid-template-columns: 1fr 4fr 1fr;
       justify-items: center;
       align-items: start;
 
-      .colour-container {
-        grid-area: colour;
+      .color-container {
+        grid-area: color;
         display: flex;
         flex-flow: row wrap;
         align-items: flex-start;

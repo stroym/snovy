@@ -9,7 +9,7 @@ import Editor from "./component/layout/Editor"
 import Notebook from "./model/Notebook"
 import Section from "./model/Section"
 import Manager from "./model/Manager"
-import Tag from "./model/coloured/Tag"
+import Tag from "./model/colored/Tag"
 import Note from "./model/Note"
 
 const man = new Manager()

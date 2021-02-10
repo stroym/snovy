@@ -57,8 +57,8 @@ export const CheckButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
   }
 )
 
-export const ColourButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
-  function ColourButton(props: ToggleButtonProps, ref?: buttonRef) {
-    return <Button {...props} ref={ref} className="snovy-colour-button"/>
+export const ColorButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
+  function ColorButton(props: ToggleButtonProps, ref?: buttonRef) {
+    return <Button {...props} ref={ref} className="snovy-color-button"/>
   }
 )

@@ -1,14 +1,14 @@
 import React, {forwardRef, useEffect, useRef, useState} from "react"
-import Scope from "../../model/coloured/Scope"
-import {CheckButton, ColourButton, ConfirmButton} from "../inputs/Button"
-import {useColoured, useHideOnOutsideClick} from "../../util/Hooks"
+import Scope from "../../model/colored/Scope"
+import {CheckButton, ColorButton, ConfirmButton} from "../inputs/Button"
+import {useColored, useHideOnOutsideClick} from "../../util/Hooks"
 import {Input} from "../inputs/Input"
-import ColourPicker from "../inputs/ColourPicker"
+import ColorPicker from "../inputs/ColorPicker"
 
 interface FormProps {
   initialValue?: string
   scope?: Scope,
-  onConfirm: (tagText: string, tagColour: string, scopeText: string, scopeColour: string, scopeExclusive: boolean) => void
+  onConfirm: (tagText: string, tagColor: string, scopeText: string, scopeColor: string, scopeExclusive: boolean) => void
 }
 
 //TODO allow for creating with scope using ::/:
@@ -28,36 +28,36 @@ class Stringer {
 const TagForm = forwardRef<HTMLFormElement, FormProps>(
   function TagSelector(props: FormProps, ref: React.Ref<HTMLFormElement>) {
 
-    const [scopeText, scopeColour, setScopeText, setScopeColour] = useColoured()
-    const [tagText, tagColour, setTagText, setTagColour] = useColoured()
+    const [scopeText, scopeColor, setScopeText, setScopeColor] = useColored()
+    const [tagText, tagColor, setTagText, setTagColor] = useColored()
     const [exclusive, setExclusive] = useState(false)
     const [useScope, setUseScope] = useState(true)
 
     const createTag = () => {
       if (tagText || scopeText) {
-        props.onConfirm(tagText, tagColour, scopeText, scopeColour, exclusive)
+        props.onConfirm(tagText, tagColor, scopeText, scopeColor, exclusive)
       }
     }
 
-    const setBoth = (colour: string) => {
-      setScopeColour(colour)
-      setTagColour(colour)
+    const setBoth = (color: string) => {
+      setScopeColor(color)
+      setTagColor(color)
     }
 
     const onBoth = (toggle: boolean) => {
       setUseScope(toggle)
-      toggle && setTagColour(scopeColour)
+      toggle && setTagColor(scopeColor)
     }
 
     return (
       <form ref={ref} id="snovy-tag-create-form" className="snovy-form">
         <TagFormItem
-          placeholder="Scope name..." colour={scopeColour} getColour={useScope ? setBoth : setScopeColour}
+          placeholder="Scope name..." color={scopeColor} getColor={useScope ? setBoth : setScopeColor}
           getText={setScopeText} useCheck={{toggled: exclusive, toggle: setExclusive}}
         />
         <TagFormItem
-          placeholder="Tag name..." colour={tagColour} getColour={useScope ? setBoth : setTagColour}
-          getText={setTagText} disableColour={exclusive} useCheck={{toggled: useScope, toggle: onBoth}}
+          placeholder="Tag name..." color={tagColor} getColor={useScope ? setBoth : setTagColor}
+          getText={setTagText} disableColor={exclusive} useCheck={{toggled: useScope, toggle: onBoth}}
         />
         <ConfirmButton onClick={() => createTag()}/>
       </form>
@@ -67,12 +67,12 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
 )
 
 const TagFormItem = (props: {
-  colour: string,
+  color: string,
   placeholder?: string,
-  getColour: (colour: string) => void,
+  getColor: (color: string) => void,
   getText: (text: string) => void,
   useCheck?: { toggled: boolean, toggle: (setExclusive: boolean) => void }
-  disableColour?: boolean
+  disableColor?: boolean
 }) => {
 
   const selfRef = useRef<HTMLButtonElement>(null)
@@ -80,29 +80,29 @@ const TagFormItem = (props: {
 
   const [visible, , flip] = useHideOnOutsideClick(selfRef, [pickerRef])
 
-  const [colourInt, setColourInt] = useState(props.colour)
+  const [colorInt, setColorInt] = useState(props.color)
 
   useEffect(
     () => {
-      setColourInt(props.colour)
-    }, [props.colour]
+      setColorInt(props.color)
+    }, [props.color]
   )
 
-  const getColour = (colour: string) => {
-    getInputColour(colour)
+  const getColor = (color: string) => {
+    getInputColor(color)
     flip()
   }
 
-  const getInputColour = (colour: string) => {
-    setColourInt(colour)
-    props.getColour(colour)
+  const getInputColor = (color: string) => {
+    setColorInt(color)
+    props.getColor(color)
   }
 
   return (
     <span className="tag-form-item">
-      <span className="coloured-wrapper">
-        <ColourButton
-          ref={selfRef} onMouseDown={flip} style={{backgroundColor: colourInt}} disabled={props.disableColour}
+      <span className="colored-wrapper">
+        <ColorButton
+          ref={selfRef} onMouseDown={flip} style={{backgroundColor: colorInt}} disabled={props.disableColor}
         />
         <Input placeholder={props.placeholder} getText={props.getText}/>
         {props.useCheck &&
@@ -110,7 +110,7 @@ const TagFormItem = (props: {
         }
       </span>
       {visible &&
-      <ColourPicker ref={pickerRef} getColour={getColour} getInputColour={getInputColour}/>
+      <ColorPicker ref={pickerRef} getColor={getColor} getInputColor={getInputColor}/>
       }
     </span>
   )

@@ -1,12 +1,12 @@
-import {ColouredItem} from "../common/Base"
+import {ColoredItem} from "../common/Base"
 import Note from "../Note"
 
-export default class State extends ColouredItem {
+export default class State extends ColoredItem {
 
   statedNotes: Set<Note> = new Set<Note>()
 
-  constructor(name: string, colour: string) {
-    super(name, colour)
+  constructor(name: string, color: string) {
+    super(name, color)
     this.name = name
   }
 

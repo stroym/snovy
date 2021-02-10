@@ -40,13 +40,13 @@ export abstract class IdentifiedItem extends Item {
 
 }
 
-export abstract class ColouredItem extends Item {
+export abstract class ColoredItem extends Item {
 
-  colour: string
+  color: string
 
-  protected constructor(name: string, colour: string) {
+  protected constructor(name: string, color: string) {
     super(name)
-    this.colour = colour
+    this.color = color
   }
 
 }

@@ -1,15 +1,15 @@
-import {ColouredItem} from "../common/Base"
+import {ColoredItem} from "../common/Base"
 import Note from "../Note"
 import Scope from "./Scope"
 
-export default class Tag extends ColouredItem {
+export default class Tag extends ColoredItem {
 
   //owner - notebook | manager (if global) ? not sure if bidirectional relationship is necessary
   taggedNotes: Set<Note> = new Set<Note>()
   scope?: Scope
 
-  constructor(name: string, colour: string, scope?: Scope) {
-    super(name, colour)
+  constructor(name: string, color: string, scope?: Scope) {
+    super(name, color)
 
     if (scope) {
       this.addScope(scope)

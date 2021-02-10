@@ -1,20 +1,20 @@
-$colour-primary: #1e1e1e;
-$colour-accent: darkolivegreen;
-$colour-border: black;
-$colour-border-inverted: ghostwhite;
+$color-primary: #1e1e1e;
+$color-accent: darkolivegreen;
+$color-border: black;
+$color-border-inverted: ghostwhite;
 
-$colour-text-primary: ghostwhite;
-$colour-text-secondary: black;
+$color-text-primary: ghostwhite;
+$color-text-secondary: black;
 
-$colour-active: olive;
-$colour-hover: darkkhaki; //rgba(0, 0, 0, 0.1) something like this, maybe?
+$color-active: olive;
+$color-hover: darkkhaki; //rgba(0, 0, 0, 0.1) something like this, maybe?
 
-$scrollbar: darkgreen $colour-accent;
+$scrollbar: darkgreen $color-accent;
 
-$border: $colour-border solid 2px;
-$border-thin: $colour-border solid 1px;
-$border-inverted: $colour-border-inverted solid 2px;
-$border-thin-inverted: $colour-border-inverted solid 1px;
+$border: $color-border solid 2px;
+$border-thin: $color-border solid 1px;
+$border-inverted: $color-border-inverted solid 2px;
+$border-thin-inverted: $color-border-inverted solid 1px;
 
 $border-rad-round: 20px;
 $border-rad-rounded: 10px;
@@ -25,6 +25,6 @@ $font-medium: calc(12px + 0.5vw);
 $font-small: calc(8px + 0.5vw);
 
 //temp
-$tag-colour-primary: darkgreen;
-$tag-colour-secondary: lightgreen;
-$tag-colour-text: black;
+$tag-color-primary: darkgreen;
+$tag-color-secondary: lightgreen;
+$tag-color-text: black;

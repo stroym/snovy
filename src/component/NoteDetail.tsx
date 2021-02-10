@@ -1,7 +1,7 @@
 import React, {useEffect} from "react"
-import Tag from "../model/coloured/Tag"
+import Tag from "../model/colored/Tag"
 import {TagItem, TagItemScoped} from "./tag/TagItem"
-import Scope from "../model/coloured/Scope"
+import Scope from "../model/colored/Scope"
 import Notebook from "../model/Notebook"
 import Note from "../model/Note"
 import {useDefaultEmpty} from "../util/Hooks"
@@ -42,20 +42,20 @@ const NoteDetail = (props: {
     setScopedTags(Array.from(props.note.scopedTags.entries()))
   }
 
-  const tagCreation = (tagText: string, tagColour: string, scopeText: string, scopeColour: string, scopeExclusive: boolean) => {
+  const tagCreation = (tagText: string, tagColor: string, scopeText: string, scopeColor: string, scopeExclusive: boolean) => {
     let tag
 
     if (scopeText) {
       const maybeScope = props.notebook.sets.scopes.find(it => it.name == scopeText)
 
       if (maybeScope) {
-        tag = props.notebook.sets.addTag(tagText, tagColour, maybeScope)
+        tag = props.notebook.sets.addTag(tagText, tagColor, maybeScope)
       } else {
-        const scope = props.notebook.sets.addScope(scopeText, scopeColour, scopeExclusive)
-        tag = props.notebook.sets.addTag(tagText, tagColour, scope)
+        const scope = props.notebook.sets.addScope(scopeText, scopeColor, scopeExclusive)
+        tag = props.notebook.sets.addTag(tagText, tagColor, scope)
       }
     } else {
-      tag = props.notebook.sets.addTag(tagText, tagColour)
+      tag = props.notebook.sets.addTag(tagText, tagColor)
     }
 
     props.note.tag(tag)

@@ -1,8 +1,8 @@
-import Tag from "./coloured/Tag"
+import Tag from "./colored/Tag"
 import {ItemWithParent} from "./common/Base"
 import Section from "./Section"
-import State from "./coloured/State"
-import Scope from "./coloured/Scope"
+import State from "./colored/State"
+import Scope from "./colored/Scope"
 
 export default class Note extends ItemWithParent<Section> {
 

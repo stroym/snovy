@@ -26,11 +26,11 @@ html, body, #root {
 }
 
 .active {
-  background-color: $colour-active;
+  background-color: $color-active;
 }
 
 .hover {
-  background-color: $colour-hover;
+  background-color: $color-hover;
 }
 
 .editable {
@@ -54,7 +54,7 @@ html, body, #root {
 
 #snovy-bar-top {
   grid-area: top;
-  background-color: $colour-accent;
+  background-color: $color-accent;
   border-bottom: $border;
 }
 
@@ -68,6 +68,6 @@ html, body, #root {
 
 #snovy-bar-bottom {
   grid-area: bottom;
-  background-color: $colour-accent;
+  background-color: $color-accent;
   border-top: $border;
 }
