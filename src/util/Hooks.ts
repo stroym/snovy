@@ -95,7 +95,11 @@ export function useContextMenu(
   const handleContextMenu = (e: any) => {
     e.preventDefault()
 
-    handleClick(e)
+    if (!elementRef.current?.contains(e.target as Node)) {
+      handleClick(e)
+    } else {
+      e.stopPropagation()
+    }
   }
 
   return {visible, flip, position}

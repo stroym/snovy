@@ -49,7 +49,7 @@ export const LeftBar = (props: {
               <List<Section>
                 key="snovy-list-section"
                 items={props.notebook?.itemsSortedByOrder}
-                selection={props.multiSections.isEmpty() ? props.section : props.multiSections} defaultFirst
+                selection={props.multiSections.hasMore() ? props.multiSections : props.section} defaultFirst
                 onActiveChange={props.onSectionChange} onContextChange={onContextChange}
                 onMultipleSelection={props.onSectionMultiselect}
                 contextChildren={sectionContext}
@@ -57,7 +57,7 @@ export const LeftBar = (props: {
               <List<Note>
                 key="snovy-list-note"
                 items={props.section?.itemsSortedByOrder}
-                selection={props.multiNotes.isEmpty() ? props.note : props.multiNotes} defaultFirst
+                selection={props.multiNotes.hasMore() ? props.multiNotes : props.note} defaultFirst
                 onMultipleSelection={props.onNoteMultiselect}
                 onActiveChange={props.onNoteChange} onContextChange={onContextChange}
                 contextChildren={noteContext}
