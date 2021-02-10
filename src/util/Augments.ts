@@ -7,7 +7,11 @@ declare global {
 
     delete(item: T): number
 
+    remove(item: T): Array<T>
+
     isEmpty(): boolean
+
+    includesAll(array: Array<T>): boolean
   }
 
   interface Set<T> {
@@ -34,8 +38,23 @@ Array.prototype.delete = function <T>(item: T): number {
   return index
 }
 
+Array.prototype.remove = function <T>(item: T): Array<T> {
+  this.delete(item)
+  return this
+}
+
 Array.prototype.isEmpty = function (): boolean {
   return this.length == 0
+}
+
+Array.prototype.includesAll = function <T>(array: Array<T>): boolean {
+  array.forEach(it => {
+    if (!this.includes(it)) {
+      return false
+    }
+  })
+
+  return true
 }
 
 Set.prototype.toArray = function <T>(): Array<T> {

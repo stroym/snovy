@@ -23,6 +23,7 @@
   color: $colour-text-primary;
 
   :last-child {
+    flex-grow: 1;
     align-self: flex-start;
     padding-right: 10px;
   }
@@ -43,7 +44,6 @@
   }
 
   .context-text-special {
-    flex-grow: 1;
     padding-left: 0.5ch;
     white-space: nowrap;
 

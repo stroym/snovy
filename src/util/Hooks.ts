@@ -100,11 +100,22 @@ export function useContextMenu(
   return {visible, flip, position}
 }
 
-export function useDefaultEmpty<T>(array?: Array<T> | null | undefined) {
+export function useDefaultEmpty<T>(array?: Array<T> | T | null | undefined) {
   return useReducer(
-    (prevState: Array<T>, newState: Array<T> | null | undefined): Array<T> => {return newState ? newState : []},
-    array ?? []
+    (prevState: Array<T>, newState: Array<T> | T | null | undefined): Array<T> => {
+      return isArray(array) ? array : isItem(array) ? [array] : []
+    },
+    isArray(array) ? array : isItem(array) ? [array] : []
   )
+
+  function isArray(arg: Array<T> | T | null | undefined): arg is Array<T> {
+    return arg instanceof Array
+  }
+
+  function isItem(arg: T | null | undefined): arg is T {
+    return arg !== undefined
+  }
+
 }
 
 export function useCollapse(elementRef: React.RefObject<HTMLElement | undefined>):
@@ -146,3 +157,41 @@ export function useColoured(str?: string, colourStr?: string):
   return [text, colour, setText, setColour]
 }
 
+export function useMultiSelect<T>() {
+
+  const [multi, setMulti] = useState(false)
+
+  const [multiItems, setMultiItems] = useState<Array<T>>([])
+
+  useEffect(
+    () => {
+      document.addEventListener("mousemove", handleKey)
+
+      return () => {
+        document.removeEventListener("mousemove", handleKey)
+      }
+    }, []
+  )
+
+  const handleKey = (e: MouseEvent) => {
+    if (e.shiftKey) {
+      setMulti(true)
+    } else {
+      setMulti(false)
+    }
+  }
+
+  const handleItemClick = (item: T) => {
+    if (multi) {
+      if (multiItems.includes(item)) {
+        setMultiItems(Array.from(multiItems).remove(item))
+      } else {
+        setMultiItems(multiItems.concat(item))
+      }
+    } else {
+      setMultiItems([item])
+    }
+  }
+
+  return {multi, setMulti, multiItems, setMultiItems, handleItemClick}
+}

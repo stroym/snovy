@@ -4,6 +4,7 @@ import {IdentifiedItem, Item} from "../../model/common/Base"
 import ContextMenu from "../context_menu/ContextMenu"
 import ContextMenuItem from "../context_menu/ContextMenuItem"
 import {append, Extras} from "../../util/ComponentUtils"
+import {useMultiSelect} from "../../util/Hooks"
 
 //TODO mutliselect
 const List = <T extends IdentifiedItem | Item>(props: {
@@ -12,34 +13,35 @@ const List = <T extends IdentifiedItem | Item>(props: {
   contextChildren?: Array<React.ReactElement<typeof ContextMenuItem>>
   items: Array<T> | undefined,
   defaultFirst?: boolean,
-  selection?: T
+  selection?: T,
+  multipleSelection?: (items: Array<T>) => void
 }) => {
 
   const selfRef = useRef<HTMLDivElement>(null)
-
-  const [activeItem, setActiveItem] = useState<T | undefined>(props.selection)
+  const {multiItems, setMultiItems, handleItemClick} = useMultiSelect<T>()
   const [activeContext, setActiveContext] = useState<T | undefined | null>()
 
   useEffect(
     () => {
-      if (props.defaultFirst) {
-        setActiveItem(props.items?.first())
+      if (props.items && props.items.length > 1 && props.defaultFirst) {
+        setMultiItems([props.items.first()!])
       }
     }, [props.items]
   )
 
   useEffect(
     () => {
-      if (props.items?.includes(props.selection!)) {
-        setActiveItem(props.selection)
+      if (props.selection && props.items?.includes(props.selection)) {
+        setMultiItems([props.selection])
       }
     }, [props.selection]
   )
 
   useEffect(
     () => {
-      props.onActiveChange && props.onActiveChange(activeItem)
-    }, [activeItem]
+      props.onActiveChange && props.onActiveChange(multiItems.first())
+      props.multipleSelection && props.multipleSelection(multiItems)
+    }, [multiItems]
   )
 
   useEffect(
@@ -50,6 +52,19 @@ const List = <T extends IdentifiedItem | Item>(props: {
     }, [activeContext]
   )
 
+  // const handleItemClick = (item: T) => {
+  //   if (multi) {
+  //     if (multiItems.includes(item)) {
+  //       setMultiItems(Array.from(multiItems).remove(item))
+  //     } else {
+  //       setMultiItems(multiItems.concat(item))
+  //     }
+  //   } else {
+  //     setMultiItems([])
+  //     setActiveItem(item)
+  //   }
+  // }
+
   return (
     <div
       ref={selfRef} className={"snovy-list".concat(append(!props.items, Extras.DISABLED))}
@@ -57,9 +72,11 @@ const List = <T extends IdentifiedItem | Item>(props: {
     >
       {props.items?.map((item: T) =>
         <ListItem
-          key={item instanceof IdentifiedItem ? item.id : item.name} mapped={item} active={item == activeItem}
+          key={item instanceof IdentifiedItem ? item.id : item.name} mapped={item}
+          active={multiItems.includes(item)}
           activeContext={item == activeContext}
-          onClick={(item: T) => {setActiveItem(item)}} onContext={(item: T) => {setActiveContext(item)}}
+          onClick={handleItemClick}
+          onContext={(item: T) => {setActiveContext(item)}}
         />)
       }
       <ContextMenu parentRef={selfRef} resetContext={() => setActiveContext(undefined)}>

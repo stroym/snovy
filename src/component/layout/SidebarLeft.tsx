@@ -2,13 +2,14 @@ import React, {useState} from "react"
 import Note from "../../model/Note"
 import Section from "../../model/Section"
 import Notebook from "../../model/Notebook"
-import {ItemWithParent, OrderedItem, ParentInterface} from "../../model/common/Base"
+import {Item, ItemWithParent, OrderedItem, ParentInterface} from "../../model/common/Base"
 import {Orientation} from "../tab_menu/TabMenu"
 import Manager from "../../model/Manager"
 import ContextMenuItem from "../context_menu/ContextMenuItem"
 import {ManagedSidebar} from "./Sidebar"
 import List from "../list/List"
 import ComboBox from "../combo_box/ComboBox"
+import {useDefaultEmpty} from "../../util/Hooks"
 
 export const LeftBar = (props: {
   onActiveNotebookChange: (active: Notebook | undefined) => void,
@@ -22,8 +23,14 @@ export const LeftBar = (props: {
 
   const [activeContext, setActiveContext] = useState<Section | Note | undefined | null>()
 
+  const [multiselect, setMultiselect] = useDefaultEmpty<Item>()
+
   const onContextChange = (target: Section | Note | undefined | null) => {
     setActiveContext(target)
+  }
+
+  const onMultiple = (target: Array<Item>) => {
+    setMultiselect(target)
   }
 
   return (
@@ -40,16 +47,16 @@ export const LeftBar = (props: {
           <span key="lists-span" id="lists-span">
             <>
               <List<Section>
-                key={buildKey(props.activeNotebook, "snovy-list-section")}
+                key="snovy-list-section"
                 items={props.activeNotebook?.itemsSortedByOrder}
-                selection={props.activeSection} defaultFirst
+                selection={props.activeSection} defaultFirst multipleSelection={onMultiple}
                 onActiveChange={props.onActiveSectionChange} onContextChange={onContextChange}
                 contextChildren={buildContext(activeContext as Section, props.activeNotebook, props.activeSection, props.onActiveSectionChange)}
               />
               <List<Note>
-                key={buildKey(props.activeSection, "snovy-list-note")}
+                key="snovy-list-note"
                 items={props.activeSection?.itemsSortedByOrder}
-                selection={props.activeNote} defaultFirst
+                selection={props.activeNote} defaultFirst multipleSelection={onMultiple}
                 onActiveChange={props.onActiveNoteChange} onContextChange={onContextChange}
                 contextChildren={buildContext(activeContext as Note, props.activeSection, props.activeNote, props.onActiveNoteChange)}
               />
