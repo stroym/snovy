@@ -4,12 +4,21 @@
 #snovy-editor {
   @include scrollbar;
   grid-area: centre;
-  padding: 0.5%;
   background-color: $color-primary;
   color: $color-text-primary;
-  resize: none;
-  border: none;
-  outline: none;
-  font-size: $font-small;
-  line-height: $font-medium + 0.1vw;
+  padding: 1% 2%;
+}
+
+.DraftEditor-root,
+.DraftEditor-editorContainer,
+.public-DraftEditor-content {
+  height: 100%;
+}
+
+.public-DraftStyleDefault-orderedListItem {
+  //margin-left: 17px;
+}
+
+.myListStyle {
+
 }

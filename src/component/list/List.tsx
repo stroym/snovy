@@ -32,7 +32,6 @@ const List = <T extends IdentifiedItem | Item>(props: {
 
   useEffect(
     () => {
-      console.log(props.selection)
       if (props.items && !props.items.isEmpty()) {
         if (isArray(props.selection)) {
           if (props.selection && !props.selection.isEmpty() && props.items.includesAll(props.selection)) {
