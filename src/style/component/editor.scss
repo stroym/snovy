@@ -6,19 +6,11 @@
   grid-area: centre;
   background-color: $color-primary;
   color: $color-text-primary;
-  padding: 1% 2%;
+  padding: 1%;
 }
 
 .DraftEditor-root,
 .DraftEditor-editorContainer,
 .public-DraftEditor-content {
   height: 100%;
-}
-
-.public-DraftStyleDefault-orderedListItem {
-  //margin-left: 17px;
-}
-
-.myListStyle {
-
 }

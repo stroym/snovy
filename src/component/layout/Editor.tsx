@@ -1,10 +1,12 @@
 import React, {useEffect, useRef, useState} from "react"
 import Note from "../../model/Note"
-import {EditorState} from "draft-js"
+import {ContentState, EditorState} from "draft-js"
 import {default as DraftEditor} from "@draft-js-plugins/editor"
 import createMarkdownShortcutsPlugin from "draft-js-markdown-shortcuts-plugin"
 import {stateToMarkdown} from "draft-js-export-markdown"
 import {stateFromMarkdown} from "draft-js-import-markdown"
+import {CheckButton} from "../inputs/Button"
+import {append, Extras} from "../../util/ComponentUtils"
 
 const plugins = [createMarkdownShortcutsPlugin()]
 
@@ -12,49 +14,67 @@ const Editor = (props: {
   activeNote: Note | undefined
 }) => {
 
-  const [state, setState] = useState(EditorState.createEmpty())
-
   const selfRef = useRef<DraftEditor>(null)
 
-  useEffect(
-    () => {
-      focusEditor()
-    }, []
-  )
+  const [state, setState] = useState(EditorState.createEmpty())
+  const [sourceMode, setSourceMode] = useState(false)
+  const [loadedPlugins, setLoadedPlugins] = useState(plugins)
 
   useEffect(
     () => {
       if (props.activeNote) {
-        setState(EditorState.createWithContent(stateFromMarkdown(props.activeNote.content)))
+        loadContent()
+        // setState(EditorState.moveFocusToEnd(state)) TODO autofocus on note change
+      } else {
+        setState(EditorState.createEmpty())
       }
     }, [props.activeNote]
+  )
+
+  useEffect(
+    () => {
+      if (sourceMode) {
+        setState(EditorState.createWithContent(ContentState.createFromText(stateToMarkdown(state.getCurrentContent()))))
+        setLoadedPlugins([])
+      } else {
+        setLoadedPlugins(plugins)
+        setState(EditorState.createWithContent(stateFromMarkdown(state.getCurrentContent().getPlainText())))
+      }
+    }, [sourceMode]
   )
 
   const focusEditor = () => {
     selfRef.current?.focus()
   }
 
-  const myBlockStyleFn = (contentBlock) => {
-    const type = contentBlock.getType()
-    if (type === "unordered-list-item" || type === "ordered-list-item") {
-      return "myListStyle"
+  const loadContent = () => {
+    if (props.activeNote) {
+      if (sourceMode) {
+        setState(EditorState.createWithContent(ContentState.createFromText(props.activeNote.content)))
+      } else {
+        setState(EditorState.createWithContent(stateFromMarkdown(props.activeNote.content)))
+      }
     }
+  }
 
-    return ""
+  const writeContent = (editorState: EditorState) => {
+    if (props.activeNote) {
+      if (sourceMode) {
+        props.activeNote.content = editorState.getCurrentContent().getPlainText()
+      } else {
+        props.activeNote.content = stateToMarkdown(editorState.getCurrentContent())
+      }
+    }
   }
 
   return (
-    <div id="snovy-editor" onClick={focusEditor}>
+    <div className={append(!props.activeNote, Extras.DISABLED)} id="snovy-editor" onClick={focusEditor}>
+      <CheckButton toggle={sourceMode} onClick={() => setSourceMode(!sourceMode)}/>
       <DraftEditor
-        ref={selfRef} plugins={plugins} editorState={state}
-
-        blockStyleFn={myBlockStyleFn}
+        ref={selfRef} plugins={loadedPlugins} editorState={state} readOnly={!props.activeNote}
         onChange={editorState => {
           setState(editorState)
-          //probably only save like once every 5seconds to save on computing
-          if (props.activeNote) {
-            props.activeNote.content = stateToMarkdown(editorState.getCurrentContent())
-          }
+          writeContent(editorState)
         }}
       />
     </div>

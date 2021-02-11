@@ -45,6 +45,7 @@
 .snovy-dropdown {
   @include scrollbar;
   max-height: 50vh;
+  margin: 0;
   width: 100%;
   z-index: 10;
   position: absolute;
