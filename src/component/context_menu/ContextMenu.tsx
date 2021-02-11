@@ -5,12 +5,8 @@ import {useContextMenu} from "../../util/Hooks"
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
   resetContext: () => void,
-  children?: Array<React.ReactElement<typeof ContextMenuItem>>
+  children: Array<React.ReactElement<typeof ContextMenuItem>>
 }) => {
-
-  if (!props.children) {
-    return null
-  }
 
   const selfRef = useRef<HTMLDivElement>(null)
 

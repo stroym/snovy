@@ -31,6 +31,10 @@ function App() {
 
   const selectSection = (active: Section | undefined) => {
     setSection(active)
+    if (!active) {
+      setNotes([])
+      setNote(undefined)
+    }
   }
 
   const selectNote = (active: Note | undefined) => {
@@ -46,18 +50,18 @@ function App() {
   }
 
   return (
-    <div id="snovy-app">
+    <div id="snovy-app" onContextMenu={(e) => e.preventDefault()}>
       <TopBar/>
       <span id="snovy-middle">
-          <LeftBar
-            manager={manager}
-            onNotebookChange={selectNotebook} notebook={notebook}
-            onSectionChange={selectSection} onSectionMultiselect={setSections} multiSections={sections}
-            section={section}
-            onNoteChange={selectNote} note={note} onNoteMultiselect={setNotes} multiNotes={notes}
-          />
-          <Editor activeNote={note}/>
-          <RightBar onTagRemove={untag} note={note} notebook={notebook} tag={tag} onTagChange={selectTag}/>
+        <LeftBar
+          manager={manager}
+          onNotebookChange={selectNotebook} notebook={notebook}
+          onSectionChange={selectSection} onSectionMultiselect={setSections} multiSections={sections}
+          section={section}
+          onNoteChange={selectNote} note={note} onNoteMultiselect={setNotes} multiNotes={notes}
+        />
+        <Editor activeNote={note}/>
+        <RightBar onTagRemove={untag} note={note} notebook={notebook} tag={tag} onTagChange={selectTag}/>
       </span>
       <BottomBar/>
     </div>

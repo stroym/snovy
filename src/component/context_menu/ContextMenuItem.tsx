@@ -10,11 +10,13 @@ export const ContextMenuItem = (props: {
 
   return (
     <div className="snovy-context-menu-item" onClick={props.specialOnClick ? () => false : props.onClick}>
-      <span className="context-icon">
-        {props.icon}
-      </span>
-      <span className="context-text" onClick={props.specialOnClick ? props.onClick : () => false}>
-        {props.text}
+      <span className="context-wrapper" onClick={props.specialOnClick ? props.onClick : () => false}>
+        <span className="context-icon">
+          {props.icon}
+        </span>
+        <span className="context-text">
+          {props.text}
+        </span>
       </span>
       {props.specialText &&
       <span className="context-text-special" onClick={props.specialOnClick}>

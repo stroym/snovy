@@ -101,9 +101,11 @@ const List = <T extends IdentifiedItem | Item>(props: {
           onClick={handleItemClick} onContext={(item: T) => {setActiveContext(item)}}
         />)
       }
+      {props.contextChildren && !props.contextChildren?.isEmpty() &&
       <ContextMenu parentRef={selfRef} resetContext={() => setActiveContext(undefined)}>
         {props.contextChildren}
       </ContextMenu>
+      }
     </div>
   )
 

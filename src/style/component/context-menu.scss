@@ -28,15 +28,17 @@
     padding-right: 10px;
   }
 
-  .context-icon {
-    text-align: center;
-    padding: 0 10px;
-    border-right: $border-thin-inverted;
-  }
+  .context-wrapper {
+    .context-icon {
+      text-align: center;
+      padding: 0 10px;
+      border-right: $border-thin-inverted;
+    }
 
-  .context-text {
-    padding: 0 0.5ch;
-    white-space: nowrap;
+    .context-text {
+      padding: 0 0.5ch;
+      white-space: nowrap;
+    }
 
     &:hover {
       background-color: $color-accent;
