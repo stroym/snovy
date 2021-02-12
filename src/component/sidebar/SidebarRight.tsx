@@ -1,8 +1,8 @@
 import React from "react"
-import {Orientation} from "../tab_menu/TabMenu"
+import {Orientation, Tab} from "../tab_menu/TabMenu"
 import Notebook from "../../model/Notebook"
 import Tag from "../../model/colored/Tag"
-import {ManagedSidebar} from "./Sidebar"
+import {Sidebar} from "./Sidebar"
 import NoteDetail from "../NoteDetail"
 import TagManager from "../tag/TagManager"
 import Note from "../../model/Note"
@@ -16,26 +16,28 @@ const SidebarRight = (props: {
 }) => {
 
   return (
-    <ManagedSidebar orientation={Orientation.RIGHT} tabs={mappings}>
+    <Sidebar orientation={Orientation.RIGHT} startTabs={startMappings} endTabs={endMappings}>
       {[
         {
-          text: mappings[0].text,
+          text: startMappings[0].text,
           children: props.notebook && props.note && <NoteDetail note={props.note} notebook={props.notebook}/>
         },
         {
-          text: mappings[1].text,
+          text: startMappings[1].text,
           children: <TagManager notebook={props.notebook} tag={props.tag} onTagChange={props.onTagChange}/>
         }
       ]}
-    </ManagedSidebar>
+    </Sidebar>
   )
 
 }
 
-const mappings = [
-  {text: "Note Detail", default: true},
-  {text: "Tag Manager"},
-  {text: "Filtering Options"}
+const startMappings = [
+  new Tab("Note Detail", true),
+  new Tab("Tag Manager"),
+  new Tab("Filtering Options")
 ]
+
+const endMappings = [new Tab("⚠")]
 
 export default SidebarRight

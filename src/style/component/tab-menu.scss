@@ -3,10 +3,6 @@
 
 .snovy-tab-menu {
   background-color: $color-accent;
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: flex-start;
-  align-items: stretch;
 
   &.left {
     border-right: $border;
@@ -14,6 +10,19 @@
 
   &.right {
     border-left: $border;
+  }
+
+  .menu-section {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+
+    &.end {
+      position: absolute;
+      bottom: 0;
+    }
+
   }
 }
 
@@ -24,8 +33,14 @@
   cursor: default;
   user-select: none;
   overflow: hidden;
+  text-align: center;
+  vertical-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  &.icon {
+    writing-mode: unset !important;
+  }
 
   &.left {
     writing-mode: sideways-lr;
@@ -33,6 +48,14 @@
 
   &.right {
     writing-mode: sideways-rl;
+  }
+
+  &.start {
+    align-self: flex-start;
+  }
+
+  &.end {
+    align-self: flex-end;
   }
 
   &:hover {

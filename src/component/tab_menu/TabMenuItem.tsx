@@ -1,19 +1,21 @@
 import React, {useEffect} from "react"
-import {Orientation} from "./TabMenu"
+import {Alignment, Orientation} from "./TabMenu"
 import {append, Extras} from "../../util/ComponentUtils"
 
 const TabMenuItem = (props: {
   id?: string,
   orientation: Orientation,
+  alignment: Alignment,
   text: string,
   onClick: (active: string) => void,
   active: boolean,
-  default?: boolean
+  initial?: boolean
+  icon?: boolean
 }) => {
 
   useEffect(
     () => {
-      if (props.default) {
+      if (props.initial) {
         handleClick()
       }
     }, []
@@ -25,7 +27,10 @@ const TabMenuItem = (props: {
 
   return (
     <div
-      id={props.id} className={"snovy-tab-menu-item ".concat(props.orientation, append(props.active, Extras.ACTIVE))}
+      id={props.id}
+      className={`snovy-tab-menu-item ${props.orientation} ${props.alignment}`
+        .concat(append(props.active, Extras.ACTIVE), append(props.icon, "icon"))
+      }
       onClick={handleClick}
     >
       {props.text}

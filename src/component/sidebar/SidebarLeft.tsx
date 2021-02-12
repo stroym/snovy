@@ -3,14 +3,14 @@ import Note from "../../model/Note"
 import Section from "../../model/Section"
 import Notebook from "../../model/Notebook"
 import {ItemWithParent, ParentInterface} from "../../model/common/Base"
-import {Orientation} from "../tab_menu/TabMenu"
+import {Orientation, Tab} from "../tab_menu/TabMenu"
 import Manager from "../../model/Manager"
 import ContextMenuItem, {buildContext} from "../context_menu/ContextMenuItem"
-import {ManagedSidebar} from "./Sidebar"
+import {Sidebar} from "./Sidebar"
 import List from "../list/List"
 import ComboBox from "../combo_box/ComboBox"
 
-export const LeftBar = (props: {
+export const SidebarLeft = (props: {
   onNotebookChange: (active: Notebook | undefined) => void,
   onSectionChange: (active: Section | undefined) => void,
   onNoteChange: (active: Note | undefined) => void,
@@ -34,9 +34,9 @@ export const LeftBar = (props: {
   const noteContext = buildContextMenu(activeContext as Note, props.section, props.multiNotes, props.onNoteChange, props.onNoteMultiselect)
 
   return (
-    <ManagedSidebar orientation={Orientation.LEFT} tabs={mappings}>
+    <Sidebar orientation={Orientation.LEFT} startTabs={startMappings} endTabs={endMappings}>
       {[{
-        text: mappings[0].text, children: [
+        text: startMappings[0].text, children: [
           <ComboBox
             id="notebook-selector"
             key="notebook-selector" items={props.manager.itemsSortedAlphabetically}
@@ -66,15 +66,13 @@ export const LeftBar = (props: {
           </span>
         ]
       }]}
-    </ManagedSidebar>
+    </Sidebar>
   )
 
 }
 
-const mappings = [
-  {text: "Notes", default: true},
-  {text: "Search"}
-]
+const startMappings = [new Tab("Notes", true), new Tab("Search")]
+const endMappings = [new Tab("⚘"), new Tab("⚖"), new Tab("⚙")]
 
 function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface<I>>(
   contextItem: I | undefined,
@@ -139,4 +137,4 @@ function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface
   return contexts
 }
 
-export default LeftBar
+export default SidebarLeft

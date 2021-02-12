@@ -1,7 +1,7 @@
 import React, {useState} from "react"
 import "./App.scss"
 import "./util/Augments"
-import LeftBar from "./component/sidebar/SidebarLeft"
+import SidebarLeft from "./component/sidebar/SidebarLeft"
 import RightBar from "./component/sidebar/SidebarRight"
 import Notebook from "./model/Notebook"
 import Section from "./model/Section"
@@ -49,7 +49,7 @@ function App() {
 
   return (
     <span id="snovy-app" onContextMenu={(e) => e.preventDefault()}>
-      <LeftBar
+      <SidebarLeft
         manager={manager}
         onNotebookChange={selectNotebook} notebook={notebook}
         onSectionChange={selectSection} onSectionMultiselect={setSections} multiSections={sections}

@@ -62,3 +62,9 @@ export const ColorButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
     return <Button {...props} ref={ref} className="snovy-color-button"/>
   }
 )
+
+export const OptionsButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
+  function OptionsButton(props: ToggleButtonProps, ref?: buttonRef) {
+    return <Button {...props} ref={ref} className="snovy-options-button" defaultValue={"⚙"}/>
+  }
+)
