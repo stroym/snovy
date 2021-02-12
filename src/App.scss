@@ -47,26 +47,7 @@ html, body, #root {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-rows: 4vh 94vh 2vh;
-  grid-template-areas: "top" "middle" "bottom";
-}
-
-#snovy-bar-top {
-  grid-area: top;
-  background-color: $color-accent;
-  border-bottom: $border;
-}
-
-#snovy-middle {
-  grid-area: middle;
-  display: grid;
   grid-template-columns: 20vw 60vw 20vw;
   grid-template-rows: 100%;
   grid-template-areas: "left centre right";
-}
-
-#snovy-bar-bottom {
-  grid-area: bottom;
-  background-color: $color-accent;
-  border-top: $border;
 }

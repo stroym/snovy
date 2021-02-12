@@ -1,16 +1,14 @@
 import React, {useState} from "react"
 import "./App.scss"
 import "./util/Augments"
-import TopBar from "./component/layout/Top"
-import LeftBar from "./component/layout/SidebarLeft"
-import RightBar from "./component/layout/SidebarRight"
-import BottomBar from "./component/layout/Bottom"
+import LeftBar from "./component/sidebar/SidebarLeft"
+import RightBar from "./component/sidebar/SidebarRight"
 import Notebook from "./model/Notebook"
 import Section from "./model/Section"
 import Manager from "./model/Manager"
 import Tag from "./model/colored/Tag"
 import Note from "./model/Note"
-import Editor from "./component/layout/Editor"
+import Editor from "./component/editor/Editor"
 
 const man = new Manager()
 
@@ -50,21 +48,17 @@ function App() {
   }
 
   return (
-    <div id="snovy-app" onContextMenu={(e) => e.preventDefault()}>
-      <TopBar/>
-      <span id="snovy-middle">
-        <LeftBar
-          manager={manager}
-          onNotebookChange={selectNotebook} notebook={notebook}
-          onSectionChange={selectSection} onSectionMultiselect={setSections} multiSections={sections}
-          section={section}
-          onNoteChange={selectNote} note={note} onNoteMultiselect={setNotes} multiNotes={notes}
-        />
-        <Editor activeNote={note}/>
-        <RightBar onTagRemove={untag} note={note} notebook={notebook} tag={tag} onTagChange={selectTag}/>
-      </span>
-      <BottomBar/>
-    </div>
+    <span id="snovy-app" onContextMenu={(e) => e.preventDefault()}>
+      <LeftBar
+        manager={manager}
+        onNotebookChange={selectNotebook} notebook={notebook}
+        onSectionChange={selectSection} onSectionMultiselect={setSections} multiSections={sections}
+        section={section}
+        onNoteChange={selectNote} note={note} onNoteMultiselect={setNotes} multiNotes={notes}
+      />
+      <Editor activeNote={note}/>
+      <RightBar onTagRemove={untag} note={note} notebook={notebook} tag={tag} onTagChange={selectTag}/>
+    </span>
   )
 }
 
