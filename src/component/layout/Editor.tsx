@@ -26,7 +26,6 @@ const Editor = (props: {
       <OutlineEditor
         theme={dark} dictionary={dictionary} placeholder="" dark
         value={value} onChange={value => {
-        console.log(value().replaceAll("\\\n", "\n"))
         props.activeNote!.content = value().replaceAll("\\\n", "\n")
       }} readOnly={!props.activeNote}
       />

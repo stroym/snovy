@@ -6,3 +6,5 @@
 
 .eslintcache
 /build/
+
+yarn-error.log
