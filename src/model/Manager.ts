@@ -4,6 +4,34 @@ import Section from "./Section"
 import Note from "./Note"
 import Scope from "./colored/Scope"
 
+const content =
+  "# asdasddsasd\n" +
+  "\n" +
+  "\n" +
+  "asdasddasd\n" +
+  "asdasdas\n" +
+  "\n" +
+  "\n" +
+  "- adasdadasd\n" +
+  "- asdasdsdd\n" +
+  "\n" +
+  "\n" +
+  "1. asdadada\n" +
+  "2. adasddas\n" +
+  "\n" +
+  "\n" +
+  "asdasdad [link](https://codesandbox.io/s/pyoy0on510?file=/MyEditor.js) \n" +
+  "\n" +
+  "\n" +
+  "https://codesandbox.io/s/pyoy0on510?file=/MyEditor.js\n" +
+  "\n" +
+  "```\n" +
+  "asdsadassadasd\n" +
+  "asdsadd\n" +
+  "a\n" +
+  "sfdggfghgfs\n" +
+  "```"
+
 function dec2hex(dec: number) {
   return dec.toString(36).padStart(2, "0")
 }
@@ -136,7 +164,7 @@ export default class Manager implements ParentInterface<Notebook> {
 
   addNote(target: Section): void {
     const temp = new Note(target, target.idCounter, "note " + target.idCounter, target.items.length)
-    temp.content = "content " + target.idCounter
+    temp.content = content
     this.tagNote(target.parent, temp)
 
     target.addItem(temp)

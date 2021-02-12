@@ -5,12 +5,12 @@ import TopBar from "./component/layout/Top"
 import LeftBar from "./component/layout/SidebarLeft"
 import RightBar from "./component/layout/SidebarRight"
 import BottomBar from "./component/layout/Bottom"
-import Editor from "./component/layout/Editor"
 import Notebook from "./model/Notebook"
 import Section from "./model/Section"
 import Manager from "./model/Manager"
 import Tag from "./model/colored/Tag"
 import Note from "./model/Note"
+import Editor from "./component/layout/Editor"
 
 const man = new Manager()
 

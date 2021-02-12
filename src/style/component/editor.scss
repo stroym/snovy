@@ -6,11 +6,34 @@
   grid-area: centre;
   background-color: $color-primary;
   color: $color-text-primary;
+}
+
+#snovy-editor > *,
+#snovy-editor > * > *,
+.ProseMirror {
+  height: 100%;
+}
+
+.ProseMirror {
   padding: 1%;
 }
 
-.DraftEditor-root,
-.DraftEditor-editorContainer,
-.public-DraftEditor-content {
-  height: 100%;
+
+#block-menu-container {
+  @include scrollbar;
+
+  button {
+    svg {
+      filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+    }
+
+    span {
+      font-weight: bold;
+      color: $color-text-primary;
+    }
+  }
+}
+
+.block-menu-trigger {
+  display: none !important;
 }

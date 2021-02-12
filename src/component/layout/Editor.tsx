@@ -1,85 +1,96 @@
-import React, {useEffect, useRef, useState} from "react"
+import React, {useEffect, useState} from "react"
 import Note from "../../model/Note"
-import {ContentState, EditorState} from "draft-js"
-import {default as DraftEditor} from "@draft-js-plugins/editor"
-import createMarkdownShortcutsPlugin from "draft-js-markdown-shortcuts-plugin"
-import {stateToMarkdown} from "draft-js-export-markdown"
-import {stateFromMarkdown} from "draft-js-import-markdown"
-import {CheckButton} from "../inputs/Button"
 import {append, Extras} from "../../util/ComponentUtils"
-
-const plugins = [createMarkdownShortcutsPlugin()]
+import {default as OutlineEditor, theme} from "rich-markdown-editor"
+import {colors} from "../theme"
+import base from "rich-markdown-editor/dist/dictionary"
 
 const Editor = (props: {
   activeNote: Note | undefined
 }) => {
 
-  const selfRef = useRef<DraftEditor>(null)
-
-  const [state, setState] = useState(EditorState.createEmpty())
+  const [value, setValue] = useState("")
   const [sourceMode, setSourceMode] = useState(false)
-  const [loadedPlugins, setLoadedPlugins] = useState(plugins)
 
   useEffect(
     () => {
       if (props.activeNote) {
-        loadContent()
-        // setState(EditorState.moveFocusToEnd(state)) TODO autofocus on note change
-      } else {
-        setState(EditorState.createEmpty())
+        setValue(props.activeNote.content)
       }
     }, [props.activeNote]
   )
 
-  useEffect(
-    () => {
-      if (sourceMode) {
-        setState(EditorState.createWithContent(ContentState.createFromText(stateToMarkdown(state.getCurrentContent()))))
-        setLoadedPlugins([])
-      } else {
-        setLoadedPlugins(plugins)
-        setState(EditorState.createWithContent(stateFromMarkdown(state.getCurrentContent().getPlainText())))
-      }
-    }, [sourceMode]
-  )
-
-  const focusEditor = () => {
-    selfRef.current?.focus()
-  }
-
-  const loadContent = () => {
-    if (props.activeNote) {
-      if (sourceMode) {
-        setState(EditorState.createWithContent(ContentState.createFromText(props.activeNote.content)))
-      } else {
-        setState(EditorState.createWithContent(stateFromMarkdown(props.activeNote.content)))
-      }
-    }
-  }
-
-  const writeContent = (editorState: EditorState) => {
-    if (props.activeNote) {
-      if (sourceMode) {
-        props.activeNote.content = editorState.getCurrentContent().getPlainText()
-      } else {
-        props.activeNote.content = stateToMarkdown(editorState.getCurrentContent())
-      }
-    }
-  }
-
   return (
-    <div className={append(!props.activeNote, Extras.DISABLED)} id="snovy-editor" onClick={focusEditor}>
-      <CheckButton toggle={sourceMode} onClick={() => setSourceMode(!sourceMode)}/>
-      <DraftEditor
-        ref={selfRef} plugins={loadedPlugins} editorState={state} readOnly={!props.activeNote}
-        onChange={editorState => {
-          setState(editorState)
-          writeContent(editorState)
-        }}
+    <div className={append(!props.activeNote, Extras.DISABLED)} id="snovy-editor">
+      {/*<CheckButton toggle={sourceMode} onClick={() => setSourceMode(!sourceMode)}/>*/}
+      <OutlineEditor
+        theme={dark} dictionary={dictionary} placeholder="" dark
+        value={value} onChange={value => {
+        console.log(value().replaceAll("\\\n", "\n"))
+        props.activeNote!.content = value().replaceAll("\\\n", "\n")
+      }} readOnly={!props.activeNote}
       />
     </div>
   )
 
+}
+
+const outlineColors = {
+  almostBlack: colors.primaryDark,
+  lightBlack: "#2F3336",
+  almostWhite: "#E6E6E6",
+  white: "#FFF",
+  white10: "rgba(255, 255, 255, 0.1)",
+  black: "#000",
+  black10: "rgba(0, 0, 0, 0.1)",
+  primary: "#1AB6FF",
+  greyLight: "#F4F7FA",
+  grey: "#E8EBED",
+  greyMid: "#C5CCD3",
+  greyDark: "#DAE1E9"
+}
+
+const dictionary = {
+  ...base,
+  newLineEmpty: "",
+  newLineWithSlash: ""
+}
+
+const dark = {
+  ...theme,
+  background: outlineColors.almostBlack,
+  text: outlineColors.almostWhite,
+  code: outlineColors.almostWhite,
+  cursor: outlineColors.white,
+  divider: "#4E5C6E",
+  placeholder: "#52657A",
+
+  toolbarBackground: outlineColors.almostBlack,
+  toolbarHoverBackground: outlineColors.greyMid,
+  toolbarInput: outlineColors.black10,
+  toolbarItem: outlineColors.greyLight,
+
+  tableDivider: outlineColors.lightBlack,
+  tableSelected: outlineColors.primary,
+  tableSelectedBackground: "#002333",
+
+  quote: outlineColors.greyDark,
+  codeBackground: outlineColors.black,
+  codeBorder: outlineColors.lightBlack,
+  codeString: "#3d8fd1",
+  horizontalRule: outlineColors.lightBlack,
+  imageErrorBackground: "rgba(0, 0, 0, 0.5)",
+
+  blockToolbarBackground: outlineColors.almostBlack,
+  blockToolbarTrigger: outlineColors.white,
+  blockToolbarTriggerIcon: outlineColors.white,
+  blockToolbarItem: outlineColors.almostBlack,
+  blockToolbarText: outlineColors.white,
+  blockToolbarHoverBackground: outlineColors.almostWhite,
+  blockToolbarDivider: outlineColors.white,
+
+  scrollbarBackground: outlineColors.black,
+  scrollbarThumb: outlineColors.lightBlack
 }
 
 export default Editor
