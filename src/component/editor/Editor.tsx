@@ -16,6 +16,8 @@ const Editor = (props: {
     () => {
       if (props.activeNote) {
         setValue(props.activeNote.content)
+      } else {
+        setValue(" ")
       }
     }, [props.activeNote]
   )
@@ -24,10 +26,8 @@ const Editor = (props: {
     <div className={append(!props.activeNote, Extras.DISABLED)} id="snovy-editor">
       {/*<CheckButton toggle={sourceMode} onClick={() => setSourceMode(!sourceMode)}/>*/}
       <OutlineEditor
-        theme={dark} dictionary={dictionary} placeholder="" dark
-        value={value} onChange={value => {
-        props.activeNote!.content = value().replaceAll("\\\n", "\n")
-      }} readOnly={!props.activeNote}
+        theme={dark} dictionary={dictionary} placeholder="" value={value} readOnly={!props.activeNote}
+        onChange={value => {props.activeNote!.content = value().replaceAll("\\\n", "\n")}}
       />
     </div>
   )

@@ -25,14 +25,14 @@ function App() {
 
   const selectNotebook = (active: Notebook | undefined) => {
     setNotebook(active)
+    setSections([])
+    setSection(undefined)
   }
 
   const selectSection = (active: Section | undefined) => {
     setSection(active)
-    if (!active) {
-      setNotes([])
-      setNote(undefined)
-    }
+    setNotes([])
+    setNote(undefined)
   }
 
   const selectNote = (active: Note | undefined) => {

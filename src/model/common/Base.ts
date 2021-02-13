@@ -142,11 +142,11 @@ export abstract class ItemWithParentAndChildren<T extends OrderedItem, P extends
     } else {
       const index = this.items.delete(item)
 
-      this.items.slice(index).forEach(value => { value.order--})
+      this.items.slice(index).forEach(value => value.order--)
 
       if (index > 0) {
         return this.items[index - 1]
-      } else if (index == 0 && this.items.length > 0) {
+      } else if (index == 0 && this.items.length > 1) {
         return this.items[index]
       } else {
         return undefined

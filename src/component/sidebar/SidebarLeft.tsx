@@ -112,7 +112,7 @@ function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface
             () => {
               const neighbour = parent.deleteItem(contextItem)
 
-              if (contextItem == selectedItems.first()) {
+              if (contextItem == selectedItems.first() || neighbour == undefined) {
                 setActive(neighbour)
               }
             },
