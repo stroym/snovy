@@ -152,7 +152,6 @@
       "@babel/preset-typescript"
     ],
     "plugins": [
-      "react-refresh/babel",
       "@babel/plugin-proposal-class-properties"
     ]
   }

@@ -43,6 +43,11 @@ module.exports = (env, argv) => {
           exclude: /node_modules/,
           use: {
             loader: "babel-loader",
+            options: {
+              plugins: [
+                isDevelopment && "react-refresh/babel"
+              ].filter(Boolean)
+            }
           }
         },
         {
