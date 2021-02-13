@@ -1,42 +1,36 @@
-import React, {useEffect} from "react"
-import {Alignment, Orientation} from "./TabMenu"
+import React from "react"
+import {Alignment} from "./TabMenu"
 import {append, Extras} from "../../util/ComponentUtils"
 
-const TabMenuItem = (props: {
-  id?: string,
-  orientation: Orientation,
-  alignment: Alignment,
-  text: string,
-  onClick: (active: string) => void,
-  active: boolean,
-  initial?: boolean
+export interface TabMenuItemProps {
+  alignment: Alignment
+  text: string
+  onClick: (text: string) => void
+  active: boolean
   icon?: boolean
-}) => {
+}
 
-  useEffect(
-    () => {
-      if (props.initial) {
-        handleClick()
-      }
-    }, []
-  )
-
-  const handleClick = () => {
-    props.onClick!(props.text)
-  }
+const TabMenuItem = (props: TabMenuItemProps) => {
 
   return (
     <div
-      id={props.id}
-      className={`snovy-tab-menu-item ${props.orientation} ${props.alignment}`
+      className={`snovy-tab-menu-item ${props.alignment}`
         .concat(append(props.active, Extras.ACTIVE), append(props.icon, "icon"))
       }
-      onClick={handleClick}
+      onClick={() => props.onClick(props.text)}
     >
       {props.text}
     </div>
   )
 
+}
+
+export function makeTab(text: string, alignment: Alignment, onClick: (text: string) => void, active: string, icon = false) {
+  return (
+    <TabMenuItem
+      key={text} text={text} alignment={alignment} onClick={onClick} active={text == active} icon={icon}
+    />
+  )
 }
 
 export default TabMenuItem

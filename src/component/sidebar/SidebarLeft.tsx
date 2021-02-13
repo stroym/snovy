@@ -3,12 +3,12 @@ import Note from "../../model/Note"
 import Section from "../../model/Section"
 import Notebook from "../../model/Notebook"
 import {ItemWithParent, ParentInterface} from "../../model/common/Base"
-import {Orientation, Tab} from "../tab_menu/TabMenu"
+import TabMenu, {Alignment, Orientation} from "../tab_menu/TabMenu"
 import Manager from "../../model/Manager"
-import ContextMenuItem, {buildContext} from "../context_menu/ContextMenuItem"
-import {Sidebar} from "./Sidebar"
+import ContextMenuItem, {makeContext} from "../context_menu/ContextMenuItem"
 import List from "../list/List"
 import ComboBox from "../combo_box/ComboBox"
+import {makeTab} from "../tab_menu/TabMenuItem"
 
 export const SidebarLeft = (props: {
   onNotebookChange: (active: Notebook | undefined) => void,
@@ -20,6 +20,13 @@ export const SidebarLeft = (props: {
   notes: Array<Note>
 }) => {
 
+  const mappings = {
+    notes: "Notes",
+    search: "Search",
+    options: "⚙"
+  }
+
+  const [activeTab, setActiveTab] = useState<string>(mappings.notes)
   const [activeContext, setActiveContext] = useState<Section | Note | undefined | null>()
 
   const onContextChange = (target: Section | Note | undefined | null) => {
@@ -30,46 +37,46 @@ export const SidebarLeft = (props: {
   const noteContext = buildContextMenu(activeContext as Note, props.sections.first(), props.notes, props.onNoteChange)
 
   return (
-    <Sidebar orientation={Orientation.LEFT} startTabs={startMappings} endTabs={endMappings}>
-      {[{
-        text: startMappings[0].text, children: [
+    <div className="snovy-sidebar">
+      <TabMenu orientation={Orientation.LEFT}>{[
+        makeTab(mappings.notes, Alignment.START, setActiveTab, activeTab),
+        makeTab(mappings.search, Alignment.START, setActiveTab, activeTab),
+        makeTab("⚘", Alignment.END, setActiveTab, activeTab, true),
+        makeTab("⚖", Alignment.END, setActiveTab, activeTab, true),
+        makeTab(mappings.options, Alignment.END, setActiveTab, activeTab, true)
+      ]}
+      </TabMenu>
+      <div className={"sidebar-content " + Orientation.LEFT} id={Orientation.LEFT + "-content"}>
+        {activeTab == mappings.notes &&
+        <>
           <ComboBox
             id="notebook-selector"
             key="notebook-selector" items={props.manager.itemsSortedAlphabetically}
             onActiveChange={props.onNotebookChange}
             createItem={(name: string) => {return props.manager.insert(undefined, name)}}
             selection={props.notebook ?? props.manager.items.first()}
-          />,
+          />
           <span key="lists-span" id="lists-span">
-            <>
-              <List<Section>
-                key="snovy-list-section"
-                items={props.notebook?.itemsSortedByOrder}
-                selection={props.sections.hasMore() ? props.sections : props.sections.first()}
-                defaultFirst
-                onContextChange={onContextChange}
-                onMultipleSelection={props.onSectionChange}
-                contextChildren={sectionContext}
-              />
-              <List<Note>
-                key="snovy-list-note"
-                items={props.sections.first()?.itemsSortedByOrder}
-                selection={props.notes.hasMore() ? props.notes : props.notes.first()} defaultFirst
-                onMultipleSelection={props.onNoteChange}
-                onContextChange={onContextChange}
-                contextChildren={noteContext}
-              />
-            </>
+          <>
+          <List<Section>
+            key="snovy-list-section"
+            items={props.notebook?.itemsSortedByOrder} selection={props.sections} defaultFirst
+            onSelect={props.onSectionChange} onContextChange={onContextChange} contextChildren={sectionContext}
+          />
+          <List<Note>
+            key="snovy-list-note"
+            items={props.sections.first()?.itemsSortedByOrder} selection={props.notes} defaultFirst
+            onSelect={props.onNoteChange} onContextChange={onContextChange} contextChildren={noteContext}
+          />
+          </>
           </span>
-        ]
-      }]}
-    </Sidebar>
+        </>
+        }
+      </div>
+    </div>
   )
 
 }
-
-const startMappings = [new Tab("Notes", true), new Tab("Search")]
-const endMappings = [new Tab("⚘"), new Tab("⚖"), new Tab("⚙")]
 
 function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface<I>>(
   contextItem: I | undefined,
@@ -81,7 +88,7 @@ function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface
 
   if (parent) {
     contexts.push(
-      buildContext(
+      makeContext(
         `New ${parent.childName}`,
         () => {contextItem ? parent.insert(contextItem.order + 1) : parent.insert()},
         "+",
@@ -92,7 +99,7 @@ function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface
 
     if (contextItem) {
       contexts.push(
-        buildContext(
+        makeContext(
           `New ${parent.childName} (as last)`,
           () => {parent.insert()},
           "+",
@@ -103,7 +110,7 @@ function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface
 
       if (!selectedItems.hasMore()) {
         contexts.push(
-          buildContext(
+          makeContext(
             `Delete ${parent.childName}`,
             () => {
               const neighbour = parent.deleteItem(contextItem)
@@ -119,7 +126,7 @@ function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface
         )
       } else {
         contexts.push(
-          buildContext(
+          makeContext(
             `Delete ${selectedItems.length} ${parent.childName}s`,
             () => {
               const neighbour = parent.deleteItems(selectedItems)

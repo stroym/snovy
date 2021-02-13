@@ -6,10 +6,18 @@
 
   &.left {
     border-right: $border;
+
+    .snovy-tab-menu-item {
+      writing-mode: sideways-lr;
+    }
   }
 
   &.right {
     border-left: $border;
+
+    .snovy-tab-menu-item {
+      writing-mode: sideways-rl;
+    }
   }
 
   .menu-section {
@@ -40,14 +48,6 @@
 
   &.icon {
     writing-mode: unset !important;
-  }
-
-  &.left {
-    writing-mode: sideways-lr;
-  }
-
-  &.right {
-    writing-mode: sideways-rl;
   }
 
   &.start {

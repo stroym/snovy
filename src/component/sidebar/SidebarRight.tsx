@@ -1,11 +1,11 @@
-import React from "react"
-import {Orientation, Tab} from "../tab_menu/TabMenu"
+import React, {useState} from "react"
+import TabMenu, {Alignment, Orientation} from "../tab_menu/TabMenu"
 import Notebook from "../../model/Notebook"
 import Tag from "../../model/colored/Tag"
-import {Sidebar} from "./Sidebar"
-import NoteDetail from "../NoteDetail"
-import TagManager from "../tag/TagManager"
 import Note from "../../model/Note"
+import {makeTab} from "../tab_menu/TabMenuItem"
+import TagManager from "../tag/TagManager"
+import NoteDetail from "../NoteDetail"
 
 const SidebarRight = (props: {
   notebook: Notebook | undefined,
@@ -15,29 +15,29 @@ const SidebarRight = (props: {
   onTagRemove: (note: Note, tag: Tag) => void
 }) => {
 
+  const mappings = {detail: "Note Detail", manager: "Tag Manager", filtering: "Filtering Options"}
+
+  const [activeTab, setActiveTab] = useState<string>(mappings.detail)
+
   return (
-    <Sidebar orientation={Orientation.RIGHT} startTabs={startMappings} endTabs={endMappings}>
-      {[
-        {
-          text: startMappings[0].text,
-          children: props.notebook && props.note && <NoteDetail note={props.note} notebook={props.notebook}/>
-        },
-        {
-          text: startMappings[1].text,
-          children: <TagManager notebook={props.notebook} tag={props.tag} onTagChange={props.onTagChange}/>
+    <div className="snovy-sidebar">
+      <div className={"sidebar-content " + Orientation.RIGHT} id={Orientation.RIGHT + "-content"}>
+        {activeTab == mappings.detail && props.notebook && props.note &&
+        <NoteDetail note={props.note} notebook={props.notebook}/>
         }
+        {activeTab == mappings.manager &&
+        <TagManager notebook={props.notebook} tag={props.tag} onTagChange={props.onTagChange}/>
+        }
+      </div>
+      <TabMenu orientation={Orientation.RIGHT}>{[
+        makeTab(mappings.detail, Alignment.START, setActiveTab, activeTab),
+        makeTab(mappings.manager, Alignment.START, setActiveTab, activeTab),
+        makeTab(mappings.filtering, Alignment.START, setActiveTab, activeTab)
       ]}
-    </Sidebar>
+      </TabMenu>
+    </div>
   )
 
 }
-
-const startMappings = [
-  new Tab("Note Detail", true),
-  new Tab("Tag Manager"),
-  new Tab("Filtering Options")
-]
-
-const endMappings = [new Tab("⚠")]
 
 export default SidebarRight

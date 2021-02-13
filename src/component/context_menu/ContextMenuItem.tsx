@@ -28,7 +28,7 @@ export const ContextMenuItem = (props: {
 
 }
 
-export function buildContext(text: string, action: () => void, icon?: string, specialText?: string, specialAction?: () => void) {
+export function makeContext(text: string, action: () => void, icon?: string, specialText?: string, specialAction?: () => void) {
   return (
     <ContextMenuItem
       key={text} icon={icon} text={text} specialText={specialText} onClick={action} specialOnClick={specialAction}
