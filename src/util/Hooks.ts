@@ -153,22 +153,19 @@ export function useColored(str?: string, colorStr?: string):
   return [text, color, setText, setColor]
 }
 
-export function useMultiSelect<T>() {
+export function useMultiSelect<T>(listItems: Array<T> | undefined) {
 
   const [ctrlMode, setCtrlMode] = useState(false)
   const [shiftMode, setShiftMode] = useState(false)
 
-  const [items, setItems] = useState<Array<T>>([])
+  const [selectedItems, setSelectedItems] = useState<Array<T>>([])
 
   useEffect(
     () => {
       document.addEventListener("mousemove", handleKey)
-      document.addEventListener("keydown", handleEsc)
 
       return () => {
         document.removeEventListener("mousemove", handleKey)
-        document.removeEventListener("keydown", handleEsc)
-
       }
     }, []
   )
@@ -178,33 +175,34 @@ export function useMultiSelect<T>() {
     setCtrlMode(e.ctrlKey)
   }
 
-  const handleEsc = (e: KeyboardEvent) => {
-    if (e.key == Key.Escape) {
-//active boolean?
-    }
-  }
-
   const handleItemClick = (item: T) => {
     if (ctrlMode) {
-      if (items.includes(item)) {
-        if (items.length > 1) {
-          setItems(Array.from(items).remove(item))
+      if (selectedItems.includes(item)) {
+        if (selectedItems.length > 1) {
+          setSelectedItems(Array.from(selectedItems).remove(item))
         }
       } else {
-        setItems(items.concat(item))
+        setSelectedItems(selectedItems.concat(item))
       }
     } else if (shiftMode) {
-      if (items.includes(item)) {
-        if (items.length > 1) {
-          setItems(Array.from(items).remove(item))
+      if (listItems) {
+        if (selectedItems.includes(item)) {
+          setSelectedItems(listItems.slice(listItems.indexOf(selectedItems.first()!), listItems.indexOf(item) + 1))
+        } else {
+          const indiFirst = listItems.indexOf(selectedItems.first()!)
+          const indiItem = listItems.indexOf(item)
+
+          if (indiItem > indiFirst) {
+            setSelectedItems(listItems.slice(indiFirst, indiItem + 1))
+          } else {
+            setSelectedItems(listItems.slice(indiItem, indiFirst + 1).reverse())
+          }
         }
-      } else {
-        setItems(items.concat(item))
       }
     } else {
-      setItems([item])
+      setSelectedItems([item])
     }
   }
 
-  return {shiftMode, ctrlMode, items, setItems, handleItemClick}
+  return {shiftMode, ctrlMode, selectedItems, setSelectedItems, handleItemClick}
 }

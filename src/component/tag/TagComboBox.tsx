@@ -8,6 +8,7 @@ import Tag from "../../model/colored/Tag"
 import ComboCreateItem from "../combo_box/ComboCreateItem"
 import ComboBoxItem from "../combo_box/ComboBoxItem"
 import TagForm from "./TagForm"
+import {useKey} from "../../util/Utils"
 
 const TagComboBox = (props: {
   id?: string,
@@ -85,7 +86,9 @@ const TagComboBox = (props: {
           />
           <input {...getToggleButtonProps()}
                  className="snovy-combo-box-input" placeholder="Select or create tag..."
-                 {...getInputProps({onKeyDown: e => { options.isEmpty() && e.key == Key.Enter && willCreateTag()}})}
+                 {...getInputProps({
+                   onKeyDown: e => {options.isEmpty() && useKey(e, [{key: Key.Enter, handler: willCreateTag}])}
+                 })}
           />
           <CollapseButton {...getToggleButtonProps()} aria-label={"toggle menu"}/>
         </span>

@@ -4,8 +4,9 @@ import {IdentifiedItem, Item} from "../../model/common/Base"
 import ContextMenu from "../context_menu/ContextMenu"
 import ContextMenuItem from "../context_menu/ContextMenuItem"
 import {append, Extras} from "../../util/ComponentUtils"
+import {isArray, useKey} from "../../util/Utils"
+import {Key} from "ts-key-enum"
 import {useMultiSelect} from "../../util/Hooks"
-import {isArray} from "../../util/Utils"
 
 const List = <T extends IdentifiedItem | Item>(props: {
   onActiveChange?: (active: T | undefined) => void,
@@ -18,14 +19,20 @@ const List = <T extends IdentifiedItem | Item>(props: {
 }) => {
 
   const selfRef = useRef<HTMLDivElement>(null)
-  const {shiftMode, ctrlMode} = useMultiSelect<T>()
+  const {selectedItems, setSelectedItems, handleItemClick} = useMultiSelect<T>(props.items)
   const [activeContext, setActiveContext] = useState<T | undefined | null>()
-  const [items, setItems] = useState<Array<T>>([])
+
+  const keyBindings = [
+    {
+      key: Key.Escape,
+      handler: () => {!selectedItems.isEmpty() && setSelectedItems([Array.from(selectedItems).first()!])}
+    }
+  ]
 
   useEffect(
     () => {
       if (props.items && !props.items.isEmpty() && props.defaultFirst) {
-        setItems([props.items.first()!])
+        setSelectedItems([props.items.first()!])
       }
     }, [props.items]
   )
@@ -35,11 +42,11 @@ const List = <T extends IdentifiedItem | Item>(props: {
       if (props.items && !props.items.isEmpty()) {
         if (isArray(props.selection)) {
           if (props.selection && !props.selection.isEmpty() && props.items.includesAll(props.selection)) {
-            setItems(props.selection)
+            setSelectedItems(props.selection)
           }
         } else {
           if (props.selection && props.items.includes(props.selection)) {
-            setItems([props.selection])
+            setSelectedItems([props.selection])
           }
         }
       }
@@ -48,9 +55,9 @@ const List = <T extends IdentifiedItem | Item>(props: {
 
   useEffect(
     () => {
-      props.onActiveChange && props.onActiveChange(items.first())
-      props.onMultipleSelection && props.onMultipleSelection(items)
-    }, [items]
+      props.onActiveChange && props.onActiveChange(selectedItems.first())
+      props.onMultipleSelection && props.onMultipleSelection(selectedItems)
+    }, [selectedItems]
   )
 
   useEffect(
@@ -59,45 +66,15 @@ const List = <T extends IdentifiedItem | Item>(props: {
     }, [activeContext]
   )
 
-  const handleItemClick = (item: T) => {
-    if (ctrlMode) {
-      if (items.includes(item)) {
-        if (items.length > 1) {
-          setItems(Array.from(items).remove(item))
-        }
-      } else {
-        setItems(items.concat(item))
-      }
-    } else if (shiftMode) {
-      if (props.items) {
-        if (items.includes(item)) {
-          setItems(props.items.slice(props.items.indexOf(items.first()!), props.items.indexOf(item) + 1))
-        } else {
-          const indiFirst = props.items.indexOf(items.first()!)
-          const indiItem = props.items.indexOf(item)
-
-          console.log(indiFirst)
-          if (indiItem > indiFirst) {
-            setItems(props.items.slice(indiFirst, indiItem + 1))
-          } else {
-            setItems(props.items.slice(indiItem, indiFirst + 1).reverse())
-          }
-        }
-      }
-    } else {
-      setItems([item])
-    }
-  }
-
   return (
     <div
       ref={selfRef} className={"snovy-list".concat(append(!props.items, Extras.DISABLED))}
-      onContextMenu={() => setActiveContext(null)}
+      onKeyDown={e => useKey(e, keyBindings)}
     >
       {props.items?.map((item: T) =>
         <ListItem
           key={item instanceof IdentifiedItem ? item.id : item.name} mapped={item}
-          active={items.includes(item)} activeContext={item == activeContext}
+          active={selectedItems.includes(item)} activeContext={item == activeContext}
           onClick={handleItemClick} onContext={(item: T) => {setActiveContext(item)}}
         />)
       }

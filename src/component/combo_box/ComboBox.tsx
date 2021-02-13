@@ -6,6 +6,7 @@ import {Key} from "ts-key-enum"
 import {useDefaultEmpty} from "../../util/Hooks"
 import ComboCreateItem from "./ComboCreateItem"
 import ComboBoxItem from "./ComboBoxItem"
+import {useKey} from "../../util/Utils"
 
 const ComboBox = <T extends Item>(props: {
   id?: string,
@@ -91,7 +92,12 @@ const ComboBox = <T extends Item>(props: {
         <span className="snovy-combo-box-wrapper" {...getToggleButtonProps()}>
           <input
             className="snovy-combo-box-input"
-            {...getInputProps({onKeyDown: e => options.isEmpty() && e.key == Key.Enter && createItem()})}
+            {...getInputProps({
+              onKeyDown: e => options.isEmpty() && useKey(e, [{
+                key: Key.Enter,
+                handler: createItem
+              }])
+            })}
           />
           <CollapseButton aria-label={"toggle menu"}/>
         </span>
