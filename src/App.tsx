@@ -16,8 +16,6 @@ function App() {
 
   const [manager, _setManager] = useState<Manager>(man)
   const [notebook, setNotebook] = useState<Notebook | undefined>()
-  const [section, setSection] = useState<Section | undefined>()
-  const [note, setNote] = useState<Note | undefined>()
   const [tag, setTag] = useState<Tag | undefined>()
 
   const [sections, setSections] = useState<Array<Section>>([])
@@ -25,18 +23,15 @@ function App() {
 
   const selectNotebook = (active: Notebook | undefined) => {
     setNotebook(active)
-    setSections([])
-    setSection(undefined)
   }
 
-  const selectSection = (active: Section | undefined) => {
-    setSection(active)
-    setNotes([])
-    setNote(undefined)
+  const selectSections = (active: Array<Section>) => {
+    setSections(active)
+    active.isEmpty() && setNotes([])
   }
 
-  const selectNote = (active: Note | undefined) => {
-    setNote(active)
+  const selectNotes = (active: Array<Note>) => {
+    setNotes(active)
   }
 
   const selectTag = (active: Tag | undefined) => {
@@ -52,12 +47,11 @@ function App() {
       <SidebarLeft
         manager={manager}
         onNotebookChange={selectNotebook} notebook={notebook}
-        onSectionChange={selectSection} onSectionMultiselect={setSections} multiSections={sections}
-        section={section}
-        onNoteChange={selectNote} note={note} onNoteMultiselect={setNotes} multiNotes={notes}
+        onSectionChange={selectSections} sections={sections}
+        onNoteChange={selectNotes} notes={notes}
       />
-      <Editor activeNote={note}/>
-      <RightBar onTagRemove={untag} note={note} notebook={notebook} tag={tag} onTagChange={selectTag}/>
+      <Editor activeNote={notes.first()}/>
+      <RightBar onTagRemove={untag} note={notes.first()} notebook={notebook} tag={tag} onTagChange={selectTag}/>
     </span>
   )
 }

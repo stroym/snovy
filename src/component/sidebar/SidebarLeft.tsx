@@ -12,16 +12,12 @@ import ComboBox from "../combo_box/ComboBox"
 
 export const SidebarLeft = (props: {
   onNotebookChange: (active: Notebook | undefined) => void,
-  onSectionChange: (active: Section | undefined) => void,
-  onNoteChange: (active: Note | undefined) => void,
-  onSectionMultiselect: (active: Array<Section>) => void,
-  onNoteMultiselect: (active: Array<Note>) => void,
+  onSectionChange: (active: Array<Section>) => void,
+  onNoteChange: (active: Array<Note>) => void,
   manager: Manager,
   notebook: Notebook | undefined,
-  section: Section | undefined,
-  note: Note | undefined,
-  multiSections: Array<Section>,
-  multiNotes: Array<Note>
+  sections: Array<Section>,
+  notes: Array<Note>
 }) => {
 
   const [activeContext, setActiveContext] = useState<Section | Note | undefined | null>()
@@ -30,8 +26,8 @@ export const SidebarLeft = (props: {
     setActiveContext(target)
   }
 
-  const sectionContext = buildContextMenu(activeContext as Section, props.notebook, props.multiSections, props.onSectionChange, props.onSectionMultiselect)
-  const noteContext = buildContextMenu(activeContext as Note, props.section, props.multiNotes, props.onNoteChange, props.onNoteMultiselect)
+  const sectionContext = buildContextMenu(activeContext as Section, props.notebook, props.sections, props.onSectionChange)
+  const noteContext = buildContextMenu(activeContext as Note, props.sections.first(), props.notes, props.onNoteChange)
 
   return (
     <Sidebar orientation={Orientation.LEFT} startTabs={startMappings} endTabs={endMappings}>
@@ -49,17 +45,18 @@ export const SidebarLeft = (props: {
               <List<Section>
                 key="snovy-list-section"
                 items={props.notebook?.itemsSortedByOrder}
-                selection={props.multiSections.hasMore() ? props.multiSections : props.section} defaultFirst
-                onActiveChange={props.onSectionChange} onContextChange={onContextChange}
-                onMultipleSelection={props.onSectionMultiselect}
+                selection={props.sections.hasMore() ? props.sections : props.sections.first()}
+                defaultFirst
+                onContextChange={onContextChange}
+                onMultipleSelection={props.onSectionChange}
                 contextChildren={sectionContext}
               />
               <List<Note>
                 key="snovy-list-note"
-                items={props.section?.itemsSortedByOrder}
-                selection={props.multiNotes.hasMore() ? props.multiNotes : props.note} defaultFirst
-                onMultipleSelection={props.onNoteMultiselect}
-                onActiveChange={props.onNoteChange} onContextChange={onContextChange}
+                items={props.sections.first()?.itemsSortedByOrder}
+                selection={props.notes.hasMore() ? props.notes : props.notes.first()} defaultFirst
+                onMultipleSelection={props.onNoteChange}
+                onContextChange={onContextChange}
                 contextChildren={noteContext}
               />
             </>
@@ -78,7 +75,6 @@ function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface
   contextItem: I | undefined,
   parent: P | undefined,
   selectedItems: Array<I>,
-  setActive: (active: I | undefined) => void,
   setMulti: (active: Array<I>) => void
 ) {
   const contexts: Array<React.ReactElement<typeof ContextMenuItem>> = []
@@ -90,7 +86,7 @@ function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface
         () => {contextItem ? parent.insert(contextItem.order + 1) : parent.insert()},
         "+",
         "& go",
-        () => {setActive(contextItem ? parent.insert(contextItem.order + 1) : parent.insert())}
+        () => {setMulti(contextItem ? [parent.insert(contextItem.order + 1)] : [parent.insert()])}
       )
     )
 
@@ -101,7 +97,7 @@ function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface
           () => {parent.insert()},
           "+",
           "& go",
-          () => {setActive(parent.insert())}
+          () => {setMulti([parent.insert()])}
         )
       )
 
@@ -112,8 +108,10 @@ function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface
             () => {
               const neighbour = parent.deleteItem(contextItem)
 
-              if (contextItem == selectedItems.first() || neighbour == undefined) {
-                setActive(neighbour)
+              if (neighbour == undefined) {
+                setMulti([])
+              } else if (contextItem == selectedItems.first()) {
+                setMulti([neighbour])
               }
             },
             "×"
@@ -124,8 +122,12 @@ function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface
           buildContext(
             `Delete ${selectedItems.length} ${parent.childName}s`,
             () => {
-              setMulti([])
-              setActive(parent.deleteItems(selectedItems))
+              const neighbour = parent.deleteItems(selectedItems)
+              if (neighbour == undefined) {
+                setMulti([])
+              } else {
+                setMulti([neighbour])
+              }
             },
             "×"
           )

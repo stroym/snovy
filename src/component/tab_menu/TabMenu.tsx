@@ -58,6 +58,7 @@ export enum Alignment {
 
 }
 
+//TODO pass default string to tab menu instead of here
 export class Tab {
 
   text: string

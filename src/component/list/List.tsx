@@ -4,18 +4,17 @@ import {IdentifiedItem, Item} from "../../model/common/Base"
 import ContextMenu from "../context_menu/ContextMenu"
 import ContextMenuItem from "../context_menu/ContextMenuItem"
 import {append, Extras} from "../../util/ComponentUtils"
-import {isArray, useKey} from "../../util/Utils"
+import {useKey} from "../../util/Utils"
 import {Key} from "ts-key-enum"
 import {useMultiSelect} from "../../util/Hooks"
 
 const List = <T extends IdentifiedItem | Item>(props: {
-  onActiveChange?: (active: T | undefined) => void,
-  onMultipleSelection?: (items: Array<T>) => void
+  onSelect?: (items: Array<T>) => void
   onContextChange?: (active: T | null | undefined) => void,
   contextChildren?: Array<React.ReactElement<typeof ContextMenuItem>>
   items: Array<T> | undefined,
   defaultFirst?: boolean,
-  selection?: Array<T> | T
+  selection?: Array<T>
 }) => {
 
   const selfRef = useRef<HTMLDivElement>(null)
@@ -40,14 +39,8 @@ const List = <T extends IdentifiedItem | Item>(props: {
   useEffect(
     () => {
       if (props.items && !props.items.isEmpty()) {
-        if (isArray(props.selection)) {
-          if (props.selection && !props.selection.isEmpty() && props.items.includesAll(props.selection)) {
-            setSelectedItems(props.selection)
-          }
-        } else {
-          if (props.selection && props.items.includes(props.selection)) {
-            setSelectedItems([props.selection])
-          }
+        if (props.selection && !props.selection.isEmpty() && props.items.includesAll(props.selection)) {
+          setSelectedItems(props.selection)
         }
       }
     }, [props.selection]
@@ -55,8 +48,7 @@ const List = <T extends IdentifiedItem | Item>(props: {
 
   useEffect(
     () => {
-      props.onActiveChange && props.onActiveChange(selectedItems.first())
-      props.onMultipleSelection && props.onMultipleSelection(selectedItems)
+      props.onSelect && props.onSelect(selectedItems)
     }, [selectedItems]
   )
 

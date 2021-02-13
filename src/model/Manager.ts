@@ -9,7 +9,9 @@ const content =
   "\n" +
   "\n" +
   "asdasddasd\n" +
-  "asdasdas\n" +
+  "\n" +
+  "\n" +
+  "dhfgjgfjfjgfjjf\n" +
   "\n" +
   "\n" +
   "- adasdadasd\n" +
@@ -37,7 +39,6 @@ function dec2hex(dec: number) {
 }
 
 function randomString(len: number) {
-  // return Array(len).fill(0).map(x => Math.random().toString(36).charAt(2)).join("")
   return Array.from(window.crypto.getRandomValues(new Uint8Array(Math.floor(Math.random() * (len - 3) + 3))), dec2hex).join("")
 }
 
@@ -164,7 +165,7 @@ export default class Manager implements ParentInterface<Notebook> {
 
   addNote(target: Section): void {
     const temp = new Note(target, target.idCounter, "note " + target.idCounter, target.items.length)
-    temp.content = content
+    temp.content = "content " + target.idCounter + "\n" + content
     this.tagNote(target.parent, temp)
 
     target.addItem(temp)
