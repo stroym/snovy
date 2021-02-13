@@ -5,10 +5,8 @@
   z-index: 100;
   background-color: $color-primary;
   border: $border-thin-inverted;
-  border-radius: $border-rad-rounded;
-  overflow: hidden;
 
-  :last-child {
+  &:last-child {
     border-bottom: none;
   }
 }
@@ -19,7 +17,6 @@
   flex-flow: row nowrap;
   align-content: space-evenly;
   user-select: none;
-  border-bottom: $border-thin-inverted;
   color: $color-text-primary;
 
   :last-child {
@@ -56,5 +53,26 @@
 
   &:hover {
     background-color: $color-hover;
+  }
+}
+
+.outer-wrapper {
+  position: relative;
+  border-bottom: $border-thin-inverted;
+}
+
+.nested-context-menu {
+  z-index: 110;
+  position: absolute;
+
+  background-color: $color-primary;
+  border: $border-thin-inverted;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .context-item-wrapper {
+
   }
 }

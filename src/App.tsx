@@ -9,6 +9,7 @@ import Manager from "./model/Manager"
 import Tag from "./model/colored/Tag"
 import Note from "./model/Note"
 import Editor from "./component/editor/Editor"
+import {isArray} from "./util/Utils"
 
 const man = new Manager()
 
@@ -25,13 +26,26 @@ function App() {
     setNotebook(active)
   }
 
-  const selectSections = (active: Array<Section>) => {
-    setSections(active)
-    active.isEmpty() && setNotes([])
+  const selectSections = (active: Array<Section> | Section | undefined) => {
+    if (isArray(active)) {
+      setSections(active)
+      active.isEmpty() && setNotes([])
+    } else if (active) {
+      setSections([active])
+    } else {
+      setSections([])
+      setNotes([])
+    }
   }
 
-  const selectNotes = (active: Array<Note>) => {
-    setNotes(active)
+  const selectNotes = (active: Array<Note> | Note | undefined) => {
+    if (isArray(active)) {
+      setNotes(active)
+    } else if (active) {
+      setNotes([active])
+    } else {
+      setNotes([])
+    }
   }
 
   const selectTag = (active: Tag | undefined) => {

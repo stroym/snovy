@@ -1,9 +1,10 @@
-import React, {Dispatch, SetStateAction, useEffect, useReducer, useState} from "react"
+import useResizeObserver from "@react-hook/resize-observer"
+import React, {Dispatch, SetStateAction, useEffect, useLayoutEffect, useReducer, useState} from "react"
 import {Key} from "ts-key-enum"
 import {isArray, isItem} from "./Utils"
 
-export function useHideOnOutsideClick(elementRef: React.RefObject<Element | undefined>,
-                                      otherRefs?: Array<React.RefObject<Element | undefined>>,
+export function useHideOnOutsideClick(elementRef: React.RefObject<Element | null>,
+                                      otherRefs?: Array<React.RefObject<Element | null>>,
                                       initialState?: boolean):
   [boolean, Dispatch<SetStateAction<boolean>>, () => void] {
 
@@ -40,39 +41,14 @@ export function useHideOnOutsideClick(elementRef: React.RefObject<Element | unde
   return [visible, setVisible, flip]
 }
 
-export function useHide(elementRef: React.RefObject<Element | undefined>,
-                        otherRefs?: Array<React.RefObject<Element | undefined>>,
-                        initialState?: boolean) {
-  const [visible, setVisible, flip] = useHideOnOutsideClick(elementRef, otherRefs, initialState)
-  const [x, setX] = useState(0)
-  const [y, setY] = useState(0)
-
-  const position: React.CSSProperties = {
-    position: "absolute",
-    top: y + "px",
-    left: x + "px"
-  }
-
-  const handleClick = (e: React.MouseEvent) => {
-    const negate = !visible
-
-    if (negate) {
-      setX(e.pageX)
-      setY(e.pageY)
-    }
-
-    setVisible(negate)
-  }
-
-  return {visible, x, y, position, setVisible, setX, setY, handleClick, flip}
-}
-
 export function useContextMenu(
-  elementRef: React.RefObject<Element | undefined>,
-  parentRef: React.RefObject<Element | undefined>,
+  contextRef: React.RefObject<Element | null>,
+  parentRef: React.RefObject<Element | null>,
   resetContext?: () => void
 ) {
-  const {visible, position, handleClick, flip} = useHide(elementRef)
+
+  const [visible, setVisible] = useHideOnOutsideClick(contextRef)
+  const {position, setX, setY} = useAbsolutePosition(contextRef, visible)
 
   useEffect(
     () => {
@@ -95,14 +71,21 @@ export function useContextMenu(
   const handleContextMenu = (e: any) => {
     e.preventDefault()
 
-    if (!elementRef.current?.contains(e.target as Node)) {
-      handleClick(e)
+    if (!contextRef.current?.contains(e.target as Node)) {
+      const negate = !visible
+
+      if (negate) {
+        setX(e.pageX)
+        setY(e.pageY)
+      }
+
+      setVisible(negate)
     } else {
       e.stopPropagation()
     }
   }
 
-  return {visible, flip, position}
+  return {visible, setVisible, position}
 }
 
 export function useDefaultEmpty<T>(array?: Array<T> | T | null | undefined) {
@@ -114,7 +97,7 @@ export function useDefaultEmpty<T>(array?: Array<T> | T | null | undefined) {
   )
 }
 
-export function useCollapse(elementRef: React.RefObject<HTMLElement | undefined>):
+export function useCollapse(elementRef: React.RefObject<Element | null>):
   [boolean, Dispatch<SetStateAction<boolean>>] {
 
   const [collapsed, setCollapsed] = useState(false)
@@ -205,4 +188,98 @@ export function useMultiSelect<T>(listItems: Array<T> | undefined) {
   }
 
   return {shiftMode, ctrlMode, selectedItems, setSelectedItems, handleItemClick}
+}
+
+export function useSize(elementRef: React.RefObject<Element | null>, visible: boolean) {
+
+  const [size, setSize] = useState<DOMRect>()
+
+  useLayoutEffect(
+    () => {
+      setSize(elementRef.current?.getBoundingClientRect())
+    }, [elementRef, visible]
+  )
+
+  useResizeObserver(elementRef?.current as HTMLElement, (entry) => setSize(entry.target.getBoundingClientRect()))
+
+  return size
+}
+
+export function useAbsolutePosition(elementRef: React.RefObject<Element | null>, visible: boolean) {
+
+  const size = useSize(elementRef, visible)
+
+  const [x, setX] = useState(size?.left ?? 0)
+  const [y, setY] = useState(size?.top ?? 0)
+
+  const [top, setTop] = useState("unset")
+  const [left, setLeft] = useState("unset")
+
+  useEffect(
+    () => {
+      if (size) {
+        if (y > (window.innerHeight - size.height * 1.1)) {
+          setTop(y - size.height + "px")
+        } else {
+          setTop(y + "px")
+        }
+
+        if (x > (window.innerWidth - size.width * 1.1)) {
+          setLeft(x - size.width + "px")
+        } else {
+          setLeft(x + "px")
+        }
+      }
+    }, [size]
+  )
+
+  const position: React.CSSProperties = {
+    position: "absolute",
+    top: top,
+    left: left
+  }
+
+  return {position, setX, setY}
+}
+
+export function useRelativePosition(elementRef: React.RefObject<Element | null>, visible: boolean) {
+
+  const [top, setTop] = useState("unset")
+  const [right, setRight] = useState("unset")
+  const [bottom, setBottom] = useState("unset")
+  const [left, setLeft] = useState("unset")
+
+  const size = useSize(elementRef, visible)
+
+  useEffect(
+    () => {
+      if (size) {
+        if (size.top > (window.innerHeight - size.height * 1.1)) {
+          setTop("unset")
+          setBottom("-1px")
+        } else {
+          setTop("-1px")
+          setBottom("unset")
+        }
+
+        if (size.left > (window.innerWidth - size.width * 1.1)) {
+          setRight("100%")
+          setLeft("unset")
+        } else {
+          setRight("unset")
+          setLeft("100%")
+        }
+      }
+    }, [size]
+  )
+
+  const position: React.CSSProperties = {
+    position: "absolute",
+    top: top,
+    right: right,
+    bottom: bottom,
+    left: left
+  }
+
+  return position
 }

@@ -6,6 +6,11 @@ export default class Section extends ItemWithParentAndChildren<Note, Notebook> {
 
   childName = "note"
 
+  constructor(parent: Notebook, id: number, name: string, order: number) {
+    super(parent, id, name, order)
+    this.insert()
+  }
+
   get notes(): Array<Note> {
     return this.items
   }

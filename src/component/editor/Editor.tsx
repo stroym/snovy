@@ -14,8 +14,7 @@ const Editor = (props: {
 
   useEffect(
     () => {
-      console.log(props.activeNote?.content)
-      if (props.activeNote) {
+      if (props.activeNote && props.activeNote.content != "") {
         setValue(props.activeNote.content)
       } else {
         setValue(" ")

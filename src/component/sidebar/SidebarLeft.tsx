@@ -5,15 +5,15 @@ import Notebook from "../../model/Notebook"
 import {ItemWithParent, ParentInterface} from "../../model/common/Base"
 import TabMenu, {Alignment, Orientation} from "../tab_menu/TabMenu"
 import Manager from "../../model/Manager"
-import ContextMenuItem, {makeContext} from "../context_menu/ContextMenuItem"
+import ContextMenuItem, {makeContext, makeSharedContext} from "../context_menu/ContextMenuItem"
 import List from "../list/List"
 import ComboBox from "../combo_box/ComboBox"
 import {makeTab} from "../tab_menu/TabMenuItem"
 
 export const SidebarLeft = (props: {
   onNotebookChange: (active: Notebook | undefined) => void,
-  onSectionChange: (active: Array<Section>) => void,
-  onNoteChange: (active: Array<Note>) => void,
+  onSectionChange: (active: Array<Section> | Section | undefined) => void,
+  onNoteChange: (active: Array<Note> | Note | undefined) => void,
   manager: Manager,
   notebook: Notebook | undefined,
   sections: Array<Section>,
@@ -82,7 +82,7 @@ function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface
   contextItem: I | undefined,
   parent: P | undefined,
   selectedItems: Array<I>,
-  setMulti: (active: Array<I>) => void
+  setMulti: (active: Array<I> | I | undefined) => void
 ) {
   const contexts: Array<React.ReactElement<typeof ContextMenuItem>> = []
 
@@ -90,10 +90,10 @@ function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface
     contexts.push(
       makeContext(
         `New ${parent.childName}`,
-        () => {contextItem ? parent.insert(contextItem.order + 1) : parent.insert()},
+        () => {setMulti(contextItem ? parent.insert(contextItem.order + 1) : parent.insert())},
         "+",
         "& go",
-        () => {setMulti(contextItem ? [parent.insert(contextItem.order + 1)] : [parent.insert()])}
+        () => {setMulti(contextItem ? parent.insert(contextItem.order + 1) : parent.insert())}
       )
     )
 
@@ -104,42 +104,29 @@ function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface
           () => {parent.insert()},
           "+",
           "& go",
-          () => {setMulti([parent.insert()])}
+          () => {setMulti(parent.insert())}
         )
       )
 
-      if (!selectedItems.hasMore()) {
-        contexts.push(
-          makeContext(
-            `Delete ${parent.childName}`,
-            () => {
-              const neighbour = parent.deleteItem(contextItem)
+      contexts.push(
+        makeSharedContext({
+            single: {
+              text: `Delete ${parent.childName}`,
+              action: () => {
+                const neighbour = parent.deleteItem(contextItem)
+                neighbour == undefined || contextItem == selectedItems.first() && setMulti(neighbour)
+              }
+            },
+            multiple: {
+              condition: selectedItems.hasMore(),
+              text: `Delete ${selectedItems.length} ${parent.childName}s`,
+              action: () => {setMulti(parent.deleteItems(selectedItems))}
+            },
+            icon: "×"
+          }
+        )
+      )
 
-              if (neighbour == undefined) {
-                setMulti([])
-              } else if (contextItem == selectedItems.first()) {
-                setMulti([neighbour])
-              }
-            },
-            "×"
-          )
-        )
-      } else {
-        contexts.push(
-          makeContext(
-            `Delete ${selectedItems.length} ${parent.childName}s`,
-            () => {
-              const neighbour = parent.deleteItems(selectedItems)
-              if (neighbour == undefined) {
-                setMulti([])
-              } else {
-                setMulti([neighbour])
-              }
-            },
-            "×"
-          )
-        )
-      }
     }
   }
 

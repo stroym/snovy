@@ -3,6 +3,9 @@
 
 .snovy-tab-menu {
   background-color: $color-accent;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
 
   &.left {
     border-right: $border;
@@ -25,12 +28,15 @@
     flex-flow: column nowrap;
     justify-content: flex-start;
     align-items: stretch;
+    overflow: hidden;
 
-    &.end {
-      position: absolute;
-      bottom: 0;
+    &.start {
+      align-self: flex-start;
     }
 
+    &.end {
+      align-self: flex-end;
+    }
   }
 }
 

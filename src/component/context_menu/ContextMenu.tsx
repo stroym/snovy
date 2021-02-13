@@ -10,12 +10,12 @@ const ContextMenu = (props: {
 
   const selfRef = useRef<HTMLDivElement>(null)
 
-  const {visible, flip, position} = useContextMenu(selfRef, props.parentRef, props.resetContext)
+  const {visible, setVisible, position} = useContextMenu(selfRef, props.parentRef, props.resetContext)
 
   return (
     <>
       {visible &&
-      <div className="snovy-context-menu" ref={selfRef} onClick={flip} style={position}>
+      <div className="snovy-context-menu" ref={selfRef} onClick={() => setVisible(false)} style={position}>
         {props.children}
       </div>
       }

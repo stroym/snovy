@@ -4,6 +4,7 @@
 #snovy-editor {
   @include scrollbar;
   grid-area: centre;
+  //height: 100%;
   background-color: $color-primary;
   color: $color-text-primary;
 }
@@ -21,6 +22,7 @@
 
 #block-menu-container {
   @include scrollbar;
+  max-height: 50vh;
 
   button {
     svg {
