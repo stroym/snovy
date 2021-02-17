@@ -25,12 +25,21 @@ html, body, #root {
   font-family: "Roboto", sans-serif;
 }
 
+.selected {
+  background-color: $color-selected;
+}
+
 .active {
   background-color: $color-active;
 }
 
 .hover {
   background-color: $color-hover;
+}
+
+.active-context {
+  background-color: #41412c;
+  opacity: 0.8;
 }
 
 .editable {

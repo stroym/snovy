@@ -4,6 +4,8 @@ import {CollapseButton, RemoveButton} from "../inputs/Button"
 import Scope from "../../model/colored/Scope"
 import {default as TinyColor} from "tinycolor2"
 
+//TODO invert button onHover as well as the text color
+
 export const TagItem = (props: {
   mapped: Tag,
   onRemove: (tag: Tag) => void,

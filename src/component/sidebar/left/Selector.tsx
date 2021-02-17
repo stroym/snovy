@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React from "react"
 import Section from "../../../model/Section"
 import Note from "../../../model/Note"
 import ComboBox from "../../combo_box/ComboBox"
@@ -18,18 +18,6 @@ export const Selector = (props: {
   notes: Array<Note>
 }) => {
 
-  const [activeContext, setActiveContext] = useState<Section | Note | undefined | null>()
-
-  const onContextChange = (target: Section | Note | undefined | null) => {
-
-    setActiveContext(target)
-  }
-
-  const sectionContext = buildContextMenu(activeContext as Section, props.notebook, props.sections, props.onSectionChange)
-  const noteContext = buildContextMenu(activeContext as Note, props.sections.first(), props.notes, props.onNoteChange)
-
-  //TODO right clicking another item should clear selection (except the first item)
-
   return (
     <>
       <ComboBox
@@ -43,25 +31,26 @@ export const Selector = (props: {
         <List<Section>
           key="snovy-list-section"
           items={props.notebook?.itemsSortedByOrder} selection={props.sections} defaultFirst
-          onSelect={props.onSectionChange} onContextChange={onContextChange} contextChildren={sectionContext}
+          onSelect={props.onSectionChange}
+          buildContext={contextItem => buildContextMenu(contextItem, props.notebook, props.sections, props.onSectionChange)}
         />
         <List<Note>
           key="snovy-list-note"
           items={props.sections.first()?.itemsSortedByOrder} selection={props.notes} defaultFirst
-          onSelect={props.onNoteChange} onContextChange={onContextChange} contextChildren={noteContext}
+          onSelect={props.onNoteChange}
+          buildContext={(contextItem => buildContextMenu(contextItem, props.sections.first(), props.notes, props.onNoteChange))}
         />
       </span>
     </>
   )
 }
 
-
 function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface<I>>(
-  contextItem: I | undefined,
+  contextItem: I | undefined | null,
   parent: P | undefined,
   selectedItems: Array<I>,
   setMulti: (active: Array<I> | I | undefined) => void
-) {
+): Array<React.ReactElement<typeof ContextMenuItem>> {
   const contexts: Array<React.ReactElement<typeof ContextMenuItem>> = []
 
   if (parent) {

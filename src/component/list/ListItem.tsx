@@ -7,6 +7,7 @@ import {append, Extras} from "../../util/ComponentUtils"
 const ListItem = <T extends IdentifiedItem | Item>(props: {
   mapped: T,
   active: boolean,
+  selected: boolean,
   activeContext: boolean,
   onClick: (item: T) => void,
   onContext: (item: T) => void
@@ -50,7 +51,11 @@ const ListItem = <T extends IdentifiedItem | Item>(props: {
   }
 
   const makeClassName = () => {
-    return "snovy-list-item".concat(append(props.active, Extras.ACTIVE), append(props.activeContext, Extras.CONTEXT))
+    return "snovy-list-item".concat(
+      append(props.active, Extras.ACTIVE),
+      append(props.selected, Extras.SELECTED),
+      append(props.activeContext, Extras.CONTEXT)
+    )
   }
 
   return (

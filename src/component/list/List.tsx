@@ -9,9 +9,8 @@ import {Key} from "ts-key-enum"
 import {useMultiSelect} from "../../util/Hooks"
 
 const List = <T extends IdentifiedItem | Item>(props: {
-  onSelect?: (items: Array<T>) => void
-  onContextChange?: (active: T | null | undefined) => void,
-  contextChildren?: Array<React.ReactElement<typeof ContextMenuItem>>
+  onSelect?: (items: Array<T>) => void,
+  buildContext?: (contextItem: T | undefined | null) => Array<React.ReactElement<typeof ContextMenuItem>>,
   items: Array<T> | undefined,
   defaultFirst?: boolean,
   selection?: Array<T>
@@ -27,6 +26,14 @@ const List = <T extends IdentifiedItem | Item>(props: {
       handler: () => {!selectedItems.isEmpty() && setSelectedItems([Array.from(selectedItems).first()!])}
     }
   ]
+
+  useEffect(
+    () => {
+      if (activeContext && !selectedItems.isEmpty() && !selectedItems.includes(activeContext)) {
+        setSelectedItems([selectedItems.first()!])
+      }
+    }, [activeContext]
+  )
 
   useEffect(
     () => {
@@ -52,12 +59,6 @@ const List = <T extends IdentifiedItem | Item>(props: {
     }, [selectedItems]
   )
 
-  useEffect(
-    () => {
-      props.onContextChange && props.onContextChange(activeContext)
-    }, [activeContext]
-  )
-
   return (
     <div
       ref={selfRef} className={"snovy-list".concat(append(!props.items, Extras.DISABLED))}
@@ -66,13 +67,14 @@ const List = <T extends IdentifiedItem | Item>(props: {
       {props.items?.map((item: T) =>
         <ListItem
           key={item instanceof IdentifiedItem ? item.id : item.name} mapped={item}
-          active={selectedItems.includes(item)} activeContext={item == activeContext}
+          selected={selectedItems.includes(item)} active={selectedItems.first() == item}
+          activeContext={item == activeContext}
           onClick={handleItemClick} onContext={(item: T) => {setActiveContext(item)}}
         />)
       }
-      {props.contextChildren && !props.contextChildren?.isEmpty() &&
+      {props.buildContext &&
       <ContextMenu parentRef={selfRef} resetContext={() => setActiveContext(undefined)}>
-        {props.contextChildren}
+        {props.buildContext(activeContext)}
       </ContextMenu>
       }
     </div>

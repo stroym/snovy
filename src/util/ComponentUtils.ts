@@ -1,5 +1,6 @@
 export enum Extras {
   ACTIVE = "active",
+  SELECTED = "selected",
   HOVER = "hover",
   CONTEXT = "active-context",
   EDITABLE = "editable",

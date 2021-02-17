@@ -8,6 +8,10 @@ const ContextMenu = (props: {
   children: Array<React.ReactElement<typeof ContextMenuItem>>
 }) => {
 
+  if (props.children.isEmpty()) {
+    return null
+  }
+
   const selfRef = useRef<HTMLDivElement>(null)
 
   const {visible, setVisible, position} = useContextMenu(selfRef, props.parentRef, props.resetContext)
