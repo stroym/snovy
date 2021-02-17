@@ -9,7 +9,7 @@ module.exports = (env, argv) => {
   const isDevelopment = argv.mode == "development"
 
   return {
-    mode: isDevelopment ? "development" : "prod uction",
+    mode: isDevelopment ? "development" : "production",
     entry: "./src/index.tsx",
     output: {
       path: __dirname + "/build",

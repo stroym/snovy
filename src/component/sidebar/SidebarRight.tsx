@@ -4,8 +4,8 @@ import Notebook from "../../model/Notebook"
 import Tag from "../../model/colored/Tag"
 import Note from "../../model/Note"
 import {makeTab} from "../tab_menu/TabMenuItem"
-import TagManager from "../tag/TagManager"
-import NoteDetail from "../NoteDetail"
+import TagManager from "./right/TagManager"
+import NoteDetail from "./right/NoteDetail"
 
 const SidebarRight = (props: {
   notebook: Notebook | undefined,

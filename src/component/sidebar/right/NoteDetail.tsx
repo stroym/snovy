@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react"
-import Tag from "../model/colored/Tag"
-import {TagItem, TagItemScoped, TagItemScopedUnique} from "./tag/TagItem"
-import Scope from "../model/colored/Scope"
-import Notebook from "../model/Notebook"
-import Note from "../model/Note"
-import TagComboBox from "./tag/TagComboBox"
+import Tag from "../../../model/colored/Tag"
+import {TagItem, TagItemScoped, TagItemScopedUnique} from "../../tag/TagItem"
+import Scope from "../../../model/colored/Scope"
+import Notebook from "../../../model/Notebook"
+import Note from "../../../model/Note"
+import TagComboBox from "../../tag/TagComboBox"
 
 const NoteDetail = (props: {
   note: Note,

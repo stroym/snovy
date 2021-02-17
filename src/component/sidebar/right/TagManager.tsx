@@ -1,8 +1,8 @@
 import React, {useState} from "react"
-import Tag from "../../model/colored/Tag"
-import List from "../list/List"
-import Notebook from "../../model/Notebook"
-import ContextMenuItem from "../context_menu/ContextMenuItem"
+import Tag from "../../../model/colored/Tag"
+import List from "../../list/List"
+import Notebook from "../../../model/Notebook"
+import ContextMenuItem from "../../context_menu/ContextMenuItem"
 
 const TagManager = (props: {
   notebook: Notebook | undefined,
