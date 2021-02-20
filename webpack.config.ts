@@ -11,6 +11,7 @@ module.exports = (env, argv) => {
   return {
     mode: isDevelopment ? "development" : "production",
     entry: "./src/index.tsx",
+    target: "web",
     output: {
       path: __dirname + "/build",
       filename: "bundle-[name].[contenthash:8].js",
