@@ -1,4 +1,6 @@
-export class Item {
+import {Named} from "../../component/list/List"
+
+export class Item implements Named {
 
   name: string
 

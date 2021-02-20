@@ -1,10 +1,10 @@
 import React, {useEffect, useRef, useState} from "react"
-import {IdentifiedItem, Item} from "../../model/common/Base"
 import {useHideOnOutsideClick} from "../../util/Hooks"
 import {Input} from "../inputs/Input"
 import {append, Extras} from "../../util/ComponentUtils"
+import {Named} from "./List"
 
-const ListItem = <T extends IdentifiedItem | Item>(props: {
+const ListItem = <T extends Named>(props: {
   mapped: T,
   active: boolean,
   selected: boolean,

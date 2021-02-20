@@ -1,14 +1,14 @@
 import React, {useEffect} from "react"
 import {useCombobox, UseComboboxState, UseComboboxStateChangeOptions} from "downshift"
 import {CollapseButton} from "../inputs/Button"
-import {IdentifiedItem, Item} from "../../model/common/Base"
 import {Key} from "ts-key-enum"
 import {useDefaultEmpty} from "../../util/Hooks"
 import ComboCreateItem from "./ComboCreateItem"
 import ComboBoxItem from "./ComboBoxItem"
 import {useKey} from "../../util/Utils"
+import {Named} from "../list/List"
 
-const ComboBox = <T extends Item>(props: {
+const ComboBox = <T extends Named>(props: {
   id?: string,
   className?: string,
   onActiveChange: (active: T) => void,
@@ -52,7 +52,7 @@ const ComboBox = <T extends Item>(props: {
         setHighlightedIndex(props.items?.indexOf(selectedItem) ?? -1)
       } else {
         const filteredItems = props.items?.filter(item =>
-          item.toString().toLowerCase().startsWith(target.toLowerCase())
+          item.name.toLowerCase().startsWith(target.toLowerCase())
         )
 
         setOptions(filteredItems)
@@ -70,7 +70,7 @@ const ComboBox = <T extends Item>(props: {
       if (!isOpen) {
         setInputValue("")
       } else {
-        setInputValue(selectedItem?.toString() ?? "")
+        setInputValue(selectedItem?.name ?? "")
       }
     }
   })
@@ -105,9 +105,8 @@ const ComboBox = <T extends Item>(props: {
           {isOpen &&
           options?.map((item, index) => (
             <ComboBoxItem
-              key={item instanceof IdentifiedItem ? item.id : item.name}
               {...getItemProps({item, index})}
-              item={item} highlighted={highlightedIndex == index} selected={selectedItem == item}
+              key={index} item={item} highlighted={highlightedIndex == index} selected={selectedItem == item}
             />
           ))}
           {isOpen && options.isEmpty() &&

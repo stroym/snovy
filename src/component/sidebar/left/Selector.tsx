@@ -21,21 +21,18 @@ export const Selector = (props: {
   return (
     <>
       <ComboBox
-        id="notebook-selector"
-        key="notebook-selector" items={props.manager.itemsSortedAlphabetically}
+        id="notebook-selector" items={props.manager.itemsSortedAlphabetically}
         onActiveChange={props.onNotebookChange}
         createItem={(name: string) => {return props.manager.insert(undefined, name)}}
         selection={props.notebook ?? props.manager.items.first()}
       />
-      <span key="lists-span" id="lists-span">
+      <span id="lists-span">
         <List<Section>
-          key="snovy-list-section"
           items={props.notebook?.itemsSortedByOrder} selection={props.sections} defaultFirst
           onSelect={props.onSectionChange}
           buildContext={contextItem => buildContextMenu(contextItem, props.notebook, props.sections, props.onSectionChange)}
         />
         <List<Note>
-          key="snovy-list-note"
           items={props.sections.first()?.itemsSortedByOrder} selection={props.notes} defaultFirst
           onSelect={props.onNoteChange}
           buildContext={(contextItem => buildContextMenu(contextItem, props.sections.first(), props.notes, props.onNoteChange))}

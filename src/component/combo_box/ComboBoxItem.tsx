@@ -1,9 +1,9 @@
 import React, {forwardRef} from "react"
 import {append, Extras} from "../../util/ComponentUtils"
-import {Item} from "../../model/common/Base"
+import {Named} from "../list/List"
 
 interface ComboBoxItemProps {
-  item: Item
+  item: Named
   selected?: boolean
   highlighted?: boolean
 }
@@ -17,7 +17,7 @@ const ComboBoxItem = forwardRef<HTMLLIElement, ComboBoxItemProps>(
       <li {...rest} ref={ref}
           className={"snovy-dropdown-item".concat(append(selected, Extras.ACTIVE), append(highlighted, Extras.HOVER))}
       >
-        {item.toString()}
+        {item.name}
       </li>
     )
   }

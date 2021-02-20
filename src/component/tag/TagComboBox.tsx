@@ -1,7 +1,6 @@
 import React, {useEffect, useRef} from "react"
 import {useCombobox} from "downshift"
 import {AddButton, CollapseButton} from "../inputs/Button"
-import {IdentifiedItem} from "../../model/common/Base"
 import {Key} from "ts-key-enum"
 import {useDefaultEmpty, useHideOnOutsideClick} from "../../util/Hooks"
 import Tag from "../../model/colored/Tag"
@@ -95,9 +94,7 @@ const TagComboBox = (props: {
         <ul {...getMenuProps()} className="snovy-dropdown" id="tag-dropdown" hidden={!isOpen}>
           {isOpen && options.map((item, index) => (
             <ComboBoxItem
-              key={item instanceof IdentifiedItem ? item.id : item.name}
-              {...getItemProps({item, index})}
-              item={item} highlighted={highlightedIndex == index}
+              key={index} item={item} highlighted={highlightedIndex == index}{...getItemProps({item, index})}
             />
           ))}
           {isOpen && options.isEmpty() &&

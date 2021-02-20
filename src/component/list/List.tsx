@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from "react"
 import ListItem from "./ListItem"
-import {IdentifiedItem, Item} from "../../model/common/Base"
 import ContextMenu from "../context_menu/ContextMenu"
 import ContextMenuItem from "../context_menu/ContextMenuItem"
 import {append, Extras} from "../../util/ComponentUtils"
@@ -8,7 +7,11 @@ import {useKey} from "../../util/Utils"
 import {Key} from "ts-key-enum"
 import {useMultiSelect} from "../../util/Hooks"
 
-const List = <T extends IdentifiedItem | Item>(props: {
+export interface Named {
+  name: string
+}
+
+const List = <T extends Named>(props: {
   onSelect?: (items: Array<T>) => void,
   buildContext?: (contextItem: T | undefined | null) => Array<React.ReactElement<typeof ContextMenuItem>>,
   items: Array<T> | undefined,
@@ -64,9 +67,9 @@ const List = <T extends IdentifiedItem | Item>(props: {
       ref={selfRef} className={"snovy-list".concat(append(!props.items, Extras.DISABLED))}
       onKeyDown={e => useKey(e, keyBindings)}
     >
-      {props.items?.map((item: T) =>
+      {props.items?.map((item, index) =>
         <ListItem
-          key={item instanceof IdentifiedItem ? item.id : item.name} mapped={item}
+          key={index} mapped={item}
           selected={selectedItems.includes(item)} active={selectedItems.first() == item}
           activeContext={item == activeContext}
           onClick={handleItemClick} onContext={(item: T) => {setActiveContext(item)}}
