@@ -57,7 +57,7 @@ function buildContextMenu<I extends Note | Section, P extends WithOrderedChildre
     contexts.push(
       makeContext(
         `New ${descriptor}`,
-        () => {setMulti(contextItem ? parent.insert(contextItem.order + 1) : parent.insert())},
+        () => {contextItem ? parent.insert(contextItem.order + 1) : parent.insert()},
         "+",
         "& go",
         () => {setMulti(contextItem ? parent.insert(contextItem.order + 1) : parent.insert())}
