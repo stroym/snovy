@@ -11,9 +11,6 @@
 
     &.left {
       border-right: $border;
-      display: grid;
-      grid-template-rows: fit-content(10%) 1fr;
-      grid-template-areas: "notebook" "lists";
     }
 
     &.right {
@@ -22,24 +19,25 @@
   }
 }
 
-#notebook-selector {
-  grid-area: notebook;
-}
-
-#lists-span {
-  grid-area: lists;
+#notes-selector {
   display: grid;
+  grid-template-rows: fit-content(10%) 1fr;
   grid-template-columns: 1fr 1fr;
-  grid-template-areas: "section note";
+  grid-template-areas: "notebook notebook" "section note";
   min-height: 0;
-}
+  max-height: 100%;
 
-#snovy-list-section {
-  grid-area: section;
-  border-right: $border-thin;
-}
+  .snovy-combo-box {
+    grid-area: notebook;
+  }
 
-#snovy-list-note {
-  grid-area: note;
-  border-left: $border-thin;
+  #snovy-list-section {
+    grid-area: section;
+    border-right: $border-thin;
+  }
+
+  #snovy-list-note {
+    grid-area: note;
+    border-left: $border-thin;
+  }
 }

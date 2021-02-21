@@ -94,34 +94,32 @@ const ComboBox = <T extends WithTitle>(props: {
   }
 
   return (
-    <>
-      <div className="snovy-combo-box" {...getComboboxProps()}>
-        <span className="snovy-combo-box-wrapper" {...getToggleButtonProps()}>
-          <input
-            className="snovy-combo-box-input"
-            {...getInputProps({
-              onKeyDown: e => options.isEmpty() && useKey(e, [{
-                key: Key.Enter,
-                handler: createItem
-              }])
-            })}
+    <div className="snovy-combo-box" {...getComboboxProps()}>
+      <span className="snovy-combo-box-wrapper" {...getToggleButtonProps()}>
+        <input
+          className="snovy-combo-box-input"
+          {...getInputProps({
+            onKeyDown: e => options.isEmpty() && useKey(e, [{
+              key: Key.Enter,
+              handler: createItem
+            }])
+          })}
+        />
+        <CollapseButton aria-label={"toggle menu"}/>
+      </span>
+      <ul {...getMenuProps()} className="snovy-dropdown" hidden={!isOpen}>
+        {isOpen &&
+        options?.map((item, index) => (
+          <ComboBoxItem
+            {...getItemProps({item, index})}
+            key={index} item={item} highlighted={highlightedIndex == index} selected={selectedItem == item}
           />
-          <CollapseButton aria-label={"toggle menu"}/>
-        </span>
-        <ul {...getMenuProps()} className="snovy-dropdown" hidden={!isOpen}>
-          {isOpen &&
-          options?.map((item, index) => (
-            <ComboBoxItem
-              {...getItemProps({item, index})}
-              key={index} item={item} highlighted={highlightedIndex == index} selected={selectedItem == item}
-            />
-          ))}
-          {isOpen && options.isEmpty() &&
-          <ComboCreateItem onClick={createItem} highlight inputValue={inputValue} itemName="notebook"/>
-          }
-        </ul>
-      </div>
-    </>
+        ))}
+        {isOpen && options.isEmpty() &&
+        <ComboCreateItem onClick={createItem} highlight inputValue={inputValue} itemName="notebook"/>
+        }
+      </ul>
+    </div>
   )
 
 }

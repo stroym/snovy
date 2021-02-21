@@ -22,32 +22,30 @@ export const Selector = (props: {
   const [noteContext, setNoteContext] = useState<Note | null | undefined>(null)
 
   return (
-    <>
+    <div id="notes-selector">
       <ComboBox
-        id="notebook-selector" items={props.manager.itemsSortedAlphabetically}
+        items={props.manager.itemsSortedAlphabetically}
+        selection={props.notebook ?? props.manager.itemsSortedById.first()}
         onActiveChange={props.onNotebookChange}
         createItem={(name: string) => {return props.manager.insert(name)}}
-        selection={props.notebook ?? props.manager.itemsSortedById.first()}
       />
-      <span id="lists-span">
-        <List
-          items={props.notebook?.itemsSortedByOrder} selection={props.sections} onSelect={props.onSectionChange}
-          defaultFirst
-          context={{
-            items: buildContextMenu(sectionContext, props.notebook, "section", props.sections, props.onSectionChange),
-            onChange: setSectionContext
-          }}
-        />
-        <List<Note>
-          items={props.sections.first()?.itemsSortedByOrder} selection={props.notes} defaultFirst
-          onSelect={props.onNoteChange}
-          context={{
-            items: buildContextMenu(noteContext, props.sections.first(), "note", props.notes, props.onNoteChange),
-            onChange: setNoteContext
-          }}
-        />
-      </span>
-    </>
+      <List
+        items={props.notebook?.itemsSortedByOrder} selection={props.sections} onSelect={props.onSectionChange}
+        defaultFirst
+        context={{
+          items: buildContextMenu(sectionContext, props.notebook, "section", props.sections, props.onSectionChange),
+          onChange: setSectionContext
+        }}
+      />
+      <List<Note>
+        items={props.sections.first()?.itemsSortedByOrder} selection={props.notes} defaultFirst
+        onSelect={props.onNoteChange}
+        context={{
+          items: buildContextMenu(noteContext, props.sections.first(), "note", props.notes, props.onNoteChange),
+          onChange: setNoteContext
+        }}
+      />
+    </div>
   )
 
 }
