@@ -12,12 +12,11 @@ export interface WithTitle {
 }
 
 const List = <T extends WithTitle>(props: {
-  onSelect?: (items: Array<T>) => void,
-  contextItems?: Array<React.ReactElement<typeof ContextMenuItem>>
-  onContextChange?: (active: T | null | undefined) => void,
   items: Array<T> | undefined,
-  defaultFirst?: boolean,
-  selection?: Array<T>
+  defaultFirst?: boolean, //TODO defaultSelection, not this
+  selection: Array<T>
+  onSelect: (items: Array<T>) => void,
+  context?: { items: Array<React.ReactElement<typeof ContextMenuItem>>, onChange: (active: T | null | undefined) => void }
 }) => {
 
   const selfRef = useRef<HTMLDivElement>(null)
@@ -33,7 +32,7 @@ const List = <T extends WithTitle>(props: {
 
   useEffect(
     () => {
-      props.onContextChange && props.onContextChange(activeContext)
+      props.context && props.context.onChange(activeContext)
 
       if (activeContext && !selectedItems.isEmpty() && !selectedItems.includes(activeContext)) {
         setSelectedItems([selectedItems.first()!])
@@ -78,9 +77,9 @@ const List = <T extends WithTitle>(props: {
           onClick={handleItemClick} onContext={(item: T) => {setActiveContext(item)}}
         />)
       }
-      {props.contextItems &&
+      {props.context &&
       <ContextMenu parentRef={selfRef} resetContext={() => setActiveContext(undefined)}>
-        {props.contextItems}
+        {props.context.items}
       </ContextMenu>
       }
     </div>

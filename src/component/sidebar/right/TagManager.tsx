@@ -1,6 +1,5 @@
 import React from "react"
 import Tag from "../../../data/model/colored/Tag"
-import List from "../../list/List"
 import Notebook from "../../../data/model/Notebook"
 
 const TagManager = (props: {
@@ -11,8 +10,8 @@ const TagManager = (props: {
 
   return (
     <div id="snovy-tag-manager">
-      <List<Tag> items={props.notebook?.tags}
-      />
+      {/*<List<Tag> items={props.notebook?.tags}*/}
+      {/*/>*/}
     </div>
   )
 

@@ -31,17 +31,20 @@ export const Selector = (props: {
       />
       <span id="lists-span">
         <List
-          items={props.notebook?.itemsSortedByOrder} selection={props.sections}
-          onSelect={props.onSectionChange}
+          items={props.notebook?.itemsSortedByOrder} selection={props.sections} onSelect={props.onSectionChange}
           defaultFirst
-          contextItems={buildContextMenu(sectionContext, props.notebook, "section", props.sections, props.onSectionChange)}
-          onContextChange={setSectionContext}
-
+          context={{
+            items: buildContextMenu(sectionContext, props.notebook, "section", props.sections, props.onSectionChange),
+            onChange: setSectionContext
+          }}
         />
         <List<Note>
           items={props.sections.first()?.itemsSortedByOrder} selection={props.notes} defaultFirst
-          onSelect={props.onNoteChange} onContextChange={setNoteContext}
-          contextItems={buildContextMenu(noteContext, props.sections.first(), "note", props.notes, props.onNoteChange)}
+          onSelect={props.onNoteChange}
+          context={{
+            items: buildContextMenu(noteContext, props.sections.first(), "note", props.notes, props.onNoteChange),
+            onChange: setNoteContext
+          }}
         />
       </span>
     </>
