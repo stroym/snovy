@@ -24,7 +24,7 @@ export const Selector = (props: {
         id="notebook-selector" items={props.manager.itemsSortedAlphabetically}
         onActiveChange={props.onNotebookChange}
         createItem={(name: string) => {return props.manager.insert(name)}}
-        selection={props.notebook ?? props.manager.notebooks.first()}
+        selection={props.notebook ?? props.manager.itemsSortedById.first()}
       />
       <span id="lists-span">
         <List<Section>

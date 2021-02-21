@@ -90,7 +90,7 @@ export default function generate(manager: Manager) {
 
       const section = notebook.sections[j]
 
-      for (let k = 0; k < 5 + j * 10; k++) {
+      for (let k = 0; k < 5 + j * 5; k++) {
         addNote(section)
       }
     }
