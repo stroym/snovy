@@ -9,10 +9,6 @@ export default class Notebook extends ItemWithParentAndChildren<Section, Manager
 
   sets: Sets = new Sets()
 
-  get sections() {
-    return this.items
-  }
-
   insert(order?: number, name = "") {
     return this.addItem(new Section(this, this.idCounter, name, order ? order : this.items.length), order != undefined)
   }
