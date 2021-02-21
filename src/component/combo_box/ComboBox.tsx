@@ -20,7 +20,13 @@ const ComboBox = <T extends WithTitle>(props: {
   getInputValue?: (value: string) => void
 }) => {
 
-  const [options, setOptions] = useDefaultEmpty(props.items)
+  const [options, setOptions] = useDefaultEmpty<T>()
+
+  useEffect(
+    () => {
+      props.items && setOptions(props.items)
+    }, [props.items]
+  )
 
   const stateReducer = (state: UseComboboxState<T>, actionAndChanges: UseComboboxStateChangeOptions<T>) => {
     const {type, changes} = actionAndChanges
