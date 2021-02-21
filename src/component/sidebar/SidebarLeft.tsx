@@ -6,6 +6,7 @@ import TabMenu, {Alignment, Orientation} from "../tab_menu/TabMenu"
 import Manager from "../../model/Manager"
 import {makeTab} from "../tab_menu/TabMenuItem"
 import Selector from "./left/Selector"
+import {saveAs} from "file-saver"
 
 export const SidebarLeft = (props: {
   onNotebookChange: (active: Notebook | undefined) => void,
@@ -30,7 +31,9 @@ export const SidebarLeft = (props: {
       <TabMenu orientation={Orientation.LEFT}>{[
         makeTab(mappings.notes, Alignment.START, setActiveTab, activeTab),
         makeTab(mappings.search, Alignment.START, setActiveTab, activeTab),
-        makeTab("⚘", Alignment.END, setActiveTab, activeTab, true),
+        makeTab("⚘", Alignment.END, () => {
+          saveAs(new File([props.manager.export()], "data.json", {type: "text/json;charset=utf-8"}))
+        }, activeTab, true),
         makeTab("⚖", Alignment.END, setActiveTab, activeTab, true),
         makeTab(mappings.options, Alignment.END, setActiveTab, activeTab, true)
       ]}

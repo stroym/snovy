@@ -11,28 +11,12 @@ const content =
   "asdasddasd\n" +
   "\n" +
   "\n" +
-  "dhfgjgfjfjgfjjf\n" +
-  "\n" +
-  "\n" +
   "- adasdadasd\n" +
   "- asdasdsdd\n" +
-  "\n" +
-  "\n" +
-  "1. asdadada\n" +
-  "2. adasddas\n" +
-  "\n" +
-  "\n" +
   "asdasdad [link](https://codesandbox.io/s/pyoy0on510?file=/MyEditor.js) \n" +
   "\n" +
   "\n" +
-  "https://codesandbox.io/s/pyoy0on510?file=/MyEditor.js\n" +
-  "\n" +
-  "```\n" +
-  "asdsadassadasd\n" +
-  "asdsadd\n" +
-  "a\n" +
-  "sfdggfghgfs\n" +
-  "```"
+  "https://codesandbox.io/s/pyoy0on510?file=/MyEditor.js\n"
 
 function dec2hex(dec: number) {
   return dec.toString(36).padStart(2, "0")
@@ -60,8 +44,27 @@ export default class Manager implements ParentInterface<Notebook> {
 
   //testing data
   constructor() {
+    this.populate()
+  }
+
+  export() {
+    const seen = new Array<any>()
+
+    return JSON.stringify(this.items, function (key, val) {
+      if (val != null && typeof val == "object") {
+        if (seen.indexOf(val) >= 0) {
+          return
+        }
+        seen.push(val)
+      }
+
+      return val
+    })
+  }
+
+  populate() {
     for (let i = 0; i < 10; i++) {
-      this.addNotebook("" + Math.floor(Math.random() * (1000)), i)
+      this.addNotebook("" + randomNumber(1000, 100), i)
     }
 
     for (let i = 0; i < this.items.length; i++) {

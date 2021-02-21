@@ -11,11 +11,9 @@ import Note from "./model/Note"
 import Editor from "./component/editor/Editor"
 import {isArray} from "./util/Utils"
 
-const man = new Manager()
-
 function App() {
 
-  const [manager, _setManager] = useState<Manager>(man)
+  const [manager, _setManager] = useState<Manager>(new Manager())
   const [notebook, setNotebook] = useState<Notebook | undefined>()
   const [tag, setTag] = useState<Tag | undefined>()
 
