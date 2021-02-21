@@ -1,11 +1,11 @@
 import React from "react"
-import Section from "../../../model/Section"
-import Note from "../../../model/Note"
+import Section from "../../../data/model/Section"
+import Note from "../../../data/model/Note"
 import ComboBox from "../../combo_box/ComboBox"
-import Notebook from "../../../model/Notebook"
-import Manager from "../../../model/Manager"
+import Notebook from "../../../data/model/Notebook"
+import Manager from "../../../data/model/Manager"
 import List from "../../list/List"
-import {ItemWithParent, ParentInterface} from "../../../model/common/Base"
+import {ItemWithParent, ParentInterface} from "../../../data/model/common/Base"
 import ContextMenuItem, {makeContext, makeSharedContext} from "../../context_menu/ContextMenuItem"
 
 export const Selector = (props: {

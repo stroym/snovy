@@ -1,7 +1,7 @@
 import React, {useState} from "react"
-import Tag from "../../model/colored/Tag"
+import Tag from "../../data/model/colored/Tag"
 import {CollapseButton, RemoveButton} from "../inputs/Button"
-import Scope from "../../model/colored/Scope"
+import Scope from "../../data/model/colored/Scope"
 import {default as TinyColor} from "tinycolor2"
 
 //TODO invert button onHover as well as the text color

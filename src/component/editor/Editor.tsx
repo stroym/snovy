@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import Note from "../../model/Note"
+import Note from "../../data/model/Note"
 import {append, Extras} from "../../util/ComponentUtils"
 import {default as OutlineEditor, theme} from "rich-markdown-editor"
 import {colors} from "../theme"

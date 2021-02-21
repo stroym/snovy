@@ -1,7 +1,7 @@
 import React from "react"
-import Tag from "../../../model/colored/Tag"
+import Tag from "../../../data/model/colored/Tag"
 import List from "../../list/List"
-import Notebook from "../../../model/Notebook"
+import Notebook from "../../../data/model/Notebook"
 
 const TagManager = (props: {
   notebook: Notebook | undefined,

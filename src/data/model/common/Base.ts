@@ -1,4 +1,4 @@
-import {WithTitle} from "../../component/list/List"
+import {WithTitle} from "../../../component/list/List"
 
 export class Item implements WithTitle {
 

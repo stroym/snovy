@@ -1,5 +1,5 @@
 import React, {forwardRef, useEffect, useRef, useState} from "react"
-import Scope from "../../model/colored/Scope"
+import Scope from "../../data/model/colored/Scope"
 import {CheckButton, ColorButton, ConfirmButton} from "../inputs/Button"
 import {useColored, useHideOnOutsideClick} from "../../util/Hooks"
 import {Input} from "../inputs/Input"
