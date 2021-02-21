@@ -4,8 +4,6 @@ import generate from "../Generator"
 
 export default class Manager implements WithChildren<Notebook> {
 
-  childName = "notebook"
-
   idCounter = 0
 
   notebooks: Array<Notebook> = new Array<Notebook>()
