@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState} from "react"
 import Section from "../../../data/model/Section"
 import Note from "../../../data/model/Note"
 import ComboBox from "../../combo_box/ComboBox"
@@ -18,6 +18,9 @@ export const Selector = (props: {
   notes: Array<Note>
 }) => {
 
+  const [sectionContext, setSectionContext] = useState<Section | null | undefined>(null)
+  const [noteContext, setNoteContext] = useState<Note | null | undefined>(null)
+
   return (
     <>
       <ComboBox
@@ -27,15 +30,18 @@ export const Selector = (props: {
         selection={props.notebook ?? props.manager.itemsSortedById.first()}
       />
       <span id="lists-span">
-        <List<Section>
-          items={props.notebook?.itemsSortedByOrder} selection={props.sections} defaultFirst
+        <List
+          items={props.notebook?.itemsSortedByOrder} selection={props.sections}
           onSelect={props.onSectionChange}
-          buildContext={contextItem => buildContextMenu(contextItem, props.notebook, "section", props.sections, props.onSectionChange)}
+          defaultFirst
+          contextItems={buildContextMenu(sectionContext, props.notebook, "section", props.sections, props.onSectionChange)}
+          onContextChange={setSectionContext}
+
         />
         <List<Note>
           items={props.sections.first()?.itemsSortedByOrder} selection={props.notes} defaultFirst
-          onSelect={props.onNoteChange}
-          buildContext={(contextItem => buildContextMenu(contextItem, props.sections.first(), "note", props.notes, props.onNoteChange))}
+          onSelect={props.onNoteChange} onContextChange={setNoteContext}
+          contextItems={buildContextMenu(noteContext, props.sections.first(), "note", props.notes, props.onNoteChange)}
         />
       </span>
     </>
@@ -43,8 +49,7 @@ export const Selector = (props: {
 
 }
 
-//TODO while this is pretty convinient, it's also a fairly contrived way of doing this
-function buildContextMenu<I extends Note | Section, P extends WithOrderedChildren<I>>(
+export function buildContextMenu<I extends Note | Section, P extends WithOrderedChildren<I>>(
   contextItem: I | undefined | null,
   parent: P | undefined,
   descriptor: string,

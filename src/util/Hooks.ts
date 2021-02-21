@@ -43,8 +43,7 @@ export function useHideOnOutsideClick(elementRef: React.RefObject<Element | null
 
 export function useContextMenu(
   contextRef: React.RefObject<Element | null>,
-  parentRef: React.RefObject<Element | null>,
-  resetContext?: () => void
+  parentRef: React.RefObject<Element | null>
 ) {
 
   const [visible, setVisible] = useHideOnOutsideClick(contextRef)
@@ -58,14 +57,6 @@ export function useContextMenu(
         parentRef.current?.removeEventListener("contextmenu", handleContextMenu)
       }
     }, []
-  )
-
-  useEffect(
-    () => {
-      if (!visible && resetContext) {
-        resetContext()
-      }
-    }, [visible]
   )
 
   const handleContextMenu = (e: any) => {

@@ -13,7 +13,8 @@ export interface WithTitle {
 
 const List = <T extends WithTitle>(props: {
   onSelect?: (items: Array<T>) => void,
-  buildContext?: (contextItem: T | undefined | null) => Array<React.ReactElement<typeof ContextMenuItem>>,
+  contextItems?: Array<React.ReactElement<typeof ContextMenuItem>>
+  onContextChange?: (active: T | null | undefined) => void,
   items: Array<T> | undefined,
   defaultFirst?: boolean,
   selection?: Array<T>
@@ -32,6 +33,8 @@ const List = <T extends WithTitle>(props: {
 
   useEffect(
     () => {
+      props.onContextChange && props.onContextChange(activeContext)
+
       if (activeContext && !selectedItems.isEmpty() && !selectedItems.includes(activeContext)) {
         setSelectedItems([selectedItems.first()!])
       }
@@ -75,9 +78,9 @@ const List = <T extends WithTitle>(props: {
           onClick={handleItemClick} onContext={(item: T) => {setActiveContext(item)}}
         />)
       }
-      {props.buildContext &&
+      {props.contextItems &&
       <ContextMenu parentRef={selfRef} resetContext={() => setActiveContext(undefined)}>
-        {props.buildContext(activeContext)}
+        {props.contextItems}
       </ContextMenu>
       }
     </div>
