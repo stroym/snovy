@@ -31,7 +31,7 @@ export default class Sets {
 
   deleteScope(scope: Scope, keepTags: boolean) {
     this.scopes.find(it => {
-      if (it.name == scope.name) {
+      if (it.title == scope.title) {
         if (keepTags) {
           this.tags.forEach(it => {
             if (it.scope == scope) {

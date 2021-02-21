@@ -40,11 +40,11 @@ export default class Tag extends ColoredItem {
   }
 
   equals(tag: Tag): boolean {
-    return this.scope == tag.scope && this.name == tag.name
+    return this.scope == tag.scope && this.title == tag.title
   }
 
   toString(): string {
-    return this.scope ? this.scope.toString() + this.name : super.toString()
+    return this.scope ? this.scope.toString() + this.title : super.toString()
   }
 
   static compareByScope =

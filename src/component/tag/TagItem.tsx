@@ -12,7 +12,7 @@ export const TagItem = (props: {
 }) => {
   return (
     <span className="snovy-tag-item" style={style(props.mapped.color)}>
-      <span className="tag-name" style={style(props.mapped.color, -10)}>{props.mapped.name}</span>
+      <span className="tag-name" style={style(props.mapped.color, -10)}>{props.mapped.title}</span>
       <RemoveButton onClick={() => props.onRemove(props.mapped)}/>
     </span>
   )
@@ -26,7 +26,7 @@ export const TagItemScoped = (props: TagItemProps) => {
     <span className="snovy-tag-item tag-grouped" style={style(props.scope.color)}>
       <div className="tag-group-header">
         <CollapseButton onClick={() => {setCollapsed(!collapsed)}} toggle={collapsed}/>
-        <span className="tag-scope">{props.scope.name}</span>
+        <span className="tag-scope">{props.scope.title}</span>
         <RemoveButton onClick={() => props.onRemoveScope(props.mapped)}/>
       </div>
       {!collapsed && <div className="tag-container" style={style(props.scope.color, 40)}>
@@ -39,8 +39,8 @@ export const TagItemScoped = (props: TagItemProps) => {
 export const TagItemScopedUnique = (props: TagItemProps) => {
   return (
     <span className="snovy-tag-item tag-unique" style={style(props.scope.color)}>
-      <span className="tag-scope" style={style(props.scope.color, 30)}>{props.scope.name}</span>
-      <span className="tag-name" style={style(props.scope.color, 10)}>{props.mapped[0].name}</span>
+      <span className="tag-scope" style={style(props.scope.color, 30)}>{props.scope.title}</span>
+      <span className="tag-name" style={style(props.scope.color, 10)}>{props.mapped[0].title}</span>
       <RemoveButton onClick={() => props.onRemoveScope(props.mapped)}/>
     </span>
   )

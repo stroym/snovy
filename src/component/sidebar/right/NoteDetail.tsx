@@ -42,7 +42,7 @@ const NoteDetail = (props: {
     let tag
 
     if (scopeText) {
-      const maybeScope = props.notebook.sets.scopes.find(it => it.name == scopeText)
+      const maybeScope = props.notebook.sets.scopes.find(it => it.title == scopeText)
 
       if (maybeScope) {
         tag = props.notebook.sets.addTag(tagText, tagColor, maybeScope)
@@ -64,9 +64,11 @@ const NoteDetail = (props: {
       <div id="snovy-tag-display">
         {props.note.tagMap.map(([scope, tags]: [Scope | undefined, Tag[]]) => scope ? scope.unique ?
           <TagItemScopedUnique
-            key={scope.name} scope={scope} mapped={tags} onRemove={remove} onRemoveScope={removeScoped}
+            key={scope.title} scope={scope} mapped={tags} onRemove={remove} onRemoveScope={removeScoped}
           /> :
-          <TagItemScoped key={scope.name} scope={scope} mapped={tags} onRemove={remove} onRemoveScope={removeScoped}/> :
+          <TagItemScoped
+            key={scope.title} scope={scope} mapped={tags} onRemove={remove} onRemoveScope={removeScoped}
+          /> :
           tags.map((item: Tag) => <TagItem key={item.toString()} mapped={item} onRemove={remove}/>)
         )}
       </div>

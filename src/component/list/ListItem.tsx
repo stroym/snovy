@@ -2,9 +2,9 @@ import React, {useEffect, useRef, useState} from "react"
 import {useHideOnOutsideClick} from "../../util/Hooks"
 import {Input} from "../inputs/Input"
 import {append, Extras} from "../../util/ComponentUtils"
-import {Named} from "./List"
+import {WithTitle} from "./List"
 
-const ListItem = <T extends Named>(props: {
+const ListItem = <T extends WithTitle>(props: {
   mapped: T,
   active: boolean,
   selected: boolean,
@@ -20,8 +20,8 @@ const ListItem = <T extends Named>(props: {
 
   useEffect(
     () => {
-      setValue(props.mapped.name)
-    }, [props.mapped, props.mapped.name]
+      setValue(props.mapped.title)
+    }, [props.mapped, props.mapped.title]
   )
 
   useEffect(
@@ -47,7 +47,7 @@ const ListItem = <T extends Named>(props: {
 
   const handleChange = (text: string) => {
     setValue(text)
-    props.mapped.name = text
+    props.mapped.title = text
   }
 
   const makeClassName = () => {

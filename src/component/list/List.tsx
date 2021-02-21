@@ -7,11 +7,11 @@ import {useKey} from "../../util/Utils"
 import {Key} from "ts-key-enum"
 import {useMultiSelect} from "../../util/Hooks"
 
-export interface Named {
-  name: string
+export interface WithTitle {
+  title: string
 }
 
-const List = <T extends Named>(props: {
+const List = <T extends WithTitle>(props: {
   onSelect?: (items: Array<T>) => void,
   buildContext?: (contextItem: T | undefined | null) => Array<React.ReactElement<typeof ContextMenuItem>>,
   items: Array<T> | undefined,

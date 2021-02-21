@@ -1,27 +1,27 @@
-import {Named} from "../../component/list/List"
+import {WithTitle} from "../../component/list/List"
 
-export class Item implements Named {
+export class Item implements WithTitle {
 
-  name: string
+  title: string
 
   readonly createdAt: Date
   changedAt: Date //TODO wire up changes
 
-  protected constructor(name: string) {
-    this.name = name
+  protected constructor(title: string) {
+    this.title = title
     this.createdAt = new Date()
     this.changedAt = this.createdAt
   }
 
-  rename(newName: string) {
-    this.name = newName
+  static compareByName = (a: Item, b: Item) => { return a.title.localeCompare(b.title, undefined, {numeric: true})}
+
+  rename(newTitle: string) {
+    this.title = newTitle
   }
 
   toString(): string {
-    return this.name
+    return this.title
   }
-
-  static compareByName = (a: Item, b: Item) => { return a.name.localeCompare(b.name, undefined, {numeric: true})}
 
   static make(name: string) {
     return new Item(name)

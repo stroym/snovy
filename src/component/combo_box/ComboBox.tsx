@@ -6,9 +6,9 @@ import {useDefaultEmpty} from "../../util/Hooks"
 import ComboCreateItem from "./ComboCreateItem"
 import ComboBoxItem from "./ComboBoxItem"
 import {useKey} from "../../util/Utils"
-import {Named} from "../list/List"
+import {WithTitle} from "../list/List"
 
-const ComboBox = <T extends Named>(props: {
+const ComboBox = <T extends WithTitle>(props: {
   id?: string,
   className?: string,
   onActiveChange: (active: T) => void,
@@ -42,6 +42,7 @@ const ComboBox = <T extends Named>(props: {
     selectedItem, highlightedIndex, selectItem, setInputValue, setHighlightedIndex, closeMenu
   } = useCombobox({
     items: options,
+    itemToString: item => item ? item.title : "",
     initialSelectedItem: props.selection,
     stateReducer: stateReducer,
     onInputValueChange: ({inputValue, selectedItem}) => {
@@ -52,7 +53,7 @@ const ComboBox = <T extends Named>(props: {
         setHighlightedIndex(props.items?.indexOf(selectedItem) ?? -1)
       } else {
         const filteredItems = props.items?.filter(item =>
-          item.name.toLowerCase().startsWith(target.toLowerCase())
+          item.title.toLowerCase().startsWith(target.toLowerCase())
         )
 
         setOptions(filteredItems)
@@ -70,7 +71,7 @@ const ComboBox = <T extends Named>(props: {
       if (!isOpen) {
         setInputValue("")
       } else {
-        setInputValue(selectedItem?.name ?? "")
+        setInputValue(selectedItem?.title ?? "")
       }
     }
   })

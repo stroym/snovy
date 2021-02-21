@@ -7,7 +7,7 @@ export default class State extends ColoredItem {
 
   constructor(name: string, color: string) {
     super(name, color)
-    this.name = name
+    this.title = name
   }
 
   addToNote(note: Note) {
