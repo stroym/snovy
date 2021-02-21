@@ -66,19 +66,11 @@ export abstract class OrderedItem extends IdentifiedItem {
 
 }
 
-export interface ParentInterface<T extends OrderedItem> {
+interface BaseInterface<T extends IdentifiedItem> {
 
   idCounter: number
-  childName?: string
 
-  items: Array<T>
-
-  itemsSortedById: Array<T>
   itemsSortedAlphabetically: Array<T>
-  itemsSortedByOrder: Array<T>
-
-  addItem: (item: T, reorder: boolean) => void
-  insert: (order?: number, name?: string) => T
 
   deleteItem: (item?: T) => T | undefined
   deleteById: (id: number) => T | undefined
@@ -86,86 +78,18 @@ export interface ParentInterface<T extends OrderedItem> {
 
 }
 
-export abstract class ItemWithParent<P extends ParentInterface<any>> extends OrderedItem {
+export interface WithChildren<T extends IdentifiedItem> extends BaseInterface<T> {
 
-  parent: P
-
-  constructor(parent: P, id: number, name: string, order: number) {
-    super(id, name, order)
-    this.parent = parent
-  }
+  addItem: (item: T) => void
+  insert: (name?: string) => T
 
 }
 
-export abstract class ItemWithParentAndChildren<T extends OrderedItem, P extends ParentInterface<any>> extends ItemWithParent<P> implements ParentInterface<T> {
+export interface WithOrderedChildren<T extends OrderedItem> extends BaseInterface<T> {
 
-  idCounter = 0
+  itemsSortedByOrder: Array<T>
 
-  childName?: string
-
-  items: Array<T> = new Array<T>()
-
-  constructor(parent: P, id: number, name: string, order: number) {
-    super(parent, id, name, order)
-  }
-
-  get itemsSortedById() {
-    return this.sortBy(IdentifiedItem.compareById)
-  }
-
-  get itemsSortedAlphabetically() {
-    return this.sortBy(Item.compareByName)
-  }
-
-  get itemsSortedByOrder() {
-    return this.sortBy(OrderedItem.compareByOrder)
-  }
-
-  private sortBy(compareFn: (a: T, b: T) => number): Array<T> {
-    return this.items.sort(compareFn)
-  }
-
-  addItem(item: T, reorder = false) {
-    if (reorder) {
-      this.itemsSortedByOrder.slice(item.order).forEach(value => {
-        value.order++
-      })
-    }
-
-    this.items.push(item)
-    this.idCounter++
-
-    return item
-  }
-
-  deleteItem(item?: T) {
-    if (!item) {
-      return undefined
-    } else {
-      const index = this.items.delete(item)
-
-      this.items.slice(index).forEach(value => value.order--)
-
-      if (index > 0) {
-        return this.items[index - 1]
-      } else if (index == 0 && this.items.length > 1) {
-        return this.items[index]
-      } else {
-        return undefined
-      }
-    }
-  }
-
-  deleteItems(items: Array<T>) {
-    let item
-    items.forEach(it => {item = this.deleteItem(it)})
-    return item
-  }
-
-  deleteById(id: number) {
-    return this.deleteItem(this.items.find(value => {return value.id == id}))
-  }
-
-  abstract insert(order?: number, name?: string): T;
+  addItem: (item: T, reorder: boolean) => void
+  insert: (order?: number, name?: string) => T
 
 }

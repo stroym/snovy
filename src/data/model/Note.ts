@@ -1,15 +1,22 @@
 import Tag from "./colored/Tag"
-import {ItemWithParent} from "./common/Base"
+import {OrderedItem} from "./common/Base"
 import Section from "./Section"
 import State from "./colored/State"
 import Scope from "./colored/Scope"
 
-export default class Note extends ItemWithParent<Section> {
+export default class Note extends OrderedItem {
+
+  parent: Section
 
   content = ""
   archived = false
   state?: State
   tags: Set<Tag> = new Set<Tag>()
+
+  constructor(parent: Section, id: number, title: string, order: number) {
+    super(id, title, order)
+    this.parent = parent
+  }
 
   get tagMap() {
     const scopedTags = this.tags.toArray()

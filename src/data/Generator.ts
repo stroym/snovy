@@ -34,16 +34,16 @@ function randomColor() {
   return "#" + Math.floor(Math.random() * 16777215).toString(16)
 }
 
-function addNotebook(target: Manager, name: string, order = 999) {
-  return target.addItem(new Notebook(target, target.idCounter, name, order))
+function addNotebook(target: Manager, name: string) {
+  return target.addItem(new Notebook(target, target.idCounter, name))
 }
 
 function addSection(target: Notebook) {
-  target.addItem(new Section(target, target.idCounter, "section " + target.idCounter, target.items.length))
+  target.addItem(new Section(target, target.idCounter, "section " + target.idCounter, target.sections.length))
 }
 
 function addNote(target: Section) {
-  const temp = new Note(target, target.idCounter, "note " + target.idCounter, target.items.length)
+  const temp = new Note(target, target.idCounter, "note " + target.idCounter, target.notes.length)
   temp.content = "content " + target.idCounter + "\n" + content
   tagNote(target.parent, temp)
 
@@ -51,27 +51,23 @@ function addNote(target: Section) {
 }
 
 function addTestTag(target: Notebook, name: string, color: string, scope?: Scope) {
-  target.sets.addTag(name, color, scope)
+  target.addTag(name, color, scope)
 }
 
 function addTestScope(target: Notebook, name: string, color: string, unique?: boolean) {
-  return target.sets.addScope(name, color, unique)
+  return target.addScope(name, color, unique)
 }
 
 function tagNote(notebook: Notebook, target: Note) {
   for (let i = 0; i < 50; i++) {
-    const tag = notebook.sets.tags[Math.floor(Math.random() * (notebook.sets.tags.length))]
+    const tag = notebook.tags[Math.floor(Math.random() * (notebook.tags.length))]
     target.tag(tag)
   }
 }
 
 export default function generate(manager: Manager) {
-
-  const notebooks = new Array<Notebook>()
-
   for (let i = 0; i < 10; i++) {
-
-    const notebook = addNotebook(manager, "" + randomNumber(1000, 100), i)
+    const notebook = addNotebook(manager, "" + randomNumber(1000, 100))
 
     for (let j = 0; j < randomNumber(8, 4); j++) {
       const scope = addTestScope(notebook, randomString(randomNumber(20)) + j, randomColor(), j % 2 == 0)
@@ -92,7 +88,7 @@ export default function generate(manager: Manager) {
     for (let j = 0; j < i + 4; j++) {
       addSection(notebook)
 
-      const section = notebook.items[j]
+      const section = notebook.sections[j]
 
       for (let k = 0; k < 5 + j * 10; k++) {
         addNote(section)

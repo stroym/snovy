@@ -11,7 +11,7 @@ const TagManager = (props: {
 
   return (
     <div id="snovy-tag-manager">
-      <List<Tag> items={props.notebook?.sets.tags}
+      <List<Tag> items={props.notebook?.tags}
       />
     </div>
   )

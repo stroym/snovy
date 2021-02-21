@@ -5,7 +5,7 @@ import ComboBox from "../../combo_box/ComboBox"
 import Notebook from "../../../data/model/Notebook"
 import Manager from "../../../data/model/Manager"
 import List from "../../list/List"
-import {ItemWithParent, ParentInterface} from "../../../data/model/common/Base"
+import {WithOrderedChildren} from "../../../data/model/common/Base"
 import ContextMenuItem, {makeContext, makeSharedContext} from "../../context_menu/ContextMenuItem"
 
 export const Selector = (props: {
@@ -23,28 +23,31 @@ export const Selector = (props: {
       <ComboBox
         id="notebook-selector" items={props.manager.itemsSortedAlphabetically}
         onActiveChange={props.onNotebookChange}
-        createItem={(name: string) => {return props.manager.insert(undefined, name)}}
-        selection={props.notebook ?? props.manager.items.first()}
+        createItem={(name: string) => {return props.manager.insert(name)}}
+        selection={props.notebook ?? props.manager.notebooks.first()}
       />
       <span id="lists-span">
         <List<Section>
           items={props.notebook?.itemsSortedByOrder} selection={props.sections} defaultFirst
           onSelect={props.onSectionChange}
-          buildContext={contextItem => buildContextMenu(contextItem, props.notebook, props.sections, props.onSectionChange)}
+          buildContext={contextItem => buildContextMenu(contextItem, props.notebook, "section", props.sections, props.onSectionChange)}
         />
         <List<Note>
           items={props.sections.first()?.itemsSortedByOrder} selection={props.notes} defaultFirst
           onSelect={props.onNoteChange}
-          buildContext={(contextItem => buildContextMenu(contextItem, props.sections.first(), props.notes, props.onNoteChange))}
+          buildContext={(contextItem => buildContextMenu(contextItem, props.sections.first(), "note", props.notes, props.onNoteChange))}
         />
       </span>
     </>
   )
+
 }
 
-function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface<I>>(
+//TODO while this is pretty convinient, it's also a fairly contrived way of doing this
+function buildContextMenu<I extends Note | Section, P extends WithOrderedChildren<I>>(
   contextItem: I | undefined | null,
   parent: P | undefined,
+  descriptor: string,
   selectedItems: Array<I>,
   setMulti: (active: Array<I> | I | undefined) => void
 ): Array<React.ReactElement<typeof ContextMenuItem>> {
@@ -53,7 +56,7 @@ function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface
   if (parent) {
     contexts.push(
       makeContext(
-        `New ${parent.childName}`,
+        `New ${descriptor}`,
         () => {setMulti(contextItem ? parent.insert(contextItem.order + 1) : parent.insert())},
         "+",
         "& go",
@@ -64,7 +67,7 @@ function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface
     if (contextItem) {
       contexts.push(
         makeContext(
-          `New ${parent.childName} (as last)`,
+          `New ${descriptor} (as last)`,
           () => {parent.insert()},
           "+",
           "& go",
@@ -75,7 +78,7 @@ function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface
       contexts.push(
         makeSharedContext({
             single: {
-              text: `Delete ${parent.childName}`,
+              text: `Delete ${descriptor}`,
               action: () => {
                 const neighbour = parent.deleteItem(contextItem)
                 neighbour == undefined || contextItem == selectedItems.first() && setMulti(neighbour)
@@ -83,7 +86,7 @@ function buildContextMenu<I extends ItemWithParent<P>, P extends ParentInterface
             },
             multiple: {
               condition: selectedItems.hasMore(),
-              text: `Delete ${selectedItems.length} ${parent.childName}s`,
+              text: `Delete ${selectedItems.length} ${descriptor}s`,
               action: () => {setMulti(parent.deleteItems(selectedItems))}
             },
             icon: "×"

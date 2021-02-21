@@ -1,24 +1,35 @@
 import Notebook from "./Notebook"
-import {IdentifiedItem, Item, OrderedItem, ParentInterface} from "./common/Base"
+import {IdentifiedItem, Item, WithChildren} from "./common/Base"
 import generate from "../Generator"
 
-export default class Manager implements ParentInterface<Notebook> {
+export default class Manager implements WithChildren<Notebook> {
 
   childName = "notebook"
 
   idCounter = 0
 
-  items: Array<Notebook> = new Array<Notebook>()
+  notebooks: Array<Notebook> = new Array<Notebook>()
 
   //testing data
   constructor() {
     generate(this)
   }
 
+  get itemsSortedById(): Array<Notebook> {
+    return this.notebooks.sort(IdentifiedItem.compareById)
+  }
+
+  get itemsSortedAlphabetically(): Array<Notebook> {
+    return this.notebooks.sort(Item.compareByName)
+  }
+
   export() {
     const seen = new Array<any>()
 
-    return JSON.stringify(this.items, function (key, val) {
+    // const ser = serialize(this)
+    // console.log(ser)
+
+    return JSON.stringify(this.notebooks, function (key, val) {
       if (val != null && typeof val == "object") {
         if (seen.indexOf(val) >= 0) {
           return
@@ -30,30 +41,12 @@ export default class Manager implements ParentInterface<Notebook> {
     })
   }
 
-  get itemsSortedById(): Array<Notebook> {
-    return this.items.sort(IdentifiedItem.compareById)
+  insert(name = "") {
+    return this.addItem(new Notebook(this, this.idCounter, name))
   }
 
-  get itemsSortedAlphabetically(): Array<Notebook> {
-    return this.items.sort(Item.compareByName)
-  }
-
-  get itemsSortedByOrder(): Array<Notebook> {
-    return this.items.sort(OrderedItem.compareByOrder)
-  }
-
-  insert(order?: number, name = "") {
-    return this.addItem(new Notebook(this, this.idCounter, name, order ? order : this.items.length), order != undefined)
-  }
-
-  addItem(item: Notebook, reorder = false) {
-    if (reorder) {
-      this.itemsSortedByOrder.slice(item.order).forEach(value => {
-        value.order++
-      })
-    }
-
-    this.items.push(item)
+  addItem(item: Notebook) {
+    this.notebooks.push(item)
     this.idCounter++
 
     return item
@@ -63,11 +56,9 @@ export default class Manager implements ParentInterface<Notebook> {
     if (!item) {
       return undefined
     } else {
-      const index = this.items.delete(item)
+      const index = this.notebooks.delete(item)
 
-      this.items.slice(index).forEach(value => { value.order--})
-
-      return index > 0 ? this.items[index - 1] : undefined
+      return index > 0 ? this.notebooks[index - 1] : undefined
     }
   }
 
@@ -77,7 +68,7 @@ export default class Manager implements ParentInterface<Notebook> {
   }
 
   deleteById(id: number) {
-    return this.deleteItem(this.items.find(value => {return value.id == id}))
+    return this.deleteItem(this.notebooks.find(value => {return value.id == id}))
   }
 
 }

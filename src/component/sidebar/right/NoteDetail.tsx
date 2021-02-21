@@ -42,16 +42,16 @@ const NoteDetail = (props: {
     let tag
 
     if (scopeText) {
-      const maybeScope = props.notebook.sets.scopes.find(it => it.title == scopeText)
+      const maybeScope = props.notebook.scopes.find(it => it.title == scopeText)
 
       if (maybeScope) {
-        tag = props.notebook.sets.addTag(tagText, tagColor, maybeScope)
+        tag = props.notebook.addTag(tagText, tagColor, maybeScope)
       } else {
-        const scope = props.notebook.sets.addScope(scopeText, scopeColor, scopeExclusive)
-        tag = props.notebook.sets.addTag(tagText, tagColor, scope)
+        const scope = props.notebook.addScope(scopeText, scopeColor, scopeExclusive)
+        tag = props.notebook.addTag(tagText, tagColor, scope)
       }
     } else {
-      tag = props.notebook.sets.addTag(tagText, tagColor)
+      tag = props.notebook.addTag(tagText, tagColor)
     }
 
     props.note.tag(tag)
@@ -60,7 +60,7 @@ const NoteDetail = (props: {
 
   return (
     <div id="snovy-note-detail">
-      <TagComboBox tags={props.notebook.sets.availableTags(props.note)} onTag={onTag} onNewTag={tagCreation}/>
+      <TagComboBox tags={props.notebook.availableTags(props.note)} onTag={onTag} onNewTag={tagCreation}/>
       <div id="snovy-tag-display">
         {props.note.tagMap.map(([scope, tags]: [Scope | undefined, Tag[]]) => scope ? scope.unique ?
           <TagItemScopedUnique
