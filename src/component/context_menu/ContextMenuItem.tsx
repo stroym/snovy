@@ -5,8 +5,7 @@ export const ContextMenuItem = (props: {
   icon?: string
   text: string,
   onClick: () => void,
-  specialText?: string,
-  specialOnClick?: () => void,
+  special?: { text: string, onClick: () => void }
   children?: Array<React.ReactElement<typeof ContextMenuItem>>
 }) => {
 
@@ -17,8 +16,8 @@ export const ContextMenuItem = (props: {
 
   return (
     <div className="outer-wrapper" onMouseEnter={() => {setNested(true)}} onMouseLeave={() => {setNested(false)}}>
-      <div className="snovy-context-menu-item" onClick={props.specialOnClick ? () => false : props.onClick}>
-      <span className="context-wrapper" onClick={props.specialOnClick ? props.onClick : () => false}>
+      <div className="snovy-context-menu-item" onClick={props.special ? () => false : props.onClick}>
+      <span className="context-wrapper" onClick={props.special ? props.onClick : () => false}>
         <span className="context-icon">
           {props.icon}
         </span>
@@ -26,9 +25,9 @@ export const ContextMenuItem = (props: {
           {props.text}
         </span>
       </span>
-        {props.specialText &&
-        <span className="context-text-special" onClick={props.specialOnClick}>
-          {props.specialText}
+        {props.special &&
+        <span className="context-text-special" onClick={props.special.onClick}>
+          {props.special.text}
       </span>
         }
       </div>
@@ -60,9 +59,9 @@ export function makeSharedContext(params: {
   if (params.multiple && params.multiple.condition) {
     return (
       <ContextMenuItem
-        key={params.multiple.text} icon={params.single.icon ?? params.icon} text={params.multiple.text}
-        specialText={params.multiple.specialText} onClick={params.multiple.action}
-        specialOnClick={params.multiple.specialAction}
+        key={params.multiple.text} icon={params.single.icon ?? params.icon}
+        text={params.multiple.text} onClick={params.multiple.action}
+        special={{text: params.multiple.specialText, onClick: params.multiple.specialAction}}
       >
         {params.children}
       </ContextMenuItem>
@@ -70,9 +69,9 @@ export function makeSharedContext(params: {
   } else {
     return (
       <ContextMenuItem
-        key={params.single.text} icon={params.single.icon ?? params.icon} text={params.single.text}
-        specialText={params.single.specialText} onClick={params.single.action}
-        specialOnClick={params.single.specialAction}
+        key={params.single.text} icon={params.single.icon ?? params.icon}
+        text={params.single.text} onClick={params.single.action}
+        special={{text: params.single.specialText, onClick: params.single.specialAction}}
       >
         {params.children}
       </ContextMenuItem>

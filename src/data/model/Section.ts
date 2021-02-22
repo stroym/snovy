@@ -13,7 +13,6 @@ export default class Section extends OrderedItem implements WithOrderedChildren<
   constructor(parent: Notebook, id: number, title: string, order: number) {
     super(id, title, order)
     this.parent = parent
-    this.insert()
   }
 
   get itemsSortedAlphabetically() {

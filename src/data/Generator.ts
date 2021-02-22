@@ -13,10 +13,9 @@ const content =
   "\n" +
   "- adasdadasd\n" +
   "- asdasdsdd\n" +
-  "asdasdad [link](https://codesandbox.io/s/pyoy0on510?file=/MyEditor.js) \n" +
   "\n" +
   "\n" +
-  "https://codesandbox.io/s/pyoy0on510?file=/MyEditor.js\n"
+  "asdasdad [link](https://codesandbox.io/s/pyoy0on510?file=/MyEditor.js)\n"
 
 function dec2hex(dec: number) {
   return dec.toString(36).padStart(2, "0")

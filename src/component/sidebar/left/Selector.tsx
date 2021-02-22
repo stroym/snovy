@@ -50,6 +50,7 @@ export const Selector = (props: {
 
 }
 
+//TODO make this list specific - this is handy, but unwieldys
 export function buildContextMenu<I extends Note | Section, P extends WithOrderedChildren<I>>(
   contextItem: I | undefined | null,
   parent: P | undefined,
