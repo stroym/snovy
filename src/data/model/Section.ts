@@ -1,75 +1,60 @@
 import Note from "./Note"
-import Notebook from "./Notebook"
-import {Item, OrderedItem, WithOrderedChildren} from "./common/Base"
+import {addTo, Ordered, removeFrom, Titled, WithOrderedChildren} from "./Base"
+import {sectionId} from "../Database"
+import {dexie} from "../../index"
 
-export default class Section extends OrderedItem implements WithOrderedChildren<Note> {
+export default class Section extends Ordered implements WithOrderedChildren<Note> {
 
-  idCounter = 0
-
-  parent: Notebook
+  notebookId: number
 
   notes = new Array<Note>()
 
-  constructor(parent: Notebook, id: number, title: string, order: number) {
-    super(id, title, order)
-    this.parent = parent
+  constructor(notebookId: number, title: string, order: number, id?: number) {
+    super(title, order, id)
+    this.notebookId = notebookId
+
+    Object.defineProperties(this, {
+      notes: {enumerable: false, writable: true}
+    })
   }
 
   get itemsSortedAlphabetically() {
-    return this.sortBy(Item.compareByName)
+    return this.notes.sort(Titled.compareByName)
   }
 
   get itemsSortedByOrder() {
-    return this.sortBy(OrderedItem.compareByOrder)
+    return this.notes.sort(Ordered.compareByOrder)
   }
 
-  addItem(note: Note, reorder = false) {
-    if (reorder) {
-      this.itemsSortedByOrder.slice(note.order).forEach(value => {
-        value.order++
-      })
-    }
-
-    this.notes.push(note)
-    this.idCounter++
-
-    return note
+  async load() {
+    return Promise.all([
+      dexie.notes.where(sectionId).equals(this.id).toArray().then(notes => this.notes = notes)
+    ]).then(_it => this)
   }
 
-  deleteItem(note?: Note) {
-    if (!note) {
-      return undefined
-    } else {
-      const index = this.notes.delete(note)
+  save() {
+    this.updatedAt = new Date()
 
-      this.notes.slice(index).forEach(value => value.order--)
-
-      if (index > 0) {
-        return this.notes[index - 1]
-      } else if (index == 0 && this.notes.length > 1) {
-        return this.notes[index]
-      } else {
-        return undefined
-      }
-    }
+    return dexie.transaction("rw", [dexie.sections], () => {
+      dexie.sections.put(this, this.id)
+    })
   }
 
-  deleteItems(notes: Array<Note>) {
-    let note
-    notes.forEach(it => {note = this.deleteItem(it)})
-    return note
+  async create() {
+    return dexie.transaction("rw", dexie.sections, () => {dexie.sections.add(this)}).then(_it => this)
   }
 
-  deleteById(id: number) {
-    return this.deleteItem(this.notes.find(value => {return value.id == id}))
+  //TODO delete notes/allow for moving them to some scratches-like section
+  delete() {
+    return dexie.transaction("rw", dexie.sections, () => {dexie.sections.delete(this.id)})
   }
 
-  insert(order?: number, name = "") {
-    return this.addItem(new Note(this, this.idCounter, name, order ? order : this.notes.length), order != undefined)
+  add(order?: number) {
+    return addTo(this.notes, new Note(this.id, "", order ? order : this.notes.length), order)
   }
 
-  private sortBy(compareFn: (a: Note, b: Note) => number): Array<Note> {
-    return this.notes.sort(compareFn)
+  remove(items?: Array<Note> | Note) {
+    return removeFrom(this.notes, items)
   }
 
 }

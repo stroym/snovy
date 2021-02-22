@@ -24,7 +24,7 @@
   grid-template-rows: fit-content(10%) 1fr;
   grid-template-columns: 1fr 1fr;
   grid-template-areas: "notebook notebook" "section note";
-  min-height: 0;
+  min-height: 100%;
   max-height: 100%;
 
   .snovy-combo-box {

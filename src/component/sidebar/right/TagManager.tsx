@@ -1,5 +1,5 @@
 import React from "react"
-import Tag from "../../../data/model/colored/Tag"
+import Tag from "../../../data/model/Tag"
 import Notebook from "../../../data/model/Notebook"
 
 const TagManager = (props: {

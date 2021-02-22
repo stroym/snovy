@@ -1,5 +1,5 @@
 import React, {forwardRef, useEffect, useRef, useState} from "react"
-import Scope from "../../data/model/colored/Scope"
+import Scope from "../../data/model/Scope"
 import {CheckButton, ColorButton, ConfirmButton} from "../inputs/Button"
 import {useColored, useHideOnOutsideClick} from "../../util/Hooks"
 import {Input} from "../inputs/Input"
@@ -65,6 +65,15 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
 
   }
 )
+
+//TODO autocomplete on scopes - maybe use combobox?
+const ScopeCreator = () => {
+
+}
+
+const TagCreator = () => {
+
+}
 
 const TagFormItem = (props: {
   color: string,

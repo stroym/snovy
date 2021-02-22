@@ -1,93 +1,118 @@
 import Section from "./Section"
-import {IdentifiedItem, Item, OrderedItem, WithOrderedChildren} from "./common/Base"
-import Scope from "./colored/Scope"
-import Tag from "./colored/Tag"
+import {addTo, Ordered, removeFrom, Titled, WithOrderedChildren} from "./Base"
+import Scope from "./Scope"
+import Tag from "./Tag"
 import Note from "./Note"
-import State from "./colored/State"
+import State from "./State"
+import {notebookId} from "../Database"
+import {dexie} from "../../index"
 
-export default class Notebook extends IdentifiedItem implements WithOrderedChildren<Section> {
-
-  idCounter = 0
+export default class Notebook extends Titled implements WithOrderedChildren<Section> {
 
   sections = new Array<Section>()
+  scopes = new Array<Scope>()
+  tags = new Array<Tag>()
+  states = new Array<State>()
 
-  scopes: Array<Scope> = new Array<Scope>()
-  tags: Array<Tag> = new Array<Tag>()
-  states: Array<State> = new Array<State>()
+  constructor(title: string, id?: number) {
+    super(title, id)
 
-  constructor(id: number, name: string) {
-    super(id, name)
+    Object.defineProperties(this, {
+      sections: {enumerable: false, writable: true},
+      scopes: {enumerable: false, writable: true},
+      tags: {enumerable: false, writable: true},
+      states: {enumerable: false, writable: true}
+    })
+  }
+
+  async create() {
+    return dexie.transaction("rw", dexie.notebooks, () => {dexie.notebooks.add(this)}).then(_it => this)
+  }
+
+  delete() {
+    return dexie.transaction("rw", dexie.notebooks, () => {dexie.notebooks.delete(this.id)})
+  }
+
+  async load() {
+    return Promise.all([
+      dexie.scopes.where(notebookId).equals(this.id).toArray().then(async scopes => this.scopes = await Scope.bulkLoad(scopes)),
+      dexie.tags.where(notebookId).equals(this.id).toArray().then(async tags => this.tags = await Tag.bulkLoad(tags)),
+      dexie.sections.where(notebookId).equals(this.id).toArray().then(sections => this.sections = sections)
+    ]).then(_it => this)
+  }
+
+  save() {
+    this.updatedAt = new Date()
+
+    return dexie.transaction("rw", [dexie.notebooks, dexie.sections, dexie.scopes, dexie.tags], () => {
+      return Promise.all([
+        Promise.all(this.sections.map(item => dexie.sections.put(item))),
+        Promise.all(this.scopes.map(item => dexie.scopes.put(item))),
+        Promise.all(this.tags.map(item => dexie.tags.put(item)))
+      ]).then(results => {
+        const sectionIds = results[0]
+
+        dexie.sections.where(notebookId).equals(this.id)
+          .and(item => sectionIds.indexOf(item.id) === -1)
+          .delete()
+
+        dexie.notebooks.put(new Notebook(this.title, this.id)).then(id => this.id = id)
+      })
+    })
   }
 
   get itemsSortedAlphabetically() {
-    return this.sortBy(Item.compareByName)
+    return this.sections.sort(Titled.compareByName)
   }
 
   get itemsSortedByOrder() {
-    return this.sortBy(OrderedItem.compareByOrder)
+    return this.sections.sort(Ordered.compareByOrder)
   }
 
-  addItem(section: Section, reorder = false) {
-    if (reorder) {
-      this.itemsSortedByOrder.slice(section.order).forEach(value => {
-        value.order++
-      })
-    }
-
-    this.sections.push(section)
-    this.idCounter++
-
-    return section
+  add(order?: number) {
+    return addTo(this.sections, new Section(this.id, "", order ? order : this.sections.length), order)
   }
 
-  deleteItem(section?: Section) {
-    if (!section) {
-      return undefined
-    } else {
-      const index = this.sections.delete(section)
-
-      this.sections.slice(index).forEach(value => value.order--)
-
-      if (index > 0) {
-        return this.sections[index - 1]
-      } else if (index == 0 && this.sections.length > 1) {
-        return this.sections[index]
-      } else {
-        return undefined
-      }
-    }
-  }
-
-  deleteItems(sections: Array<Section>) {
-    let section
-    sections.forEach(it => {section = this.deleteItem(it)})
-    return section
-  }
-
-  deleteById(id: number) {
-    return this.deleteItem(this.sections.find(value => {return value.id == id}))
-  }
-
-  insert(order?: number, name = "") {
-    return this.addItem(new Section(this, this.idCounter, name, order ? order : this.sections.length), order != undefined)
+  remove(items?: Array<Section> | Section) {
+    return removeFrom(this.sections, items)
   }
 
   addTag(name: string, color: string, scope?: Scope) {
-    const tag = new Tag(name, color, scope)
+    const tag = new Tag(this.id, name, color, scope?.id)
     this.tags.push(tag)
     return tag
   }
 
+  // addTag(tagText: string, tagColor: string, scopeText: string, scopeColor: string, scopeExclusive: boolean) {
+  //   dexie.transaction("rw", dexie.scopes, dexie.tags, async () => {
+  //
+  //     if (scopeText) {
+  //       const scope = await dexie.scopes.where("title").equals(scopeText).first()
+  //
+  //       console.log(scope)
+  //     } else {
+  //       console.log("blob")
+  //     }
+  //
+  //     // await dexie.scopes.add(new Scope(this.id, name, color, unique)).then(async id => {
+  //     //   return await dexie.scopes.get(id)
+  //     // }).then(inner => {return inner})
+  //     //
+  //     // this.save()
+  //   }).then(inner => {return inner})
+  //
+  // }
+
   deleteTag(tag: Tag) {
-    this.tags.delete(this.tags.find(it => it.equals(tag))!.unTagNoteAll())
+    this.tags.delete(this.tags.find(it => it.isEqual(tag))!.unTagNoteAll())
   }
 
   availableTags(note: Note) {
-    return this.tags.filter(it => !note.tags.has(it))
+    return this.tags.filter(it => !note.tags.includes(it))
   }
 
   addScope(name: string, color: string, unique?: boolean) {
-    const scope = new Scope(name, color, unique)
+    const scope = new Scope(this.id, name, color, unique)
     this.scopes.push(scope)
     return scope
   }
@@ -117,15 +142,11 @@ export default class Notebook extends IdentifiedItem implements WithOrderedChild
   }
 
   addState(name: string, color: string) {
-    this.states.push(new State(name, color))
+    this.states.push(new State(this.id, name, color))
   }
 
   deleteState(state: State) {
     this.states.delete(state)
-  }
-
-  private sortBy(compareFn: (a: Section, b: Section) => number): Array<Section> {
-    return this.sections.sort(compareFn)
   }
 
 }

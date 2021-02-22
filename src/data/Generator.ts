@@ -1,8 +1,10 @@
 import Notebook from "./model/Notebook"
 import Section from "./model/Section"
 import Note from "./model/Note"
-import Scope from "./model/colored/Scope"
-import Manager from "./model/Manager"
+import Scope from "./model/Scope"
+import {dexie} from "../index"
+import Tag from "./model/Tag"
+import {notebookId} from "./Database"
 
 const content =
   "# asdasddsasd\n" +
@@ -33,65 +35,102 @@ function randomColor() {
   return "#" + Math.floor(Math.random() * 16777215).toString(16)
 }
 
-function addNotebook(target: Manager, name: string) {
-  return target.addItem(new Notebook(target.idCounter, name))
+async function addNotebook(name: string) {
+  return await dexie.transaction("rw", dexie.notebooks, async () => {
+    return await dexie.notebooks.add(new Notebook(name)).then(id => {return id})
+  })
 }
 
-function addSection(target: Notebook) {
-  target.addItem(new Section(target, target.idCounter, "section " + target.idCounter, target.sections.length))
+async function addSection(notebookId: number, order: number) {
+  return await dexie.transaction("rw", dexie.notebooks, dexie.sections, async () => {
+    return await dexie.sections.add(new Section(notebookId, "section " + order, order)).then(id => {return id})
+  })
 }
 
-function addNote(target: Section) {
-  const temp = new Note(target, target.idCounter, "note " + target.idCounter, target.notes.length)
-  temp.content = "content " + target.idCounter + "\n" + content
-  tagNote(target.parent, temp)
+function makeNote(sectionId: number, order: number) {
+  const temp = new Note(sectionId, "note " + order, order)
+  temp.content = "content " + order + "\n" + content
 
-  target.addItem(temp)
+  return temp
 }
 
-function addTestTag(target: Notebook, name: string, color: string, scope?: Scope) {
-  target.addTag(name, color, scope)
+async function addNote(notebookId: number, sectionId: number, order: number) {
+  await dexie.transaction("rw", dexie.notes, dexie.tags, dexie.scopes, async () => {
+    await dexie.notes.add(makeNote(sectionId, order)).then(async (id) => {await tagNote(notebookId, id)})
+  })
 }
 
-function addTestScope(target: Notebook, name: string, color: string, unique?: boolean) {
-  return target.addScope(name, color, unique)
+async function addTag(notebookId: number, scopeId?: number) {
+  await dexie.transaction("rw", dexie.notebooks, dexie.tags, dexie.scopes, async () => {
+    if (scopeId) {
+      const scope = (await dexie.scopes.get(scopeId))!
+
+      await dexie.tags.add(new Tag(notebookId, randomString(randomNumber(8)), scope.color, scopeId)).then(async id => {
+        scope.tagIds.push(id)
+        dexie.scopes.put(scope)
+      })
+    } else {
+      await dexie.tags.add(new Tag(notebookId, randomString(randomNumber(8)), randomColor(), scopeId))
+    }
+  })
 }
 
-function tagNote(notebook: Notebook, target: Note) {
-  for (let i = 0; i < 50; i++) {
-    const tag = notebook.tags[Math.floor(Math.random() * (notebook.tags.length))]
-    target.tag(tag)
-  }
+async function addScope(notebookId: number, unique?: boolean) {
+  return await dexie.transaction("rw", dexie.notebooks, dexie.scopes, async () => {
+    return await dexie.scopes.add(
+      new Scope(notebookId, randomString(randomNumber(10)), randomColor(), unique)
+    ).then(id => {return id})
+  })
 }
 
-export default function generate(manager: Manager) {
-  for (let i = 0; i < 10; i++) {
-    const notebook = addNotebook(manager, "" + randomNumber(1000, 100))
+async function tagNote(ntbId: number, noteId: number) {
+  await dexie.transaction("rw", dexie.notes, dexie.tags, dexie.scopes, async () => {
+    const tags = await dexie.tags.where(notebookId).equals(ntbId).toArray()
+    const note = (await dexie.notes.get(noteId))!
 
-    for (let j = 0; j < randomNumber(8, 4); j++) {
-      const scope = addTestScope(notebook, randomString(randomNumber(20)) + j, randomColor(), j % 2 == 0)
+    const shuffledIds = tags.map(it => it.id)
+      .map((a) => ({sort: Math.random(), value: a}))
+      .sort((a, b) => a.sort - b.sort)
+      .map((a) => a.value)
 
-      for (let k = 0; k < randomNumber(8, 2); k++) {
-        addTestTag(notebook, j + randomString(randomNumber(8)) + k, scope.color, scope)
+    for (let i = 0; i < shuffledIds.length && i < 20; i++) {
+      note.tagIds.push(shuffledIds[i])
+    }
 
-        if (scope.unique) {
+    await dexie.notes.put(note)
+  })
+}
+
+export default async function generate() {
+  console.log("generating...")
+
+  for (let i = 0; i < 3; i++) {
+    const notebookId = (await addNotebook("" + randomNumber(1000, 100)))!
+
+    for (let j = 0; j < randomNumber(15, 6); j++) {
+      const scopeId = (await addScope(notebookId, j % 3 == 0))!
+
+      for (let k = 0; k < randomNumber(10, 2); k++) {
+        await addTag(notebookId, scopeId)
+
+        if (j % 3 == 0) {
           break
         }
       }
     }
 
-    for (let k = 0; k < randomNumber(12, 6); k++) {
-      addTestTag(notebook, randomString(randomNumber(8)), randomColor(), undefined)
+    for (let k = 0; k < randomNumber(30, 10); k++) {
+      await addTag(notebookId, undefined)
     }
 
     for (let j = 0; j < i + 4; j++) {
-      addSection(notebook)
-
-      const section = notebook.sections[j]
+      const sectionId = (await addSection(notebookId, j))!
 
       for (let k = 0; k < 5 + j * 5; k++) {
-        addNote(section)
+        await addNote(notebookId, sectionId, k)
       }
     }
   }
+
+  return await dexie.notebooks.toArray()
 }

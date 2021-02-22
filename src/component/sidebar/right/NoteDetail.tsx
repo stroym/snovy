@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
-import Tag from "../../../data/model/colored/Tag"
+import Tag from "../../../data/model/Tag"
 import {TagItem, TagItemScoped, TagItemScopedUnique} from "../../tag/TagItem"
-import Scope from "../../../data/model/colored/Scope"
+import Scope from "../../../data/model/Scope"
 import Notebook from "../../../data/model/Notebook"
 import Note from "../../../data/model/Note"
 import TagComboBox from "../../tag/TagComboBox"
@@ -19,13 +19,8 @@ const NoteDetail = (props: {
     }, [props.note, props.note.tags]
   )
 
-  const remove = (tag: Tag) => {
+  const remove = (tag: Tag | Array<Tag>) => {
     props.note.untag(tag)
-    refreshTags()
-  }
-
-  const removeScoped = (tags: Array<Tag>) => {
-    props.note?.untagAll(tags)
     refreshTags()
   }
 
@@ -63,12 +58,8 @@ const NoteDetail = (props: {
       <TagComboBox tags={props.notebook.availableTags(props.note)} onTag={onTag} onNewTag={tagCreation}/>
       <div id="snovy-tag-display">
         {props.note.tagMap.map(([scope, tags]: [Scope | undefined, Tag[]]) => scope ? scope.unique ?
-          <TagItemScopedUnique
-            key={scope.title} scope={scope} mapped={tags} onRemove={remove} onRemoveScope={removeScoped}
-          /> :
-          <TagItemScoped
-            key={scope.title} scope={scope} mapped={tags} onRemove={remove} onRemoveScope={removeScoped}
-          /> :
+          <TagItemScopedUnique key={scope.title} scope={scope} mapped={tags} onRemove={remove}/> :
+          <TagItemScoped key={scope.title} scope={scope} mapped={tags} onRemove={remove}/> :
           tags.map((item: Tag) => <TagItem key={item.toString()} mapped={item} onRemove={remove}/>)
         )}
       </div>

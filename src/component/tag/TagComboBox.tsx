@@ -3,7 +3,7 @@ import {useCombobox} from "downshift"
 import {AddButton, CollapseButton} from "../inputs/Button"
 import {Key} from "ts-key-enum"
 import {useDefaultEmpty, useHideOnOutsideClick} from "../../util/Hooks"
-import Tag from "../../data/model/colored/Tag"
+import Tag from "../../data/model/Tag"
 import ComboCreateItem from "../combo_box/ComboCreateItem"
 import ComboBoxItem from "../combo_box/ComboBoxItem"
 import TagForm from "./TagForm"
@@ -28,6 +28,7 @@ const TagComboBox = (props: {
     highlightedIndex, setInputValue, setHighlightedIndex, closeMenu
   } = useCombobox({
     items: options,
+    itemToString: item => item ? item.toString() : "",
     onInputValueChange: ({inputValue}) => {
       const filteredItems = props.tags?.filter(item =>
         item.toString().toLowerCase().startsWith(inputValue!.toLowerCase())

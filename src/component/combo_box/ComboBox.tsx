@@ -11,22 +11,16 @@ import {WithTitle} from "../list/List"
 const ComboBox = <T extends WithTitle>(props: {
   id?: string,
   className?: string,
-  onActiveChange: (active: T) => void,
+  onActiveChange: (active: T | undefined) => void,
   // onContextChange?: (active: T | null | undefined) => void,
   // contextChildren?: Array<React.ReactElement<typeof ContextMenuItem>>
   items: Array<T> | undefined,
   selection?: T,
-  createItem?: (value: string) => T,
+  createItem?: (value: string) => Promise<T>,
   getInputValue?: (value: string) => void
 }) => {
 
   const [options, setOptions] = useDefaultEmpty<T>()
-
-  useEffect(
-    () => {
-      props.items && setOptions(props.items)
-    }, [props.items]
-  )
 
   const stateReducer = (state: UseComboboxState<T>, actionAndChanges: UseComboboxStateChangeOptions<T>) => {
     const {type, changes} = actionAndChanges
@@ -84,12 +78,24 @@ const ComboBox = <T extends WithTitle>(props: {
 
   useEffect(
     () => {
-      selectedItem && props.onActiveChange(selectedItem)
+      props.items && setOptions(props.items)
+    }, [props.items]
+  )
+
+  useEffect(
+    () => {
+      props.selection && selectItem(props.selection)
+    }, [props.selection]
+  )
+
+  useEffect(
+    () => {
+      selectedItem && selectedItem != props.selection && props.onActiveChange(selectedItem)
     }, [selectedItem]
   )
 
-  const createItem = () => {
-    selectItem(props.createItem!(inputValue))
+  const createItem = async () => {
+    selectItem(await props.createItem!(inputValue))
     closeMenu()
   }
 

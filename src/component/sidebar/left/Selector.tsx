@@ -1,47 +1,61 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import Section from "../../../data/model/Section"
 import Note from "../../../data/model/Note"
 import ComboBox from "../../combo_box/ComboBox"
 import Notebook from "../../../data/model/Notebook"
-import Manager from "../../../data/model/Manager"
 import List from "../../list/List"
-import {WithOrderedChildren} from "../../../data/model/common/Base"
+import {WithOrderedChildren} from "../../../data/model/Base"
 import ContextMenuItem, {makeContext, makeSharedContext} from "../../context_menu/ContextMenuItem"
 
 export const Selector = (props: {
   onNotebookChange: (active: Notebook | undefined) => void,
   onSectionChange: (active: Array<Section> | Section | undefined) => void,
   onNoteChange: (active: Array<Note> | Note | undefined) => void,
-  manager: Manager,
-  notebook: Notebook | undefined,
-  sections: Array<Section>,
-  notes: Array<Note>
+  notebooks: Array<Notebook>,
+  selectedNotebook: Notebook | undefined,
+  selectedSections: Array<Section>,
+  selectedNotes: Array<Note>
 }) => {
 
   const [sectionContext, setSectionContext] = useState<Section | null | undefined>(null)
   const [noteContext, setNoteContext] = useState<Note | null | undefined>(null)
 
+  //TODO persist selection on unmount
+  useEffect(
+    () => {
+
+      return () => {
+        props.onSectionChange([])
+        props.onNoteChange([])
+      }
+    }, []
+  )
+
   return (
     <div id="notes-selector">
       <ComboBox
-        items={props.manager.itemsSortedAlphabetically}
-        selection={props.notebook ?? props.manager.itemsSortedById.first()}
+        items={props.notebooks}
+        selection={props.selectedNotebook}
         onActiveChange={props.onNotebookChange}
-        createItem={(name: string) => {return props.manager.insert(name)}}
+        createItem={async (name: string) => {
+          const temp = await new Notebook(name).create()
+          props.notebooks.push(temp)
+          return temp
+        }}
       />
       <List
-        items={props.notebook?.itemsSortedByOrder} selection={props.sections} onSelect={props.onSectionChange}
-        defaultFirst
+        id="snovy-list-section" defaultFirst items={props.selectedNotebook?.itemsSortedByOrder}
+        selection={props.selectedSections} onSelect={props.onSectionChange}
         context={{
-          items: buildContextMenu(sectionContext, props.notebook, "section", props.sections, props.onSectionChange),
+          items: buildContextMenu(sectionContext, props.selectedNotebook, "section", props.selectedSections, props.onSectionChange),
           onChange: setSectionContext
         }}
       />
       <List<Note>
-        items={props.sections.first()?.itemsSortedByOrder} selection={props.notes} defaultFirst
-        onSelect={props.onNoteChange}
+        id="snovy-list-note" defaultFirst items={props.selectedSections.first()?.itemsSortedByOrder}
+        selection={props.selectedNotes} onSelect={props.onNoteChange}
         context={{
-          items: buildContextMenu(noteContext, props.sections.first(), "note", props.notes, props.onNoteChange),
+          items: buildContextMenu(noteContext, props.selectedSections.first(), "note", props.selectedNotes, props.onNoteChange),
           onChange: setNoteContext
         }}
       />
@@ -50,7 +64,7 @@ export const Selector = (props: {
 
 }
 
-//TODO make this list specific - this is handy, but unwieldys
+//TODO make this list specific - this is handy, but unwieldy
 export function buildContextMenu<I extends Note | Section, P extends WithOrderedChildren<I>>(
   contextItem: I | undefined | null,
   parent: P | undefined,
@@ -64,10 +78,10 @@ export function buildContextMenu<I extends Note | Section, P extends WithOrdered
     contexts.push(
       makeContext(
         `New ${descriptor}`,
-        () => {contextItem ? parent.insert(contextItem.order + 1) : parent.insert()},
+        () => {contextItem ? parent.add(contextItem.order + 1) : parent.add()},
         "+",
         "& go",
-        () => {setMulti(contextItem ? parent.insert(contextItem.order + 1) : parent.insert())}
+        () => {setMulti(contextItem ? parent.add(contextItem.order + 1) : parent.add())}
       )
     )
 
@@ -75,10 +89,10 @@ export function buildContextMenu<I extends Note | Section, P extends WithOrdered
       contexts.push(
         makeContext(
           `New ${descriptor} (as last)`,
-          () => {parent.insert()},
+          () => {parent.add()},
           "+",
           "& go",
-          () => {setMulti(parent.insert())}
+          () => {setMulti(parent.add())}
         )
       )
 
@@ -87,14 +101,14 @@ export function buildContextMenu<I extends Note | Section, P extends WithOrdered
             single: {
               text: `Delete ${descriptor}`,
               action: () => {
-                const neighbour = parent.deleteItem(contextItem)
+                const neighbour = parent.remove(contextItem)
                 neighbour == undefined || contextItem == selectedItems.first() && setMulti(neighbour)
               }
             },
             multiple: {
               condition: selectedItems.hasMore(),
               text: `Delete ${selectedItems.length} ${descriptor}s`,
-              action: () => {setMulti(parent.deleteItems(selectedItems))}
+              action: () => {setMulti(parent.remove(selectedItems))}
             },
             icon: "×"
           }

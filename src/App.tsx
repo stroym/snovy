@@ -1,48 +1,93 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import "./App.scss"
 import "./util/Augments"
 import SidebarLeft from "./component/sidebar/SidebarLeft"
 import RightBar from "./component/sidebar/SidebarRight"
 import Notebook from "./data/model/Notebook"
 import Section from "./data/model/Section"
-import Manager from "./data/model/Manager"
-import Tag from "./data/model/colored/Tag"
+import Tag from "./data/model/Tag"
 import Note from "./data/model/Note"
 import Editor from "./component/editor/Editor"
 import {isArray} from "./util/Utils"
+import Database from "./data/Database"
+import {dexie} from "./index"
+import generate from "./data/Generator"
+import {serialize} from "class-transformer"
+import {Table} from "./data/model/Base"
 
-function App() {
+//TODO it's probably better to separate active & selected items...
+const App = (props: {
+  dexie: Database
+}) => {
 
-  const [manager, _setManager] = useState<Manager>(new Manager())
-  const [notebook, setNotebook] = useState<Notebook | undefined>()
+  const [notebooks, setNotebooks] = useState<Array<Notebook>>([])
+
+  const [selectedNotebook, setSelectedNotebook] = useState<Notebook | undefined>()
+  const [selectedSections, setSelectedSections] = useState<Array<Section>>([])
+  const [selectedNotes, setSelectedNotes] = useState<Array<Note>>([])
   const [tag, setTag] = useState<Tag | undefined>()
 
-  const [sections, setSections] = useState<Array<Section>>([])
-  const [notes, setNotes] = useState<Array<Note>>([])
+  useEffect(
+    () => {
+      props.dexie.open()
 
-  const selectNotebook = (active: Notebook | undefined) => {
-    setNotebook(active)
+      dexie.transaction("rw", [dexie.notebooks, dexie.sections, dexie.notes, dexie.scopes, dexie.tags,
+        dexie.states], async () => {
+        await dexie.notebooks.toArray().then(async function (values) {
+          const loaded = values.length == 0 ? await generate() : values
+
+          setNotebooks(loaded.sort(Table.compareById))
+          selectNotebook(loaded.first())
+        })
+      })
+
+      return () => {
+        props.dexie.close()
+      }
+    }, [props.dexie]
+  )
+
+  //TODO make sure to load everything before exporting... or maybe export dexie tables?
+  const exportData = () => {
+    return serialize(notebooks)
   }
 
-  const selectSections = (active: Array<Section> | Section | undefined) => {
+  const resetSelected = () => {
+    setSelectedSections([])
+    setSelectedNotes([])
+  }
+
+  const selectNotebook = async (active: Notebook | undefined) => {
+    if (active) {
+      await active.load()
+      setSelectedNotebook(active)
+    }
+
+    resetSelected()
+  }
+
+  const selectSections = async (active: Array<Section> | Section | undefined) => {
     if (isArray(active)) {
-      setSections(active)
-      active.isEmpty() && setNotes([])
+      await active.first()?.load()
+      setSelectedSections(active)
+      active.isEmpty() && setSelectedNotes([])
     } else if (active) {
-      setSections([active])
+      await active.load()
+      setSelectedSections([active])
     } else {
-      setSections([])
-      setNotes([])
+      resetSelected()
     }
   }
 
-  const selectNotes = (active: Array<Note> | Note | undefined) => {
+  const selectNotes = async (active: Array<Note> | Note | undefined) => {
     if (isArray(active)) {
-      setNotes(active)
+      await active.first()?.load()
+      setSelectedNotes(active)
     } else if (active) {
-      setNotes([active])
+      await active.load()
+      setSelectedNotes([active])
     } else {
-      setNotes([])
+      setSelectedNotes([])
     }
   }
 
@@ -57,13 +102,15 @@ function App() {
   return (
     <span id="snovy-app" onContextMenu={(e) => e.preventDefault()}>
       <SidebarLeft
-        manager={manager}
-        onNotebookChange={selectNotebook} notebook={notebook}
-        onSectionChange={selectSections} sections={sections}
-        onNoteChange={selectNotes} notes={notes}
+        notebooks={notebooks} onNotebookChange={selectNotebook} selectedNotebook={selectedNotebook}
+        onSectionChange={selectSections} selectedSections={selectedSections}
+        onNoteChange={selectNotes} selectedNotes={selectedNotes}
+        exportData={exportData}
       />
-      <Editor activeNote={notes.first()}/>
-      <RightBar onTagRemove={untag} note={notes.first()} notebook={notebook} tag={tag} onTagChange={selectTag}/>
+      <Editor activeNote={selectedNotes.first()}/>
+      <RightBar
+        onTagRemove={untag} note={selectedNotes.first()} notebook={selectedNotebook} tag={tag} onTagChange={selectTag}
+      />
     </span>
   )
 }

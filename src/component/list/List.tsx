@@ -9,9 +9,12 @@ import {useMultiSelect} from "../../util/Hooks"
 
 export interface WithTitle {
   title: string
+
+  toString(): string
 }
 
 const List = <T extends WithTitle>(props: {
+  id?: string,
   items: Array<T> | undefined,
   defaultFirst?: boolean, //TODO defaultSelection, not this
   selection: Array<T>
@@ -60,13 +63,13 @@ const List = <T extends WithTitle>(props: {
 
   useEffect(
     () => {
-      props.onSelect && props.onSelect(selectedItems)
+      props.onSelect && selectedItems != props.selection && props.onSelect(selectedItems)
     }, [selectedItems]
   )
 
   return (
     <div
-      ref={selfRef} className={"snovy-list".concat(append(!props.items, Extras.DISABLED))}
+      ref={selfRef} id={props.id} className={"snovy-list".concat(append(!props.items, Extras.DISABLED))}
       onKeyDown={e => useKey(e, keyBindings)}
     >
       {props.items?.map((item, index) =>
@@ -78,6 +81,7 @@ const List = <T extends WithTitle>(props: {
         />)
       }
       {props.context &&
+        //TODO reset context doesn't work properly when clicking on parent - maybe use ref?
       <ContextMenu parentRef={selfRef} resetContext={() => setActiveContext(undefined)}>
         {props.context.items}
       </ContextMenu>

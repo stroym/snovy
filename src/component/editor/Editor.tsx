@@ -26,7 +26,7 @@ const Editor = (props: {
       {/*<CheckButton toggle={sourceMode} onClick={() => setSourceMode(!sourceMode)}/>*/}
       <OutlineEditor
         theme={dark} dictionary={dictionary} placeholder="" value={value} readOnly={!props.activeNote}
-        onChange={value => {props.activeNote!.content = value().replaceAll("\\\n", "\n")}}
+        onChange={value => {props.activeNote!.updateContent(value().replaceAll("\\\n", "\n"))}}
       />
     </div>
   )

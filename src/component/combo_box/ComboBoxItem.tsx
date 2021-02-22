@@ -17,7 +17,7 @@ const ComboBoxItem = forwardRef<HTMLLIElement, ComboBoxItemProps>(
       <li {...rest} ref={ref}
           className={"snovy-dropdown-item".concat(append(selected, Extras.ACTIVE), append(highlighted, Extras.HOVER))}
       >
-        {item.title}
+        {item.toString()}
       </li>
     )
   }

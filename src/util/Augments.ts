@@ -7,6 +7,8 @@ declare global {
 
     delete(item: T): number
 
+    deleteAll(items: Array<T>): number
+
     remove(item: T): Array<T>
 
     isEmpty(): boolean
@@ -38,6 +40,14 @@ Array.prototype.delete = function <T>(item: T): number {
   const index = this.indexOf(item)
   this.splice(index, 1)
   return index
+}
+
+Array.prototype.deleteAll = function <T>(items: Array<T>): number {
+  for (const item of items) {
+    this.splice(this.indexOf(item), 1)
+  }
+
+  return this.length
 }
 
 Array.prototype.remove = function <T>(item: T): Array<T> {

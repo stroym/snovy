@@ -4,21 +4,26 @@
 #snovy-editor {
   @include scrollbar;
   grid-area: centre;
-  //height: 100%;
   background-color: $color-primary;
   color: $color-text-primary;
-}
 
-#snovy-editor > *,
-#snovy-editor > * > *,
-.ProseMirror {
-  height: 100%;
-}
+  .heading-content {
+    cursor: text;
+    margin: 0;
+  }
 
-.ProseMirror {
-  padding: 1%;
-}
+  h1::before, h2::before, h3::before, h4::before, h5::before, h6::before {
+    display: none;
+  }
 
+  p a {
+    cursor: pointer;
+  }
+
+  .block-menu-trigger {
+    display: none !important;
+  }
+}
 
 #block-menu-container {
   @include scrollbar;
@@ -36,6 +41,12 @@
   }
 }
 
-.block-menu-trigger {
-  display: none !important;
+#snovy-editor > *,
+#snovy-editor > * > *,
+.ProseMirror {
+  height: 100%;
+}
+
+.ProseMirror {
+  padding: 1%;
 }

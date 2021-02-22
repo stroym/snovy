@@ -1,7 +1,7 @@
 import React, {useState} from "react"
 import TabMenu, {Alignment, Orientation} from "../tab_menu/TabMenu"
 import Notebook from "../../data/model/Notebook"
-import Tag from "../../data/model/colored/Tag"
+import Tag from "../../data/model/Tag"
 import Note from "../../data/model/Note"
 import {makeTab} from "../tab_menu/TabMenuItem"
 import TagManager from "./right/TagManager"
@@ -15,7 +15,12 @@ const SidebarRight = (props: {
   onTagRemove: (note: Note, tag: Tag) => void
 }) => {
 
-  const mappings = {detail: "Note Detail", manager: "Tag Manager", filtering: "Filtering Options"}
+  const mappings = {
+    detail: "Note Detail",
+    tagManager: "Tags",
+    stateManager: "States",
+    filtering: "Filtering Options"
+  }
 
   const [activeTab, setActiveTab] = useState<string>(mappings.detail)
 
@@ -25,14 +30,16 @@ const SidebarRight = (props: {
         {activeTab == mappings.detail && props.notebook && props.note &&
         <NoteDetail note={props.note} notebook={props.notebook}/>
         }
-        {activeTab == mappings.manager &&
+        {activeTab == mappings.tagManager &&
         <TagManager notebook={props.notebook} tag={props.tag} onTagChange={props.onTagChange}/>
         }
       </div>
       <TabMenu orientation={Orientation.RIGHT}>{[
         makeTab(mappings.detail, Alignment.START, setActiveTab, activeTab),
-        makeTab(mappings.manager, Alignment.START, setActiveTab, activeTab),
-        makeTab(mappings.filtering, Alignment.START, setActiveTab, activeTab)
+        makeTab(mappings.tagManager, Alignment.START, setActiveTab, activeTab),
+        makeTab(mappings.stateManager, Alignment.START, setActiveTab, activeTab),
+        makeTab(mappings.filtering, Alignment.START, setActiveTab, activeTab),
+        makeTab("❰", Alignment.END, setActiveTab, activeTab, true)
       ]}
       </TabMenu>
     </div>
