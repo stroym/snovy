@@ -40,7 +40,7 @@ export default class Manager implements WithChildren<Notebook> {
   }
 
   insert(name = "") {
-    return this.addItem(new Notebook(this, this.idCounter, name))
+    return this.addItem(new Notebook(this.idCounter, name))
   }
 
   addItem(item: Notebook) {

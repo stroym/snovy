@@ -1,6 +1,5 @@
 import Section from "./Section"
 import {IdentifiedItem, Item, OrderedItem, WithOrderedChildren} from "./common/Base"
-import Manager from "./Manager"
 import Scope from "./colored/Scope"
 import Tag from "./colored/Tag"
 import Note from "./Note"
@@ -10,17 +9,14 @@ export default class Notebook extends IdentifiedItem implements WithOrderedChild
 
   idCounter = 0
 
-  parent: Manager
-
   sections = new Array<Section>()
 
   scopes: Array<Scope> = new Array<Scope>()
   tags: Array<Tag> = new Array<Tag>()
   states: Array<State> = new Array<State>()
 
-  constructor(parent: Manager, id: number, name: string) {
+  constructor(id: number, name: string) {
     super(id, name)
-    this.parent = parent
   }
 
   get itemsSortedAlphabetically() {

@@ -34,7 +34,7 @@ function randomColor() {
 }
 
 function addNotebook(target: Manager, name: string) {
-  return target.addItem(new Notebook(target, target.idCounter, name))
+  return target.addItem(new Notebook(target.idCounter, name))
 }
 
 function addSection(target: Notebook) {
