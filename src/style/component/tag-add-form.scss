@@ -7,6 +7,8 @@
 
 #snovy-tag-create-form {
   @include scrollbar();
+  scrollbar-color: transparent transparent;
+  border-top: $border;
   width: 100%;
   max-height: 50vh;
   position: absolute;
@@ -22,7 +24,6 @@
   .tag-form-item {
     display: grid;
     grid-template-areas: "input" "picker";
-    grid-template-rows: fit-content(1fr) fit-content(1fr);
     justify-items: center;
 
     .colored-wrapper {
@@ -37,8 +38,13 @@
         grid-area: color;
       }
 
-      input {
+      & > input, .snovy-combo-box {
         grid-area: input;
+        border: $border-thin-inverted;
+      }
+
+      .snovy-dropdown {
+        max-height: unset;
       }
 
       .snovy-check-button {

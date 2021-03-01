@@ -2,7 +2,7 @@
 @import "../mixins";
 
 .snovy-list {
-  @include scrollbar;
+  @include scrollbar();
   max-height: 100%;
   display: flex;
   flex-flow: row wrap;

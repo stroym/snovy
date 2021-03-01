@@ -27,8 +27,9 @@
   min-height: 100%;
   max-height: 100%;
 
-  .snovy-combo-box {
+  #notebook-selector {
     grid-area: notebook;
+    border-bottom: $border;
   }
 
   #snovy-list-section {

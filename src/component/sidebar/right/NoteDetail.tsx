@@ -55,8 +55,12 @@ const NoteDetail = (props: {
 
   return (
     <div id="snovy-note-detail">
-      <TagComboBox tags={props.notebook.availableTags(props.note)} onTag={onTag} onNewTag={tagCreation}/>
-      <div id="snovy-tag-display">
+      <TagComboBox
+        notebook={props.notebook}
+        tags={props.notebook.availableTags(props.note)} scopes={props.notebook.scopes} onTag={onTag}
+        onNewTag={tagCreation}
+      />
+      <div id="tag-display-area">
         {props.note.tagMap.map(([scope, tags]: [Scope | undefined, Tag[]]) => scope ? scope.unique ?
           <TagItemScopedUnique key={scope.title} scope={scope} mapped={tags} onRemove={remove}/> :
           <TagItemScoped key={scope.title} scope={scope} mapped={tags} onRemove={remove}/> :

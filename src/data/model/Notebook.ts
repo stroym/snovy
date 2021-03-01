@@ -108,7 +108,7 @@ export default class Notebook extends Titled implements WithOrderedChildren<Sect
   }
 
   availableTags(note: Note) {
-    return this.tags.filter(it => !note.tags.includes(it))
+    return this.tags.filter(it => !note.tagIds.includes(it.id))
   }
 
   addScope(name: string, color: string, unique?: boolean) {

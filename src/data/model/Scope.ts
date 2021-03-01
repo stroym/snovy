@@ -74,6 +74,7 @@ export default class Scope extends Colored {
     tag.scope = undefined
   }
 
+  //TODO change when scope + tag has custom display element
   toString(): string {
     return this.unique ? this.title + "::" : this.title + ":"
   }

@@ -3,7 +3,7 @@ import {append, Extras} from "../../util/ComponentUtils"
 import {WithTitle} from "../list/List"
 
 interface ComboBoxItemProps {
-  item: WithTitle
+  item: WithTitle | string
   selected?: boolean
   highlighted?: boolean
 }

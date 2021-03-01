@@ -4,7 +4,8 @@ export enum Extras {
   HOVER = "hover",
   CONTEXT = "active-context",
   EDITABLE = "editable",
-  DISABLED = "disabled"
+  DISABLED = "disabled",
+  HIDDEN = "hidden"
 }
 
 export function append(condition: any, value: string) {

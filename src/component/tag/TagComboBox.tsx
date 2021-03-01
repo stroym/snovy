@@ -1,18 +1,16 @@
-import React, {useEffect, useRef} from "react"
-import {useCombobox} from "downshift"
-import {AddButton, CollapseButton} from "../inputs/Button"
-import {Key} from "ts-key-enum"
-import {useDefaultEmpty, useHideOnOutsideClick} from "../../util/Hooks"
+import React, {useEffect, useRef, useState} from "react"
+import {useHideOnOutsideClick} from "../../util/Hooks"
 import Tag from "../../data/model/Tag"
-import ComboCreateItem from "../combo_box/ComboCreateItem"
-import ComboBoxItem from "../combo_box/ComboBoxItem"
 import TagForm from "./TagForm"
-import {useKey} from "../../util/Utils"
+import Scope from "../../data/model/Scope"
+import {AddButton} from "../inputs/Button"
+import ComboBox from "../combo_box/ComboBox"
+import Notebook from "../../data/model/Notebook"
 
 const TagComboBox = (props: {
-  id?: string,
-  className?: string,
+  notebook: Notebook,
   tags: Array<Tag>,
+  scopes: Array<Scope>
   onTag: (tag: Tag) => void,
   onNewTag: (tagText: string, tagColor: string, scopeText: string, scopeColor: string, scopeExclusive: boolean) => void
 }) => {
@@ -20,95 +18,49 @@ const TagComboBox = (props: {
   const formRef = useRef<HTMLFormElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
 
-  const [formVisible, setFormVisible, flipForm] = useHideOnOutsideClick(formRef, [buttonRef])
-  const [options, setOptions] = useDefaultEmpty<Tag>()
-
-  const {
-    isOpen, getToggleButtonProps, getMenuProps, getInputProps, getComboboxProps, getItemProps, inputValue,
-    highlightedIndex, setInputValue, setHighlightedIndex, closeMenu
-  } = useCombobox({
-    items: options,
-    itemToString: item => item ? item.toString() : "",
-    onInputValueChange: ({inputValue}) => {
-      const filteredItems = props.tags?.filter(item =>
-        item.toString().toLowerCase().startsWith(inputValue!.toLowerCase())
-      )
-
-      setOptions(filteredItems)
-
-      if (filteredItems) {
-        const item = filteredItems.first()
-
-        if (item) {
-          setHighlightedIndex(filteredItems.indexOf(item))
-        }
-      }
-    },
-    onIsOpenChange: () => {
-      setInputValue("")
-    },
-    scrollIntoView: () => {
-      if (options.isEmpty()) {
-        return
-      }
-    },
-    onSelectedItemChange: ({selectedItem}) => {
-      selectedItem && props.onTag(selectedItem)
-      return
-    }
-  })
-
-  useEffect(
-    () => {
-      setOptions(props.tags)
-    }, [props.tags, closeMenu]
-  )
-
-  const willCreateTag = () => {
-    setFormVisible(true)
-    closeMenu()
-  }
+  const [formVisible, , flipForm] = useHideOnOutsideClick(formRef, [buttonRef])
+  const [menuVisible, setMenuVisible] = useState(false)
+  const [inputValue, setInputValue] = useState("")
 
   const createTag = (tagText: string, tagColor: string, scopeText: string, scopeColor: string, scopeExclusive: boolean) => {
     props.onNewTag(tagText, tagColor, scopeText, scopeColor, scopeExclusive)
-    setFormVisible(false)
+  }
+
+  useEffect(
+    () => {
+      if (!formVisible) {
+        setInputValue("")
+      }
+    }, [formVisible]
+  )
+
+  const flip = () => {
+    setMenuVisible(false)
+    flipForm()
+  }
+
+  const getInputValue = (value: string) => {
+    setInputValue(value)
+    !formVisible && flip()
   }
 
   return (
-    <span id={"tag-add-wrapper"}>
-      <div className={"snovy-combo-box"} {...getComboboxProps()}>
-        <span className="snovy-combo-box-wrapper">
-          <AddButton
-            ref={buttonRef} onClick={() => {
-            flipForm()
-            closeMenu()
-          }}
-          />
-          <input {...getToggleButtonProps()}
-                 className="snovy-combo-box-input" placeholder="Select or create tag..."
-                 {...getInputProps({
-                   onKeyDown: e => {options.isEmpty() && useKey(e, [{key: Key.Enter, handler: willCreateTag}])}
-                 })}
-          />
-          <CollapseButton {...getToggleButtonProps()} aria-label={"toggle menu"}/>
-        </span>
-        <ul {...getMenuProps()} className="snovy-dropdown" id="tag-dropdown" hidden={!isOpen}>
-          {isOpen && options.map((item, index) => (
-            <ComboBoxItem
-              key={index} item={item} highlighted={highlightedIndex == index}{...getItemProps({item, index})}
-            />
-          ))}
-          {isOpen && options.isEmpty() &&
-          <ComboCreateItem onClick={willCreateTag} highlight inputValue={inputValue} itemName="tag"/>
-          }
-        </ul>
-      </div>
-      {formVisible &&
-      <TagForm ref={formRef} initialValue={inputValue} onConfirm={createTag}/>
-      }
-    </span>
-
+    <ComboBox
+      items={props.tags} newItem={{getInputValue: getInputValue, name: "tag"}}
+      options={{selectPreviousOnEsc: false, resetInputOnSelect: true}}
+      createWithForm={{
+        button: <AddButton ref={buttonRef} onClick={flip}/>,
+        form: formVisible &&
+          <TagForm
+            ref={formRef} notebook={props.notebook} scopes={props.scopes} initialValue={inputValue}
+            onConfirm={createTag}
+          />,
+        menuVisible: setMenuVisible,
+        closeMenu: menuVisible
+      }}
+    />
   )
+
 }
 
 export default TagComboBox

@@ -1,36 +1,43 @@
 import React, {useEffect} from "react"
 import {useCombobox, UseComboboxState, UseComboboxStateChangeOptions} from "downshift"
-import {CollapseButton} from "../inputs/Button"
+import {Button, CollapseButton} from "../inputs/Button"
 import {Key} from "ts-key-enum"
 import {useDefaultEmpty} from "../../util/Hooks"
 import ComboCreateItem from "./ComboCreateItem"
 import ComboBoxItem from "./ComboBoxItem"
 import {useKey} from "../../util/Utils"
 import {WithTitle} from "../list/List"
+import {append, Extras} from "../../util/ComponentUtils"
 
-const ComboBox = <T extends WithTitle>(props: {
-  id?: string,
-  className?: string,
-  onActiveChange: (active: T | undefined) => void,
-  // onContextChange?: (active: T | null | undefined) => void,
-  // contextChildren?: Array<React.ReactElement<typeof ContextMenuItem>>
-  items: Array<T> | undefined,
-  selection?: T,
-  createItem?: (value: string) => Promise<T>,
-  getInputValue?: (value: string) => void
-}) => {
+export interface ComboBoxProps<T extends WithTitle> {
+  id?: string
+  className?: string
+  initialValue?: string
+  placeholder?: string
+  onSelect?: (active: T | undefined) => void
+  items: Array<T> | undefined
+  selection?: T
+  newItem?: { getInputValue: (value: string) => void, name: string },
+  options?: { selectPreviousOnEsc?: boolean, resetInputOnSelect?: boolean }
+  createWithForm?: {
+    button: React.ReactElement<typeof Button>, form: React.ReactElement<typeof HTMLFormElement> | false,
+    closeMenu: boolean, menuVisible: (visible: boolean) => void
+  }
+}
 
-  const [options, setOptions] = useDefaultEmpty<T>()
+const ComboBox = <T extends WithTitle>(props: ComboBoxProps<T>) => {
+
+  const [dropdownItems, setDropdownItems] = useDefaultEmpty<T>()
 
   const stateReducer = (state: UseComboboxState<T>, actionAndChanges: UseComboboxStateChangeOptions<T>) => {
     const {type, changes} = actionAndChanges
 
     switch (type) {
       case useCombobox.stateChangeTypes.InputKeyDownEscape: //on esc press revert to last selected value
-        return {
-          ...changes,
-          selectedItem: state.selectedItem,
-          inputValue: state.inputValue
+        if (props.options && !props.options.selectPreviousOnEsc) {
+          return {...changes}
+        } else {
+          return {...changes, selectedItem: state.selectedItem, inputValue: state.inputValue}
         }
       default:
         return changes
@@ -41,22 +48,22 @@ const ComboBox = <T extends WithTitle>(props: {
     isOpen, getToggleButtonProps, getMenuProps, getInputProps, getComboboxProps, getItemProps, inputValue,
     selectedItem, highlightedIndex, selectItem, setInputValue, setHighlightedIndex, closeMenu
   } = useCombobox({
-    items: options,
-    itemToString: item => item ? item.title : "",
+    items: dropdownItems,
+    itemToString: item => item ? item.toString() : "",
     initialSelectedItem: props.selection,
     stateReducer: stateReducer,
     onInputValueChange: ({inputValue, selectedItem}) => {
       const target = inputValue ?? ""
 
       if (target.isBlank() && selectedItem) {
-        setOptions(props.items)
+        setDropdownItems(props.items)
         setHighlightedIndex(props.items?.indexOf(selectedItem) ?? -1)
       } else {
         const filteredItems = props.items?.filter(item =>
-          item.title.toLowerCase().startsWith(target.toLowerCase())
+          item.toString().toLowerCase().startsWith(target.toLowerCase())
         )
 
-        setOptions(filteredItems)
+        setDropdownItems(filteredItems)
 
         if (filteredItems) {
           const item = filteredItems.first()
@@ -67,18 +74,37 @@ const ComboBox = <T extends WithTitle>(props: {
         }
       }
     },
+    scrollIntoView: () => {
+      if (dropdownItems.isEmpty()) {
+        return
+      }
+    },
     onIsOpenChange: ({selectedItem}) => {
+      props.createWithForm?.menuVisible(isOpen)
+
       if (!isOpen) {
         setInputValue("")
       } else {
-        setInputValue(selectedItem?.title ?? "")
+        if (props.options?.resetInputOnSelect) {
+          setInputValue("")
+        } else {
+          setInputValue(selectedItem?.toString() ?? "")
+        }
       }
     }
   })
 
   useEffect(
     () => {
-      props.items && setOptions(props.items)
+      if (props.createWithForm?.closeMenu) {
+        closeMenu()
+      }
+    }, [props.createWithForm?.closeMenu]
+  )
+
+  useEffect(
+    () => {
+      props.items && setDropdownItems(props.items)
     }, [props.items]
   )
 
@@ -90,41 +116,41 @@ const ComboBox = <T extends WithTitle>(props: {
 
   useEffect(
     () => {
-      selectedItem && selectedItem != props.selection && props.onActiveChange(selectedItem)
+      props.onSelect && selectedItem && selectedItem != props.selection && props.onSelect(selectedItem)
+      closeMenu()
     }, [selectedItem]
   )
 
-  const createItem = async () => {
-    selectItem(await props.createItem!(inputValue))
+  const onGetInputValue = () => {
+    props.newItem && props.newItem.getInputValue(inputValue)
     closeMenu()
   }
 
   return (
-    <div className="snovy-combo-box" {...getComboboxProps()}>
-      <span className="snovy-combo-box-wrapper" {...getToggleButtonProps()}>
+    <div className="snovy-combo-box" id={props.id} {...getComboboxProps()}>
+      <span className="snovy-combo-box-wrapper">
+        {props.createWithForm?.button}
         <input
-          className="snovy-combo-box-input"
+          {...getToggleButtonProps()} className="snovy-combo-box-input" placeholder={props.placeholder}
           {...getInputProps({
-            onKeyDown: e => options.isEmpty() && useKey(e, [{
-              key: Key.Enter,
-              handler: createItem
-            }])
+            onKeyDown: e => dropdownItems.isEmpty() && useKey(e, [{key: Key.Enter, handler: onGetInputValue}])
           })}
         />
-        <CollapseButton aria-label={"toggle menu"}/>
+        <CollapseButton {...getToggleButtonProps()} aria-label={"toggle menu"}/>
       </span>
-      <ul {...getMenuProps()} className="snovy-dropdown" hidden={!isOpen}>
-        {isOpen &&
-        options?.map((item, index) => (
+      <ol {...getMenuProps()} className={"snovy-dropdown".concat(append(!isOpen, Extras.HIDDEN))}>
+        {isOpen && dropdownItems?.map((item, index) => (
           <ComboBoxItem
             {...getItemProps({item, index})}
             key={index} item={item} highlighted={highlightedIndex == index} selected={selectedItem == item}
           />
         ))}
-        {isOpen && options.isEmpty() &&
-        <ComboCreateItem onClick={createItem} highlight inputValue={inputValue} itemName="notebook"/>
+        {!props.newItem && isOpen && dropdownItems.isEmpty() && <ComboBoxItem item={"No matching items found."}/>}
+        {props.newItem && isOpen && dropdownItems.isEmpty() &&
+        <ComboCreateItem highlight inputValue={inputValue} itemName={props.newItem.name} onClick={onGetInputValue}/>
         }
-      </ul>
+      </ol>
+      {props.createWithForm?.form}
     </div>
   )
 

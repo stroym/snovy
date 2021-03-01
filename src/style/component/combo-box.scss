@@ -2,11 +2,10 @@
 @import "../mixins";
 
 .snovy-combo-box {
-  grid-area: notebook;
-  border-bottom: $border;
   font-size: $font-big;
   position: relative;
   min-width: 0;
+  width: 100%;
 
   .snovy-combo-box-wrapper {
     min-width: 0;
@@ -16,6 +15,17 @@
     align-items: center;
     justify-content: flex-start;
     padding: 0.2vh 0 0.2vh 0;
+
+    .snovy-button {
+      @include button-size($font-big);
+
+      color: $color-text-primary;
+      background-color: $color-primary;
+
+      &:hover {
+        background-color: transparentize($color-text-primary, 0.5);
+      }
+    }
   }
 
   .snovy-combo-box-input {
@@ -29,21 +39,10 @@
     border: none;
     padding: 0.1vh 0 0.1vh 0.4vw;
   }
-
-  .snovy-button {
-    @include button-size($font-big);
-
-    color: $color-text-primary;
-    background-color: $color-primary;
-
-    &:hover {
-      background-color: transparentize($color-text-primary, 0.5);
-    }
-  }
 }
 
 .snovy-dropdown {
-  @include scrollbar;
+  @include scrollbar();
   max-height: 50vh;
   margin: 0;
   padding: 0;
@@ -55,6 +54,7 @@
   display: flex;
   flex-flow: row wrap;
   align-content: flex-start;
+  list-style: none;
 }
 
 .snovy-dropdown-item {

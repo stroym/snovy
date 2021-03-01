@@ -31,17 +31,18 @@ export const Selector = (props: {
     }, []
   )
 
+  const createItem = async (title: string) => {
+    const newItem = await new Notebook(title).create()
+    props.notebooks.push(newItem)
+
+    props.onNotebookChange(newItem)
+  }
+
   return (
     <div id="notes-selector">
       <ComboBox
-        items={props.notebooks}
-        selection={props.selectedNotebook}
-        onActiveChange={props.onNotebookChange}
-        createItem={async (name: string) => {
-          const temp = await new Notebook(name).create()
-          props.notebooks.push(temp)
-          return temp
-        }}
+        id="notebook-selector" newItem={{getInputValue: createItem, name: "notebook"}}
+        items={props.notebooks} selection={props.selectedNotebook} onSelect={props.onNotebookChange}
       />
       <List
         id="snovy-list-section" defaultFirst items={props.selectedNotebook?.itemsSortedByOrder}
