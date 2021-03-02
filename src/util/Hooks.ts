@@ -133,6 +133,14 @@ export function useColored(str?: string, colorStr?: string):
   const [text, setText] = useState(str ?? "")
   const [color, setColor] = useState(colorStr ?? "#ffffff")
 
+  useEffect(
+    () => {
+      if (color.length == 1 || color.isBlank()) {
+        setColor("#ffffff")
+      }
+    }, [color]
+  )
+
   return [text, color, setText, setColor]
 }
 

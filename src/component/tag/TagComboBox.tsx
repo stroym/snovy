@@ -35,7 +35,7 @@ const TagComboBox = (props: {
   )
 
   const flip = () => {
-    setMenuVisible(false)
+    setMenuVisible(!menuVisible)
     flipForm()
   }
 

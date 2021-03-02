@@ -152,7 +152,10 @@ const ScopeCreator = (props: {
           newItem={{getInputValue: makeScope, name: "scope"}} initialValue={props.initialValue}
         />
         {props.check &&
-        <CheckButton toggle={props.check.toggled} onClick={() => props.check!.toggle(!props.check!.toggled)}/>
+        <label>
+          Exclusive
+          <CheckButton toggle={props.check.toggled} onClick={() => props.check!.toggle(!props.check!.toggled)}/>
+        </label>
         }
       </span>
       {visible && <ColorPicker ref={pickerRef} getColor={getColor} getInputColor={getInputColor}/>}
@@ -198,7 +201,12 @@ const TagCreator = (props: {
         <ColorButton ref={selfRef} onMouseDown={flip} style={{backgroundColor: colorInt}}/>
         <Input placeholder={props.placeholder} getText={props.getText} defaultValue={props.initialValue} autoFocus/>
         {props.check &&
-        <CheckButton toggle={props.check.toggled} onClick={() => props.check!.toggle(!props.check!.toggled)}/>
+        <label>
+          Unify
+          <CheckButton
+            id="check" toggle={props.check.toggled} onClick={() => props.check!.toggle(!props.check!.toggled)}
+          />
+        </label>
         }
       </span>
       {visible && <ColorPicker ref={pickerRef} getColor={getColor} getInputColor={getInputColor}/>}

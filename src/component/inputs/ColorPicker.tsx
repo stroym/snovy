@@ -22,7 +22,10 @@ export const ColorPicker = forwardRef<HTMLSpanElement, ColorPickerProps>(
           <ColorItem onClick={props.getColor} color="#800080"/>
           <ColorItem onClick={props.getColor} color="#ffffff"/>
           <ColorItem onClick={props.getColor} color="#000000"/>
-          <Input getText={props.getInputColor} defaultValue="#" placeholder="Hex code" maxLength={9}/>
+          <span className="input-wrapper">
+            <div>#</div>
+            <Input getText={value => props.getInputColor("#" + value)} placeholder="Hex code" maxLength={8}/>
+          </span>
         </span>
       </span>
     )

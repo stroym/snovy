@@ -128,7 +128,7 @@ const ComboBox = <T extends WithTitle>(props: ComboBoxProps<T>) => {
 
   return (
     <div className="snovy-combo-box" id={props.id} {...getComboboxProps()}>
-      <span className="snovy-combo-box-wrapper">
+      <span className="snovy-combo-box-input-wrapper">
         {props.createWithForm?.button}
         <input
           {...getToggleButtonProps()} className="snovy-combo-box-input" placeholder={props.placeholder}

@@ -7,7 +7,7 @@
   min-width: 0;
   width: 100%;
 
-  .snovy-combo-box-wrapper {
+  .snovy-combo-box-input-wrapper {
     min-width: 0;
     flex-grow: 1;
     display: flex;
@@ -15,6 +15,18 @@
     align-items: center;
     justify-content: flex-start;
     padding: 0.2vh 0 0.2vh 0;
+
+    .snovy-combo-box-input {
+      flex-grow: 1;
+      text-overflow: ellipsis;
+      min-width: 0;
+      font-size: $font-medium;
+      color: $color-text-primary;
+      background-color: transparent;
+      outline: none;
+      border: none;
+      padding: 0.1vh 0 0.1vh 0.4vw;
+    }
 
     .snovy-button {
       @include button-size($font-big);
@@ -28,47 +40,36 @@
     }
   }
 
-  .snovy-combo-box-input {
-    flex-grow: 1;
-    text-overflow: ellipsis;
-    min-width: 0;
-    font-size: $font-medium;
-    color: $color-text-primary;
-    background-color: transparent;
-    outline: none;
-    border: none;
-    padding: 0.1vh 0 0.1vh 0.4vw;
-  }
-}
+  .snovy-dropdown {
+    @include scrollbar();
+    max-height: 50vh;
+    left: -1px;
+    width: calc(100% + 2px);
+    margin: 0;
+    padding: 0;
+    z-index: 10;
+    position: absolute;
+    background-color: $color-primary;
+    border: $border-thin;
+    display: flex;
+    flex-flow: row wrap;
+    align-content: flex-start;
+    list-style: none;
 
-.snovy-dropdown {
-  @include scrollbar();
-  max-height: 50vh;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  z-index: 10;
-  position: absolute;
-  background-color: $color-primary;
-  border: $border-thin;
-  display: flex;
-  flex-flow: row wrap;
-  align-content: flex-start;
-  list-style: none;
-}
+    .snovy-dropdown-item {
+      @include text-height-padded($font-big, 2);
+      scroll-snap-align: start;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: $color-text-primary;
+      padding: 0 5%;
+      cursor: default;
+      user-select: none;
 
-.snovy-dropdown-item {
-  @include text-height-padded($font-big, 2);
-  scroll-snap-align: start;
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: $color-text-primary;
-  padding: 0 5%;
-  cursor: default;
-  user-select: none;
-
-  &:hover {
-    background-color: $color-hover;
+      &:hover {
+        background-color: $color-hover;
+      }
+    }
   }
 }

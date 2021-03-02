@@ -28,4 +28,5 @@
   scrollbar-width: thin;
   scrollbar-color: $scrollbar;
   scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
 }
