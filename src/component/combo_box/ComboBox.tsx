@@ -9,10 +9,9 @@ import {useKey} from "../../util/Utils"
 import {WithTitle} from "../list/List"
 import {append, Extras} from "../../util/ComponentUtils"
 
-export interface ComboBoxProps<T extends WithTitle> {
+export interface ComboBoxProps<T extends WithTitle | string> {
   id?: string
   className?: string
-  initialValue?: string
   placeholder?: string
   onSelect?: (active: T | undefined) => void
   items: Array<T> | undefined
@@ -25,7 +24,7 @@ export interface ComboBoxProps<T extends WithTitle> {
   }
 }
 
-const ComboBox = <T extends WithTitle>(props: ComboBoxProps<T>) => {
+const ComboBox = <T extends WithTitle | string>(props: ComboBoxProps<T>) => {
 
   const [dropdownItems, setDropdownItems] = useDefaultEmpty<T>()
 
@@ -126,6 +125,7 @@ const ComboBox = <T extends WithTitle>(props: ComboBoxProps<T>) => {
     closeMenu()
   }
 
+  //TODO as is, it's impossible to create items that are substrings of already existing items
   return (
     <div className="snovy-combo-box" id={props.id} {...getComboboxProps()}>
       <span className="snovy-combo-box-input-wrapper">

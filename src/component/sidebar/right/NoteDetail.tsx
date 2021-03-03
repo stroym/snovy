@@ -5,6 +5,8 @@ import Scope from "../../../data/model/Scope"
 import Notebook from "../../../data/model/Notebook"
 import Note from "../../../data/model/Note"
 import TagComboBox from "../../tag/TagComboBox"
+import {dexie} from "../../../index"
+import {title} from "../../../data/Database"
 
 const NoteDetail = (props: {
   note: Note,
@@ -33,30 +35,33 @@ const NoteDetail = (props: {
     setRefresh(!refresh)
   }
 
-  const tagCreation = (tagText: string, tagColor: string, scopeText: string, scopeColor: string, scopeExclusive: boolean) => {
+  //TODO as is, scope won't be visible until refresh - recheck behavior after decoupling
+  const tagCreation = async (tagText: string, tagColor: string, scopeText: string, scopeColor: string, scopeUnique: boolean) => {
     let tag
 
     if (scopeText) {
-      const maybeScope = props.notebook.scopes.find(it => it.title == scopeText)
+      const maybeScope = await dexie.scopes.where(title).equals(scopeText).first()
 
       if (maybeScope) {
-        tag = props.notebook.addTag(tagText, tagColor, maybeScope)
+        tag = new Tag(props.notebook.id, tagText, tagColor, maybeScope.id)
+
       } else {
-        const scope = props.notebook.addScope(scopeText, scopeColor, scopeExclusive)
-        tag = props.notebook.addTag(tagText, tagColor, scope)
+        const scope = await new Scope(props.notebook.id, scopeText, scopeColor, scopeUnique).save()
+        tag = new Tag(props.notebook.id, tagText, tagColor, scope.id)
       }
     } else {
-      tag = props.notebook.addTag(tagText, tagColor)
+      tag = new Tag(props.notebook.id, tagText, tagColor)
     }
 
-    props.note.tag(tag)
+    await tag.save()
+
+    props.note.tag(await tag.load())
     refreshTags()
   }
 
   return (
     <div id="snovy-note-detail">
       <TagComboBox
-        notebook={props.notebook}
         tags={props.notebook.availableTags(props.note)} scopes={props.notebook.scopes} onTag={onTag}
         onNewTag={tagCreation}
       />

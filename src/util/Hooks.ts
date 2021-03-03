@@ -128,18 +128,38 @@ export function useCollapse(elementRef: React.RefObject<Element | null>):
   return [collapsed, setCollapsed]
 }
 
-export function useColored(str?: string, colorStr?: string):
-  [string, string, React.Dispatch<React.SetStateAction<string>>, React.Dispatch<React.SetStateAction<string>>] {
-  const [text, setText] = useState(str ?? "")
-  const [color, setColor] = useState(colorStr ?? "#ffffff")
+export function useColor(hex?: string, defaultHex = "#ffffff"):
+  [string, React.Dispatch<React.SetStateAction<string>>] {
+  const [color, setColor] = useState(hex ?? defaultHex)
 
   useEffect(
     () => {
       if (color.length == 1 || color.isBlank()) {
-        setColor("#ffffff")
+        setColor(defaultHex)
       }
     }, [color]
   )
+
+  return [color, setColor]
+}
+
+//TODO reducer
+export function useColored(str?: string, colorStr?: string):
+  [string | undefined, string, React.Dispatch<React.SetStateAction<string | undefined>>, (hex: string | undefined) => void] {
+  const [text, setText] = useState(str)
+  const [color, setColorInt] = useState(colorStr ?? "#ffffff")
+
+  const setColor = (hex: string | undefined) => {
+    if (hex) {
+      if (color.length == 1 || color.isBlank()) {
+        setColorInt("#ffffff")
+      } else {
+        setColorInt(hex)
+      }
+    } else {
+      setColorInt("#ffffff")
+    }
+  }
 
   return [text, color, setText, setColor]
 }

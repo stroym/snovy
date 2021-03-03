@@ -16,9 +16,10 @@
     display: none;
   }
 
-  p a {
-    cursor: pointer;
-  }
+  //TODO only do this when ctrl is held down, obv
+  //p a {
+  //  cursor: pointer;
+  //}
 
   .block-menu-trigger {
     display: none !important;

@@ -5,10 +5,8 @@ import TagForm from "./TagForm"
 import Scope from "../../data/model/Scope"
 import {AddButton} from "../inputs/Button"
 import ComboBox from "../combo_box/ComboBox"
-import Notebook from "../../data/model/Notebook"
 
 const TagComboBox = (props: {
-  notebook: Notebook,
   tags: Array<Tag>,
   scopes: Array<Scope>
   onTag: (tag: Tag) => void,
@@ -21,10 +19,6 @@ const TagComboBox = (props: {
   const [formVisible, , flipForm] = useHideOnOutsideClick(formRef, [buttonRef])
   const [menuVisible, setMenuVisible] = useState(false)
   const [inputValue, setInputValue] = useState("")
-
-  const createTag = (tagText: string, tagColor: string, scopeText: string, scopeColor: string, scopeExclusive: boolean) => {
-    props.onNewTag(tagText, tagColor, scopeText, scopeColor, scopeExclusive)
-  }
 
   useEffect(
     () => {
@@ -44,6 +38,11 @@ const TagComboBox = (props: {
     !formVisible && flip()
   }
 
+  const createTag = (tagText: string, tagColor: string, scopeText: string, scopeColor: string, scopeExclusive: boolean) => {
+    props.onNewTag(tagText, tagColor, scopeText, scopeColor, scopeExclusive)
+    flipForm()
+  }
+
   return (
     <ComboBox
       items={props.tags} newItem={{getInputValue: getInputValue, name: "tag"}}
@@ -51,10 +50,7 @@ const TagComboBox = (props: {
       createWithForm={{
         button: <AddButton ref={buttonRef} onClick={flip}/>,
         form: formVisible &&
-          <TagForm
-            ref={formRef} notebook={props.notebook} scopes={props.scopes} initialValue={inputValue}
-            onConfirm={createTag}
-          />,
+          <TagForm ref={formRef} scopes={props.scopes} initialValue={inputValue} onConfirm={createTag}/>,
         menuVisible: setMenuVisible,
         closeMenu: menuVisible
       }}

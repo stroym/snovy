@@ -34,7 +34,9 @@ export abstract class Titled extends Table implements WithTitle {
     this.title = title
   }
 
-  static compareByName = (a: Titled, b: Titled) => { return a.title.localeCompare(b.title, undefined, {numeric: true})}
+  static compareByName = (a: Titled, b: Titled) => {return a.title.localeCompare(b.title, undefined)}
+
+  static compareByToString = (a: Titled, b: Titled) => {return a.toString().localeCompare(b.toString(), undefined)}
 
   toString(): string {
     return this.title

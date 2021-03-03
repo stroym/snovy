@@ -60,7 +60,7 @@ export default class Tag extends Colored {
   }
 
   toString(): string {
-    return this.scope ? this.scope.toString() + this.title : super.toString()
+    return this.scope ? this.scope.toColonString() + this.title : super.toString()
   }
 
   static compareByScope =

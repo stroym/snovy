@@ -48,12 +48,13 @@ export default class Scope extends Colored {
     ]).then(_it => this)
   }
 
-  save() {
+  async save() {
     this.updatedAt = new Date()
 
-    return dexie.transaction("rw", [dexie.scopes], () => {
+    const _it = await dexie.transaction("rw", [dexie.scopes], () => {
       dexie.scopes.put(this, this.id)
     })
+    return this
   }
 
   static async bulkLoad(scopes: Array<Scope>) {
@@ -74,8 +75,7 @@ export default class Scope extends Colored {
     tag.scope = undefined
   }
 
-  //TODO change when scope + tag has custom display element
-  toString(): string {
+  toColonString(): string {
     return this.unique ? this.title + "::" : this.title + ":"
   }
 

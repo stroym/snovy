@@ -25,7 +25,8 @@ export const ContextMenuItem = (props: {
           {props.text}
         </span>
       </span>
-        {props.special &&
+        {/*TODO adjust makers*/}
+        {props.special?.text &&
         <span className="context-text-special" onClick={props.special.onClick}>
           {props.special.text}
       </span>
@@ -44,7 +45,7 @@ export const ContextMenuItem = (props: {
 export function makeContext(text: string, action: () => void, icon?: string, specialText?: string, specialAction?: () => void) {
   return (
     <ContextMenuItem
-      key={text} icon={icon} text={text} specialText={specialText} onClick={action} specialOnClick={specialAction}
+      key={text} icon={icon} text={text} onClick={action} special={{text: specialText, onClick: specialAction}}
     />
   )
 }
