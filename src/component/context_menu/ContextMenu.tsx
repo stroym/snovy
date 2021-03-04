@@ -4,8 +4,8 @@ import {useContextMenu} from "../../util/Hooks"
 
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
-  resetContext: () => void,
-  children: Array<React.ReactElement<typeof ContextMenuItem>>
+  children: Array<React.ReactElement<typeof ContextMenuItem>>,
+  onFinish: () => void
 }) => {
 
   if (props.children.isEmpty()) {
@@ -14,13 +14,16 @@ const ContextMenu = (props: {
 
   const selfRef = useRef<HTMLDivElement>(null)
 
-  const {visible, setVisible, position} = useContextMenu(selfRef, props.parentRef, props.resetContext)
+  const {visible, setVisible, position} = useContextMenu(selfRef, props.parentRef)
 
   return (
     <>
       {visible &&
       <div
-        className="snovy-context-menu" ref={selfRef} onClick={() => {setVisible(false)}} style={position}
+        className="snovy-context-menu" ref={selfRef} onClick={() => {
+        props.onFinish()
+        setVisible(false)
+      }} style={position}
       >
         {props.children}
       </div>

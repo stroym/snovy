@@ -89,7 +89,7 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
           color={{value: scopeColor, get: setScopeColor}}
           check={{toggled: unique, toggle: setUnique, descriptor: "Exclusive"}}
         >
-          <ComboBox<string>
+          <ComboBox
             onSelect={selectScope} items={props.scopes.map(it => it.toString())} selection={scopeText}
             placeholder="Scope name..."
             newItem={{getInputValue: makeScope, name: "scope"}}

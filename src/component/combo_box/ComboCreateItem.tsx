@@ -17,7 +17,7 @@ const ComboCreateItem = (props: {
   return (
     <li
       className={"snovy-dropdown-item".concat(append(props.highlight, Extras.HOVER))}
-      onClick={() => !props.inputValue.isBlank() && props.onClick(props.inputValue)}
+      onClick={() => props.onClick(props.inputValue)}
     >
       {buildMessage()}
     </li>

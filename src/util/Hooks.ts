@@ -2,6 +2,7 @@ import useResizeObserver from "@react-hook/resize-observer"
 import React, {Dispatch, SetStateAction, useEffect, useLayoutEffect, useReducer, useState} from "react"
 import {Key} from "ts-key-enum"
 import {isArray, isItem} from "./Utils"
+import {Extras} from "./ComponentUtils"
 
 export function useHideOnOutsideClick(elementRef: React.RefObject<Element | null>,
                                       otherRefs?: Array<React.RefObject<Element | null>>,
@@ -41,14 +42,20 @@ export function useHideOnOutsideClick(elementRef: React.RefObject<Element | null
   return [visible, setVisible, flip]
 }
 
-export function useContextMenu(
-  contextRef: React.RefObject<Element | null>,
-  parentRef: React.RefObject<Element | null>,
-  resetContext?: () => void
-) {
-
+export function useContextMenu(contextRef: React.RefObject<Element | null>, parentRef: React.RefObject<Element | null>) {
   const [visible, setVisible] = useHideOnOutsideClick(contextRef)
   const {position, setX, setY} = useAbsolutePosition(contextRef, visible)
+
+  const [, setContextItem] = useReducer(
+    (prevState: HTMLElement | null, newState: HTMLElement | null): HTMLElement | null => {
+
+      prevState?.classList.remove(Extras.CONTEXT)
+      newState?.classList.add(Extras.CONTEXT)
+
+      return newState
+    },
+    null
+  )
 
   useEffect(
     () => {
@@ -62,8 +69,8 @@ export function useContextMenu(
 
   useEffect(
     () => {
-      if (!visible && resetContext) {
-        resetContext()
+      if (!visible) {
+        setContextItem(null)
       }
     }, [visible]
   )
@@ -71,8 +78,12 @@ export function useContextMenu(
   const handleContextMenu = (e: any) => {
     e.preventDefault()
 
-    if (!contextRef.current?.contains(e.target as Node)) {
+    if (!contextRef.current?.contains(e.target)) {
       const negate = !visible
+
+      if (parentRef.current != e.target && parentRef.current?.contains(e.target)) {
+        setContextItem(e.target)
+      }
 
       if (negate) {
         setX(e.pageX)

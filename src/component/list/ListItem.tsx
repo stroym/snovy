@@ -2,39 +2,40 @@ import React, {useEffect, useRef, useState} from "react"
 import {useHideOnOutsideClick} from "../../util/Hooks"
 import {Input} from "../inputs/Input"
 import {append, Extras} from "../../util/ComponentUtils"
-import {WithTitle} from "./List"
 
-const ListItem = <T extends WithTitle>(props: {
+const ListItem = <T extends Record<string, any>>(props: {
   mapped: T,
   active: boolean,
   selected: boolean,
-  activeContext: boolean,
   onClick: (item: T) => void,
-  onContext: (item: T) => void
+  onContext?: (item: T) => void,
+  onValueChange?: (str: string) => void
 }) => {
 
   const selfRef = useRef<HTMLInputElement>(null)
 
-  const [value, setValue] = useState<string>("")
-  const [editable, , flip] = useHideOnOutsideClick(selfRef)
+  const [value, setValue] = useState<string>(props.mapped.toString())
+  const [editable, , flip] = useHideOnOutsideClick(selfRef, [], !props.onValueChange)
 
   useEffect(
     () => {
-      setValue(props.mapped.title)
-    }, [props.mapped, props.mapped.title]
+      setValue(props.mapped.toString())
+    }, [props.mapped]
   )
 
   useEffect(
     () => {
-      if (editable) {
-        if (selfRef.current) {
-          selfRef.current.selectionStart = selfRef.current.selectionEnd = -1
-          selfRef.current.classList.add(Extras.EDITABLE)
-        }
-      } else {
-        if (selfRef.current) {
-          selfRef.current.classList.remove(Extras.EDITABLE)
-          selfRef.current.selectionStart = selfRef.current.selectionEnd = 0
+      if (props.onValueChange) {
+        if (editable) {
+          if (selfRef.current) {
+            selfRef.current.selectionStart = selfRef.current.selectionEnd = -1
+            selfRef.current.classList.add(Extras.EDITABLE)
+          }
+        } else {
+          if (selfRef.current) {
+            selfRef.current.classList.remove(Extras.EDITABLE)
+            selfRef.current.selectionStart = selfRef.current.selectionEnd = 0
+          }
         }
       }
     }, [editable]
@@ -42,19 +43,18 @@ const ListItem = <T extends WithTitle>(props: {
 
   const handleContext = (e: React.MouseEvent) => {
     e.stopPropagation()
-    props.onContext(props.mapped)
+    props.onContext && props.onContext(props.mapped)
   }
 
   const handleChange = (text: string) => {
     setValue(text)
-    props.mapped.title = text
+    props.onValueChange && props.onValueChange(text)
   }
 
   const makeClassName = () => {
     return "snovy-list-item".concat(
       append(props.active, Extras.ACTIVE),
-      append(props.selected, Extras.SELECTED),
-      append(props.activeContext, Extras.CONTEXT)
+      append(props.selected, Extras.SELECTED)
     )
   }
 
@@ -62,7 +62,7 @@ const ListItem = <T extends WithTitle>(props: {
     <Input
       ref={selfRef} className={makeClassName()} value={value} placeholder={"Name..."} readOnly={!editable}
       getText={handleChange} onClick={() => {props.onClick(props.mapped)}}
-      onDoubleClick={flip} onContextMenu={handleContext}
+      onDoubleClick={() => props.onValueChange && flip()} onContextMenu={handleContext}
     />
   )
 

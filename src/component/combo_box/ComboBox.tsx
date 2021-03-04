@@ -6,10 +6,9 @@ import {useDefaultEmpty} from "../../util/Hooks"
 import ComboCreateItem from "./ComboCreateItem"
 import ComboBoxItem from "./ComboBoxItem"
 import {useKey} from "../../util/Utils"
-import {WithTitle} from "../list/List"
 import {append, Extras} from "../../util/ComponentUtils"
 
-export interface ComboBoxProps<T extends WithTitle | string> {
+export interface ComboBoxProps<T extends Record<string, any> | string> {
   id?: string
   className?: string
   placeholder?: string
@@ -24,7 +23,7 @@ export interface ComboBoxProps<T extends WithTitle | string> {
   }
 }
 
-const ComboBox = <T extends WithTitle | string>(props: ComboBoxProps<T>) => {
+const ComboBox = <T extends Record<string, any> | string>(props: ComboBoxProps<T>) => {
 
   const [dropdownItems, setDropdownItems] = useDefaultEmpty<T>()
 

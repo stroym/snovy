@@ -35,6 +35,7 @@ const App = (props: {
         dexie.states], async () => {
         await dexie.notebooks.toArray().then(async function (values) {
           const loaded = values.length == 0 ? await generate() : values
+          // const loaded = values
 
           setNotebooks(loaded.sort(Table.compareById))
           selectNotebook(loaded.first())

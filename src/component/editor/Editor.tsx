@@ -14,13 +14,14 @@ const Editor = (props: {
 
   useEffect(
     () => {
-      if (props.activeNote && props.activeNote.content != "") {
+      if (props.activeNote && !props.activeNote.content.isBlank()) {
         setValue(props.activeNote.content)
       } else {
         setValue(" ")
       }
     }, [props.activeNote]
   )
+
   return (
     <div className={append(!props.activeNote, Extras.DISABLED)} id="snovy-editor">
       {/*<CheckButton toggle={sourceMode} onClick={() => setSourceMode(!sourceMode)}/>*/}

@@ -1,9 +1,8 @@
 import React, {forwardRef} from "react"
 import {append, Extras} from "../../util/ComponentUtils"
-import {WithTitle} from "../list/List"
 
 interface ComboBoxItemProps {
-  item: WithTitle | string
+  item: Record<string, any> | string
   selected?: boolean
   highlighted?: boolean
 }

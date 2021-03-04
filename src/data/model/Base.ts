@@ -1,4 +1,3 @@
-import {WithTitle} from "../../component/list/List"
 import {isArray, isItem} from "../../util/Utils"
 
 export abstract class Table {
@@ -25,7 +24,7 @@ export abstract class Table {
 
 }
 
-export abstract class Titled extends Table implements WithTitle {
+export abstract class Titled extends Table {
 
   title: string
 

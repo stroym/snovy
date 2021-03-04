@@ -1,30 +1,24 @@
-import React, {useEffect, useRef, useState} from "react"
+import React, {forwardRef, useEffect} from "react"
 import ListItem from "./ListItem"
-import ContextMenu from "../context_menu/ContextMenu"
-import ContextMenuItem from "../context_menu/ContextMenuItem"
 import {append, Extras} from "../../util/ComponentUtils"
 import {useKey} from "../../util/Utils"
 import {Key} from "ts-key-enum"
 import {useMultiSelect} from "../../util/Hooks"
 
-export interface WithTitle {
-  title: string
-
-  toString(): string
+interface ListProps<T extends Record<string, any>> {
+  id?: string
+  items: Array<T> | undefined
+  defaultFirst?: boolean //TODO defaultSelection, not this
+  selection: Array<T>
+  onSelect: (items: Array<any>) => void
+  getContextTarget?: (active: any) => void
+  onItemValueChange?: (str: string) => void
+  children?: Array<React.ReactElement> | React.ReactElement
 }
 
-const List = <T extends WithTitle>(props: {
-  id?: string,
-  items: Array<T> | undefined,
-  defaultFirst?: boolean, //TODO defaultSelection, not this
-  selection: Array<T>
-  onSelect: (items: Array<T>) => void,
-  context?: { items: Array<React.ReactElement<typeof ContextMenuItem>>, onChange: (active: T | null | undefined) => void }
-}) => {
+const List = forwardRef(<T extends Record<string, any>>(props: ListProps<T>, ref?: React.Ref<HTMLDivElement>) => {
 
-  const selfRef = useRef<HTMLDivElement>(null)
   const {selectedItems, setSelectedItems, handleItemClick} = useMultiSelect<T>(props.items)
-  const [activeContext, setActiveContext] = useState<T | undefined | null>()
 
   const keyBindings = [
     {
@@ -32,16 +26,6 @@ const List = <T extends WithTitle>(props: {
       handler: () => {!selectedItems.isEmpty() && setSelectedItems([Array.from(selectedItems).first()!])}
     }
   ]
-
-  useEffect(
-    () => {
-      props.context && props.context.onChange(activeContext)
-
-      if (activeContext && !selectedItems.isEmpty() && !selectedItems.includes(activeContext)) {
-        setSelectedItems([selectedItems.first()!])
-      }
-    }, [activeContext]
-  )
 
   useEffect(
     () => {
@@ -69,26 +53,21 @@ const List = <T extends WithTitle>(props: {
 
   return (
     <div
-      ref={selfRef} id={props.id} className={"snovy-list".concat(append(!props.items, Extras.DISABLED))}
+      ref={ref} id={props.id} className={"snovy-list".concat(append(!props.items, Extras.DISABLED))}
       onKeyDown={e => useKey(e, keyBindings)}
+      onContextMenu={() => props.getContextTarget && props.getContextTarget(undefined)}
     >
       {props.items?.map((item, index) =>
         <ListItem
-          key={index} mapped={item}
+          key={index} mapped={item} onValueChange={props.onItemValueChange}
           selected={selectedItems.includes(item)} active={selectedItems.first() == item}
-          activeContext={item == activeContext}
-          onClick={handleItemClick} onContext={(item: T) => {setActiveContext(item)}}
+          onClick={handleItemClick} onContext={props.getContextTarget}
         />)
       }
-      {props.context &&
-        //TODO reset context doesn't work properly when clicking on parent - maybe use ref?
-      <ContextMenu parentRef={selfRef} resetContext={() => setActiveContext(undefined)}>
-        {props.context.items}
-      </ContextMenu>
-      }
+      {props.children}
     </div>
   )
 
-}
+})
 
 export default List
