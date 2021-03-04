@@ -38,8 +38,12 @@ export default class Tag extends Colored {
     ]).then(_it => this)
   }
 
-  save() {
-    return Promise.resolve(undefined)
+  async save() {
+    this.updatedAt = new Date()
+
+    return dexie.transaction("rw", dexie.tags, () => {
+      dexie.tags.put(this, this.id)
+    }).then(_it => this)
   }
 
   //TODO query

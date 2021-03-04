@@ -32,12 +32,12 @@ export default class Section extends Ordered implements WithOrderedChildren<Note
     ]).then(_it => this)
   }
 
-  save() {
+  async save() {
     this.updatedAt = new Date()
 
-    return dexie.transaction("rw", [dexie.sections], () => {
+    return dexie.transaction("rw", dexie.sections, () => {
       dexie.sections.put(this, this.id)
-    })
+    }).then(_it => this)
   }
 
   async create() {

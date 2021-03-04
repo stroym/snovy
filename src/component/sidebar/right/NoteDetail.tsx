@@ -26,16 +26,32 @@ const NoteDetail = (props: {
     refreshTags()
   }
 
-  const onTag = (tag: Tag) => {
-    props.note?.tag(tag)
-    refreshTags()
-  }
-
   const refreshTags = () => {
     setRefresh(!refresh)
   }
 
-  //TODO as is, scope won't be visible until refresh - recheck behavior after decoupling
+  const onTag = (tag: Tag | undefined) => {
+    if (tag) {
+      if (tag.scope && tag.scope.unique) {
+        const uniqueScoped = props.note.tags.find(it => it.scope?.id == tag.scope!.id)
+
+        if (uniqueScoped) {
+          //TODO custom pop-up
+          if ((confirm(`This scope is unique. Do you wish to replace the currently present tag ${uniqueScoped.title}?`))) {
+            props.note.untag(uniqueScoped)
+            props.note.tag(tag)
+          }
+        } else {
+          props.note.tag(tag)
+        }
+      } else {
+        props.note.tag(tag)
+      }
+
+      refreshTags()
+    }
+  }
+
   const tagCreation = async (tagText: string, tagColor: string, scopeText: string, scopeColor: string, scopeUnique: boolean) => {
     let tag
 
@@ -56,6 +72,7 @@ const NoteDetail = (props: {
     await tag.save()
 
     props.note.tag(await tag.load())
+    await props.notebook.load()
     refreshTags()
   }
 

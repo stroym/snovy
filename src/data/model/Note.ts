@@ -58,14 +58,22 @@ export default class Note extends Ordered {
     return dexie.transaction("rw", dexie.notes, () => {dexie.notes.add(this)}).then(_it => this)
   }
 
+  delete() {
+    return dexie.transaction("rw", dexie.notes, () => {dexie.notes.delete(this.id)})
+  }
+
   async load() {
     return Promise.all([
       dexie.tags.bulkGet(this.tagIds).then(async tags => this.tags = await Tag.bulkLoad(tags.filter(isItem)))
     ]).then(_it => this)
   }
 
-  delete() {
-    return dexie.transaction("rw", dexie.notes, () => {dexie.notes.delete(this.id)})
+  async save() {
+    this.updatedAt = new Date()
+
+    return dexie.transaction("rw", dexie.notes, () => {
+      dexie.notes.put(this, this.id)
+    }).then(_it => this)
   }
 
   updateContent(newContent: string) {
@@ -73,13 +81,13 @@ export default class Note extends Ordered {
     this.save()
   }
 
-  tag(tag: Tag): void {
+  tag(tag: Tag) {
     this.tags.push(tag)
     this.tagIds.push(tag.id)
     this.save()
   }
 
-  untag(tag: Tag | Array<Tag>): void {
+  untag(tag: Tag | Array<Tag>) {
     if (isArray(tag)) {
       this.tags.deleteAll(tag)
       this.tagIds.deleteAll(tag.map(it => it.id))
@@ -97,12 +105,6 @@ export default class Note extends Ordered {
 
   isInState(state: State): boolean {
     return this.state == state
-  }
-
-  save() {
-    this.updatedAt = new Date()
-
-    return dexie.transaction("rw", dexie.notes, () => {dexie.notes.put(this, this.id)})
   }
 
 }

@@ -41,7 +41,7 @@ export default class Notebook extends Titled implements WithOrderedChildren<Sect
     ]).then(_it => this)
   }
 
-  save() {
+  async save() {
     this.updatedAt = new Date()
 
     return dexie.transaction("rw", [dexie.notebooks, dexie.sections, dexie.scopes, dexie.tags], () => {
@@ -58,7 +58,7 @@ export default class Notebook extends Titled implements WithOrderedChildren<Sect
 
         dexie.notebooks.put(new Notebook(this.title, this.id)).then(id => this.id = id)
       })
-    })
+    }).then(_it => this)
   }
 
   get itemsSortedAlphabetically() {
@@ -82,26 +82,6 @@ export default class Notebook extends Titled implements WithOrderedChildren<Sect
     this.tags.push(tag)
     return tag
   }
-
-  // addTag(tagText: string, tagColor: string, scopeText: string, scopeColor: string, scopeExclusive: boolean) {
-  //   dexie.transaction("rw", dexie.scopes, dexie.tags, async () => {
-  //
-  //     if (scopeText) {
-  //       const scope = await dexie.scopes.where("title").equals(scopeText).first()
-  //
-  //       console.log(scope)
-  //     } else {
-  //       console.log("blob")
-  //     }
-  //
-  //     // await dexie.scopes.add(new Scope(this.id, name, color, unique)).then(async id => {
-  //     //   return await dexie.scopes.get(id)
-  //     // }).then(inner => {return inner})
-  //     //
-  //     // this.save()
-  //   }).then(inner => {return inner})
-  //
-  // }
 
   deleteTag(tag: Tag) {
     this.tags.delete(this.tags.find(it => it.isEqual(tag))!.unTagNoteAll())

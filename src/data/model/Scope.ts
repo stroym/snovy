@@ -51,10 +51,9 @@ export default class Scope extends Colored {
   async save() {
     this.updatedAt = new Date()
 
-    const _it = await dexie.transaction("rw", [dexie.scopes], () => {
+    return dexie.transaction("rw", dexie.scopes, () => {
       dexie.scopes.put(this, this.id)
-    })
-    return this
+    }).then(_it => this)
   }
 
   static async bulkLoad(scopes: Array<Scope>) {

@@ -25,12 +25,12 @@ export default class State extends Colored {
     return Promise.resolve(undefined)
   }
 
-  save() {
+  async save() {
     this.updatedAt = new Date()
 
-    return dexie.transaction("rw", [dexie.states], () => {
+    return dexie.transaction("rw", dexie.states, () => {
       dexie.states.put(this, this.id)
-    })
+    }).then(_it => this)
   }
 
 }

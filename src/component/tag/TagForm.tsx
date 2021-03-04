@@ -108,7 +108,7 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
         >
           <Input placeholder="Tag name..." getText={setTagText} defaultValue={tagText} autoFocus/>
         </TagFormItem>
-        <ConfirmButton onClick={() => createTag()}/>
+        <ConfirmButton defaultValue="Add & tag" onClick={() => createTag()}/>
       </form>
     )
 

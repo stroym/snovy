@@ -2,7 +2,7 @@
 
 @mixin autosize-margin($margin, $width) {
   margin: $margin;
-  max-width: min(calc(#{$width} - 2 * #{$margin}));
+  max-width: calc(#{$width} - 2 * #{$margin});
 }
 
 @mixin button-size($size) {

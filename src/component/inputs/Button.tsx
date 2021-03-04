@@ -44,7 +44,7 @@ export const CollapseButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
 
 export const ConfirmButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
   function ConfirmButton(props: ToggleButtonProps, ref?: buttonRef) {
-    return <Button {...props} ref={ref} className="snovy-confirm-button" defaultValue={"Add"}/>
+    return <Button {...props} ref={ref} className="snovy-confirm-button"/>
   }
 )
 

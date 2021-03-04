@@ -9,7 +9,7 @@ import ComboBox from "../combo_box/ComboBox"
 const TagComboBox = (props: {
   tags: Array<Tag>,
   scopes: Array<Scope>
-  onTag: (tag: Tag) => void,
+  onTag: (tag: Tag | undefined) => void,
   onNewTag: (tagText: string, tagColor: string, scopeText: string, scopeColor: string, scopeExclusive: boolean) => void
 }) => {
 
@@ -46,7 +46,7 @@ const TagComboBox = (props: {
   return (
     <ComboBox
       items={props.tags} newItem={{getInputValue: getInputValue, name: "tag"}}
-      options={{selectPreviousOnEsc: false, resetInputOnSelect: true}}
+      options={{selectPreviousOnEsc: false, resetInputOnSelect: true}} onSelect={props.onTag}
       createWithForm={{
         button: <AddButton ref={buttonRef} onClick={flip}/>,
         form: formVisible &&
