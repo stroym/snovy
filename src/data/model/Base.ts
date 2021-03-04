@@ -82,15 +82,7 @@ export abstract class Colored extends Titled {
 
 }
 
-export interface WithOrderedChildren<T extends Ordered> {
-
-  add: (order?: number) => T
-
-  remove: (item?: T | Array<T>) => T | undefined
-
-}
-
-export function addTo<T extends Ordered>(items: Array<T>, toAdd: T, order?: number) {
+export async function addTo<T extends Ordered>(items: Array<T>, toAdd: T, order?: number) {
   if (order) {
     items.sort(Ordered.compareByOrder).slice(toAdd.order).forEach(value => {
       value.updateOrder(value.order + 1)
@@ -98,30 +90,30 @@ export function addTo<T extends Ordered>(items: Array<T>, toAdd: T, order?: numb
   }
 
   items.push(toAdd)
-  toAdd.create()
+  await toAdd.create()
 
   return toAdd
 }
 
-export function removeFrom<T extends Ordered>(items: Array<T>, toRemove?: T | Array<T>) {
+export async function removeFrom<T extends Ordered>(items: Array<T>, toRemove?: T | Array<T>) {
   if (isArray(toRemove)) {
     let index
 
     for (const item of toRemove) {
-      index = removeAndReorder(items, item)
+      index = await removeAndReorder(items, item)
     }
 
     return fetchItem(items, index)
   } else if (isItem(toRemove)) {
-    return fetchItem(items, removeAndReorder(items, toRemove))
+    return fetchItem(items, await removeAndReorder(items, toRemove))
   } else {
     return undefined
   }
 }
 
-function removeAndReorder<T extends Ordered>(items: Array<T>, toRemove: T) {
+async function removeAndReorder<T extends Ordered>(items: Array<T>, toRemove: T) {
   const index = items.delete(toRemove)
-  toRemove.delete()
+  await toRemove.delete()
   items.slice(index).forEach(value => value.order--)
 
   return index

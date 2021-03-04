@@ -1,5 +1,5 @@
 import Section from "./Section"
-import {addTo, Ordered, removeFrom, Titled, WithOrderedChildren} from "./Base"
+import {addTo, Ordered, removeFrom, Titled} from "./Base"
 import Scope from "./Scope"
 import Tag from "./Tag"
 import Note from "./Note"
@@ -7,7 +7,7 @@ import State from "./State"
 import {notebookId} from "../Database"
 import {dexie} from "../../index"
 
-export default class Notebook extends Titled implements WithOrderedChildren<Section> {
+export default class Notebook extends Titled {
 
   sections = new Array<Section>()
   scopes = new Array<Scope>()

@@ -1,14 +1,15 @@
 import React, {useRef} from "react"
 import ContextMenuItem from "./ContextMenuItem"
 import {useContextMenu} from "../../util/Hooks"
+import {isArray} from "../../util/Utils"
 
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
-  children: Array<React.ReactElement<typeof ContextMenuItem>>,
+  children: Array<React.ReactElement<typeof ContextMenuItem> | undefined> | React.ReactElement<typeof ContextMenuItem>,
   onFinish: () => void
 }) => {
 
-  if (props.children.isEmpty()) {
+  if (isArray(props.children) && props.children.isEmpty()) {
     return null
   }
 

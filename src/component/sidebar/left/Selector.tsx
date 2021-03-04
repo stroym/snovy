@@ -4,8 +4,7 @@ import Note from "../../../data/model/Note"
 import ComboBox from "../../combo_box/ComboBox"
 import Notebook from "../../../data/model/Notebook"
 import List from "../../list/List"
-import {WithOrderedChildren} from "../../../data/model/Base"
-import ContextMenuItem, {makeContext, makeSharedContext} from "../../context_menu/ContextMenuItem"
+import {makeContext, makeSharedContext} from "../../context_menu/ContextMenuItem"
 import ContextMenu from "../../context_menu/ContextMenu"
 
 export const Selector = (props: {
@@ -22,6 +21,14 @@ export const Selector = (props: {
 
   const [sectionContext, setSectionContext] = useState<Section | undefined>(undefined)
   const [noteContext, setNoteContext] = useState<Note | undefined>(undefined)
+
+  const [activeSection, setActiveSection] = useState<Section | undefined>()
+
+  useEffect(
+    () => {
+      setActiveSection(props.selectedSections.first())
+    }, [props.selectedSections]
+  )
 
   useEffect(
     () => {
@@ -77,10 +84,41 @@ export const Selector = (props: {
         })}
       />
       <ContextMenu parentRef={secRef} onFinish={() => setContextActive(!contextActive)}>
-        {buildContextMenu(sectionContext, props.selectedNotebook, "section", props.selectedSections, props.onSectionChange)}
+        {
+          makeContext(
+            "New section",
+            async () => {sectionContext ? await props.selectedNotebook?.add(sectionContext.order + 1) : await props.selectedNotebook?.add()},
+            "+",
+            "& go",
+            async () => props.onSectionChange(sectionContext ? await props.selectedNotebook?.add(sectionContext.order + 1) : await props.selectedNotebook?.add())
+          )
+        }
+        {
+          sectionContext && makeContext(
+            "New section (as last)",
+            () => {props.selectedNotebook?.add()},
+            "+",
+            "& go",
+            async () => props.onSectionChange(await props.selectedNotebook?.add())
+          ) && makeSharedContext({
+            single: {
+              text: "Delete section",
+              action: async () => {
+                const neighbour = await props.selectedNotebook?.remove(sectionContext)
+                neighbour == undefined || sectionContext == props.selectedSections.first() && props.onSectionChange(neighbour)
+              }
+            },
+            multiple: {
+              condition: props.selectedSections.hasMore(),
+              text: `Delete ${props.selectedSections.length} sections`,
+              action: async () => {props.onSectionChange(await props.selectedNotebook?.remove(props.selectedSections))}
+            },
+            icon: "×"
+          })
+        }
       </ContextMenu>
       <List
-        ref={noteRef} id="snovy-list-note" defaultFirst items={props.selectedSections.first()?.itemsSortedByOrder}
+        ref={noteRef} id="snovy-list-note" defaultFirst items={activeSection?.itemsSortedByOrder}
         selection={props.selectedNotes} onSelect={props.onNoteChange} getContextTarget={setNoteContext}
         onItemValueChange={
           (str => {
@@ -93,68 +131,42 @@ export const Selector = (props: {
         }
       />
       <ContextMenu parentRef={noteRef} onFinish={() => setContextActive(!contextActive)}>
-        {buildContextMenu(noteContext, props.selectedSections.first(), "note", props.selectedNotes, props.onNoteChange)}
+        {
+          makeContext(
+            "New note",
+            async () => {noteContext ? await activeSection?.add(noteContext.order + 1) : await activeSection?.add()},
+            "+",
+            "& go",
+            async () => props.onNoteChange(noteContext ? await activeSection?.add(noteContext.order + 1) : await activeSection?.add())
+          )
+        }
+        {
+          noteContext && makeContext(
+            "New note (as last)",
+            () => {activeSection?.add()},
+            "+",
+            "& go",
+            async () => props.onNoteChange(await activeSection?.add())
+          ) && makeSharedContext({
+            single: {
+              text: "Delete note",
+              action: async () => {
+                const neighbour = await activeSection?.remove(noteContext)
+                neighbour == undefined || noteContext == props.selectedNotes.first() && props.onNoteChange(neighbour)
+              }
+            },
+            multiple: {
+              condition: props.selectedNotes.hasMore(),
+              text: `Delete ${props.selectedNotes.length} notes`,
+              action: async () => {props.onNoteChange(await activeSection?.remove(props.selectedNotes))}
+            },
+            icon: "×"
+          })
+        }
       </ContextMenu>
     </div>
   )
 
-}
-
-//TODO make this list specific - this is handy, but unwieldy
-export function buildContextMenu<I extends Note | Section, P extends WithOrderedChildren<I>>(
-  contextItem: I | undefined,
-  parent: P | undefined,
-  descriptor: string,
-  selectedItems: Array<I>,
-  setMulti: (active: Array<I> | I | undefined) => void
-): Array<React.ReactElement<typeof ContextMenuItem>> {
-  const contexts: Array<React.ReactElement<typeof ContextMenuItem>> = []
-
-  if (parent) {
-    contexts.push(
-      makeContext(
-        `New ${descriptor}`,
-        () => {contextItem ? parent.add(contextItem.order + 1) : parent.add()},
-        "+",
-        "& go",
-        () => {setMulti(contextItem ? parent.add(contextItem.order + 1) : parent.add())}
-      )
-    )
-
-    if (contextItem) {
-      contexts.push(
-        makeContext(
-          `New ${descriptor} (as last)`,
-          () => {parent.add()},
-          "+",
-          "& go",
-          () => {setMulti(parent.add())}
-        )
-      )
-
-      contexts.push(
-        makeSharedContext({
-            single: {
-              text: `Delete ${descriptor}`,
-              action: () => {
-                const neighbour = parent.remove(contextItem)
-                neighbour == undefined || contextItem == selectedItems.first() && setMulti(neighbour)
-              }
-            },
-            multiple: {
-              condition: selectedItems.hasMore(),
-              text: `Delete ${selectedItems.length} ${descriptor}s`,
-              action: () => {setMulti(parent.remove(selectedItems))}
-            },
-            icon: "×"
-          }
-        )
-      )
-
-    }
-  }
-
-  return contexts
 }
 
 export default Selector

@@ -1,9 +1,9 @@
 import Note from "./Note"
-import {addTo, Ordered, removeFrom, Titled, WithOrderedChildren} from "./Base"
+import {addTo, Ordered, removeFrom, Titled} from "./Base"
 import {sectionId} from "../Database"
 import {dexie} from "../../index"
 
-export default class Section extends Ordered implements WithOrderedChildren<Note> {
+export default class Section extends Ordered {
 
   notebookId: number
 
