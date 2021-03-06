@@ -60,6 +60,7 @@ export default class Note extends Ordered {
 
   delete() {
     return dexie.transaction("rw", dexie.notes, () => {dexie.notes.delete(this.id)})
+      .then(_result => true).catch(_result => false)
   }
 
   async load() {
@@ -101,6 +102,7 @@ export default class Note extends Ordered {
 
   setState(state?: State) {
     this.state = state
+    this.save()
   }
 
   isInState(state: State): boolean {

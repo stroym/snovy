@@ -61,6 +61,8 @@ const NoteDetail = (props: {
       if (maybeScope) {
         tag = new Tag(props.notebook.id, tagText, tagColor, maybeScope.id)
 
+        //add to scope
+
       } else {
         const scope = await new Scope(props.notebook.id, scopeText, scopeColor, scopeUnique).save()
         tag = new Tag(props.notebook.id, tagText, tagColor, scope.id)

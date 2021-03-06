@@ -1,4 +1,3 @@
-import Tag from "./Tag"
 import {scopeId} from "../Database"
 import {dexie} from "../../index"
 import {Colored} from "./Base"
@@ -10,7 +9,8 @@ export default class Scope extends Colored {
 
   unique: boolean
 
-  scopedTags: Array<Tag> = new Array<Tag>()
+  //TODO do I ever need this?
+  // scopedTags: Array<Tag> = new Array<Tag>()
 
   constructor(notebookId: number, title: string, color: string, unique = false, id?: number) {
     super(title, color, id)
@@ -32,19 +32,13 @@ export default class Scope extends Colored {
       return Promise.all([
         dexie.tags.where(scopeId).equals(this.id).delete(),
         dexie.scopes.delete(this.id)
-      ])
-
-      // dexie.tags.where(scopeId).equals(this.id).toArray().then(results => {
-      //   for (const result of results) {
-      //     result.scopeId = undefined
-      //   }
-      // })
+      ]).then(_result => true).catch(_result => false)
     })
   }
 
   async load() {
     return Promise.all([
-      dexie.tags.where(scopeId).equals(this.id).toArray().then(tags => this.scopedTags = tags)
+      // dexie.tags.where(scopeId).equals(this.id).toArray().then(tags => this.scopedTags = tags)
     ]).then(_it => this)
   }
 
@@ -64,15 +58,13 @@ export default class Scope extends Colored {
     return scopes
   }
 
-  scopeTag(tag: Tag) {
-    tag.scope = this
-    this.scopedTags.push(tag)
-  }
-
-  unScopeTag(tag: Tag) {
-    this.scopedTags.delete(tag)
-    tag.scope = undefined
-  }
+  // add(tag: Tag) {
+  //   return addTo(this.scopedTags, tag)
+  // }
+  //
+  // remove(items?: Array<Tag> | Tag) {
+  //   return removeFrom(this.scopedTags, items)
+  // }
 
   toColonString(): string {
     return this.unique ? this.title + "::" : this.title + ":"

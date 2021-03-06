@@ -18,10 +18,6 @@ declare global {
     hasMore(): boolean
   }
 
-  interface Set<T> {
-    toArray(): Array<T>
-  }
-
   interface String {
     isBlank(): boolean
   }
@@ -71,10 +67,6 @@ Array.prototype.includesAll = function <T>(array: Array<T>): boolean {
 
 Array.prototype.hasMore = function (): boolean {
   return this.length > 1
-}
-
-Set.prototype.toArray = function <T>(): Array<T> {
-  return this.size > 0 ? Array.from(this) : []
 }
 
 String.prototype.isBlank = function (): boolean {

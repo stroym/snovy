@@ -33,8 +33,6 @@ indent_size = 2
 tab_width = 2
 ij_continuation_indent_size = 2
 
-#TODO JSON
-
 [{*.ats, *.ts}]
 indent_size = 2
 tab_width = 2

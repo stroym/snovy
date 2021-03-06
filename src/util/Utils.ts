@@ -1,6 +1,6 @@
 import {Key} from "ts-key-enum"
 
-export function isArray<T>(arg: Array<T> | T | null | undefined): arg is Array<T> {
+export function isArray<T>(arg: unknown): arg is Array<T> {
   return arg instanceof Array
 }
 

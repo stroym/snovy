@@ -47,10 +47,11 @@ export default class Section extends Ordered {
   //TODO delete notes/allow for moving them to some scratches-like section
   delete() {
     return dexie.transaction("rw", dexie.sections, () => {dexie.sections.delete(this.id)})
+      .then(_result => true).catch(_result => false)
   }
 
   add(order?: number) {
-    return addTo(this.notes, new Note(this.id, "", order ? order : this.notes.length), order)
+    return addTo(this.notes, new Note(this.id, "", order ? order : this.notes.length))
   }
 
   remove(items?: Array<Note> | Note) {

@@ -132,6 +132,7 @@ const TagFormItem = (props: {
     flip()
   }
 
+  //TODO hide picker on enter press
   return (
     <span className="tag-form-item">
       <span className="colored-wrapper">
@@ -147,7 +148,7 @@ const TagFormItem = (props: {
         }
       </span>
       {visible &&
-      <ColorPicker ref={pickerRef} getColor={getColor}/>
+      <ColorPicker ref={pickerRef} getColor={getColor} getColorFromInput={color => props.color.get("#" + color)}/>
       }
     </span>
   )

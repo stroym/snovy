@@ -27,9 +27,11 @@ export default class Tag extends Colored {
     return dexie.transaction("rw", dexie.tags, () => {dexie.tags.add(this)}).then(_it => this)
   }
 
-  //TODO untag notes, remove from scope
   delete() {
-    return dexie.transaction("rw", dexie.tags, () => {dexie.tags.delete(this.id)})
+    return dexie.transaction("rw", dexie.tags, dexie.notes, async () => {
+      await this.unTagAll()
+      dexie.tags.delete(this.id)
+    }).then(_result => true).catch(_result => false)
   }
 
   async load() {
@@ -46,17 +48,20 @@ export default class Tag extends Colored {
     }).then(_it => this)
   }
 
-  //TODO query
-  unTagNoteAll() {
-    return this
+  async unTagAll() {
+    for (const note of await dexie.notes.where("tagIds").equals(this.id).toArray()) {
+      note.untag(this)
+    }
   }
 
-  addScope(scope: Scope) {
-    scope.scopeTag(this)
+  async addScope(scope: Scope) {
+    this.scope = scope
+    await this.save()
   }
 
-  removeScope(scope: Scope) {
-    scope.unScopeTag(this)
+  async removeScope() {
+    this.scope = undefined
+    await this.save()
   }
 
   isEqual(tag: Tag): boolean {

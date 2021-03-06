@@ -14,13 +14,13 @@ export abstract class Table {
 
   static compareById = (a: Table, b: Table) => { return a.id - b.id}
 
-  abstract save(): Promise<any>
+  abstract save(): Promise<this>
 
-  abstract load(): Promise<any>
+  abstract load(): Promise<this>
 
-  abstract create(): Promise<any>
+  abstract create(): Promise<this>
 
-  abstract delete(): Promise<any>
+  abstract delete(): Promise<boolean>
 
 }
 
@@ -82,39 +82,38 @@ export abstract class Colored extends Titled {
 
 }
 
-export async function addTo<T extends Ordered>(items: Array<T>, toAdd: T, order?: number) {
-  if (order) {
-    items.sort(Ordered.compareByOrder).slice(toAdd.order).forEach(value => {
-      value.updateOrder(value.order + 1)
-    })
+export async function addTo<T extends Table>(items: Array<T>, toAdd: T) {
+  if (isArray<Ordered>(items) && toAdd instanceof Ordered) {
+    reorder(items, toAdd)
   }
 
   items.push(toAdd)
-  await toAdd.create()
-
-  return toAdd
+  return await toAdd.create()
 }
 
-export async function removeFrom<T extends Ordered>(items: Array<T>, toRemove?: T | Array<T>) {
+export async function removeFrom<T extends Table>(items: Array<T>, toRemove?: T | Array<T>) {
   if (isArray(toRemove)) {
     let index
 
     for (const item of toRemove) {
-      index = await removeAndReorder(items, item)
+      index = await remove(items, item)
     }
 
     return fetchItem(items, index)
   } else if (isItem(toRemove)) {
-    return fetchItem(items, await removeAndReorder(items, toRemove))
+    return fetchItem(items, await remove(items, toRemove))
   } else {
     return undefined
   }
 }
 
-async function removeAndReorder<T extends Ordered>(items: Array<T>, toRemove: T) {
+async function remove<T extends Table>(items: Array<T>, toRemove: T) {
   const index = items.delete(toRemove)
   await toRemove.delete()
-  items.slice(index).forEach(value => value.order--)
+
+  if (isArray<Ordered>(items) && toRemove instanceof Ordered) {
+    reorder(items, toRemove, "down")
+  }
 
   return index
 }
@@ -126,5 +125,29 @@ function fetchItem<T>(items: Array<T>, index: number) {
     return items[index]
   } else {
     return undefined
+  }
+}
+
+function reorder<T extends Ordered>(items: Array<T>, item: T | Array<T>, direction: "up" | "down" = "up") {
+  if (direction == "up") {
+    if (isArray(item)) {
+      !item.isEmpty() && moveBy(items, item.first()!.order, item.length)
+    } else {
+      moveBy(items, item.order, 1)
+    }
+  } else {
+    if (isArray(item)) {
+      !item.isEmpty() && moveBy(items, item.first()!.order, -item.length)
+    } else {
+      moveBy(items, item.order, -1)
+    }
+  }
+}
+
+function moveBy<T extends Ordered>(items: Array<T>, from: number, amount: number) {
+  if (from != items.length) {
+    items.sort(Ordered.compareByOrder).slice(from).forEach(value => {
+      value.updateOrder(value.order + amount)
+    })
   }
 }

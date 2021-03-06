@@ -48,7 +48,6 @@ export function useContextMenu(contextRef: React.RefObject<Element | null>, pare
 
   const [, setContextItem] = useReducer(
     (prevState: HTMLElement | null, newState: HTMLElement | null): HTMLElement | null => {
-
       prevState?.classList.remove(Extras.CONTEXT)
       newState?.classList.add(Extras.CONTEXT)
 
@@ -154,25 +153,26 @@ export function useColor(hex?: string, defaultHex = "#ffffff"):
   return [color, setColor]
 }
 
-//TODO reducer
-export function useColored(str?: string, colorStr?: string):
-  [string | undefined, string, React.Dispatch<React.SetStateAction<string | undefined>>, (hex: string | undefined) => void] {
+export function useColored(str?: string, colorStr?: string, defaultColor = "#ffffff"):
+  [string | undefined, string, React.Dispatch<React.SetStateAction<string | undefined>>, React.Dispatch<string | undefined>] {
+
   const [text, setText] = useState(str)
-  const [color, setColorInt] = useState(colorStr ?? "#ffffff")
-
-  const setColor = (hex: string | undefined) => {
-    if (hex) {
-      if (color.length == 1 || color.isBlank()) {
-        setColorInt("#ffffff")
+  const [color, setColorInt] = useReducer(
+    (prevState: string | undefined, newState: string | undefined): string => {
+      if (newState) {
+        if (newState?.length == 1 || newState?.isBlank()) {
+          return defaultColor
+        } else {
+          return newState
+        }
       } else {
-        setColorInt(hex)
+        return defaultColor
       }
-    } else {
-      setColorInt("#ffffff")
-    }
-  }
+    },
+    colorStr ?? defaultColor
+  )
 
-  return [text, color, setText, setColor]
+  return [text, color, setText, setColorInt]
 }
 
 export function useMultiSelect<T>(listItems: Array<T> | undefined) {

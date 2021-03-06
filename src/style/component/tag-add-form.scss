@@ -73,7 +73,7 @@
         display: flex;
         flex-flow: row wrap;
         align-items: flex-start;
-        justify-content: space-evenly;
+        justify-content: space-around;
 
         .input-wrapper {
           display: flex;
@@ -88,7 +88,7 @@
 
           input {
             border-left: $border-thin-inverted;
-            width: 10ch;
+            width: calc(8ch + 0.4vw);
           }
         }
       }

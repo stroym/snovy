@@ -4,7 +4,8 @@ import {ColorButton} from "./Button"
 import {Input} from "./Input"
 
 interface ColorPickerProps {
-  getColor: (hex: string) => void
+  getColor: (hex: string) => void,
+  getColorFromInput: (hex: string) => void
 }
 
 export const ColorPicker = forwardRef<HTMLSpanElement, ColorPickerProps>(
@@ -23,7 +24,7 @@ export const ColorPicker = forwardRef<HTMLSpanElement, ColorPickerProps>(
           <ColorItem onClick={props.getColor} color="#000000"/>
           <span className="input-wrapper">
             <div>#</div>
-            <Input getText={value => props.getColor("#" + value)} placeholder="Hex code" maxLength={8}/>
+            <Input getText={props.getColorFromInput} placeholder="Hex code" maxLength={8}/>
           </span>
         </span>
       </span>

@@ -15,7 +15,6 @@ import generate from "./data/Generator"
 import {serialize} from "class-transformer"
 import {Table} from "./data/model/Base"
 
-//TODO it's probably better to separate active & selected items...
 const App = (props: {
   dexie: Database
 }) => {
@@ -38,7 +37,7 @@ const App = (props: {
           // const loaded = values
 
           setNotebooks(loaded.sort(Table.compareById))
-          selectNotebook(loaded.first())
+          await selectNotebook(loaded.first())
         })
       })
 

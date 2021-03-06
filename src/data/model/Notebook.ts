@@ -31,6 +31,7 @@ export default class Notebook extends Titled {
 
   delete() {
     return dexie.transaction("rw", dexie.notebooks, () => {dexie.notebooks.delete(this.id)})
+      .then(_result => true).catch(_result => false)
   }
 
   async load() {
@@ -70,63 +71,63 @@ export default class Notebook extends Titled {
   }
 
   add(order?: number) {
-    return addTo(this.sections, new Section(this.id, "", order ? order : this.sections.length), order)
+    return addTo(this.sections, new Section(this.id, "", order ? order : this.sections.length))
   }
 
   remove(items?: Array<Section> | Section) {
     return removeFrom(this.sections, items)
   }
 
-  addTag(name: string, color: string, scope?: Scope) {
-    const tag = new Tag(this.id, name, color, scope?.id)
-    this.tags.push(tag)
-    return tag
-  }
-
-  deleteTag(tag: Tag) {
-    this.tags.delete(this.tags.find(it => it.isEqual(tag))!.unTagNoteAll())
-  }
+  // addTag(name: string, color: string, scope?: Scope) {
+  //   const tag = new Tag(this.id, name, color, scope?.id)
+  //   this.tags.push(tag)
+  //   return tag
+  // }
+  //
+  // deleteTag(tag: Tag) {
+  //   this.tags.delete(this.tags.find(it => it.isEqual(tag))!.unTagNoteAll())
+  // }
 
   availableTags(note: Note) {
     return this.tags.filter(it => !note.tagIds.includes(it.id)).sort(Titled.compareByToString)
   }
 
-  addScope(name: string, color: string, unique?: boolean) {
-    const scope = new Scope(this.id, name, color, unique)
-    this.scopes.push(scope)
-    return scope
-  }
+  // addScope(name: string, color: string, unique?: boolean) {
+  //   const scope = new Scope(this.id, name, color, unique)
+  //   this.scopes.push(scope)
+  //   return scope
+  // }
 
-  deleteScope(scope: Scope, keepTags: boolean) {
-    this.scopes.find(it => {
-        if (it.title == scope.title) {
-          if (keepTags) {
-            this.tags.forEach(it => {
-              if (it.scope == scope) {
-                it.removeScope(scope)
-              }
-            })
-          } else {
-            this.tags.forEach(it => {
-              if (it.scope == scope) {
-                it.unTagNoteAll()
-                this.tags.delete(it)
-              }
-            })
-          }
+  // deleteScope(scope: Scope, keepTags: boolean) {
+  //   this.scopes.find(it => {
+  //       if (it.title == scope.title) {
+  //         if (keepTags) {
+  //           this.tags.forEach(it => {
+  //             if (it.scope == scope) {
+  //               it.removeScope()
+  //             }
+  //           })
+  //         } else {
+  //           this.tags.forEach(it => {
+  //             if (it.scope == scope) {
+  //               it.unTagNoteAll()
+  //               this.tags.delete(it)
+  //             }
+  //           })
+  //         }
+  //
+  //         this.scopes.delete(it)
+  //       }
+  //     }
+  //   )
+  // }
 
-          this.scopes.delete(it)
-        }
-      }
-    )
-  }
-
-  addState(name: string, color: string) {
-    this.states.push(new State(this.id, name, color))
-  }
-
-  deleteState(state: State) {
-    this.states.delete(state)
-  }
+  // addState(name: string, color: string) {
+  //   this.states.push(new State(this.id, name, color))
+  // }
+  //
+  // deleteState(state: State) {
+  //   this.states.delete(state)
+  // }
 
 }
