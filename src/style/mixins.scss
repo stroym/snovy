@@ -9,6 +9,9 @@
   @include text-height($size);
   width: $size;
   height: $size;
+  border-radius: 50%;
+  text-align: center;
+  vertical-align: middle;
 }
 
 @mixin text-height($size) {
@@ -20,6 +23,7 @@
 @mixin text-height-padded($size, $n) {
   font-size: $size;
   line-height: calc(#{$n} * #{$size});
+  vertical-align: middle;
 }
 
 @mixin scrollbar() {
@@ -28,7 +32,6 @@
   scrollbar-width: thin;
   scrollbar-color: $scrollbar;
   scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
 }
 
 @mixin focus() {

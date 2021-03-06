@@ -78,3 +78,43 @@
     align-items: flex-start;
   }
 }
+
+.snovy-tag-detail {
+  padding: 0.2em 0;
+  width: 100%;
+
+  .scope-detail,
+  .tag-detail {
+    display: grid;
+    grid-template-areas: "color title";
+    grid-template-columns: 20% 1fr;
+    align-items: center;
+  }
+
+  .color-helper {
+    grid-area: color;
+    justify-self: center;
+  }
+
+  .title-helper {
+    grid-area: title;
+    justify-self: start;
+  }
+
+  .scope-detail {
+    @include text-height-padded($font-medium, 1.4);
+
+    .color-helper {
+      @include button-size($font-medium);
+      //font-weight: bold;
+    }
+  }
+
+  .tag-detail {
+    @include text-height-padded($font-big, 1.2);
+
+    .color-helper {
+      @include button-size($font-big);
+    }
+  }
+}

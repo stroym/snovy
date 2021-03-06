@@ -73,11 +73,6 @@ const ComboBox = <T extends Record<string, any> | string>(props: ComboBoxProps<T
         }
       }
     },
-    scrollIntoView: () => {
-      if (dropdownItems.isEmpty()) {
-        return
-      }
-    },
     onIsOpenChange: ({selectedItem}) => {
       props.createWithForm?.menuVisible(isOpen)
 

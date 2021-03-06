@@ -1,5 +1,7 @@
 import React, {forwardRef} from "react"
 import {append, Extras} from "../../util/ComponentUtils"
+import Tag from "../../data/model/Tag"
+import TagDisplayItem from "../tag/TagDisplayItem"
 
 interface ComboBoxItemProps {
   item: Record<string, any> | string
@@ -12,6 +14,18 @@ const ComboBoxItem = forwardRef<HTMLLIElement, ComboBoxItemProps>(
 
     const {item, selected, highlighted, ...rest} = props
 
+    //TODO while this works, there's probably a better way to do this
+    if (props.item instanceof Tag) {
+      return (
+        <li {...rest} ref={ref}
+            className={"snovy-dropdown-item tag-dropdown"
+              .concat(append(selected, Extras.ACTIVE), append(highlighted, Extras.HOVER))}
+        >
+          <TagDisplayItem tag={props.item}/>
+        </li>
+      )
+    }
+
     return (
       <li {...rest} ref={ref}
           className={"snovy-dropdown-item".concat(append(selected, Extras.ACTIVE), append(highlighted, Extras.HOVER))}
@@ -19,6 +33,7 @@ const ComboBoxItem = forwardRef<HTMLLIElement, ComboBoxItemProps>(
         {item.toString()}
       </li>
     )
+
   }
 )
 

@@ -5,6 +5,7 @@ import {Input} from "./Input"
 import {useKey} from "../../util/Utils"
 import {Key} from "ts-key-enum"
 import {useColor} from "../../util/Hooks"
+import {TinyStyle} from "../tag/TagItem"
 
 interface ColorPickerProps {
   getColor: (hex: string) => void,
@@ -37,7 +38,7 @@ export const ColorPicker = forwardRef((props: ColorPickerProps, ref?: React.Ref<
         <div className="input-wrapper" onKeyDown={e => useKey(e, keyBindings)}>
           <span className="color-helper">#</span>
           <Input getText={value => setColor("#" + value)} placeholder="Hex code" maxLength={8}/>
-          <span className="color-helper" style={{backgroundColor: color}}>&nbsp;</span>
+          <ColorHelper color={color}/>
         </div>
       </span>
     )
@@ -51,6 +52,17 @@ const ColorItem = (props: {
 }) => {
 
   return <ColorButton onClick={() => {props.onClick(props.color)}} style={{backgroundColor: props.color}}/>
+
+}
+
+export const ColorHelper = (props: {
+  color: string,
+  text?: string
+}) => {
+
+  const tiny = new TinyStyle(props.color)
+
+  return <span className="color-helper" style={tiny.style}>{props.text}</span>
 
 }
 

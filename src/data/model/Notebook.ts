@@ -89,7 +89,19 @@ export default class Notebook extends Titled {
   // }
 
   availableTags(note: Note) {
-    return this.tags.filter(it => !note.tagIds.includes(it.id)).sort(Titled.compareByToString)
+    const tags = this.tags.filter(it => !note.tagIds.includes(it.id))
+
+    const scopedTags = tags.filter(it => it.scope && !it.scope.unique).sort((a: Tag, b: Tag) => {
+      return a.scope!.title.localeCompare(b.scope!.title) || a.title.localeCompare(b.title)
+    })
+
+    const scopedUniqueTags = tags.filter(it => it.scope && it.scope.unique).sort((a: Tag, b: Tag) => {
+      return a.scope!.title.localeCompare(b.scope!.title) || a.title.localeCompare(b.title)
+    })
+
+    const unscopedTags = tags.filter(it => !it.scope).sort(Titled.compareByName)
+
+    return scopedTags.concat(scopedUniqueTags, unscopedTags)
   }
 
   // addScope(name: string, color: string, unique?: boolean) {

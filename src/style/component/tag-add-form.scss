@@ -18,7 +18,7 @@
   color: $color-text-primary;
 
   & > * {
-    margin: 0.5em 0;
+    margin: 1em 0.5em;
   }
 
   .tag-form-item {
@@ -62,7 +62,7 @@
     }
 
     .snovy-color-picker {
-      margin: 0.5em 0.5em 0 0.5em;
+      margin: 1em 0.5em 0 0.5em;
       display: grid;
       grid-template-areas: "color" "input";
       justify-items: center;

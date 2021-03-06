@@ -60,7 +60,7 @@ type TagItemProps = {
   onRemove: (tag: Tag | Array<Tag>) => void
 }
 
-class TinyStyle {
+export class TinyStyle {
 
   tiny: TinyColor.Instance
   style: React.CSSProperties = {}

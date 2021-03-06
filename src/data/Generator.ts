@@ -108,12 +108,12 @@ export default async function generate() {
     const notebookId = (await addNotebook("" + randomNumber(1000, 100)))!
 
     for (let j = 0; j < randomNumber(15, 6); j++) {
-      const scopeId = (await addScope(notebookId, j % 3 == 0))!
+      const scopeId = (await addScope(notebookId, j % 3 == 0))
 
       for (let k = 0; k < randomNumber(10, 2); k++) {
         await addTag(notebookId, scopeId)
 
-        if (j % 3 == 0) {
+        if (j % 3 == 0 && k > randomNumber(4, 1)) {
           break
         }
       }
@@ -124,7 +124,7 @@ export default async function generate() {
     }
 
     for (let j = 0; j < i + 4; j++) {
-      const sectionId = (await addSection(notebookId, j))!
+      const sectionId = (await addSection(notebookId, j))
 
       for (let k = 0; k < 5 + j * 5; k++) {
         await addNote(notebookId, sectionId, k)
