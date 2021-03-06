@@ -2,10 +2,12 @@
 @import "../mixins";
 
 .snovy-combo-box {
+  @include focus();
   font-size: $font-big;
   position: relative;
   min-width: 0;
   width: 100%;
+  outline: none;
 
   .snovy-combo-box-input-wrapper {
     min-width: 0;

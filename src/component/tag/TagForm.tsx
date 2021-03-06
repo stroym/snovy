@@ -91,7 +91,7 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
         >
           <ComboBox
             onSelect={selectScope} items={props.scopes.map(it => it.toString())} selection={scopeText}
-            placeholder="Scope name..."
+            placeholder="Scope" tabIndex={0}
             newItem={{getInputValue: makeScope, name: "scope"}}
           />
         </TagFormItem>
@@ -106,7 +106,7 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
             }, descriptor: "Unify"
           }}
         >
-          <Input placeholder="Tag name..." getText={setTagText} defaultValue={tagText} autoFocus/>
+          <Input placeholder="Tag" getText={setTagText} defaultValue={tagText} autoFocus/>
         </TagFormItem>
         <ConfirmButton defaultValue="Add & tag" onClick={() => createTag()}/>
       </form>
@@ -132,7 +132,7 @@ const TagFormItem = (props: {
     flip()
   }
 
-  //TODO hide picker on enter press
+  //TODO maybe I should merge button and picker...
   return (
     <span className="tag-form-item">
       <span className="colored-wrapper">

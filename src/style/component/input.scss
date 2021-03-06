@@ -3,6 +3,7 @@
 
 .snovy-input {
   @include text-height($font-medium);
+  @include focus();
   width: 100%;
   vertical-align: middle;
   color: $color-text-primary;

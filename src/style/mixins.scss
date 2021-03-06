@@ -30,3 +30,16 @@
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
 }
+
+@mixin focus() {
+  &:focus {
+    box-shadow: 0 0 0 2px $color-hover;
+  }
+}
+
+@mixin focus-background() {
+  &:focus {
+    background-color: $color-hover;
+    box-shadow: unset;
+  }
+}

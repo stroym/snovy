@@ -60,7 +60,7 @@ const ListItem = <T extends Record<string, any>>(props: {
 
   return (
     <Input
-      ref={selfRef} className={makeClassName()} value={value} placeholder={"Name..."} readOnly={!editable}
+      ref={selfRef} className={makeClassName()} value={value} placeholder={"Title"} readOnly={!editable}
       getText={handleChange} onClick={() => {props.onClick(props.mapped)}}
       onDoubleClick={() => props.onValueChange && flip()} onContextMenu={handleContext}
     />

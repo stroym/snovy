@@ -6,17 +6,19 @@
 }
 
 #snovy-tag-create-form {
+  @include scrollbar();
+  scrollbar-width: none;
+  max-height: 60vh;
   border-top: $border;
   width: 100%;
   position: absolute;
-  display: inline-table;
   z-index: 10;
   text-align: center;
   background-color: $color-primary;
   color: $color-text-primary;
 
   & > * {
-    margin: 1em 0;
+    margin: 0.5em 0;
   }
 
   .tag-form-item {
@@ -60,11 +62,9 @@
     }
 
     .snovy-color-picker {
-      margin-top: 0.5em;
-      text-align: start;
+      margin: 0.5em 0.5em 0 0.5em;
       display: grid;
-      grid-template-areas: "spacer1 color spacer2";
-      grid-template-columns: 1fr 4fr 1fr;
+      grid-template-areas: "color" "input";
       justify-items: center;
       align-items: start;
 
@@ -73,22 +73,27 @@
         display: flex;
         flex-flow: row wrap;
         align-items: flex-start;
-        justify-content: space-around;
+        justify-content: flex-start;
+      }
 
-        .input-wrapper {
-          display: flex;
-          flex-flow: row nowrap;
-          align-items: center;
-          border: $border-thin-inverted;
-          margin: 0.1em;
+      .input-wrapper {
+        grid-area: input;
+        display: flex;
+        flex-flow: row nowrap;
+        border: $border-thin-inverted;
+        margin: 0.1em;
 
-          div {
-            margin: 0 0.1em;
-          }
+        .color-helper {
+          width: 1.5ch;
+        }
 
-          input {
-            border-left: $border-thin-inverted;
-            width: calc(8ch + 0.4vw);
+        input {
+          border-left: $border-thin-inverted;
+          border-right: $border-thin-inverted;
+          width: calc(8ch + 0.4vw);
+
+          &:focus {
+            box-shadow: unset;
           }
         }
       }

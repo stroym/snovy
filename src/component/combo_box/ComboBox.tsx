@@ -11,6 +11,7 @@ import {append, Extras} from "../../util/ComponentUtils"
 export interface ComboBoxProps<T extends Record<string, any> | string> {
   id?: string
   className?: string
+  tabIndex?: number
   placeholder?: string
   onSelect?: (active: T | undefined) => void
   items: Array<T> | undefined
@@ -126,7 +127,7 @@ const ComboBox = <T extends Record<string, any> | string>(props: ComboBoxProps<T
 
   //TODO as is, it's impossible to create items that are substrings of already existing items
   return (
-    <div className="snovy-combo-box" id={props.id} {...getComboboxProps()}>
+    <div className="snovy-combo-box" id={props.id} {...getComboboxProps()} tabIndex={props.tabIndex}>
       <span className="snovy-combo-box-input-wrapper">
         {props.createWithForm?.button}
         <input
