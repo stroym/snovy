@@ -5,7 +5,8 @@ export enum Extras {
   CONTEXT = "active-context",
   EDITABLE = "editable",
   DISABLED = "disabled",
-  HIDDEN = "hidden"
+  HIDDEN = "hidden",
+  MOUSE_FOCUS = "mouse-focus"
 }
 
 export function append(condition: any, value: string) {

@@ -1,12 +1,12 @@
 import React, {useEffect} from "react"
 import {useCombobox, UseComboboxState, UseComboboxStateChangeOptions} from "downshift"
-import {Button, CollapseButton} from "../inputs/Button"
-import {Key} from "ts-key-enum"
+import {Button} from "../inputs/Button"
 import {useDefaultEmpty} from "../../util/Hooks"
 import ComboCreateItem from "./ComboCreateItem"
-import ComboBoxItem from "./ComboBoxItem"
+import ComboBoxInput from "./ComboBoxInput"
 import {useKey} from "../../util/Utils"
-import {append, Extras} from "../../util/ComponentUtils"
+import {Key} from "ts-key-enum"
+import ComboBoxDropdown from "./ComboBoxDropdown"
 
 export interface ComboBoxProps<T extends Record<string, any> | string> {
   id?: string
@@ -122,29 +122,27 @@ const ComboBox = <T extends Record<string, any> | string>(props: ComboBoxProps<T
 
   //TODO as is, it's impossible to create items that are substrings of already existing items
   return (
-    <div className="snovy-combo-box" id={props.id} {...getComboboxProps()} tabIndex={props.tabIndex}>
-      <span className="snovy-combo-box-input-wrapper">
-        {props.createWithForm?.button}
-        <input
-          {...getToggleButtonProps()} className="snovy-combo-box-input" placeholder={props.placeholder}
-          {...getInputProps({
-            onKeyDown: e => dropdownItems.isEmpty() && useKey(e, [{key: Key.Enter, handler: onGetInputValue}])
-          })}
-        />
-        <CollapseButton {...getToggleButtonProps()} aria-label={"toggle menu"}/>
-      </span>
-      <ol {...getMenuProps()} className={"snovy-dropdown".concat(append(!isOpen, Extras.HIDDEN))}>
-        {isOpen && dropdownItems?.map((item, index) => (
-          <ComboBoxItem
-            {...getItemProps({item, index})}
-            key={index} item={item} highlighted={highlightedIndex == index} selected={selectedItem == item}
-          />
-        ))}
-        {!props.newItem && isOpen && dropdownItems.isEmpty() && <ComboBoxItem item={"No matching items found."}/>}
-        {props.newItem && isOpen && dropdownItems.isEmpty() &&
-        <ComboCreateItem highlight inputValue={inputValue} itemName={props.newItem.name} onClick={onGetInputValue}/>
+    <div className="snovy-combo-box" id={props.id} {...getComboboxProps()}>
+      <ComboBoxInput
+        specialButton={props.createWithForm?.button} getToggleButtonProps={getToggleButtonProps}
+        comboInput={{
+          getProps: getInputProps, options: {
+            placeholder: props.placeholder,
+            onKeyDown: e => dropdownItems.isEmpty() && useKey(e, [{
+              key: Key.Enter,
+              handler: onGetInputValue
+            }])
+          }
+        }}
+      />
+      <ComboBoxDropdown
+        dropdownItems={dropdownItems} getMenuProps={getMenuProps} getItemProps={getItemProps}
+        highlightedIndex={highlightedIndex} selectedItem={selectedItem} isOpen={isOpen} inputValue={inputValue}
+        newItem={
+          props.newItem &&
+          <ComboCreateItem inputValue={inputValue} itemName={props.newItem?.name} onClick={onGetInputValue}/>
         }
-      </ol>
+      />
       {props.createWithForm?.form}
     </div>
   )

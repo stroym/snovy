@@ -3,7 +3,7 @@ import {append, concatUnknown, Extras} from "../../util/ComponentUtils"
 
 type buttonRef = React.Ref<HTMLButtonElement>
 
-interface ToggleButtonProps extends React.HTMLProps<HTMLButtonElement> {
+export interface ToggleButtonProps extends React.HTMLProps<HTMLButtonElement> {
   toggle?: boolean
 }
 

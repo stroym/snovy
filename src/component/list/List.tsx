@@ -70,4 +70,6 @@ const List = forwardRef(<T extends Record<string, any>>(props: ListProps<T>, ref
 
 })
 
+List.displayName = "List"
+
 export default List

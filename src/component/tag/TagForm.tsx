@@ -2,9 +2,9 @@ import React, {forwardRef, useEffect, useRef, useState} from "react"
 import Scope from "../../data/model/Scope"
 import {CheckButton, ColorButton, ConfirmButton} from "../inputs/Button"
 import {useColored, useHideOnOutsideClick} from "../../util/Hooks"
-import {Input} from "../inputs/Input"
 import ColorPicker from "../inputs/ColorPicker"
 import ComboBox from "../combo_box/ComboBox"
+import Input from "../inputs/Input"
 
 interface FormProps {
   initialValue?: string
@@ -106,7 +106,7 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
             }, descriptor: "Unify"
           }}
         >
-          <Input placeholder="Tag" getText={setTagText} defaultValue={tagText} autoFocus/>
+          <Input placeholder="Tag" getText={setTagText} defaultValue={tagText}/>
         </TagFormItem>
         <ConfirmButton defaultValue="Add & tag" onClick={() => createTag()}/>
       </form>

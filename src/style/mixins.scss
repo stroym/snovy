@@ -35,14 +35,7 @@
 }
 
 @mixin focus() {
-  &:focus {
-    box-shadow: 0 0 0 2px $color-hover;
-  }
-}
-
-@mixin focus-background() {
-  &:focus {
-    background-color: $color-hover;
-    box-shadow: unset;
+  &:focus-visible {
+    box-shadow: inset 0 0 0 2px $color-focus;
   }
 }

@@ -1,11 +1,11 @@
 import React, {forwardRef} from "react"
 
 import {ColorButton} from "./Button"
-import {Input} from "./Input"
 import {useKey} from "../../util/Utils"
 import {Key} from "ts-key-enum"
 import {useColor} from "../../util/Hooks"
 import {TinyStyle} from "../tag/TagItem"
+import Input from "./Input"
 
 interface ColorPickerProps {
   getColor: (hex: string) => void,
@@ -14,7 +14,7 @@ interface ColorPickerProps {
 
 export const ColorPicker = forwardRef((props: ColorPickerProps, ref?: React.Ref<HTMLSpanElement>) => {
 
-    const [color, setColor] = useColor("", "")
+  const [color, setColor] = useColor("")
 
     const keyBindings = [
       {

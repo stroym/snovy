@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react"
 import {useHideOnOutsideClick} from "../../util/Hooks"
-import {Input} from "../inputs/Input"
-import {append, Extras} from "../../util/ComponentUtils"
+import {Extras} from "../../util/ComponentUtils"
+import Input from "../inputs/Input"
 
 const ListItem = <T extends Record<string, any>>(props: {
   mapped: T,
@@ -16,6 +16,22 @@ const ListItem = <T extends Record<string, any>>(props: {
 
   const [value, setValue] = useState<string>(props.mapped.toString())
   const [editable, , flip] = useHideOnOutsideClick(selfRef, [], !props.onValueChange)
+
+  useEffect(
+    () => {
+      if (props.active) {
+        selfRef.current?.classList.add(Extras.ACTIVE)
+      } else {
+        selfRef.current?.classList.remove(Extras.ACTIVE)
+      }
+
+      if (props.selected) {
+        selfRef.current?.classList.add(Extras.SELECTED)
+      } else {
+        selfRef.current?.classList.remove(Extras.SELECTED)
+      }
+    }, [props.active, props.selected]
+  )
 
   useEffect(
     () => {
@@ -51,17 +67,16 @@ const ListItem = <T extends Record<string, any>>(props: {
     props.onValueChange && props.onValueChange(text)
   }
 
-  const makeClassName = () => {
-    return "snovy-list-item".concat(
-      append(props.active, Extras.ACTIVE),
-      append(props.selected, Extras.SELECTED)
-    )
+  const handleFocus = () => {
+    if (selfRef.current) {
+      selfRef.current.selectionStart = selfRef.current.selectionEnd = 0
+    }
   }
 
   return (
     <Input
-      ref={selfRef} className={makeClassName()} value={value} placeholder={"Title"} readOnly={!editable}
-      getText={handleChange} onClick={() => {props.onClick(props.mapped)}}
+      ref={selfRef} className="snovy-list-item" value={value} placeholder={"Title"} readOnly={!editable}
+      getText={handleChange} onClick={() => {props.onClick(props.mapped)}} onFocus={handleFocus}
       onDoubleClick={() => props.onValueChange && flip()} onContextMenu={handleContext}
     />
   )
