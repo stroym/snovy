@@ -13,8 +13,6 @@
 .snovy-list-item {
   @include text-height-padded($font-medium, 2);
   scroll-snap-align: start;
-  overflow: hidden;
-  text-overflow: ellipsis;
   padding: 0 10%;
   border: none;
   cursor: default;

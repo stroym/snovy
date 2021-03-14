@@ -23,6 +23,7 @@
 
 .snovy-tag-item {
   @include autosize-margin(0.2em, 100%);
+  box-sizing: border-box;
   padding: 0.2em;
   border-radius: $border-rad-round;
   overflow: hidden;
@@ -105,8 +106,7 @@
     @include text-height-padded($font-medium, 1.4);
 
     .color-helper {
-      @include button-size($font-medium);
-      //font-weight: bold;
+      @include circular-with-text($font-medium);
     }
   }
 
@@ -114,7 +114,7 @@
     @include text-height-padded($font-big, 1.2);
 
     .color-helper {
-      @include button-size($font-big);
+      @include circular-with-text($font-big);
     }
   }
 }

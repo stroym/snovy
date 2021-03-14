@@ -46,6 +46,7 @@
 #snovy-editor > * > *,
 .ProseMirror {
   height: 100%;
+  box-sizing: border-box;
 }
 
 .ProseMirror {

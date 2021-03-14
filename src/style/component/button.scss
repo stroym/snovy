@@ -2,13 +2,11 @@
 @import "../mixins";
 
 .snovy-button {
-  @include button-size($font-medium);
   @include focus();
   flex-shrink: 0;
   margin: 0.1em;
   padding: 0;
   border: none;
-  outline: none;
   background-color: transparent;
   color: inherit;
 
@@ -17,9 +15,14 @@
   }
 }
 
+.snovy-remove-button,
+.snovy-collapse-button,
+.snovy-add-button {
+  @include circular-with-text($font-medium);
+}
+
 .snovy-color-button {
-  @include button-size($font-big);
-  font-size: $font-small;
+  @include circular($font-big);
 }
 
 .snovy-confirm-button {
@@ -37,7 +40,7 @@
 }
 
 .snovy-check-button {
-  @include button-size($font-big);
+  @include circular($font-big);
   font-size: $font-small;
   color: $color-text-primary;
   background-color: $color-text-primary;

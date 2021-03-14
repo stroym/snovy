@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from "react"
-import {Button, CollapseButton} from "../inputs/Button"
+import {CollapseButton} from "../inputs/Button"
 import {
   GetInputPropsOptions,
   GetToggleButtonPropsOptions,
@@ -10,7 +10,6 @@ import {Extras} from "../../util/ComponentUtils"
 import {Key} from "ts-key-enum"
 
 export const ComboBoxInput = (props: {
-  specialButton?: React.ReactElement<typeof Button>
   getToggleButtonProps: (options?: GetToggleButtonPropsOptions) => UseSelectGetToggleButtonPropsOptions
   comboInput: { getProps: <T>(options?: T) => T & GetInputPropsOptions, options?: UseComboboxGetInputPropsOptions }
 }) => {
@@ -48,7 +47,6 @@ export const ComboBoxInput = (props: {
       ref={wrapperRef} className="snovy-combo-box-input-wrapper"
       onMouseDown={() => {inputRef.current?.classList.add(Extras.MOUSE_FOCUS)}}
     >
-      {props.specialButton}
       <span className="inner-wrapper" {...props.getToggleButtonProps()}>
         <input
           className="snovy-input" type="text" autoComplete="off"

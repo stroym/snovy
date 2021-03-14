@@ -84,7 +84,7 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
     }
 
     return (
-      <form ref={ref} id="snovy-tag-create-form" className="snovy-form">
+      <form ref={ref} id="snovy-tag-create-form" className="snovy-form" tabIndex={-1}>
         <TagFormItem
           color={{value: scopeColor, get: setScopeColor}}
           check={{toggled: unique, toggle: setUnique, descriptor: "Exclusive"}}
@@ -93,6 +93,7 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
             onSelect={selectScope} items={props.scopes.map(it => it.toString())} selection={scopeText}
             placeholder="Scope" tabIndex={0}
             newItem={{getInputValue: makeScope, name: "scope"}}
+            options={{slideDropdown: true, unboundDropdown: true}}
           />
         </TagFormItem>
         <TagFormItem
@@ -122,33 +123,34 @@ const TagFormItem = (props: {
   children: React.ReactElement<typeof Input | typeof ComboBox>
 }) => {
 
-  const selfRef = useRef<HTMLButtonElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
   const pickerRef = useRef<HTMLDivElement>(null)
 
-  const [visible, , flip] = useHideOnOutsideClick(selfRef, [pickerRef])
+  const [visible, , flip] = useHideOnOutsideClick(buttonRef, {otherRefs: [pickerRef], eventType: "click"})
 
   const getColor = (color: string) => {
     props.color.get(color)
     flip()
   }
 
-  //TODO maybe I should merge button and picker...
   return (
     <span className="tag-form-item">
-      <span className="colored-wrapper">
         <ColorButton
-          ref={selfRef} onMouseDown={flip} style={{backgroundColor: props.color.value}} disabled={props.disableColor}
+          ref={buttonRef} id="picker-button" onClick={flip} style={{backgroundColor: props.color.value}}
+          disabled={props.disableColor}
         />
-        {props.children}
-        {props.check &&
-        <label>
-          {props.check.descriptor}
-          <CheckButton toggle={props.check.toggled} onClick={() => props.check!.toggle(!props.check!.toggled)}/>
-        </label>
-        }
-      </span>
+      {props.children}
+      {props.check &&
+      <label>
+        <CheckButton toggle={props.check.toggled} onClick={() => props.check!.toggle(!props.check!.toggled)}/>
+        <div className="label-text">{props.check.descriptor}</div>
+      </label>
+      }
       {visible &&
-      <ColorPicker ref={pickerRef} getColor={getColor} getColorFromInput={color => props.color.get("#" + color)}/>
+      <ColorPicker
+        ref={pickerRef} getColor={getColor} getColorFromInput={color => props.color.get("#" + color)}
+        colors={["#ff0000", "#ffa500", "#00ff00", "#40e0d0", "#0000ff", "#800080", "#ffffff", "#000000"]}
+      />
       }
     </span>
   )

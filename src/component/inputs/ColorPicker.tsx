@@ -8,6 +8,7 @@ import {TinyStyle} from "../tag/TagItem"
 import Input from "./Input"
 
 interface ColorPickerProps {
+  colors: Array<string>
   getColor: (hex: string) => void,
   getColorFromInput: (hex: string) => void
 }
@@ -26,19 +27,13 @@ export const ColorPicker = forwardRef((props: ColorPickerProps, ref?: React.Ref<
     return (
       <span ref={ref} className="snovy-color-picker">
         <div className="color-container">
-          <ColorItem onClick={props.getColor} color="#ff0000"/>
-          <ColorItem onClick={props.getColor} color="#ffa500"/>
-          <ColorItem onClick={props.getColor} color="#00ff00"/>
-          <ColorItem onClick={props.getColor} color="#40e0d0"/>
-          <ColorItem onClick={props.getColor} color="#0000ff"/>
-          <ColorItem onClick={props.getColor} color="#800080"/>
-          <ColorItem onClick={props.getColor} color="#ffffff"/>
-          <ColorItem onClick={props.getColor} color="#000000"/>
+          {props.colors.map((color, index) =>
+            <ColorItem key={index} onClick={props.getColor} color={color}/>
+          )}
         </div>
         <div className="input-wrapper" onKeyDown={e => useKey(e, keyBindings)}>
-          <span className="color-helper">#</span>
+          <ColorHelper color={color} text="#"/>
           <Input getText={value => setColor("#" + value)} placeholder="Hex code" maxLength={8}/>
-          <ColorHelper color={color}/>
         </div>
       </span>
     )
@@ -51,7 +46,9 @@ const ColorItem = (props: {
   color: string
 }) => {
 
-  return <ColorButton onClick={() => {props.onClick(props.color)}} style={{backgroundColor: props.color}}/>
+  return <ColorButton
+    className="color-item" onClick={() => {props.onClick(props.color)}} style={{backgroundColor: props.color}}
+  />
 
 }
 

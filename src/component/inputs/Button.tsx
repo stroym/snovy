@@ -10,7 +10,7 @@ export interface ToggleButtonProps extends React.HTMLProps<HTMLButtonElement> {
 export const Button = forwardRef<HTMLButtonElement, ToggleButtonProps>(
   function Button(props: ToggleButtonProps, ref?: buttonRef) {
 
-    const {type, toggle, ...rest} = props
+    const {toggle, ...rest} = props
 
     return (
       <button
@@ -59,7 +59,7 @@ export const CheckButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
 
 export const ColorButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
   function ColorButton(props: ToggleButtonProps, ref?: buttonRef) {
-    return <Button {...props} ref={ref} className="snovy-color-button"/>
+    return <Button {...props} ref={ref} className={concatUnknown("snovy-color-button", props.className)}/>
   }
 )
 

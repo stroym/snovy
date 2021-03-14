@@ -1,12 +1,15 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useRef, useState} from "react"
 import Tag from "../../../data/model/Tag"
 import {TagItem, TagItemScoped, TagItemScopedUnique} from "../../tag/TagItem"
 import Scope from "../../../data/model/Scope"
 import Notebook from "../../../data/model/Notebook"
 import Note from "../../../data/model/Note"
-import TagComboBox from "../../tag/TagComboBox"
 import {dexie} from "../../../index"
 import {title} from "../../../data/Database"
+import {AddButton} from "../../inputs/Button"
+import {useHideOnOutsideClick} from "../../../util/Hooks"
+import TagForm from "../../tag/TagForm"
+import ComboBox from "../../combo_box/ComboBox"
 
 const NoteDetail = (props: {
   note: Note,
@@ -76,20 +79,55 @@ const NoteDetail = (props: {
     props.note.tag(await tag.load())
     await props.notebook.load()
     refreshTags()
+    flipForm()
+  }
+
+  const formRef = useRef<HTMLFormElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
+
+  const [formVisible, , flipForm] = useHideOnOutsideClick(formRef, {otherRefs: [buttonRef]})
+  const [menuVisible, setMenuVisible] = useState(false)
+  const [inputValue, setInputValue] = useState("")
+
+  useEffect(
+    () => {
+      if (!formVisible) {
+        setInputValue("")
+      }
+    }, [formVisible]
+  )
+
+  const flip = () => {
+    setMenuVisible(!menuVisible)
+    flipForm()
+  }
+
+  const getInputValue = (value: string) => {
+    setInputValue(value)
+    !formVisible && flip()
   }
 
   return (
     <div id="snovy-note-detail">
-      <TagComboBox
-        tags={props.notebook.availableTags(props.note)} scopes={props.notebook.scopes} onTag={onTag}
-        onNewTag={tagCreation}
-      />
-      <div id="tag-display-area">
-        {props.note.tagMap.map(([scope, tags]: [Scope | undefined, Tag[]]) => scope ? scope.unique ?
-          <TagItemScopedUnique key={scope.title} scope={scope} mapped={tags} onRemove={remove}/> :
-          <TagItemScoped key={scope.title} scope={scope} mapped={tags} onRemove={remove}/> :
-          tags.map((item: Tag) => <TagItem key={item.toString()} mapped={item} onRemove={remove}/>)
-        )}
+      <div className="note-detail-header">
+        <AddButton ref={buttonRef} onClick={flip}/>
+        <ComboBox
+          items={props.notebook.availableTags(props.note)} newItem={{getInputValue: getInputValue, name: "tag"}}
+          options={{selectPreviousOnEsc: false, resetInputOnSelect: true}} onSelect={onTag}
+          externalClose={{menuVisible: setMenuVisible, closeMenu: menuVisible}}
+        />
+      </div>
+      <div className="note-detail-body">
+        {formVisible &&
+        <TagForm ref={formRef} scopes={props.notebook.scopes} initialValue={inputValue} onConfirm={tagCreation}/>
+        }
+        <div id="tag-display-area">
+          {props.note.tagMap.map(([scope, tags]: [Scope | undefined, Tag[]]) => scope ? scope.unique ?
+            <TagItemScopedUnique key={scope.title} scope={scope} mapped={tags} onRemove={remove}/> :
+            <TagItemScoped key={scope.title} scope={scope} mapped={tags} onRemove={remove}/> :
+            tags.map((item: Tag) => <TagItem key={item.toString()} mapped={item} onRemove={remove}/>)
+          )}
+        </div>
       </div>
     </div>
   )

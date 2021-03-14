@@ -4,12 +4,19 @@ import {Key} from "ts-key-enum"
 import {isArray, isItem} from "./Utils"
 import {Extras} from "./ComponentUtils"
 
-export function useHideOnOutsideClick(elementRef: React.RefObject<Element | null>,
-                                      otherRefs?: Array<React.RefObject<Element | null>>,
-                                      initialState?: boolean):
+type mouseEventType = "mousedown" | "click"
+
+export function useHideOnOutsideClick(
+  elementRef: React.RefObject<Element | null>,
+  {otherRefs = [], eventType = "mousedown", initialState = false}: {
+    otherRefs?: Array<React.RefObject<Element | null>>,
+    eventType?: mouseEventType,
+    initialState?: boolean
+  } = {}
+):
   [boolean, Dispatch<SetStateAction<boolean>>, () => void] {
 
-  const [visible, setVisible] = useState(initialState ?? false)
+  const [visible, setVisible] = useState(initialState)
 
   const flip = () => {
     setVisible(!visible)
@@ -17,11 +24,11 @@ export function useHideOnOutsideClick(elementRef: React.RefObject<Element | null
 
   useEffect(
     () => {
-      document.addEventListener("mousedown", handleOutsideClick)
+      document.addEventListener(eventType, handleOutsideClick)
       document.addEventListener("keydown", handleKey)
 
       return () => {
-        document.removeEventListener("mousedown", handleOutsideClick)
+        document.removeEventListener(eventType, handleOutsideClick)
         document.removeEventListener("keydown", handleKey)
       }
     }, []

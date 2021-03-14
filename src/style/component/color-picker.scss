@@ -1,0 +1,41 @@
+@import "../theme";
+@import "../mixins";
+
+.snovy-color-picker {
+  display: grid;
+  grid-template-areas: "predefined-colors" "input";
+  grid-row-gap: 0.5em;
+  align-items: start;
+  justify-items: start;
+
+  .color-container {
+    grid-area: predefined-colors;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    justify-content: space-evenly;
+  }
+
+  .input-wrapper {
+    grid-area: input;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+    border: $border-thin-inverted;
+
+    .color-helper {
+      font-size: $font-medium;
+      display: flex;
+      align-items: center;
+      border-right: $border-inverted;
+    }
+
+    input {
+      width: calc(8ch + 0.4vw);
+
+      &:focus {
+        box-shadow: unset;
+      }
+    }
+  }
+}

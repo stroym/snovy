@@ -2,14 +2,15 @@
 @import "../mixins";
 
 .snovy-form {
-
+  box-sizing: border-box;
 }
 
 #snovy-tag-create-form {
   @include scrollbar();
   scrollbar-width: none;
   max-height: 60vh;
-  border-top: $border;
+  outline: none;
+  padding: 0 0.2em;
   width: 100%;
   position: absolute;
   z-index: 10;
@@ -18,84 +19,61 @@
   color: $color-text-primary;
 
   & > * {
-    margin: 1em 0.5em;
+    margin: 1em 0;
   }
 
   .tag-form-item {
     display: grid;
-    grid-template-areas: "input" "picker";
+    grid-template-areas: "color input check" "color1 input-dropdown check1";
+    grid-template-columns: fit-content(5%) 1fr 30%;
+    grid-template-rows: fit-content(1fr) 1fr;
+    grid-column-gap: 0.2em;
+    align-items: center;
     justify-items: center;
 
-    .colored-wrapper {
-      grid-area: input;
-      display: grid;
-      grid-template-areas: "color input check";
-      grid-template-columns: 1fr 3fr 2fr;
-      justify-items: center;
+    #picker-button {
+      grid-area: color;
+    }
+
+    label {
+      grid-area: check;
+      font-size: $font-small;
+      max-width: 100%;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-self: flex-start;
       align-items: center;
+      overflow: hidden;
 
-      label {
-        grid-area: check;
-        font-size: $font-small;
-
-        .snovy-check-button {
-          margin-left: 0.5em;
-        }
+      .label-text {
+        max-width: 100%;
+        margin: 0 0.2em;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
+    }
 
-      .snovy-color-button {
-        grid-area: color;
-      }
+    & > input, .snovy-combo-box {
+      grid-area: input;
+      box-sizing: border-box;
+      border: $border-thin-inverted;
+    }
 
-      & > input, .snovy-combo-box {
-        grid-area: input;
-        border: $border-thin-inverted;
-      }
+    .snovy-dropdown {
+      grid-area: input-dropdown;
+      border: $border-thin-inverted;
+      border-top: unset;
 
-      .snovy-dropdown {
-        border: $border-thin-inverted;
-
-        .snovy-dropdown-item {
-          @include text-height-padded($font-small, 1.5);
-        }
+      .snovy-dropdown-item {
+        @include text-height-padded($font-small, 1.5);
       }
     }
 
     .snovy-color-picker {
-      margin: 1em 0.5em 0 0.5em;
-      display: grid;
-      grid-template-areas: "color" "input";
-      justify-items: center;
-      align-items: start;
+      grid-area: input-dropdown;
 
       .color-container {
-        grid-area: color;
-        display: flex;
-        flex-flow: row wrap;
-        align-items: flex-start;
-        justify-content: flex-start;
-      }
-
-      .input-wrapper {
-        grid-area: input;
-        display: flex;
-        flex-flow: row nowrap;
-        border: $border-thin-inverted;
-        margin: 0.1em;
-
-        .color-helper {
-          width: 1.5ch;
-        }
-
-        input {
-          border-left: $border-thin-inverted;
-          border-right: $border-thin-inverted;
-          width: calc(8ch + 0.4vw);
-
-          &:focus {
-            box-shadow: unset;
-          }
-        }
+        margin-top: 0.5em;
       }
     }
   }
@@ -103,4 +81,5 @@
   .snovy-confirm-button {
     margin-top: 0;
   }
+
 }

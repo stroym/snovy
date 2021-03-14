@@ -15,7 +15,7 @@ const ListItem = <T extends Record<string, any>>(props: {
   const selfRef = useRef<HTMLInputElement>(null)
 
   const [value, setValue] = useState<string>(props.mapped.toString())
-  const [editable, , flip] = useHideOnOutsideClick(selfRef, [], !props.onValueChange)
+  const [editable, , flip] = useHideOnOutsideClick(selfRef, {initialState: !props.onValueChange})
 
   useEffect(
     () => {

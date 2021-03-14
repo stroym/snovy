@@ -4,33 +4,56 @@
 @import "../theme";
 @import "../mixins";
 
+//TODO commonize header body footer content layout for sidebar
 #snovy-note-detail {
   max-width: 100%;
   max-height: 100%;
   position: relative;
   display: grid;
   grid-template-rows: fit-content(10%) 4fr 1fr;
-  grid-template-areas: "tag-add" "tags" "rest";
+  grid-template-areas: "header" "body" "rest";
 
-
-  .snovy-combo-box {
-    grid-area: tag-add;
+  .note-detail-header {
+    grid-area: header;
     border-bottom: $border;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-items: flex-start;
+
+    .snovy-combo-box {
+      position: unset;
+    }
+
+    .snovy-button {
+      @include circular($font-medium);
+      color: $color-text-primary;
+
+      &:hover {
+        background-color: transparentize($color-text-primary, 0.5);
+      }
+    }
   }
 
-  #tag-display-area {
-    @include scrollbar();
-    grid-area: tags;
+  .note-detail-body {
+    grid-area: body;
     min-width: 0;
     min-height: 0;
     max-width: 100%;
     max-height: 100%;
-    padding: 0.1em;
-    display: flex;
-    flex-flow: row wrap;
-    align-content: flex-start;
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
 
+    #tag-display-area {
+      @include scrollbar();
+      min-width: 0;
+      min-height: 0;
+      max-width: 100%;
+      max-height: 100%;
+      padding: 0.1em;
+      display: flex;
+      flex-flow: row wrap;
+      align-content: flex-start;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+  }
 }
