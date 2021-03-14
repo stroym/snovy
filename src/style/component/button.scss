@@ -2,7 +2,7 @@
 @import "../mixins";
 
 .snovy-button {
-  @include focus();
+  @include focus(50%);
   flex-shrink: 0;
   margin: 0.1em;
   padding: 0;
@@ -27,11 +27,12 @@
 
 .snovy-confirm-button {
   @include text-height-padded($font-big, 1.5);
+  @include focus($border-rad-big);
   width: unset;
   height: unset;
   max-width: 80%;
   padding: 0 0.5em;
-  border-radius: $border-rad-round;
+  border-radius: $border-rad-big;
   border: $border-thin-inverted;
 
   &:hover {

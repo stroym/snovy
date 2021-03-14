@@ -1,7 +1,7 @@
 import React, {forwardRef, useEffect} from "react"
 import ListItem from "./ListItem"
 import {append, Extras} from "../../util/ComponentUtils"
-import {useKey} from "../../util/Utils"
+import {KeyMapping, useKey} from "../../util/Utils"
 import {Key} from "ts-key-enum"
 import {useMultiSelect} from "../../util/Hooks"
 
@@ -20,11 +20,8 @@ const List = forwardRef(<T extends Record<string, any>>(props: ListProps<T>, ref
 
   const {selectedItems, setSelectedItems, handleItemClick} = useMultiSelect<T>(props.items)
 
-  const keyBindings = [
-    {
-      key: Key.Escape,
-      handler: () => {!selectedItems.isEmpty() && setSelectedItems([Array.from(selectedItems).first()!])}
-    }
+  const keyMap: Array<KeyMapping> = [
+    {key: Key.Escape, handler: () => !selectedItems.isEmpty() && setSelectedItems([selectedItems.first()!])}
   ]
 
   useEffect(
@@ -54,7 +51,7 @@ const List = forwardRef(<T extends Record<string, any>>(props: ListProps<T>, ref
   return (
     <div
       ref={ref} id={props.id} className={"snovy-list".concat(append(!props.items, Extras.DISABLED))}
-      onKeyDown={e => useKey(e, keyBindings)}
+      onKeyDown={e => useKey(e, keyMap)}
       onContextMenu={() => props.getContextTarget && props.getContextTarget(undefined)}
     >
       {props.items?.map((item, index) =>

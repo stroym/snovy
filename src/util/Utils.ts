@@ -1,3 +1,4 @@
+import React from "react"
 import {Key} from "ts-key-enum"
 
 export function isArray<T>(arg: unknown): arg is Array<T> {
@@ -8,10 +9,27 @@ export function isItem<T>(arg: T | null | undefined): arg is T {
   return arg !== undefined
 }
 
-export function useKey(e: React.KeyboardEvent, mappings: Array<{ key: Key, handler: () => void }>) {
-  const mapping = mappings.find(it => it.key == e.key)
+export type KeyMapping = {
+  key: Key,
+  handler: () => void,
+  condition?: boolean,
+  modifiers?: { ctrl?: boolean, alt?: boolean, shift?: boolean }
+}
+
+export function useKey(e: React.KeyboardEvent, keyMappings: Array<KeyMapping>) {
+  const mapping = keyMappings.find(it => it.key == e.key)
 
   if (mapping) {
-    mapping.handler()
+    if (mapping.modifiers &&
+      (mapping.modifiers.ctrl && !e.ctrlKey ||
+        mapping.modifiers.alt && e.altKey ||
+        mapping.modifiers.shift && !e.shiftKey)) {
+      return
+    }
+
+    if (mapping.condition == undefined || mapping.condition) {
+      e.preventDefault()
+      mapping.handler()
+    }
   }
 }

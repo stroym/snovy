@@ -1,10 +1,11 @@
-import React, {forwardRef, useEffect, useRef, useState} from "react"
+import React, {forwardRef, useEffect, useState} from "react"
 import Scope from "../../data/model/Scope"
-import {CheckButton, ColorButton, ConfirmButton} from "../inputs/Button"
-import {useColored, useHideOnOutsideClick} from "../../util/Hooks"
+import {CheckButton, ConfirmButton} from "../inputs/Button"
+import {useColored} from "../../util/Hooks"
 import ColorPicker from "../inputs/ColorPicker"
 import ComboBox from "../combo_box/ComboBox"
 import Input from "../inputs/Input"
+import FocusTrap from "focus-trap-react"
 
 interface FormProps {
   initialValue?: string
@@ -83,34 +84,37 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
       }
     }
 
+    //TODO move the (optional) show button here inside a fragment?
     return (
-      <form ref={ref} id="snovy-tag-create-form" className="snovy-form" tabIndex={-1}>
-        <TagFormItem
-          color={{value: scopeColor, get: setScopeColor}}
-          check={{toggled: unique, toggle: setUnique, descriptor: "Exclusive"}}
-        >
-          <ComboBox
-            onSelect={selectScope} items={props.scopes.map(it => it.toString())} selection={scopeText}
-            placeholder="Scope" tabIndex={0}
-            newItem={{getInputValue: makeScope, name: "scope"}}
-            options={{slideDropdown: true, unboundDropdown: true}}
-          />
-        </TagFormItem>
-        <TagFormItem
-          color={{value: tagColor, get: setTagColor}}
-          check={{
-            toggled: useScope, toggle: toggle => {
-              setUseScope(toggle)
-              if (toggle) {
-                setTagColor(scopeColor)
-              }
-            }, descriptor: "Unify"
-          }}
-        >
-          <Input placeholder="Tag" getText={setTagText} defaultValue={tagText}/>
-        </TagFormItem>
-        <ConfirmButton defaultValue="Add & tag" onClick={() => createTag()}/>
-      </form>
+      <FocusTrap focusTrapOptions={{clickOutsideDeactivates: true}}>
+        <form ref={ref} id="snovy-tag-create-form" className="snovy-form" tabIndex={-1}>
+          <TagFormItem
+            color={{value: scopeColor, get: setScopeColor}}
+            check={{toggled: unique, toggle: setUnique, descriptor: "Exclusive"}}
+          >
+            <ComboBox
+              onItemSelect={selectScope} items={props.scopes.map(it => it.toString())} selectedItem={scopeText}
+              placeholder="Scope" tabIndex={0}
+              newItem={{getInputValue: makeScope, name: "scope"}}
+              options={{slideDropdown: true, unboundDropdown: true}}
+            />
+          </TagFormItem>
+          <TagFormItem
+            color={{value: tagColor, get: setTagColor}}
+            check={{
+              toggled: useScope, toggle: toggle => {
+                setUseScope(toggle)
+                if (toggle) {
+                  setTagColor(scopeColor)
+                }
+              }, descriptor: "Unify"
+            }}
+          >
+            <Input placeholder="Tag" getText={setTagText} defaultValue={tagText}/>
+          </TagFormItem>
+          <ConfirmButton defaultValue="Add & tag" onClick={() => createTag()}/>
+        </form>
+      </FocusTrap>
     )
 
   }
@@ -123,34 +127,19 @@ const TagFormItem = (props: {
   children: React.ReactElement<typeof Input | typeof ComboBox>
 }) => {
 
-  const buttonRef = useRef<HTMLButtonElement>(null)
-  const pickerRef = useRef<HTMLDivElement>(null)
-
-  const [visible, , flip] = useHideOnOutsideClick(buttonRef, {otherRefs: [pickerRef], eventType: "click"})
-
-  const getColor = (color: string) => {
-    props.color.get(color)
-    flip()
-  }
-
   return (
     <span className="tag-form-item">
-        <ColorButton
-          ref={buttonRef} id="picker-button" onClick={flip} style={{backgroundColor: props.color.value}}
-          disabled={props.disableColor}
-        />
+      <ColorPicker
+        getColor={props.color.get} getColorFromInput={color => props.color.get("#" + color)}
+        selectedColor={props.color.value}
+        colors={["#ff0000", "#ffa500", "#00ff00", "#40e0d0", "#0000ff", "#800080", "#ffffff", "#000000"]}
+      />
       {props.children}
       {props.check &&
       <label>
         <CheckButton toggle={props.check.toggled} onClick={() => props.check!.toggle(!props.check!.toggled)}/>
         <div className="label-text">{props.check.descriptor}</div>
       </label>
-      }
-      {visible &&
-      <ColorPicker
-        ref={pickerRef} getColor={getColor} getColorFromInput={color => props.color.get("#" + color)}
-        colors={["#ff0000", "#ffa500", "#00ff00", "#40e0d0", "#0000ff", "#800080", "#ffffff", "#000000"]}
-      />
       }
     </span>
   )

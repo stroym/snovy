@@ -36,10 +36,13 @@
   scroll-snap-type: y mandatory;
 }
 
-@mixin focus() {
+@mixin focus($radius) {
   outline: none;
 
-  &:focus-visible {
-    outline: $color-focus inset 1px;
+  [data-whatinput="keyboard"] &:focus {
+    outline: $color-focus inset 2px;
+    outline-offset: -2px;
+    -moz-outline-radius: #{$radius};
+    border-radius: #{$radius};
   }
 }

@@ -3,7 +3,7 @@
 
 .snovy-input {
   @include text-height($font-medium);
-  @include focus();
+  @include focus($border-rad-small);
   color: $color-text-primary;
   background-color: transparent;
   border: none;

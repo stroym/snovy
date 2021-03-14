@@ -105,7 +105,7 @@ export default async function generate() {
   console.log("generating...")
 
   for (let i = 0; i < 3; i++) {
-    const notebookId = (await addNotebook("" + randomNumber(1000, 100)))!
+    const notebookId = (await addNotebook("" + randomNumber(100000, 10000)))!
 
     for (let j = 0; j < randomNumber(15, 6); j++) {
       const scopeId = (await addScope(notebookId, j % 3 == 0))

@@ -1,42 +1,39 @@
 import React, {useEffect} from "react"
 import {useCombobox, UseComboboxState, UseComboboxStateChangeOptions} from "downshift"
 import {useDefaultEmpty} from "../../util/Hooks"
-import ComboCreateItem from "./ComboCreateItem"
+import ComboInfoItem from "./ComboInfoItem"
 import ComboBoxInput from "./ComboBoxInput"
-import {useKey} from "../../util/Utils"
+import {KeyMapping, useKey} from "../../util/Utils"
 import {Key} from "ts-key-enum"
 import ComboBoxDropdown from "./ComboBoxDropdown"
+import ComboBoxItem from "./ComboBoxItem"
 
-export interface ComboBoxProps<T extends Record<string, any> | string> {
-  id?: string
-  className?: string
-  tabIndex?: number
-  placeholder?: string
-  onSelect?: (active: T | undefined) => void
+export interface ComboBoxProps<T extends Record<string, any> | string> extends React.HTMLProps<HTMLInputElement> {
+  onItemSelect?: (active: T | undefined) => void
   items: Array<T> | undefined
-  selection?: T
-  newItem?: { getInputValue: (value: string) => void, name: string },
+  selectedItem?: T
+  newItem?: { getInputValue: (value: string) => void, name: string }
   options?: { selectPreviousOnEsc?: boolean, resetInputOnSelect?: boolean, slideDropdown?: boolean, unboundDropdown?: boolean }
-  externalClose?: { closeMenu: boolean, menuVisible: (visible: boolean) => void },
+  externalClose?: { closeMenu: boolean, menuVisible: (visible: boolean) => void }
 }
 
 const ComboBox = <T extends Record<string, any> | string>(props: ComboBoxProps<T>) => {
 
   const [dropdownItems, setDropdownItems] = useDefaultEmpty<T>()
 
-  const stateReducer = (state: UseComboboxState<T>, actionAndChanges: UseComboboxStateChangeOptions<T>) => {
-    const {type, changes} = actionAndChanges
+  const stateReducer = (state: UseComboboxState<T>, stateChange: UseComboboxStateChangeOptions<T>) => {
+    const {type, changes} = stateChange
 
-    switch (type) {
-      case useCombobox.stateChangeTypes.InputKeyDownEscape: //on esc press revert to last selected value
-        if (props.options && !props.options.selectPreviousOnEsc) {
-          return {...changes}
-        } else {
-          return {...changes, selectedItem: state.selectedItem, inputValue: state.inputValue}
-        }
-      default:
-        return changes
+    if (type == useCombobox.stateChangeTypes.InputKeyDownEscape && props.options?.selectPreviousOnEsc) {
+      return {...changes, selectedItem: state.selectedItem, inputValue: state.inputValue}
+
+    } else if (type == useCombobox.stateChangeTypes.InputBlur && changes.selectedItem !== undefined) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const {selectedItem, ...changesWithoutItem} = changes
+      return changesWithoutItem
     }
+
+    return changes
   }
 
   const {
@@ -45,7 +42,7 @@ const ComboBox = <T extends Record<string, any> | string>(props: ComboBoxProps<T
   } = useCombobox({
     items: dropdownItems,
     itemToString: item => item ? item.toString() : "",
-    initialSelectedItem: props.selection,
+    initialSelectedItem: props.selectedItem,
     stateReducer: stateReducer,
     onInputValueChange: ({inputValue, selectedItem}) => {
       const target = inputValue ?? ""
@@ -55,7 +52,7 @@ const ComboBox = <T extends Record<string, any> | string>(props: ComboBoxProps<T
         setHighlightedIndex(props.items?.indexOf(selectedItem) ?? -1)
       } else {
         const filteredItems = props.items?.filter(item =>
-          item.toString().toLowerCase().startsWith(target.toLowerCase())
+          item.toString().toLowerCase().startsWith(target.toLowerCase()) //TODO includes + highlight
         )
 
         setDropdownItems(filteredItems)
@@ -100,79 +97,77 @@ const ComboBox = <T extends Record<string, any> | string>(props: ComboBoxProps<T
 
   useEffect(
     () => {
-      props.selection && selectItem(props.selection)
-    }, [props.selection]
+      props.selectedItem && selectItem(props.selectedItem)
+    }, [props.selectedItem]
   )
 
   useEffect(
     () => {
-      props.onSelect && selectedItem && selectedItem != props.selection && props.onSelect(selectedItem)
+      props.onItemSelect && selectedItem != props.selectedItem && props.onItemSelect(selectedItem ?? undefined)
       closeMenu()
     }, [selectedItem]
   )
 
-  const onGetInputValue = () => {
-    props.newItem && props.newItem.getInputValue(inputValue)
-    closeMenu()
-  }
-
-  if (props.options?.unboundDropdown) {
-    return (
-      <>
-        <div className="snovy-combo-box" id={props.id} {...getComboboxProps()}>
-          <ComboBoxInput
-            getToggleButtonProps={getToggleButtonProps}
-            comboInput={{
-              getProps: getInputProps, options: {
-                placeholder: props.placeholder,
-                onKeyDown: e => dropdownItems.isEmpty() && useKey(e, [{
-                  key: Key.Enter,
-                  handler: onGetInputValue
-                }])
-              }
-            }}
-          />
-        </div>
-        <ComboBoxDropdown
-          dropdownItems={dropdownItems} getMenuProps={getMenuProps} getItemProps={getItemProps}
-          highlightedIndex={highlightedIndex} selectedItem={selectedItem} isOpen={isOpen} inputValue={inputValue}
-          slide={props.options?.slideDropdown}
-          newItem={
-            props.newItem &&
-            <ComboCreateItem inputValue={inputValue} itemName={props.newItem?.name} onClick={onGetInputValue}/>
-          }
+  const ComboDropdown =
+    <ComboBoxDropdown getMenuProps={getMenuProps} isOpen={isOpen} slide={props.options?.slideDropdown}>
+      {dropdownItems?.map((item, index) => (
+        <ComboBoxItem
+          {...getItemProps({item, index})} key={index} item={item}
+          highlighted={highlightedIndex == index} selected={props.selectedItem == item}
         />
-      </>
-    )
-  } else {
-    return (
+      ))}
+      {dropdownItems[highlightedIndex] &&
+      <ComboInfoItem value={`Press Enter to select ${dropdownItems[highlightedIndex].toString()}`}/>
+      }
+      {props.newItem && dropdownItems[highlightedIndex]?.toString() != inputValue &&
+      <ComboInfoItem
+        value={
+          `Press ${dropdownItems.isEmpty() ? "Enter/Shift+Enter" : "Shift+Enter"} 
+          to create ${inputValue.isBlank() ? ` new ${props.newItem.name}...` : inputValue}`
+        }
+      />
+      }
+    </ComboBoxDropdown>
+
+  //TODO more/more advanced key bindings + info items
+  const keyMap: Array<KeyMapping> = [
+    {
+      key: Key.Enter,
+      handler: () => {
+        props.newItem && props.newItem.getInputValue(inputValue)
+        closeMenu()
+      },
+      condition: !inputValue.isBlank()
+    },
+    {
+      key: Key.Enter,
+      modifiers: {shift: true},
+      handler: () => {
+        selectItem(dropdownItems[highlightedIndex])
+        closeMenu()
+      },
+      condition: !inputValue.isBlank()
+    }
+  ]
+
+  return (
+    <>
       <div className="snovy-combo-box" id={props.id} {...getComboboxProps()}>
         <ComboBoxInput
           getToggleButtonProps={getToggleButtonProps}
           comboInput={{
             getProps: getInputProps, options: {
               placeholder: props.placeholder,
-              onKeyDown: e => dropdownItems.isEmpty() && useKey(e, [{
-                key: Key.Enter,
-                handler: onGetInputValue
-              }])
+              onKeyDown: e => useKey(e, keyMap),
+              onFocus: props.onFocus
             }
           }}
         />
-        <ComboBoxDropdown
-          dropdownItems={dropdownItems} getMenuProps={getMenuProps} getItemProps={getItemProps}
-          highlightedIndex={highlightedIndex} selectedItem={selectedItem} isOpen={isOpen} inputValue={inputValue}
-          slide={props.options?.slideDropdown}
-          newItem={
-            props.newItem &&
-            <ComboCreateItem inputValue={inputValue} itemName={props.newItem?.name} onClick={onGetInputValue}/>
-          }
-        />
+        {!props.options?.unboundDropdown && ComboDropdown}
       </div>
-    )
-  }
-
-  //TODO as is, it's impossible to create items that are substrings of already existing items
+      {props.options?.unboundDropdown && ComboDropdown}
+    </>
+  )
 
 }
 

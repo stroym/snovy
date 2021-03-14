@@ -85,7 +85,7 @@ const NoteDetail = (props: {
   const formRef = useRef<HTMLFormElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
 
-  const [formVisible, , flipForm] = useHideOnOutsideClick(formRef, {otherRefs: [buttonRef]})
+  const [formVisible, setFormVisible, flipForm] = useHideOnOutsideClick(formRef, {otherRefs: [buttonRef]})
   const [menuVisible, setMenuVisible] = useState(false)
   const [inputValue, setInputValue] = useState("")
 
@@ -113,15 +113,15 @@ const NoteDetail = (props: {
         <AddButton ref={buttonRef} onClick={flip}/>
         <ComboBox
           items={props.notebook.availableTags(props.note)} newItem={{getInputValue: getInputValue, name: "tag"}}
-          options={{selectPreviousOnEsc: false, resetInputOnSelect: true}} onSelect={onTag}
-          externalClose={{menuVisible: setMenuVisible, closeMenu: menuVisible}}
+          options={{selectPreviousOnEsc: false, resetInputOnSelect: true}} onItemSelect={onTag}
+          externalClose={{menuVisible: setMenuVisible, closeMenu: menuVisible}} onFocus={() => {setFormVisible(false)}}
         />
       </div>
       <div className="note-detail-body">
         {formVisible &&
         <TagForm ref={formRef} scopes={props.notebook.scopes} initialValue={inputValue} onConfirm={tagCreation}/>
         }
-        <div id="tag-display-area">
+        <div id="tag-display-area" tabIndex={-1}>
           {props.note.tagMap.map(([scope, tags]: [Scope | undefined, Tag[]]) => scope ? scope.unique ?
             <TagItemScopedUnique key={scope.title} scope={scope} mapped={tags} onRemove={remove}/> :
             <TagItemScoped key={scope.title} scope={scope} mapped={tags} onRemove={remove}/> :

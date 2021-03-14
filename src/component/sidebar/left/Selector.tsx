@@ -70,7 +70,8 @@ export const Selector = (props: {
     <div id="notes-selector">
       <ComboBox
         id="notebook-selector" newItem={{getInputValue: createItem, name: "notebook"}}
-        items={props.notebooks} selection={props.selectedNotebook} onSelect={props.onNotebookChange}
+        items={props.notebooks} selectedItem={props.selectedNotebook} onItemSelect={props.onNotebookChange}
+        options={{selectPreviousOnEsc: true}}
       />
       <List
         ref={secRef} id="snovy-list-section" defaultFirst items={props.selectedNotebook?.itemsSortedByOrder}

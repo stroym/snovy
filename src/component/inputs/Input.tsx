@@ -1,5 +1,5 @@
 import React, {forwardRef, MutableRefObject, useRef} from "react"
-import {concatUnknown, Extras} from "../../util/ComponentUtils"
+import {concatUnknown} from "../../util/ComponentUtils"
 
 interface InputProps extends React.HTMLProps<HTMLInputElement> {
   getText?: (text: string) => void
@@ -18,8 +18,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         type="text"
         className={concatUnknown("snovy-input", props.className)}
         autoComplete="off" onChange={e => getText && getText(e.target.value)}
-        onMouseDown={() => {selfRef.current?.classList.add(Extras.MOUSE_FOCUS)}}
-        onBlur={() => selfRef.current?.classList.remove(Extras.MOUSE_FOCUS)}
       />
     )
 

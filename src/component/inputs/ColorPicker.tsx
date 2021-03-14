@@ -1,50 +1,71 @@
-import React, {forwardRef} from "react"
+import React, {useRef} from "react"
 
 import {ColorButton} from "./Button"
-import {useKey} from "../../util/Utils"
+import {KeyMapping, useKey} from "../../util/Utils"
 import {Key} from "ts-key-enum"
-import {useColor} from "../../util/Hooks"
+import {useColor, useHideOnOutsideClick} from "../../util/Hooks"
 import {TinyStyle} from "../tag/TagItem"
 import Input from "./Input"
+import FocusTrap from "focus-trap-react"
 
-interface ColorPickerProps {
+export const ColorPicker = (props: {
   colors: Array<string>
-  getColor: (hex: string) => void,
+  selectedColor: string
+  getColor: (hex: string) => void
   getColorFromInput: (hex: string) => void
-}
+}) => {
 
-export const ColorPicker = forwardRef((props: ColorPickerProps, ref?: React.Ref<HTMLSpanElement>) => {
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const pickerRef = useRef<HTMLDivElement>(null)
 
-  const [color, setColor] = useColor("")
+  const [visible, , flip] = useHideOnOutsideClick(buttonRef, {otherRefs: [pickerRef], eventType: "click"})
 
-    const keyBindings = [
-      {
-        key: Key.Enter,
-        handler: () => {props.getColor(color)}
-      }
-    ]
+  const [inputValue, setInputValue] = useColor("")
 
-    return (
-      <span ref={ref} className="snovy-color-picker">
+  const keyMap: Array<KeyMapping> = [
+    {key: Key.Enter, handler: () => getColor(inputValue)}
+  ]
+
+  const getColor = (color: string) => {
+    props.getColor(color)
+    flip()
+  }
+
+  //TODO make button optional
+  return (
+    <>
+      <ColorButton
+        ref={buttonRef} className="color-picker-button" onClick={() => {flip()}}
+        style={{backgroundColor: props.selectedColor}} tabIndex={0}
+      />
+      {visible &&
+      <FocusTrap focusTrapOptions={{clickOutsideDeactivates: true}}>
+        <span ref={pickerRef} className="snovy-color-picker" tabIndex={-1}>
         <div className="color-container">
           {props.colors.map((color, index) =>
-            <ColorItem key={index} onClick={props.getColor} color={color}/>
+            <ColorItem key={index} onClick={getColor} color={color}/>
           )}
         </div>
-        <div className="input-wrapper" onKeyDown={e => useKey(e, keyBindings)}>
-          <ColorHelper color={color} text="#"/>
-          <Input getText={value => setColor("#" + value)} placeholder="Hex code" maxLength={8}/>
+        <div className="input-wrapper" onKeyDown={e => useKey(e, keyMap)}>
+          <ColorHelper color={inputValue} text="#"/>
+          <Input getText={value => setInputValue("#" + value)} placeholder="Hex code" maxLength={8}/>
         </div>
       </span>
-    )
+      </FocusTrap>
+      }
+    </>
+  )
 
-  }
-)
+}
 
-const ColorItem = (props: {
-  onClick: (hex: string) => void,
-  color: string
-}) => {
+const ColorItem = (props:
+                     {
+                       onClick: (hex: string) => void,
+                       color
+                         :
+                         string
+                     }
+) => {
 
   return <ColorButton
     className="color-item" onClick={() => {props.onClick(props.color)}} style={{backgroundColor: props.color}}
@@ -52,10 +73,12 @@ const ColorItem = (props: {
 
 }
 
-export const ColorHelper = (props: {
-  color: string,
-  text?: string
-}) => {
+export const ColorHelper = (props:
+                              {
+                                color: string,
+                                text?: string
+                              }
+) => {
 
   const tiny = new TinyStyle(props.color)
 

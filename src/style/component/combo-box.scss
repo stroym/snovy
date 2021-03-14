@@ -62,7 +62,8 @@
     position: unset;
   }
 
-  .snovy-dropdown-item {
+  .snovy-dropdown-item,
+  .snovy-dropdown-create-item {
     @include text-height-padded($font-big, 2);
     scroll-snap-align: start;
     width: 100%;
@@ -72,5 +73,16 @@
     padding: 0 2%;
     cursor: default;
     user-select: none;
+  }
+
+  .snovy-dropdown-no-match {
+    text-align: center;
+  }
+
+  .info-dropdown-item {
+    @include text-height-padded($font-small, 2);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }

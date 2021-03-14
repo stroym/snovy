@@ -6,11 +6,10 @@ export enum Extras {
   EDITABLE = "editable",
   DISABLED = "disabled",
   HIDDEN = "hidden",
-  MOUSE_FOCUS = "mouse-focus"
 }
 
-export function append(condition: any, value: string) {
-  return condition ? " " + value : ""
+export function append(condition: any, value?: string) {
+  return condition ? value ? " " + value : " " + condition : ""
 }
 
 export function concatUnknown(name: string, rest: string | undefined) {

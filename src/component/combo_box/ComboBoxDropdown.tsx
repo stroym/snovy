@@ -1,37 +1,25 @@
 import React from "react"
-import {GetItemPropsOptions, GetMenuPropsOptions, GetPropsCommonOptions} from "downshift"
+import {GetMenuPropsOptions, GetPropsCommonOptions} from "downshift"
 import ComboBoxItem from "./ComboBoxItem"
 import {append, Extras} from "../../util/ComponentUtils"
 
-const ComboBoxDropdown = <T extends Record<string, any> | string>(props: {
-  dropdownItems: Array<T>
+const ComboBoxDropdown = (props: {
   getMenuProps: (
     options?: GetMenuPropsOptions,
     otherOptions?: GetPropsCommonOptions
   ) => unknown
-  getItemProps: (options: GetItemPropsOptions<T>) => unknown
-  highlightedIndex: number,
-  selectedItem: T | null
   isOpen: boolean
-  inputValue: string
-  newItem?: React.ReactElement<unknown>
   slide?: boolean
+  children: Array<unknown>
 }) => {
 
   const className = "snovy-dropdown".concat(append(!props.isOpen, Extras.HIDDEN), append(props.slide, "slide"))
 
-  //TODO maybe just send children instead of passing all the things in here
   return (
     <ol {...props.getMenuProps()} className={className}>
-      {props.dropdownItems?.map((item, index) => (
-        <ComboBoxItem
-          {...props.getItemProps({item, index})}
-          key={index} item={item} highlighted={props.highlightedIndex == index} selected={props.selectedItem == item}
-        />
-      ))}
-      {props.isOpen && props.dropdownItems.isEmpty() &&
-      <ComboBoxItem item={"No matching items found."}/>}
-      {props.newItem}
+      {props.isOpen && props.children.isEmpty() &&
+      <ComboBoxItem className="snovy-dropdown-no-match" item={"No matching items found."}/>}
+      {props.children}
     </ol>
   )
 
