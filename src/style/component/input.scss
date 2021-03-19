@@ -4,6 +4,7 @@
 .snovy-input {
   @include text-height($font-medium);
   @include focus($border-rad-small);
+  box-sizing: border-box;
   color: $color-text-primary;
   background-color: transparent;
   border: none;

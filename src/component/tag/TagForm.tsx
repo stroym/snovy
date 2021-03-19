@@ -110,7 +110,7 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
               }, descriptor: "Unify"
             }}
           >
-            <Input placeholder="Tag" getText={setTagText} defaultValue={tagText}/>
+            <Input placeholder="Tag" onValueChange={setTagText} defaultValue={tagText}/>
           </TagFormItem>
           <ConfirmButton defaultValue="Add & tag" onClick={() => createTag()}/>
         </form>

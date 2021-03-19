@@ -48,7 +48,7 @@ export const ColorPicker = (props: {
         </div>
         <div className="input-wrapper" onKeyDown={e => useKey(e, keyMap)}>
           <ColorHelper color={inputValue} text="#"/>
-          <Input getText={value => setInputValue("#" + value)} placeholder="Hex code" maxLength={8}/>
+          <Input onValueChange={value => setInputValue("#" + value)} placeholder="Hex code" maxLength={8}/>
         </div>
       </span>
       </FocusTrap>

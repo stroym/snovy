@@ -1,7 +1,6 @@
-import React, {useEffect, useRef, useState} from "react"
-import {useHideOnOutsideClick} from "../../util/Hooks"
+import React, {useEffect, useRef} from "react"
 import {Extras} from "../../util/ComponentUtils"
-import Input from "../inputs/Input"
+import {SynchronizedInput} from "../inputs/Input"
 
 const ListItem = <T extends Record<string, any>>(props: {
   mapped: T,
@@ -13,9 +12,6 @@ const ListItem = <T extends Record<string, any>>(props: {
 }) => {
 
   const selfRef = useRef<HTMLInputElement>(null)
-
-  const [value, setValue] = useState<string>(props.mapped.toString())
-  const [editable, , flip] = useHideOnOutsideClick(selfRef, {initialState: !props.onValueChange})
 
   useEffect(
     () => {
@@ -33,38 +29,9 @@ const ListItem = <T extends Record<string, any>>(props: {
     }, [props.active, props.selected]
   )
 
-  useEffect(
-    () => {
-      setValue(props.mapped.toString())
-    }, [props.mapped]
-  )
-
-  useEffect(
-    () => {
-      if (props.onValueChange) {
-        if (editable) {
-          if (selfRef.current) {
-            selfRef.current.selectionStart = selfRef.current.selectionEnd = -1
-            selfRef.current.classList.add(Extras.EDITABLE)
-          }
-        } else {
-          if (selfRef.current) {
-            selfRef.current.classList.remove(Extras.EDITABLE)
-            selfRef.current.selectionStart = selfRef.current.selectionEnd = 0
-          }
-        }
-      }
-    }, [editable]
-  )
-
   const handleContext = (e: React.MouseEvent) => {
     e.stopPropagation()
     props.onContext && props.onContext(props.mapped)
-  }
-
-  const handleChange = (text: string) => {
-    setValue(text)
-    props.onValueChange && props.onValueChange(text)
   }
 
   const handleFocus = () => {
@@ -74,10 +41,10 @@ const ListItem = <T extends Record<string, any>>(props: {
   }
 
   return (
-    <Input
-      ref={selfRef} className="snovy-list-item" value={value} placeholder={"Title"} readOnly={!editable}
-      getText={handleChange} onClick={() => {props.onClick(props.mapped)}} onFocus={handleFocus}
-      onDoubleClick={() => props.onValueChange && flip()} onContextMenu={handleContext}
+    <SynchronizedInput
+      ref={selfRef} className="snovy-list-item" placeholder={"Title"} onValueChange={props.onValueChange}
+      value={props.mapped.toString()}
+      onClick={() => {props.onClick(props.mapped)}} onFocus={handleFocus} onContextMenu={handleContext}
     />
   )
 
