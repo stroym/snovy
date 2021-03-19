@@ -8,7 +8,6 @@ import Selector from "./left/Selector"
 import {saveAs} from "file-saver"
 import {dexie} from "../../index"
 
-//TODO move tab menus outside sidebars
 export const SidebarLeft = (props: {
   onNotebookChange: (active: Notebook | undefined) => void,
   onSectionChange: (active: Array<Section> | Section | undefined) => void,
@@ -29,8 +28,8 @@ export const SidebarLeft = (props: {
   const [activeTab, setActiveTab] = useState<string>(mappings.notes)
 
   return (
-    <div className="snovy-sidebar">
-      <TabMenu orientation={Orientation.LEFT}>{[
+    <>
+      <TabMenu orientation={Orientation.LEFT} id="left-menu">{[
         makeTab(mappings.notes, Alignment.START, setActiveTab, activeTab),
         makeTab(mappings.search, Alignment.START, setActiveTab, activeTab),
         makeTab("⮉", Alignment.END, () => {
@@ -41,7 +40,7 @@ export const SidebarLeft = (props: {
         makeTab("❱", Alignment.END, setActiveTab, activeTab, true)
       ]}
       </TabMenu>
-      <div className={"sidebar-content " + Orientation.LEFT} id={Orientation.LEFT + "-content"}>
+      <div className={"snovy-sidebar " + Orientation.LEFT} id="left-sidebar">
         {activeTab == mappings.notes &&
         <Selector
           notebooks={props.notebooks}
@@ -51,7 +50,7 @@ export const SidebarLeft = (props: {
         />
         }
       </div>
-    </div>
+    </>
   )
 
 }

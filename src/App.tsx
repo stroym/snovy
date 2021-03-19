@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react"
 import "./App.scss"
 import "./util/Augments"
-import SidebarLeft from "./component/sidebar/SidebarLeft"
-import RightBar from "./component/sidebar/SidebarRight"
+import LeftSidebar from "./component/sidebar/SidebarLeft"
+import RightSidebar from "./component/sidebar/SidebarRight"
 import Notebook from "./data/model/Notebook"
 import Section from "./data/model/Section"
 import Tag from "./data/model/Tag"
@@ -108,14 +108,14 @@ const App = (props: {
   return (
     <OptionsContext.Provider value={options}>
       <span id="snovy-app" onContextMenu={(e) => e.preventDefault()}>
-        <SidebarLeft
+        <LeftSidebar
           notebooks={notebooks} onNotebookChange={selectNotebook} selectedNotebook={selectedNotebook}
           onSectionChange={selectSections} selectedSections={selectedSections}
           onNoteChange={selectNotes} selectedNotes={selectedNotes}
           exportData={exportData}
         />
         <Editor activeNote={selectedNotes.first()}/>
-        <RightBar
+        <RightSidebar
           onTagRemove={untag} note={selectedNotes.first()} notebook={selectedNotebook} tag={tag} onTagChange={selectTag}
         />
       </span>

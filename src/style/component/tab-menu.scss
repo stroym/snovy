@@ -31,18 +31,17 @@
     overflow: hidden;
 
     &.start {
-      align-self: flex-start;
+      justify-items: flex-start;
     }
 
     &.end {
-      align-self: flex-end;
+      justify-items: flex-end;
     }
   }
 }
 
 .snovy-tab-menu-item {
-  @include text-height-padded($font-small, 1.5);
-  width: calc(1.5 * #{$font-small});
+  @include text-height-padded(1vw, 1.4);
   padding: 0.4em 0;
   cursor: default;
   user-select: none;
@@ -53,14 +52,6 @@
 
   &.icon {
     writing-mode: unset !important;
-  }
-
-  &.start {
-    align-self: flex-start;
-  }
-
-  &.end {
-    align-self: flex-end;
   }
 
   &:hover {

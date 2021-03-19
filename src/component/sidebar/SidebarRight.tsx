@@ -25,8 +25,8 @@ const SidebarRight = (props: {
   const [activeTab, setActiveTab] = useState<string>(mappings.detail)
 
   return (
-    <div className="snovy-sidebar">
-      <div className={"sidebar-content " + Orientation.RIGHT} id={Orientation.RIGHT + "-content"}>
+    <>
+      <div className={"snovy-sidebar " + Orientation.RIGHT} id="right-sidebar">
         {activeTab == mappings.detail && props.notebook && props.note &&
         <NoteDetail note={props.note} notebook={props.notebook}/>
         }
@@ -34,7 +34,7 @@ const SidebarRight = (props: {
         <TagManager notebook={props.notebook} tag={props.tag} onTagChange={props.onTagChange}/>
         }
       </div>
-      <TabMenu orientation={Orientation.RIGHT}>{[
+      <TabMenu orientation={Orientation.RIGHT} id="right-menu">{[
         makeTab(mappings.detail, Alignment.START, setActiveTab, activeTab),
         makeTab(mappings.tagManager, Alignment.START, setActiveTab, activeTab),
         makeTab(mappings.stateManager, Alignment.START, setActiveTab, activeTab),
@@ -42,7 +42,7 @@ const SidebarRight = (props: {
         makeTab("❰", Alignment.END, setActiveTab, activeTab, true)
       ]}
       </TabMenu>
-    </div>
+    </>
   )
 
 }
