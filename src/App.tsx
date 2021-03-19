@@ -14,10 +14,14 @@ import {dexie} from "./index"
 import generate from "./data/Generator"
 import {serialize} from "class-transformer"
 import {Table} from "./data/model/Base"
+import OptionsContext from "./util/OptionsContext"
+import Options, {defaultOptions} from "./data/model/options/Options"
 
 const App = (props: {
   dexie: Database
 }) => {
+
+  const [options, setOptions] = useState<Options>(defaultOptions)
 
   const [notebooks, setNotebooks] = useState<Array<Notebook>>([])
 
@@ -30,8 +34,10 @@ const App = (props: {
     () => {
       props.dexie.open()
 
-      dexie.transaction("rw", [dexie.notebooks, dexie.sections, dexie.notes, dexie.scopes, dexie.tags,
+      dexie.transaction("rw", [dexie.options, dexie.notebooks, dexie.sections, dexie.notes, dexie.scopes, dexie.tags,
         dexie.states], async () => {
+        setOptions(await Options.getFromDb())
+
         await dexie.notebooks.toArray().then(async function (values) {
           const loaded = values.length == 0 ? await generate() : values
           // const loaded = values
@@ -100,18 +106,20 @@ const App = (props: {
   }
 
   return (
-    <span id="snovy-app" onContextMenu={(e) => e.preventDefault()}>
-      <SidebarLeft
-        notebooks={notebooks} onNotebookChange={selectNotebook} selectedNotebook={selectedNotebook}
-        onSectionChange={selectSections} selectedSections={selectedSections}
-        onNoteChange={selectNotes} selectedNotes={selectedNotes}
-        exportData={exportData}
-      />
-      <Editor activeNote={selectedNotes.first()}/>
-      <RightBar
-        onTagRemove={untag} note={selectedNotes.first()} notebook={selectedNotebook} tag={tag} onTagChange={selectTag}
-      />
-    </span>
+    <OptionsContext.Provider value={options}>
+      <span id="snovy-app" onContextMenu={(e) => e.preventDefault()}>
+        <SidebarLeft
+          notebooks={notebooks} onNotebookChange={selectNotebook} selectedNotebook={selectedNotebook}
+          onSectionChange={selectSections} selectedSections={selectedSections}
+          onNoteChange={selectNotes} selectedNotes={selectedNotes}
+          exportData={exportData}
+        />
+        <Editor activeNote={selectedNotes.first()}/>
+        <RightBar
+          onTagRemove={untag} note={selectedNotes.first()} notebook={selectedNotebook} tag={tag} onTagChange={selectTag}
+        />
+      </span>
+    </OptionsContext.Provider>
   )
 }
 

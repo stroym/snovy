@@ -5,6 +5,7 @@ import Scope from "./model/Scope"
 import Tag from "./model/Tag"
 import Note from "./model/Note"
 import Section from "./model/Section"
+import Options from "./model/options/Options"
 
 export const notebookId = "notebookId"
 export const sectionId = "sectionId"
@@ -22,6 +23,7 @@ const updatedAt = "updatedAt"
 
 class Database extends Dexie {
 
+  options: Dexie.Table<Options, number>
   notebooks: Dexie.Table<Notebook, number>
   sections: Dexie.Table<Section, number>
   notes: Dexie.Table<Note, number>
@@ -33,6 +35,7 @@ class Database extends Dexie {
     super("snovyDB")
 
     this.version(1).stores({
+      options: Database.buildColumns(["singleNotebook", "theme"]),
       notebooks: Database.buildColumns([notebookId, title]),
       sections: Database.buildColumns([notebookId, title, order]),
       notes: Database.buildColumns([sectionId, stateId, "*tagIds", title, "content", order]),
@@ -41,6 +44,7 @@ class Database extends Dexie {
       states: Database.buildColumns([notebookId, "*noteIds", "&" + title, color])
     })
 
+    this.options = this.table("options")
     this.notebooks = this.table("notebooks")
     this.sections = this.table("sections")
     this.notes = this.table("notes")
@@ -48,6 +52,7 @@ class Database extends Dexie {
     this.scopes = this.table("scopes")
     this.states = this.table("states")
 
+    this.options.mapToClass(Options)
     this.notebooks.mapToClass(Notebook)
     this.sections.mapToClass(Section)
     this.notes.mapToClass(Note)

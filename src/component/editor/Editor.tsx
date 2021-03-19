@@ -1,16 +1,59 @@
-import React, {useEffect, useState} from "react"
+import React, {useContext, useEffect, useState} from "react"
 import Note from "../../data/model/Note"
 import {append, Extras} from "../../util/ComponentUtils"
 import {default as OutlineEditor, theme} from "rich-markdown-editor"
-import {colors} from "../theme"
 import base from "rich-markdown-editor/dist/dictionary"
+import OptionsContext from "../../util/OptionsContext"
+
+const dictionary = {
+  ...base,
+  newLineEmpty: "",
+  newLineWithSlash: ""
+}
 
 const Editor = (props: {
   activeNote: Note | undefined
 }) => {
 
+  const currentTheme = useContext(OptionsContext).theme
+
   const [value, setValue] = useState("")
   const [sourceMode, setSourceMode] = useState(false)
+
+  //https://github.com/outline/rich-markdown-editor/blob/main/src/theme.ts
+  const dark = {
+    ...theme,
+    background: currentTheme.primaryColor,
+    text: currentTheme.primaryTextColor,
+    code: currentTheme.primaryTextColor,
+    cursor: currentTheme.primaryTextColor,
+
+    toolbarBackground: currentTheme.secondaryColor,
+    toolbarHoverBackground: currentTheme.hoverItemColor,
+    toolbarInput: currentTheme.secondaryColor,
+    toolbarItem: currentTheme.activeItemColor,
+
+    tableDivider: currentTheme.secondaryColor,
+    tableSelected: currentTheme.primaryTextColor,
+    tableSelectedBackground: currentTheme.accentColor,
+
+    quote: currentTheme.secondaryColor,
+    codeBackground: currentTheme.secondaryColor,
+    codeBorder: currentTheme.primaryTextColor,
+    codeString: currentTheme.selectedItemColor,
+    horizontalRule: currentTheme.secondaryColor,
+
+    blockToolbarBackground: currentTheme.primaryColor,
+    blockToolbarTrigger: currentTheme.activeItemColor,
+    blockToolbarTriggerIcon: currentTheme.primaryTextColor,
+    blockToolbarItem: currentTheme.primaryColor,
+    blockToolbarText: currentTheme.primaryTextColor,
+    blockToolbarHoverBackground: currentTheme.hoverItemColor,
+    blockToolbarDivider: currentTheme.secondaryColor,
+
+    scrollbarBackground: currentTheme.scrollbarColor,
+    scrollbarThumb: currentTheme.secondaryColor
+  }
 
   useEffect(
     () => {
@@ -32,64 +75,6 @@ const Editor = (props: {
     </div>
   )
 
-}
-
-const outlineColors = {
-  almostBlack: colors.primaryDark,
-  lightBlack: "#2F3336",
-  almostWhite: "#E6E6E6",
-  white: "#FFF",
-  white10: "rgba(255, 255, 255, 0.1)",
-  black: "#000",
-  black10: "rgba(0, 0, 0, 0.1)",
-  primary: "#1AB6FF",
-  greyLight: "#F4F7FA",
-  grey: "#E8EBED",
-  greyMid: "#C5CCD3",
-  greyDark: "#DAE1E9"
-}
-
-const dictionary = {
-  ...base,
-  newLineEmpty: "",
-  newLineWithSlash: ""
-}
-
-const dark = {
-  ...theme,
-  background: outlineColors.almostBlack,
-  text: outlineColors.almostWhite,
-  code: outlineColors.almostWhite,
-  cursor: outlineColors.white,
-  divider: "#4E5C6E",
-  placeholder: "#52657A",
-
-  toolbarBackground: outlineColors.almostBlack,
-  toolbarHoverBackground: outlineColors.greyMid,
-  toolbarInput: outlineColors.black10,
-  toolbarItem: outlineColors.greyLight,
-
-  tableDivider: outlineColors.lightBlack,
-  tableSelected: outlineColors.primary,
-  tableSelectedBackground: "#002333",
-
-  quote: outlineColors.greyDark,
-  codeBackground: outlineColors.black,
-  codeBorder: outlineColors.lightBlack,
-  codeString: "#3d8fd1",
-  horizontalRule: outlineColors.lightBlack,
-  imageErrorBackground: "rgba(0, 0, 0, 0.5)",
-
-  blockToolbarBackground: outlineColors.almostBlack,
-  blockToolbarTrigger: outlineColors.white,
-  blockToolbarTriggerIcon: outlineColors.white,
-  blockToolbarItem: outlineColors.almostBlack,
-  blockToolbarText: outlineColors.white,
-  blockToolbarHoverBackground: outlineColors.almostWhite,
-  blockToolbarDivider: outlineColors.white,
-
-  scrollbarBackground: outlineColors.black,
-  scrollbarThumb: outlineColors.lightBlack
 }
 
 export default Editor
