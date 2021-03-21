@@ -2,9 +2,11 @@ import React from "react"
 import ReactDOM from "react-dom"
 import App from "./App"
 import Database from "./data/Database"
-import "what-input"
+import whatInput from "what-input"
 
 export const dexie = new Database()
+
+whatInput.specificKeys([9])
 
 ReactDOM.render(
   <React.StrictMode>

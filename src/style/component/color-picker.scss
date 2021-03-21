@@ -15,27 +15,4 @@
     align-items: flex-start;
     justify-content: space-evenly;
   }
-
-  .input-wrapper {
-    grid-area: input;
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: stretch;
-    border: $border-thin-inverted;
-
-    .color-helper {
-      font-size: $font-medium;
-      display: flex;
-      align-items: center;
-      border-right: $border-thin-inverted;
-    }
-
-    input {
-      width: calc(8ch + 0.4vw);
-
-      &:focus {
-        box-shadow: unset;
-      }
-    }
-  }
 }

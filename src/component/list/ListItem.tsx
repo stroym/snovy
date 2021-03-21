@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from "react"
 import {Extras} from "../../util/ComponentUtils"
-import {SynchronizedInput} from "../inputs/Input"
+import {EditableInput} from "../inputs/Input"
 
 const ListItem = <T extends Record<string, any>>(props: {
   mapped: T,
@@ -41,7 +41,7 @@ const ListItem = <T extends Record<string, any>>(props: {
   }
 
   return (
-    <SynchronizedInput
+    <EditableInput
       ref={selfRef} className="snovy-list-item" placeholder={"Title"} onValueChange={props.onValueChange}
       value={props.mapped.toString()}
       onClick={() => {props.onClick(props.mapped)}} onFocus={handleFocus} onContextMenu={handleContext}

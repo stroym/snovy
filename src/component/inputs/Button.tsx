@@ -3,12 +3,12 @@ import {append, concatUnknown, Extras} from "../../util/ComponentUtils"
 
 type buttonRef = React.Ref<HTMLButtonElement>
 
-export interface ToggleButtonProps extends React.HTMLProps<HTMLButtonElement> {
+export interface ButtonProps extends React.HTMLProps<HTMLButtonElement> {
   toggle?: boolean
 }
 
-export const Button = forwardRef<HTMLButtonElement, ToggleButtonProps>(
-  function Button(props: ToggleButtonProps, ref?: buttonRef) {
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  function Button(props: ButtonProps, ref?: buttonRef) {
 
     const {toggle, ...rest} = props
 
@@ -24,32 +24,32 @@ export const Button = forwardRef<HTMLButtonElement, ToggleButtonProps>(
   }
 )
 
-export const AddButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
-  function AddButton(props: ToggleButtonProps, ref?: buttonRef) {
+export const AddButton = forwardRef<HTMLButtonElement, ButtonProps>(
+  function AddButton(props: ButtonProps, ref?: buttonRef) {
     return <Button {...props} ref={ref} className="snovy-add-button" defaultValue={"+"}/>
   }
 )
 
-export const RemoveButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
-  function RemoveButton(props: ToggleButtonProps, ref?: buttonRef) {
+export const RemoveButton = forwardRef<HTMLButtonElement, ButtonProps>(
+  function RemoveButton(props: ButtonProps, ref?: buttonRef) {
     return <Button {...props} ref={ref} className="snovy-remove-button" defaultValue={"×"}/>
   }
 )
 
-export const CollapseButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
-  function CollapseButton(props: ToggleButtonProps, ref?: buttonRef) {
+export const CollapseButton = forwardRef<HTMLButtonElement, ButtonProps>(
+  function CollapseButton(props: ButtonProps, ref?: buttonRef) {
     return <Button {...props} ref={ref} className="snovy-collapse-button" value={"▲"} defaultValue={"▼"}/>
   }
 )
 
-export const ConfirmButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
-  function ConfirmButton(props: ToggleButtonProps, ref?: buttonRef) {
+export const ConfirmButton = forwardRef<HTMLButtonElement, ButtonProps>(
+  function ConfirmButton(props: ButtonProps, ref?: buttonRef) {
     return <Button {...props} ref={ref} className="snovy-confirm-button"/>
   }
 )
 
-export const CheckButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
-  function CheckButton(props: ToggleButtonProps, ref?: buttonRef) {
+export const CheckButton = forwardRef<HTMLButtonElement, ButtonProps>(
+  function CheckButton(props: ButtonProps, ref?: buttonRef) {
     return <Button
       {...props} ref={ref} className={"snovy-check-button".concat(append(props.toggle, Extras.ACTIVE))}
       value={"✓"} defaultValue={""}
@@ -57,14 +57,14 @@ export const CheckButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
   }
 )
 
-export const ColorButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
-  function ColorButton(props: ToggleButtonProps, ref?: buttonRef) {
+export const ColorButton = forwardRef<HTMLButtonElement, ButtonProps>(
+  function ColorButton(props: ButtonProps, ref?: buttonRef) {
     return <Button {...props} ref={ref} className={concatUnknown("snovy-color-button", props.className)}/>
   }
 )
 
-export const OptionsButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
-  function OptionsButton(props: ToggleButtonProps, ref?: buttonRef) {
+export const OptionsButton = forwardRef<HTMLButtonElement, ButtonProps>(
+  function OptionsButton(props: ButtonProps, ref?: buttonRef) {
     return <Button {...props} ref={ref} className="snovy-options-button" defaultValue={"⚙"}/>
   }
 )

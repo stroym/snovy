@@ -145,43 +145,6 @@ export function useCollapse(elementRef: React.RefObject<Element | null>):
   return [collapsed, setCollapsed]
 }
 
-export function useColor(hex?: string, defaultHex = "#ffffff"):
-  [string, React.Dispatch<React.SetStateAction<string>>] {
-  const [color, setColor] = useState(hex ?? defaultHex)
-
-  useEffect(
-    () => {
-      if (color.length == 1 || color.isBlank()) {
-        setColor(defaultHex)
-      }
-    }, [color]
-  )
-
-  return [color, setColor]
-}
-
-export function useColored(str?: string, colorStr?: string, defaultColor = "#ffffff"):
-  [string | undefined, string, React.Dispatch<React.SetStateAction<string | undefined>>, React.Dispatch<string | undefined>] {
-
-  const [text, setText] = useState(str)
-  const [color, setColorInt] = useReducer(
-    (prevState: string | undefined, newState: string | undefined): string => {
-      if (newState) {
-        if (newState?.length == 1 || newState?.isBlank()) {
-          return defaultColor
-        } else {
-          return newState
-        }
-      } else {
-        return defaultColor
-      }
-    },
-    colorStr ?? defaultColor
-  )
-
-  return [text, color, setText, setColorInt]
-}
-
 export function useMultiSelect<T>(listItems: Array<T> | undefined) {
 
   const [ctrlMode, setCtrlMode] = useState(false)

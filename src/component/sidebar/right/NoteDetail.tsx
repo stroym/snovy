@@ -55,10 +55,10 @@ const NoteDetail = (props: {
     }
   }
 
-  const tagCreation = async (tagText: string, tagColor: string, scopeText: string, scopeColor: string, scopeUnique: boolean) => {
+  const tagCreation = async (tagText: string, tagColor: string, scopeText?: string, scopeColor?: string, scopeUnique?: boolean) => {
     let tag
 
-    if (scopeText) {
+    if (scopeText && scopeColor && scopeUnique) {
       const maybeScope = await dexie.scopes.where(title).equals(scopeText).first()
 
       if (maybeScope) {

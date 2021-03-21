@@ -51,6 +51,7 @@
     "css-loader": "^5.0.1",
     "eslint": "^7.15.0",
     "eslint-plugin-editorconfig": "^3.0.1",
+    "eslint-plugin-react": "^7.22.0",
     "fork-ts-checker-webpack-plugin": "^6.0.5",
     "html-webpack-plugin": "^5.1.0",
     "node-sass": "^5.0.0",
@@ -139,7 +140,8 @@
       ],
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "@typescript-eslint/no-empty-function": "warn",
-      "@typescript-eslint/no-non-null-assertion": "off"
+      "@typescript-eslint/no-non-null-assertion": "off",
+      "react/prop-types": "off"
     }
   },
   "pre-commit": [

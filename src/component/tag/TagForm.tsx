@@ -1,23 +1,25 @@
 import React, {forwardRef, useEffect, useState} from "react"
 import Scope from "../../data/model/Scope"
 import {CheckButton, ConfirmButton} from "../inputs/Button"
-import {useColored} from "../../util/Hooks"
 import ColorPicker from "../inputs/ColorPicker"
 import ComboBox from "../combo_box/ComboBox"
 import Input from "../inputs/Input"
 import FocusTrap from "focus-trap-react"
+import WithLabel from "../inputs/WithLabel"
 
 interface FormProps {
   initialValue?: string
   scopes: Array<Scope>
-  onConfirm: (tagText: string, tagColor: string, scopeText: string, scopeColor: string, scopeExclusive: boolean) => void
+  onConfirm: (tagText: string, tagColor: string, scopeText?: string, scopeColor?: string, scopeUnique?: boolean) => void
 }
 
 const TagForm = forwardRef<HTMLFormElement, FormProps>(
   function TagForm(props: FormProps, ref: React.Ref<HTMLFormElement>) {
 
-    const [scopeText, scopeColor, setScopeText, setScopeColor] = useColored()
-    const [tagText, tagColor, setTagText, setTagColor] = useColored()
+    const [tagText, setTagText] = useState<string>()
+    const [tagColor, setTagColor] = useState<string>()
+    const [scopeText, setScopeText] = useState<string>()
+    const [scopeColor, setScopeColor] = useState<string>()
 
     const [unique, setUnique] = useState(false)
     const [useScope, setUseScope] = useState(true)
@@ -73,14 +75,14 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
         setUnique(sc.unique)
       } else {
         setScopeText(str)
-        setScopeColor(undefined)
+        setScopeColor("")
         setUnique(false)
       }
     }
 
     const createTag = () => {
-      if (tagText) {
-        props.onConfirm(tagText, tagColor, scopeText ?? "", scopeColor, unique)
+      if (tagText && tagColor) {
+        props.onConfirm(tagText, tagColor, scopeText, scopeColor, unique)
       }
     }
 
@@ -121,8 +123,8 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
 )
 
 const TagFormItem = (props: {
-  color: { value: string, get: (color: string) => void }
-  check?: { toggled: boolean | undefined, toggle: (setToggle: boolean) => void, descriptor?: string }
+  color: { value: string | undefined, get: (color: string) => void }
+  check?: { toggled: boolean | undefined, toggle: (setToggle: boolean) => void, descriptor: string }
   disableColor?: boolean,
   children: React.ReactElement<typeof Input | typeof ComboBox>
 }) => {
@@ -136,10 +138,9 @@ const TagFormItem = (props: {
       />
       {props.children}
       {props.check &&
-      <label>
+      <WithLabel value={props.check.descriptor} position="after">
         <CheckButton toggle={props.check.toggled} onClick={() => props.check!.toggle(!props.check!.toggled)}/>
-        <div className="label-text">{props.check.descriptor}</div>
-      </label>
+      </WithLabel>
       }
     </span>
   )

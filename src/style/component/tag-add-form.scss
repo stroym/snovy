@@ -35,24 +35,6 @@
       grid-area: color;
     }
 
-    label {
-      grid-area: check;
-      font-size: $font-small;
-      max-width: 100%;
-      display: flex;
-      flex-flow: row nowrap;
-      justify-self: flex-start;
-      align-items: center;
-      overflow: hidden;
-
-      .label-text {
-        max-width: 100%;
-        margin: 0 0.2em;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-    }
-
     & > input, .snovy-combo-box {
       grid-area: input;
       box-sizing: border-box;

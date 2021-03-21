@@ -68,7 +68,9 @@ export class TinyStyle {
   constructor(color: string, maxAdjustment?: number) {
     this.tiny = new TinyColor(color)
 
-    this.style["backgroundColor"] = this.tiny.toHex8String()
+    if (!color.isBlank()) {
+      this.style["backgroundColor"] = this.tiny.toHex8String()
+    }
 
     if (maxAdjustment) {
       if (maxAdjustment > 0) {
