@@ -22,36 +22,36 @@ const Editor = (props: {
   //https://github.com/outline/rich-markdown-editor/blob/main/src/theme.ts
   const dark = {
     ...theme,
-    background: currentTheme.primaryColor,
-    text: currentTheme.primaryTextColor,
-    code: currentTheme.primaryTextColor,
-    cursor: currentTheme.primaryTextColor,
+    background: currentTheme.primary,
+    text: currentTheme.textPrimary,
+    code: currentTheme.textPrimary,
+    cursor: currentTheme.textPrimary,
 
-    toolbarBackground: currentTheme.secondaryColor,
-    toolbarHoverBackground: currentTheme.hoverColor,
-    toolbarInput: currentTheme.secondaryColor,
-    toolbarItem: currentTheme.activeColor,
+    toolbarBackground: currentTheme.secondary,
+    toolbarHoverBackground: currentTheme.hover,
+    toolbarInput: currentTheme.secondary,
+    toolbarItem: currentTheme.activeItem,
 
-    tableDivider: currentTheme.secondaryColor,
-    tableSelected: currentTheme.primaryTextColor,
-    tableSelectedBackground: currentTheme.accentColor,
+    tableDivider: currentTheme.secondary,
+    tableSelected: currentTheme.textPrimary,
+    tableSelectedBackground: currentTheme.accent,
 
-    quote: currentTheme.secondaryColor,
-    codeBackground: currentTheme.secondaryColor,
-    codeBorder: currentTheme.primaryTextColor,
-    codeString: currentTheme.selectedColor,
-    horizontalRule: currentTheme.secondaryColor,
+    quote: currentTheme.secondary,
+    codeBackground: currentTheme.secondary,
+    codeBorder: currentTheme.textPrimary,
+    codeString: currentTheme.selectedItem,
+    horizontalRule: currentTheme.secondary,
 
-    blockToolbarBackground: currentTheme.primaryColor,
-    blockToolbarTrigger: currentTheme.activeColor,
-    blockToolbarTriggerIcon: currentTheme.primaryTextColor,
-    blockToolbarItem: currentTheme.primaryColor,
-    blockToolbarText: currentTheme.primaryTextColor,
-    blockToolbarHoverBackground: currentTheme.hoverColor,
-    blockToolbarDivider: currentTheme.secondaryColor,
+    blockToolbarBackground: currentTheme.primary,
+    blockToolbarTrigger: currentTheme.activeItem,
+    blockToolbarTriggerIcon: currentTheme.textPrimary,
+    blockToolbarItem: currentTheme.primary,
+    blockToolbarText: currentTheme.textPrimary,
+    blockToolbarHoverBackground: currentTheme.hover,
+    blockToolbarDivider: currentTheme.secondary,
 
-    scrollbarBackground: currentTheme.scrollbarColor,
-    scrollbarThumb: currentTheme.secondaryColor
+    scrollbarBackground: currentTheme.scrollbar,
+    scrollbarThumb: currentTheme.secondary
   }
 
   useEffect(

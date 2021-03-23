@@ -1,34 +1,33 @@
-import React, {useState} from "react"
-import {ColoredInput} from "./inputs/Input"
-import WithLabel from "./inputs/WithLabel"
+import React, {useContext, useState} from "react"
 import {css} from "@emotion/react"
-import Options from "../data/model/options/Options"
-import {ConfirmButton} from "./inputs/Button"
+import Options, {defaultOptions} from "../data/model/options/Options"
+import {TextButton} from "./inputs/Button"
+import OptionsContext from "../util/OptionsContext"
+import ThemeManager from "./options/ThemeManager"
 
-const OptionsManager = (props: {
-  options: Options
-  updateOptions: (options: Options) => void
-}) => {
+interface OptionsProps {
+  activeOptions: Options
+  saveOptions: (options: Options) => void
+}
 
-  const [options, setOptions] = useState(props.options)
+const OptionsManager = ({activeOptions, saveOptions, ...props}: OptionsProps) => {
+
+  const theme = useContext(OptionsContext).theme
+
+  const [options, setOptions] = useState(activeOptions.copy())
+
+  const updateTheme = (field: string, hex: string) => {
+    options.theme[field] = hex
+  }
 
   return (
-    <div
-      className="snovy-options"
-      css={css`
-        background-color: ${options.theme.secondaryColor};
-      `}
-    >
-      <div id="theme-options" className="snovy-options-container">
-        {Object.keys(options.theme).map((it, index) =>
-          <WithLabel key={index} value={it.replaceAll("Color", "")} position="before">
-            <ColoredInput
-              observe value={options.theme[it]} onValueChange={(value) => {options.theme[it] = value}}
-            />
-          </WithLabel>
-        )}
+    <div className="snovy-options" css={css`background-color: ${theme.secondary};`}>
+      <ThemeManager theme={options.theme} updateTheme={updateTheme}/>
+      <div id="control-buttons">
+        <TextButton value="Restore defaults" onClick={() => setOptions(defaultOptions)}/>
+        <TextButton value="Cancel" onClick={() => setOptions(activeOptions.copy())}/>
+        <TextButton value="Save" onClick={() => saveOptions(options)}/>
       </div>
-      <ConfirmButton onClick={() => props.updateOptions(options)}/>
     </div>
   )
 

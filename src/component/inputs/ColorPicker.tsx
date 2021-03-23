@@ -9,7 +9,7 @@ import OptionsContext from "../../util/OptionsContext"
 
 export const ColorPicker = (props: {
   colors: Array<string>
-  selectedColor: string | undefined
+  selectedItem: string | undefined
   getColor: (hex: string) => void
   getColorFromInput: (hex: string) => void
 }) => {
@@ -29,10 +29,7 @@ export const ColorPicker = (props: {
   //TODO make button optional
   return (
     <>
-      <ColorButton
-        ref={buttonRef} className="color-picker-button" onClick={() => {flip()}}
-        style={{backgroundColor: props.selectedColor}}
-      />
+      <ColorButton ref={buttonRef} className="color-picker-button" onClick={() => {flip()}} color={props.selectedItem}/>
       {visible &&
       <FocusTrap focusTrapOptions={{clickOutsideDeactivates: true}}>
         <span ref={pickerRef} className="snovy-color-picker">
@@ -41,7 +38,7 @@ export const ColorPicker = (props: {
               <ColorItem key={index} onClick={getColor} color={color}/>
             )}
           </div>
-          <ColoredInput onValueChange={getColor} style={{borderColor: theme.primaryTextColor}}/>
+          <ColoredInput onValueChange={getColor} style={{borderColor: theme.textPrimary}}/>
         </span>
       </FocusTrap>
       }
@@ -55,9 +52,7 @@ const ColorItem = (props: {
   color: string
 }) => {
 
-  return <ColorButton
-    className="color-item" onClick={() => {props.onClick(props.color)}} style={{backgroundColor: props.color}}
-  />
+  return <ColorButton className="color-item" onClick={() => {props.onClick(props.color)}} color={props.color}/>
 
 }
 

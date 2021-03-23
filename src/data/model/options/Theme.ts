@@ -1,35 +1,35 @@
 export class Theme {
 
-  primaryColor: string
-  secondaryColor: string
+  primary: string
+  secondary: string
 
-  accentColor: string
+  accent: string
 
-  borderColor: string
+  border: string
 
-  primaryTextColor: string
-  secondaryTextColor: string
+  textPrimary: string
+  textSecondary: string
 
-  activeColor: string
-  selectedColor: string
-  hoverColor: string
-  focusColor: string
-  scrollbarColor: string
+  activeItem: string
+  selectedItem: string
+  hover: string
+  focus: string
+  scrollbar: string
 
-  constructor(primaryColor: string, secondaryColor: string, accentColor: string, borderColor: string,
-              primaryTextColor: string, secondaryTextColor: string, activeColor: string, selectedColor: string,
-              hoverColor: string, focusColor: string, scrollbarColor: string) {
-    this.primaryColor = primaryColor
-    this.secondaryColor = secondaryColor
-    this.accentColor = accentColor
-    this.borderColor = borderColor
-    this.primaryTextColor = primaryTextColor
-    this.secondaryTextColor = secondaryTextColor
-    this.activeColor = activeColor
-    this.selectedColor = selectedColor
-    this.hoverColor = hoverColor
-    this.focusColor = focusColor
-    this.scrollbarColor = scrollbarColor
+  constructor(primary: string, secondary: string, accent: string, borderColor: string,
+              textPrimary: string, textSecondary: string, activeItem: string, selectedItem: string,
+              hover: string, focusColor: string, scrollbar: string) {
+    this.primary = primary
+    this.secondary = secondary
+    this.accent = accent
+    this.border = borderColor
+    this.textPrimary = textPrimary
+    this.textSecondary = textSecondary
+    this.activeItem = activeItem
+    this.selectedItem = selectedItem
+    this.hover = hover
+    this.focus = focusColor
+    this.scrollbar = scrollbar
   }
 
 }
@@ -47,3 +47,17 @@ export const defaultTheme = new Theme(
   "#98ff5e",
   "#006400"
 )
+
+// export const defaultTheme = new Map<string, string>([
+//   ["primary", "#282424"],
+//   ["secondary", "#3c3737"],
+//   ["accent", "#556b2f"],
+//   ["border", "#000000"],
+//   ["textPrimary", "#f8f8ff"],
+//   ["textSecondary", "#000000"],
+//   ["activeItem", "#9b9b00"],
+//   ["selectedItem", "#7c7c00"],
+//   ["hover", "#bdb76b"],
+//   ["focus", "#98ff5e"],
+//   ["scrollbar", "#006400"]
+// ])

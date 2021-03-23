@@ -1,6 +1,6 @@
 import React, {forwardRef, useContext, useEffect, useState} from "react"
 import Scope from "../../data/model/Scope"
-import {CheckButton, ConfirmButton} from "../inputs/Button"
+import {CheckButton, TextButton} from "../inputs/Button"
 import ColorPicker from "../inputs/ColorPicker"
 import ComboBox from "../combo_box/ComboBox"
 import Input from "../inputs/Input"
@@ -94,7 +94,7 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
       <FocusTrap focusTrapOptions={{clickOutsideDeactivates: true}}>
         <form
           ref={ref} id="snovy-tag-create-form" className="snovy-form" tabIndex={-1}
-          style={{backgroundColor: theme.primaryColor}}
+          style={{backgroundColor: theme.primary}}
         >
           <TagFormItem
             color={{value: scopeColor, get: setScopeColor}}
@@ -105,11 +105,9 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
               placeholder="Scope" tabIndex={0}
               newItem={{getInputValue: makeScope, name: "scope"}}
               options={{slideDropdown: true, unboundDropdown: true}}
-              style={{
-                backgroundColor: theme.primaryColor,
-                color: theme.primaryTextColor,
-                borderColor: theme.primaryTextColor
-              }}
+              style={{backgroundColor: theme.primary, color: theme.textPrimary, borderColor: theme.textPrimary}}
+              itemColors={{select: theme.activeItem, highlight: theme.hover}}
+
             />
           </TagFormItem>
           <TagFormItem
@@ -125,10 +123,10 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
           >
             <Input
               placeholder="Tag" onValueChange={setTagText} defaultValue={tagText}
-              style={{borderColor: theme.primaryTextColor}}
+              style={{borderColor: theme.textPrimary}}
             />
           </TagFormItem>
-          <ConfirmButton defaultValue="Add & tag" onClick={() => createTag()}/>
+          <TextButton value="Add & tag" onClick={() => createTag()}/>
         </form>
       </FocusTrap>
     )
@@ -147,7 +145,7 @@ const TagFormItem = (props: {
     <span className="tag-form-item">
       <ColorPicker
         getColor={props.color.get} getColorFromInput={color => props.color.get("#" + color)}
-        selectedColor={props.color.value}
+        selectedItem={props.color.value}
         colors={["#ff0000", "#ffa500", "#00ff00", "#40e0d0", "#0000ff", "#800080", "#ffffff", "#000000"]}
       />
       {props.children}

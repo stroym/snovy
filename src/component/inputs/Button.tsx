@@ -11,17 +11,17 @@ export interface ButtonProps extends React.HTMLProps<HTMLButtonElement> {
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   function Button(
-    {toggle, invert, className, value, defaultValue, ...props}: ButtonProps,
+    {invert, className, value, defaultValue, ...props}: ButtonProps,
     ref?: React.Ref<HTMLButtonElement>) {
 
     const theme = useContext(OptionsContext).theme
 
     const emotionCss = css`
-      color: ${invert ? theme.secondaryTextColor : theme.primaryTextColor};
-      border-color: ${invert ? theme.secondaryTextColor : theme.primaryTextColor};
+      color: ${invert ? theme.textSecondary : theme.textPrimary};
+      border-color: ${invert ? theme.textSecondary : theme.textPrimary};
 
       &:hover {
-        background-color: ${transparentize(0.8, invert ? theme.secondaryTextColor : theme.primaryTextColor)};
+        background-color: ${transparentize(0.6, invert ? theme.textSecondary : theme.textPrimary)};
       }
     `
 
@@ -30,7 +30,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         css={emotionCss} ref={ref} {...props} type="button" className={"snovy-button " + className}
         data-disabled={props.disabled}
       >
-        {toggle ? value : defaultValue}
+        {value || defaultValue}
       </button>
     )
 
@@ -39,60 +39,76 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
 export const AddButton = forwardRef<HTMLButtonElement, ButtonProps>(
   function AddButton({className, ...props}: ButtonProps, ref?: React.Ref<HTMLButtonElement>) {
-    return <Button {...props} ref={ref} className={"snovy-add-button " + className} defaultValue={"+"}/>
+    return <Button {...props} ref={ref} className={"snovy-add-button " + className} value={"+"}/>
   }
 )
 
 export const RemoveButton = forwardRef<HTMLButtonElement, ButtonProps>(
   function RemoveButton({className, ...props}: ButtonProps, ref?: React.Ref<HTMLButtonElement>) {
-    return <Button {...props} ref={ref} className={"snovy-remove-button " + className} defaultValue={"×"}/>
+    return <Button {...props} ref={ref} className={"snovy-remove-button " + className} value={"×"}/>
   }
 )
 
 export const CollapseButton = forwardRef<HTMLButtonElement, ButtonProps>(
-  function CollapseButton({className, ...props}: ButtonProps, ref?: React.Ref<HTMLButtonElement>) {
-    return <Button {...props} ref={ref} className={"snovy-collapse-button " + className} value={"▲"}
-                   defaultValue={"▼"}
+  function CollapseButton({toggle, className, ...props}: ButtonProps, ref?: React.Ref<HTMLButtonElement>) {
+    return <Button {...props} ref={ref} className={"snovy-collapse-button " + className}
+                   value={toggle ? "▲" : "▼"}
     />
   }
 )
 
-export const ConfirmButton = forwardRef<HTMLButtonElement, ButtonProps>(
-  function ConfirmButton({className, ...props}: ButtonProps, ref?: React.Ref<HTMLButtonElement>) {
+export const TextButton = forwardRef<HTMLButtonElement, ButtonProps>(
+  function TextButton({className, ...props}: ButtonProps, ref?: React.Ref<HTMLButtonElement>) {
 
     const theme = useContext(OptionsContext).theme
 
     const emotionCss = css`
       &:hover {
-        background-color: ${theme.hoverColor};
+        background-color: ${theme.hover};
       }
     `
 
-    return <Button css={emotionCss} {...props} ref={ref} className={"snovy-confirm-button " + className}/>
+    return <Button css={emotionCss} {...props} ref={ref} className={"snovy-text-button " + className}/>
   }
 )
 
 export const CheckButton = forwardRef<HTMLButtonElement, ButtonProps>(
-  function CheckButton({className, ...props}: ButtonProps, ref?: React.Ref<HTMLButtonElement>) {
+  function CheckButton({toggle, className, ...props}: ButtonProps, ref?: React.Ref<HTMLButtonElement>) {
 
     const theme = useContext(OptionsContext).theme
 
     const emotionCss = css`
-      ${props.toggle && `background-color: ${theme.activeColor};`}
+      ${toggle && `background-color: ${theme.activeItem};`}
       &:hover {
-        background-color: ${lighten(0.1, theme.activeColor)};
+        background-color: ${lighten(0.1, theme.activeItem)};
       }
     `
 
     return <Button
-      css={emotionCss}
-      {...props} ref={ref} className={"snovy-check-button " + className} value={"✓"} defaultValue={""}
+      css={emotionCss} {...props} ref={ref} className={"snovy-check-button " + className}
+      value={toggle ? "✓" : ""}
     />
   }
 )
 
-export const ColorButton = forwardRef<HTMLButtonElement, ButtonProps>(
-  function ColorButton({className, ...props}: ButtonProps, ref?: React.Ref<HTMLButtonElement>) {
-    return <Button {...props} ref={ref} className={"snovy-color-button " + className}/>
+interface ColorButtonProps extends ButtonProps {
+  color: string | undefined
+}
+
+export const ColorButton = forwardRef<HTMLButtonElement, ColorButtonProps>(
+  function ColorButton({color, className, ...props}: ColorButtonProps, ref?: React.Ref<HTMLButtonElement>) {
+
+    const theme = useContext(OptionsContext).theme
+
+    const emotionCss = color && css`
+      background-color: ${color};
+
+      &:hover {
+        border-color: ${props.invert ? theme.textPrimary : theme.textSecondary};
+        background-color: ${transparentize(0.6, color)};
+      }
+    `
+
+    return <Button css={emotionCss} {...props} ref={ref} className={"snovy-color-button " + className}/>
   }
 )

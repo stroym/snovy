@@ -133,14 +133,13 @@ const App = (props: {
       <span
         id="snovy-app" onContextMenu={(e) => e.preventDefault()}
         css={css`
+          background-color: ${options.theme.primary};
+          scrollbar-color: ${options.theme.scrollbar} ${options.theme.accent};
+
           * {
-            border-color: ${options.theme.borderColor};
+            border-color: ${options.theme.border};
           }
         `}
-        style={{
-          backgroundColor: options.theme.primaryColor,
-          scrollbarColor: `${options.theme.scrollbarColor} ${options.theme.accentColor}`
-        }}
       >
         <TabMenu orientation={Orientation.LEFT} id="left-menu">{[
           makeTab(mappingsLeft.notes, Alignment.START, setActiveTabLeft, activeTabLeft),
@@ -184,7 +183,8 @@ const App = (props: {
           makeTab("❰", Alignment.END, setActiveTab, activeTab, true)
         ]}
         </TabMenu>
-        {activeTabLeft == mappingsLeft.options && <OptionsManager options={options} updateOptions={updateOptions}/>}
+        {activeTabLeft == mappingsLeft.options &&
+        <OptionsManager activeOptions={options} saveOptions={updateOptions}/>}
       </span>
     </OptionsContext.Provider>
   )

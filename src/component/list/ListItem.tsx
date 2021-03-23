@@ -34,10 +34,10 @@ const ListItem = <T extends Record<string, any>>(
   return (
     <EditableInput
       css={css`
-        background-color: ${active ? theme.activeColor : selected ? theme.selectedColor : "transparent"};
+        background-color: ${active ? theme.activeItem : selected ? theme.selectedItem : "transparent"};
 
         &:hover {
-          background-color: ${theme.hoverColor};
+          background-color: ${theme.hover};
         }
       `}
       ref={selfRef} className="snovy-list-item" placeholder="Title" onValueChange={onValueChange}

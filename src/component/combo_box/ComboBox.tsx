@@ -15,10 +15,10 @@ export interface ComboBoxProps<T extends Record<string, any> | string> extends R
   newItem?: { getInputValue: (value: string) => void, name: string }
   options?: { selectPreviousOnEsc?: boolean, resetInputOnSelect?: boolean, slideDropdown?: boolean, unboundDropdown?: boolean }
   externalClose?: { closeMenu: boolean, menuVisible: (visible: boolean) => void }
-  style?: React.CSSProperties
+  itemColors?: { select: string, highlight: string }
 }
 
-const ComboBox = <T extends Record<string, any> | string>(props: ComboBoxProps<T>) => {
+const ComboBox = <T extends Record<string, any> | string>({itemColors, ...props}: ComboBoxProps<T>) => {
 
   const [dropdownItems, setDropdownItems] = useDefaultEmpty<T>()
 
@@ -127,6 +127,14 @@ const ComboBox = <T extends Record<string, any> | string>(props: ComboBoxProps<T
     }
   ]
 
+  const makeItemColor = (item, index) => {
+    if (itemColors) {
+      return highlightedIndex == index ? itemColors.highlight : props.selectedItem == item ? itemColors.select : "transparent"
+    } else {
+      return highlightedIndex == index ? "lightblue" : props.selectedItem == item ? "darkblue" : "transparent"
+    }
+  }
+
   //TODO the info items should probably be sticky
   const ComboDropdown =
     <ComboBoxDropdown
@@ -134,8 +142,7 @@ const ComboBox = <T extends Record<string, any> | string>(props: ComboBoxProps<T
     >
       {dropdownItems?.map((item, index) => (
         <ComboBoxItem
-          {...getItemProps({item, index})} key={index} item={item} highlighted={highlightedIndex == index}
-          selected={props.selectedItem == item}
+          style={{backgroundColor: makeItemColor(item, index)}} {...getItemProps({item, index})} key={index} item={item}
         />
       ))}
       {dropdownItems[highlightedIndex] &&

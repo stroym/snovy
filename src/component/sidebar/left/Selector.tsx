@@ -75,10 +75,8 @@ export const Selector = (props: {
         id="notebook-selector" newItem={{getInputValue: createItem, name: "notebook"}}
         items={props.notebooks} selectedItem={props.selectedNotebook} onItemSelect={props.onNotebookChange}
         options={{selectPreviousOnEsc: true}}
-        style={{
-          backgroundColor: theme.primaryColor,
-          color: theme.primaryTextColor
-        }}
+        style={{backgroundColor: theme.primary, color: theme.textPrimary}}
+        itemColors={{select: theme.activeItem, highlight: theme.hover}}
       />
       <List
         ref={secRef} id="snovy-list-section" defaultFirst items={props.selectedNotebook?.itemsSortedByOrder}

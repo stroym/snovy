@@ -24,14 +24,12 @@ const ContextMenu = (props: {
     <>
       {visible &&
       <div
-        className="snovy-context-menu" ref={selfRef} onClick={() => {
-        props.onFinish()
-        setVisible(false)
-      }} style={{
-        backgroundColor: theme.primaryColor,
-        color: theme.primaryTextColor,
-        ...position
-      }}
+        className="snovy-context-menu" ref={selfRef}
+        onClick={() => {
+          props.onFinish()
+          setVisible(false)
+        }}
+        style={{backgroundColor: theme.primary, color: theme.textPrimary, ...position}}
       >
         {props.children}
       </div>

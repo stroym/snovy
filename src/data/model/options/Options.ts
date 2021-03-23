@@ -1,6 +1,7 @@
 import {Table} from "../Base"
 import {defaultTheme, Theme} from "./Theme"
 import {dexie} from "../../../index"
+import {deserialize, serialize} from "class-transformer"
 
 export default class Options extends Table {
 
@@ -54,9 +55,15 @@ export default class Options extends Table {
   async save() {
     this.updatedAt = new Date()
 
-    return dexie.transaction("rw", dexie.options, () => {
+    return dexie.transaction("rw", dexie.options, async () => {
+      await dexie.options.clear()
+
       dexie.options.put(this, this.id)
     }).then(_it => this)
+  }
+
+  copy() {
+    return deserialize(Options, serialize(this))
   }
 
 }

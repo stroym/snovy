@@ -13,7 +13,7 @@ export const WithLabel = ({children, value, position}: LabelProps) => {
 
   const theme = useContext(OptionsContext).theme
 
-  const label = <div className="label-text" style={{color: theme.primaryTextColor}}>{value}</div>
+  const label = <div className="label-text" style={{color: theme.textPrimary}}>{value}</div>
 
   return (
     <label className="labeled-input-wrapper">

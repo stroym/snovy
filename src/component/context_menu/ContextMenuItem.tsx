@@ -20,7 +20,7 @@ export const ContextMenuItem = (props: {
 
   const emotionCss = css`
     &:hover {
-      background-color: ${theme.accentColor};
+      background-color: ${theme.accent};
     }
   `
 
@@ -29,8 +29,9 @@ export const ContextMenuItem = (props: {
       className="outer-wrapper" onMouseEnter={() => {setNested(true)}} onMouseLeave={() => {setNested(false)}}
       css={css`
         &:hover {
-          background-color: ${theme.hoverColor};
-        }`}
+          background-color: ${theme.hover};
+        }`
+      }
     >
       <div className="snovy-context-menu-item" onClick={props.special ? () => false : props.onClick}>
       <span css={emotionCss} className="context-wrapper" onClick={props.special ? props.onClick : () => false}>
@@ -49,7 +50,7 @@ export const ContextMenuItem = (props: {
         }
       </div>
       {props.children && nested &&
-      <div ref={nestedRef} className={"nested-context-menu"} style={{backgroundColor: theme.primaryColor, ...position}}>
+      <div ref={nestedRef} className={"nested-context-menu"} style={{backgroundColor: theme.primary, ...position}}>
         {props.children}
       </div>
       }

@@ -118,10 +118,8 @@ const NoteDetail = (props: {
           items={props.notebook.availableTags(props.note)} newItem={{getInputValue: getInputValue, name: "tag"}}
           options={{selectPreviousOnEsc: false, resetInputOnSelect: true}} onItemSelect={onTag}
           externalClose={{menuVisible: setMenuVisible, closeMenu: menuVisible}} onFocus={() => {setFormVisible(false)}}
-          style={{
-            backgroundColor: theme.primaryColor,
-            color: theme.primaryTextColor
-          }}
+          style={{backgroundColor: theme.primary, color: theme.textPrimary}}
+          itemColors={{select: theme.activeItem, highlight: theme.hover}}
         />
       </div>
       <div className="note-detail-body">

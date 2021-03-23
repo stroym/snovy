@@ -13,7 +13,7 @@ const TabMenu = (props: {
   return (
     <div
       id={props.id} className={"snovy-tab-menu " + props.orientation}
-      style={{backgroundColor: theme.accentColor}}
+      style={{backgroundColor: theme.accent}}
     >
       <div className={"menu-section " + Alignment.START}>
         {props.children.filter(it => it.props.alignment == Alignment.START)}

@@ -72,24 +72,24 @@ export class TinyStyle {
 
     if (!color.isBlank()) {
       this.style["backgroundColor"] = this.tiny.toHex8String()
+    }
 
-      if (maxAdjustment) {
-        if (maxAdjustment > 0) {
-          this.evaluate(this.tiny.clone().lighten(maxAdjustment))
-        } else {
-          this.evaluate(this.tiny.clone().darken(-maxAdjustment))
-        }
+    if (maxAdjustment) {
+      if (maxAdjustment > 0) {
+        this.evaluate(this.tiny.clone().lighten(maxAdjustment))
       } else {
-        this.evaluate(this.tiny.clone())
+        this.evaluate(this.tiny.clone().darken(-maxAdjustment))
       }
+    } else {
+      this.evaluate(this.tiny.clone())
     }
   }
 
   private evaluate(adjusted: TinyColor.Instance) {
-    if (TinyColor.isReadable(adjusted, this.theme.primaryTextColor)) {
-      this.style["color"] = this.theme.primaryTextColor
+    if (TinyColor.isReadable(adjusted, this.theme.textPrimary)) {
+      this.style["color"] = this.theme.textPrimary
     } else {
-      this.style["color"] = this.theme.secondaryTextColor
+      this.style["color"] = this.theme.textSecondary
       this.invert = true
     }
   }

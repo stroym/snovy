@@ -18,7 +18,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <input
-        style={{color: theme.primaryTextColor, ...style}}
+        style={{color: theme.textPrimary, ...style}}
         {...props} ref={selfRef} type="text" className={"snovy-input " + className} autoComplete="off"
         onChange={e => {
           onChange && onChange(e)
@@ -92,13 +92,15 @@ export interface ColoredInputProps extends InputProps {
   observe?: boolean
 }
 
-export const ColoredInput = ({onValueChange, value, observe, ...props}: ColoredInputProps) => {
+export const ColoredInput = ({onValueChange, value, defaultValue, observe, ...props}: ColoredInputProps) => {
 
-  const defaultColor = value?.toString() ?? ""
+  const defaultColor = defaultValue?.toString() ?? value?.toString() ?? ""
+
+  const currentColor = value?.toString() ?? ""
 
   const selfRef = useRef<HTMLInputElement>(null)
 
-  const [color, setColorState] = useState(defaultColor)
+  const [color, setColorState] = useState(currentColor)
 
   const setColor = (value: string) => {
     const hex = value.includes("#") ? value : "#" + value

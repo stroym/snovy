@@ -16,9 +16,9 @@ const TabMenuItem = (props: TabMenuItemProps) => {
   const theme = useContext(OptionsContext).theme
 
   const emotionCss = css`
-    ${props.active && `background-color: ${theme.activeColor};`}
+    ${props.active && `background-color: ${theme.activeItem};`}
     &:hover {
-      background-color: ${theme.hoverColor};
+      background-color: ${theme.hover};
     }
   `
 
