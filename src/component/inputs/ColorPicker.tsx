@@ -1,10 +1,11 @@
-import React, {useRef} from "react"
+import React, {useContext, useRef} from "react"
 
 import {ColorButton} from "./Button"
 import {useHideOnOutsideClick} from "../../util/Hooks"
 import {TinyStyle} from "../tag/TagItem"
 import {ColoredInput} from "./Input"
 import FocusTrap from "focus-trap-react"
+import OptionsContext from "../../util/OptionsContext"
 
 export const ColorPicker = (props: {
   colors: Array<string>
@@ -12,6 +13,8 @@ export const ColorPicker = (props: {
   getColor: (hex: string) => void
   getColorFromInput: (hex: string) => void
 }) => {
+
+  const theme = useContext(OptionsContext).theme
 
   const buttonRef = useRef<HTMLButtonElement>(null)
   const pickerRef = useRef<HTMLDivElement>(null)
@@ -38,7 +41,7 @@ export const ColorPicker = (props: {
               <ColorItem key={index} onClick={getColor} color={color}/>
             )}
           </div>
-          <ColoredInput onValueChange={getColor}/>
+          <ColoredInput onValueChange={getColor} style={{borderColor: theme.primaryTextColor}}/>
         </span>
       </FocusTrap>
       }
@@ -59,13 +62,14 @@ const ColorItem = (props: {
 }
 
 export const ColorHelper = (props: {
-  color: string,
+  color: string
   text?: string
+  style?: React.CSSProperties
 }) => {
 
   const tiny = new TinyStyle(props.color)
 
-  return <span className="color-helper" style={tiny.style}>{props.text}</span>
+  return <span className="color-helper" style={{...props.style, ...tiny.style}}>{props.text}</span>
 
 }
 

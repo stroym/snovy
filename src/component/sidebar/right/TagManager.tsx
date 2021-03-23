@@ -1,11 +1,8 @@
 import React from "react"
-import Tag from "../../../data/model/Tag"
 import Notebook from "../../../data/model/Notebook"
 
 const TagManager = (props: {
-  notebook: Notebook | undefined,
-  tag: Tag | undefined,
-  onTagChange: (tag: Tag | undefined) => void
+  notebook: Notebook | undefined
 }) => {
 
   return (

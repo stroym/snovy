@@ -1,5 +1,6 @@
-import React from "react"
+import React, {useContext} from "react"
 import {TabMenuItemProps} from "./TabMenuItem"
+import OptionsContext from "../../util/OptionsContext"
 
 const TabMenu = (props: {
   id?: string,
@@ -7,8 +8,13 @@ const TabMenu = (props: {
   children: Array<React.ReactElement<TabMenuItemProps>>
 }) => {
 
+  const theme = useContext(OptionsContext).theme
+
   return (
-    <div id={props.id} className={"snovy-tab-menu " + props.orientation}>
+    <div
+      id={props.id} className={"snovy-tab-menu " + props.orientation}
+      style={{backgroundColor: theme.accentColor}}
+    >
       <div className={"menu-section " + Alignment.START}>
         {props.children.filter(it => it.props.alignment == Alignment.START)}
       </div>

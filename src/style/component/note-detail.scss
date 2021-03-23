@@ -14,8 +14,8 @@
   grid-template-areas: "header" "body" "rest";
 
   .note-detail-header {
+    @include border(0 0 2px 0);
     grid-area: header;
-    border-bottom: $border;
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
@@ -26,12 +26,9 @@
     }
 
     .snovy-button {
-      @include circular($font-medium);
-      color: $color-text-primary;
-
-      &:hover {
-        background-color: transparentize($color-text-primary, 0.5);
-      }
+      @include circular($font-huge);
+      font-size: $font-big;
+      border-width: 2px;
     }
   }
 

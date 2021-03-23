@@ -3,22 +3,18 @@
 
 .snovy-button {
   @include focus(50%);
+  @include border(1px);
   flex-shrink: 0;
   margin: 0.1em;
   padding: 0;
-  border: none;
   background-color: transparent;
-  color: inherit;
-
-  &:hover {
-    background-color: transparentize($color-text-secondary, 0.7);
-  }
 }
 
 .snovy-remove-button,
 .snovy-collapse-button,
 .snovy-add-button {
-  @include circular-with-text($font-medium);
+  @include circular($font-medium);
+  font-size: $font-medium;
 }
 
 .snovy-color-button {
@@ -28,25 +24,15 @@
 .snovy-confirm-button {
   @include text-height-padded($font-big, 1.5);
   @include focus($border-rad-big);
+  @include border(1px);
   width: unset;
   height: unset;
   max-width: 80%;
   padding: 0 0.5em;
   border-radius: $border-rad-big;
-  border: $border-thin-inverted;
-
-  &:hover {
-    background-color: $color-hover;
-  }
 }
 
 .snovy-check-button {
   @include circular($font-big);
   font-size: $font-small;
-  color: $color-text-primary;
-  background-color: $color-text-primary;
-
-  &:hover {
-    background-color: $color-accent;
-  }
 }

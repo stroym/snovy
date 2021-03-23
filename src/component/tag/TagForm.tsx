@@ -1,4 +1,4 @@
-import React, {forwardRef, useEffect, useState} from "react"
+import React, {forwardRef, useContext, useEffect, useState} from "react"
 import Scope from "../../data/model/Scope"
 import {CheckButton, ConfirmButton} from "../inputs/Button"
 import ColorPicker from "../inputs/ColorPicker"
@@ -6,6 +6,7 @@ import ComboBox from "../combo_box/ComboBox"
 import Input from "../inputs/Input"
 import FocusTrap from "focus-trap-react"
 import WithLabel from "../inputs/WithLabel"
+import OptionsContext from "../../util/OptionsContext"
 
 interface FormProps {
   initialValue?: string
@@ -15,6 +16,8 @@ interface FormProps {
 
 const TagForm = forwardRef<HTMLFormElement, FormProps>(
   function TagForm(props: FormProps, ref: React.Ref<HTMLFormElement>) {
+
+    const theme = useContext(OptionsContext).theme
 
     const [tagText, setTagText] = useState<string>()
     const [tagColor, setTagColor] = useState<string>()
@@ -89,7 +92,10 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
     //TODO move the (optional) show button here inside a fragment?
     return (
       <FocusTrap focusTrapOptions={{clickOutsideDeactivates: true}}>
-        <form ref={ref} id="snovy-tag-create-form" className="snovy-form" tabIndex={-1}>
+        <form
+          ref={ref} id="snovy-tag-create-form" className="snovy-form" tabIndex={-1}
+          style={{backgroundColor: theme.primaryColor}}
+        >
           <TagFormItem
             color={{value: scopeColor, get: setScopeColor}}
             check={{toggled: unique, toggle: setUnique, descriptor: "Exclusive"}}
@@ -99,6 +105,11 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
               placeholder="Scope" tabIndex={0}
               newItem={{getInputValue: makeScope, name: "scope"}}
               options={{slideDropdown: true, unboundDropdown: true}}
+              style={{
+                backgroundColor: theme.primaryColor,
+                color: theme.primaryTextColor,
+                borderColor: theme.primaryTextColor
+              }}
             />
           </TagFormItem>
           <TagFormItem
@@ -112,7 +123,10 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
               }, descriptor: "Unify"
             }}
           >
-            <Input placeholder="Tag" onValueChange={setTagText} defaultValue={tagText}/>
+            <Input
+              placeholder="Tag" onValueChange={setTagText} defaultValue={tagText}
+              style={{borderColor: theme.primaryTextColor}}
+            />
           </TagFormItem>
           <ConfirmButton defaultValue="Add & tag" onClick={() => createTag()}/>
         </form>

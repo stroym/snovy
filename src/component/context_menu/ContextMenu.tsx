@@ -1,7 +1,8 @@
-import React, {useRef} from "react"
+import React, {useContext, useRef} from "react"
 import ContextMenuItem from "./ContextMenuItem"
 import {useContextMenu} from "../../util/Hooks"
 import {isArray} from "../../util/Utils"
+import OptionsContext from "../../util/OptionsContext"
 
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
@@ -15,6 +16,8 @@ const ContextMenu = (props: {
 
   const selfRef = useRef<HTMLDivElement>(null)
 
+  const theme = useContext(OptionsContext).theme
+
   const {visible, setVisible, position} = useContextMenu(selfRef, props.parentRef)
 
   return (
@@ -24,7 +27,11 @@ const ContextMenu = (props: {
         className="snovy-context-menu" ref={selfRef} onClick={() => {
         props.onFinish()
         setVisible(false)
-      }} style={position}
+      }} style={{
+        backgroundColor: theme.primaryColor,
+        color: theme.primaryTextColor,
+        ...position
+      }}
       >
         {props.children}
       </div>

@@ -28,7 +28,6 @@
   border-radius: $border-rad-big;
   overflow: hidden;
   flex-grow: 1;
-  color: $color-text-secondary;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -106,7 +105,8 @@
     @include text-height-padded($font-medium, 1.4);
 
     .color-helper {
-      @include circular-with-text($font-medium);
+      @include circular($font-medium);
+      font-size: $font-medium;
     }
   }
 
@@ -114,7 +114,8 @@
     @include text-height-padded($font-big, 1.2);
 
     .color-helper {
-      @include circular-with-text($font-big);
+      @include circular($font-big);
+      font-size: $font-big;
     }
   }
 }

@@ -1,8 +1,9 @@
-import React, {useState} from "react"
+import React, {useContext, useState} from "react"
 import Tag from "../../data/model/Tag"
 import {CollapseButton, RemoveButton} from "../inputs/Button"
 import Scope from "../../data/model/Scope"
 import {default as TinyColor} from "tinycolor2"
+import OptionsContext from "../../util/OptionsContext"
 
 //TODO invert button onHover as well as the text color
 
@@ -16,7 +17,7 @@ export const TagItem = (props: {
   return (
     <span className="snovy-tag-item" style={tiny.style}>
       <span className="tag-name" style={tiny.lighten(10)}>{props.mapped.title}</span>
-      <RemoveButton onClick={() => props.onRemove(props.mapped)}/>
+      <RemoveButton onClick={() => props.onRemove(props.mapped)} invert={tiny.invert}/>
     </span>
   )
 }
@@ -30,9 +31,9 @@ export const TagItemScoped = (props: TagItemProps) => {
   return (
     <span className="snovy-tag-item tag-grouped" style={tiny.style}>
       <div className="tag-group-header">
-        <CollapseButton onClick={() => {setCollapsed(!collapsed)}} toggle={collapsed}/>
+        <CollapseButton onClick={() => {setCollapsed(!collapsed)}} toggle={collapsed} invert={tiny.invert}/>
         <span className="tag-scope">{props.scope.title}</span>
-        <RemoveButton onClick={() => props.onRemove(props.mapped)}/>
+        <RemoveButton onClick={() => props.onRemove(props.mapped)} invert={tiny.invert}/>
       </div>
       {!collapsed && <div className="tag-container" style={tiny.lighten(50)}>
         {props.mapped.map((tag) => <TagItem key={tag.toString()} mapped={tag} onRemove={props.onRemove}/>)}
@@ -49,7 +50,7 @@ export const TagItemScopedUnique = (props: TagItemProps) => {
     <span className="snovy-tag-item tag-unique" style={tiny.style}>
       <span className="tag-scope" style={tiny.lighten(20)}>{props.scope.title}</span>
       <span className="tag-name" style={tiny.lighten(10)}>{props.mapped[0].title}</span>
-      <RemoveButton onClick={() => props.onRemove(props.mapped)}/>
+      <RemoveButton onClick={() => props.onRemove(props.mapped)} invert={tiny.invert}/>
     </span>
   )
 }
@@ -64,8 +65,11 @@ export class TinyStyle {
 
   tiny: TinyColor.Instance
   style: React.CSSProperties = {}
+  invert = false
 
   constructor(color: string, maxAdjustment?: number) {
+    const theme = useContext(OptionsContext).theme
+
     this.tiny = new TinyColor(color)
 
     if (!color.isBlank()) {
@@ -75,19 +79,22 @@ export class TinyStyle {
     if (maxAdjustment) {
       if (maxAdjustment > 0) {
         if (this.tiny.clone().lighten(maxAdjustment).isDark()) {
-          this.style["color"] = "#ffffff"
+          this.style["color"] = theme.primaryTextColor
         } else {
-          this.style["color"] = "#000000"
+          this.style["color"] = theme.secondaryTextColor
+          this.invert = true
         }
       } else {
         if (this.tiny.clone().darken(-maxAdjustment).isDark()) {
-          this.style["color"] = "#ffffff"
+          this.style["color"] = theme.primaryTextColor
         } else {
-          this.style["color"] = "#000000"
+          this.style["color"] = theme.secondaryTextColor
+          this.invert = true
         }
       }
     } else {
-      this.style["color"] = this.tiny.isDark() ? "#ffffff" : "#000000"
+      this.style["color"] = this.tiny.isDark() ? theme.primaryTextColor : theme.secondaryTextColor
+      this.invert = this.tiny.isDark()
     }
   }
 

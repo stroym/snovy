@@ -15,8 +15,6 @@
   position: absolute;
   z-index: 10;
   text-align: center;
-  background-color: $color-primary;
-  color: $color-text-primary;
 
   & > * {
     margin: 1em 0;
@@ -36,14 +34,14 @@
     }
 
     & > input, .snovy-combo-box {
+      @include border(1px);
       grid-area: input;
       box-sizing: border-box;
-      border: $border-thin-inverted;
     }
 
     .snovy-dropdown {
+      @include border(1px);
       grid-area: input-dropdown;
-      border: $border-thin-inverted;
       border-top: unset;
 
       .snovy-dropdown-item {

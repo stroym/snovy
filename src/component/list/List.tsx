@@ -1,6 +1,5 @@
 import React, {forwardRef, useEffect} from "react"
 import ListItem from "./ListItem"
-import {append, Extras} from "../../util/ComponentUtils"
 import {KeyMapping, useKey} from "../../util/Utils"
 import {Key} from "ts-key-enum"
 import {useMultiSelect} from "../../util/Hooks"
@@ -50,7 +49,7 @@ const List = forwardRef(<T extends Record<string, any>>(props: ListProps<T>, ref
 
   return (
     <div
-      ref={ref} id={props.id} className={"snovy-list".concat(append(!props.items, Extras.DISABLED))}
+      ref={ref} id={props.id} className="snovy-list" data-disabled={!props.items}
       onKeyDown={e => useKey(e, keyMap)}
       onContextMenu={() => props.getContextTarget && props.getContextTarget(undefined)}
     >

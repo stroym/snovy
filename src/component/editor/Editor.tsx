@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from "react"
 import Note from "../../data/model/Note"
-import {append, Extras} from "../../util/ComponentUtils"
 import {default as OutlineEditor, theme} from "rich-markdown-editor"
 import base from "rich-markdown-editor/dist/dictionary"
 import OptionsContext from "../../util/OptionsContext"
@@ -29,9 +28,9 @@ const Editor = (props: {
     cursor: currentTheme.primaryTextColor,
 
     toolbarBackground: currentTheme.secondaryColor,
-    toolbarHoverBackground: currentTheme.hoverItemColor,
+    toolbarHoverBackground: currentTheme.hoverColor,
     toolbarInput: currentTheme.secondaryColor,
-    toolbarItem: currentTheme.activeItemColor,
+    toolbarItem: currentTheme.activeColor,
 
     tableDivider: currentTheme.secondaryColor,
     tableSelected: currentTheme.primaryTextColor,
@@ -40,15 +39,15 @@ const Editor = (props: {
     quote: currentTheme.secondaryColor,
     codeBackground: currentTheme.secondaryColor,
     codeBorder: currentTheme.primaryTextColor,
-    codeString: currentTheme.selectedItemColor,
+    codeString: currentTheme.selectedColor,
     horizontalRule: currentTheme.secondaryColor,
 
     blockToolbarBackground: currentTheme.primaryColor,
-    blockToolbarTrigger: currentTheme.activeItemColor,
+    blockToolbarTrigger: currentTheme.activeColor,
     blockToolbarTriggerIcon: currentTheme.primaryTextColor,
     blockToolbarItem: currentTheme.primaryColor,
     blockToolbarText: currentTheme.primaryTextColor,
-    blockToolbarHoverBackground: currentTheme.hoverItemColor,
+    blockToolbarHoverBackground: currentTheme.hoverColor,
     blockToolbarDivider: currentTheme.secondaryColor,
 
     scrollbarBackground: currentTheme.scrollbarColor,
@@ -66,7 +65,7 @@ const Editor = (props: {
   )
 
   return (
-    <div className={append(!props.activeNote, Extras.DISABLED)} id="snovy-editor">
+    <div id="snovy-editor" data-disabled={!props.activeNote}>
       {/*<CheckButton toggle={sourceMode} onClick={() => setSourceMode(!sourceMode)}/>*/}
       <OutlineEditor
         theme={dark} dictionary={dictionary} placeholder="" value={value} readOnly={!props.activeNote}

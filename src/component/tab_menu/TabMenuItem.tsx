@@ -1,6 +1,7 @@
-import React from "react"
+import React, {useContext} from "react"
 import {Alignment} from "./TabMenu"
-import {append, Extras} from "../../util/ComponentUtils"
+import OptionsContext from "../../util/OptionsContext"
+import {css} from "@emotion/react"
 
 export interface TabMenuItemProps {
   alignment: Alignment
@@ -12,11 +13,18 @@ export interface TabMenuItemProps {
 
 const TabMenuItem = (props: TabMenuItemProps) => {
 
+  const theme = useContext(OptionsContext).theme
+
+  const emotionCss = css`
+    ${props.active && `background-color: ${theme.activeColor};`}
+    &:hover {
+      background-color: ${theme.hoverColor};
+    }
+  `
+
   return (
     <div
-      className={`snovy-tab-menu-item ${props.alignment}`
-        .concat(append(props.active, Extras.ACTIVE), append(props.icon, "icon"))
-      }
+      css={emotionCss} className={`snovy-tab-menu-item ${props.alignment} ${props.icon ? "icon" : ""}`}
       onClick={() => props.onClick(props.text)}
     >
       {props.text}

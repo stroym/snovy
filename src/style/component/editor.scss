@@ -4,8 +4,6 @@
 #snovy-editor {
   @include scrollbar();
   grid-area: centre;
-  background-color: $color-primary;
-  color: $color-text-primary;
 
   .heading-content {
     cursor: text;
@@ -37,7 +35,7 @@
 
     span {
       font-weight: bold;
-      color: $color-text-primary;
+      //filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
     }
   }
 }

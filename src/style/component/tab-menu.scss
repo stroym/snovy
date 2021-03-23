@@ -2,13 +2,12 @@
 @import "../mixins";
 
 .snovy-tab-menu {
-  background-color: $color-accent;
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
 
   &.left {
-    border-right: $border;
+    @include border(0 2px 0 0);
 
     .snovy-tab-menu-item {
       writing-mode: sideways-lr;
@@ -16,7 +15,7 @@
   }
 
   &.right {
-    border-left: $border;
+    @include border(0 0 0 2px);
 
     .snovy-tab-menu-item {
       writing-mode: sideways-rl;
@@ -52,9 +51,5 @@
 
   &.icon {
     writing-mode: unset !important;
-  }
-
-  &:hover {
-    background-color: $color-hover;
   }
 }

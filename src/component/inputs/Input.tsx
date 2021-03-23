@@ -1,24 +1,29 @@
-import React, {forwardRef, MutableRefObject, useEffect, useRef, useState} from "react"
-import {concatUnknown, Extras} from "../../util/ComponentUtils"
+import React, {forwardRef, MutableRefObject, useContext, useEffect, useRef, useState} from "react"
 import {useHideOnOutsideClick} from "../../util/Hooks"
 import {ColorHelper} from "./ColorPicker"
 import {KeyMapping, useKey} from "../../util/Utils"
 import {Key} from "ts-key-enum"
+import OptionsContext from "../../util/OptionsContext"
 
 export interface InputProps extends React.AllHTMLAttributes<HTMLInputElement> {
   onValueChange?: (str: string) => void
-  value?: string
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  function Input({onValueChange, className, ...props}: InputProps, ref?: React.Ref<HTMLInputElement>) {
+  function Input({onValueChange, onChange, className, style, ...props}: InputProps, ref?: React.Ref<HTMLInputElement>) {
 
     const selfRef = ref ? (ref as MutableRefObject<HTMLInputElement>) : useRef<HTMLInputElement>(null)
 
+    const theme = useContext(OptionsContext).theme
+
     return (
       <input
-        {...props} ref={selfRef} type="text" className={concatUnknown("snovy-input", className)}
-        autoComplete="off" onChange={e => onValueChange && onValueChange(e.target.value)}
+        style={{color: theme.primaryTextColor, ...style}}
+        {...props} ref={selfRef} type="text" className={"snovy-input " + className} autoComplete="off"
+        onChange={e => {
+          onChange && onChange(e)
+          onValueChange && onValueChange(e.target.value)
+        }}
       />
     )
 
@@ -62,11 +67,9 @@ export const EditableInput = forwardRef<HTMLInputElement, InputProps>(
           if (editable) {
             if (selfRef.current) {
               selfRef.current.selectionStart = selfRef.current.selectionEnd = -1
-              selfRef.current.classList.add(Extras.EDITABLE)
             }
           } else {
             if (selfRef.current) {
-              selfRef.current.classList.remove(Extras.EDITABLE)
               selfRef.current.selectionStart = selfRef.current.selectionEnd = 0
             }
           }
@@ -76,6 +79,7 @@ export const EditableInput = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <SynchronizedInput
+        data-editable={editable}
         ref={selfRef} {...props} readOnly={!editable} onDoubleClick={() => props.onValueChange && flip()}
       />
     )
@@ -83,30 +87,34 @@ export const EditableInput = forwardRef<HTMLInputElement, InputProps>(
   }
 )
 
-export const ColoredInput = ({onValueChange, value, ...props}: InputProps) => {
+export interface ColoredInputProps extends InputProps {
+  onValueChange: (str: string) => void
+  observe?: boolean
+}
 
-  const defaultColor = value ?? ""
+export const ColoredInput = ({onValueChange, value, observe, ...props}: ColoredInputProps) => {
+
+  const defaultColor = value?.toString() ?? ""
 
   const selfRef = useRef<HTMLInputElement>(null)
 
   const [color, setColorState] = useState(defaultColor)
 
-  const setColor = (hex: string) => {
-    if (hex.includes("#")) {
-      setColorState(hex)
-    } else {
-      setColorState("#" + hex)
+  const setColor = (value: string) => {
+    const hex = value.includes("#") ? value : "#" + value
+    setColorState(hex)
+
+    if (observe) {
+      onValueChange(hex)
     }
   }
 
   const getColor = () => {
-    if (onValueChange) {
-      if (color.length > 1) {
-        onValueChange(color)
-      } else {
-        setColor(defaultColor)
-        onValueChange(defaultColor)
-      }
+    if (color.length > 1) {
+      onValueChange(color)
+    } else {
+      setColor(defaultColor)
+      onValueChange(defaultColor)
     }
   }
 
@@ -117,7 +125,7 @@ export const ColoredInput = ({onValueChange, value, ...props}: InputProps) => {
 
   return (
     <div className="colored-input-wrapper">
-      <ColorHelper color={color} text="#"/>
+      <ColorHelper color={color} text="#" style={props.style}/>
       <Input
         {...props} ref={selfRef} value={color.replaceAll("#", "")} onValueChange={setColor}
         placeholder="Hex code" maxLength={8} onKeyDown={e => useKey(e, keyMap)}

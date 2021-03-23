@@ -2,9 +2,8 @@
 @import "../mixins";
 
 .snovy-context-menu {
+  @include border(1px);
   z-index: 100;
-  background-color: $color-primary;
-  border: $border-thin-inverted;
 
   &:last-child {
     border-bottom: none;
@@ -17,7 +16,6 @@
   flex-flow: row nowrap;
   align-content: space-evenly;
   user-select: none;
-  color: $color-text-primary;
 
   :last-child {
     flex-grow: 1;
@@ -27,46 +25,32 @@
 
   .context-wrapper {
     .context-icon {
+      @include border(0 1px 0 0);
       text-align: center;
       padding: 0 10px;
-      border-right: $border-thin-inverted;
     }
 
     .context-text {
       padding: 0 0.5ch;
       white-space: nowrap;
     }
-
-    &:hover {
-      background-color: $color-accent;
-    }
   }
 
   .context-text-special {
     padding-left: 0.5ch;
     white-space: nowrap;
-
-    &:hover {
-      background-color: $color-accent;
-    }
-  }
-
-  &:hover {
-    background-color: $color-hover;
   }
 }
 
 .outer-wrapper {
+  @include border(0 0 1px 0);
   position: relative;
-  border-bottom: $border-thin-inverted;
 }
 
 .nested-context-menu {
+  @include border(1px);
   z-index: 110;
   position: absolute;
-
-  background-color: $color-primary;
-  border: $border-thin-inverted;
 
   &:last-child {
     border-bottom: none;

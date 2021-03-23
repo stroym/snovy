@@ -10,11 +10,9 @@
   height: $size;
   border-radius: 50%;
   text-align: center;
-}
-
-@mixin circular-with-text($size) {
-  @include circular($size);
-  @include text-height($size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @mixin text-height($size) {
@@ -32,7 +30,6 @@
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
-  scrollbar-color: $scrollbar;
   scroll-snap-type: y mandatory;
 }
 
@@ -40,9 +37,15 @@
   outline: none;
 
   [data-whatinput="keyboard"] &:focus {
-    outline: $color-focus inset 2px;
+    outline-width: 2px;
+    outline-style: inset;
     outline-offset: -2px;
     -moz-outline-radius: #{$radius};
     border-radius: #{$radius};
   }
+}
+
+@mixin border($width) {
+  border-width: #{$width};
+  border-style: solid;
 }

@@ -1,5 +1,7 @@
-import React, {useRef, useState} from "react"
+import {css} from "@emotion/react"
+import React, {useContext, useRef, useState} from "react"
 import {useRelativePosition} from "../../util/Hooks"
+import OptionsContext from "../../util/OptionsContext"
 
 export const ContextMenuItem = (props: {
   icon?: string
@@ -11,13 +13,27 @@ export const ContextMenuItem = (props: {
 
   const nestedRef = useRef(null)
 
+  const theme = useContext(OptionsContext).theme
+
   const [nested, setNested] = useState(false)
   const position = useRelativePosition(nestedRef, nested)
 
+  const emotionCss = css`
+    &:hover {
+      background-color: ${theme.accentColor};
+    }
+  `
+
   return (
-    <div className="outer-wrapper" onMouseEnter={() => {setNested(true)}} onMouseLeave={() => {setNested(false)}}>
+    <div
+      className="outer-wrapper" onMouseEnter={() => {setNested(true)}} onMouseLeave={() => {setNested(false)}}
+      css={css`
+        &:hover {
+          background-color: ${theme.hoverColor};
+        }`}
+    >
       <div className="snovy-context-menu-item" onClick={props.special ? () => false : props.onClick}>
-      <span className="context-wrapper" onClick={props.special ? props.onClick : () => false}>
+      <span css={emotionCss} className="context-wrapper" onClick={props.special ? props.onClick : () => false}>
         <span className="context-icon">
           {props.icon}
         </span>
@@ -27,13 +43,13 @@ export const ContextMenuItem = (props: {
       </span>
         {/*TODO adjust makers*/}
         {props.special?.text &&
-        <span className="context-text-special" onClick={props.special.onClick}>
+        <span css={emotionCss} className="context-text-special" onClick={props.special.onClick}>
           {props.special.text}
       </span>
         }
       </div>
       {props.children && nested &&
-      <div ref={nestedRef} className={"nested-context-menu"} style={position}>
+      <div ref={nestedRef} className={"nested-context-menu"} style={{backgroundColor: theme.primaryColor, ...position}}>
         {props.children}
       </div>
       }

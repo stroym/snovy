@@ -1,7 +1,8 @@
-import React, {forwardRef} from "react"
-import {append, Extras} from "../../util/ComponentUtils"
+import React, {forwardRef, useContext} from "react"
 import Tag from "../../data/model/Tag"
 import TagDisplayItem from "../tag/TagDisplayItem"
+import OptionsContext from "../../util/OptionsContext"
+import {css} from "@emotion/react"
 
 interface ComboBoxItemProps {
   className?: string
@@ -11,27 +12,27 @@ interface ComboBoxItemProps {
 }
 
 const ComboBoxItem = forwardRef<HTMLLIElement, ComboBoxItemProps>(
-  function ComboBoxItem(props: ComboBoxItemProps, ref: React.Ref<HTMLLIElement>) {
+  function ComboBoxItem({item, selected, highlighted, ...props}: ComboBoxItemProps, ref: React.Ref<HTMLLIElement>) {
 
-    const {item, selected, highlighted, ...rest} = props
+    const theme = useContext(OptionsContext).theme
 
-    const className = "snovy-dropdown-item".concat(
-      append(props.className),
-      append(selected, Extras.ACTIVE),
-      append(highlighted, Extras.HOVER)
-    )
+    const emotionCss = css`
+      background-color: ${selected ? theme.activeColor : highlighted ? theme.hoverColor : "transparent"};
+    `
+
+    const className = "snovy-dropdown-item " + props.className
 
     //TODO while this works, there's probably a better way to do this
-    if (props.item instanceof Tag) {
+    if (item instanceof Tag) {
       return (
-        <li {...rest} ref={ref} className={"tag-dropdown " + className}>
-          <TagDisplayItem tag={props.item}/>
+        <li css={emotionCss} {...props} ref={ref} className={"tag-dropdown " + className}>
+          <TagDisplayItem tag={item}/>
         </li>
       )
     }
 
     return (
-      <li {...rest} ref={ref} className={className}>
+      <li css={emotionCss} {...props} ref={ref} className={className}>
         {item.toString()}
       </li>
     )

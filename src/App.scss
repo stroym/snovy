@@ -24,34 +24,22 @@ html, body, #root {
   box-sizing: border-box;
 }
 
-.selected {
-  background-color: $color-selected;
-}
-
-.active {
-  background-color: $color-active;
-}
-
-.hover {
-  background-color: $color-hover;
-}
-
-.active-context {
-  background-color: #41412c;
-  opacity: 0.8;
-}
-
-.editable {
-  cursor: text;
-  user-select: text;
-}
-
-.disabled {
+[data-disabled="true"] {
   cursor: not-allowed;
   opacity: 0.75;
 }
 
-.hidden {
+[data-editable="true"] {
+  cursor: text;
+  user-select: text;
+}
+
+[data-context="true"] {
+  opacity: 0.6;
+}
+
+[data-visible="false"] {
+  visibility: hidden;
   display: none !important;
 }
 

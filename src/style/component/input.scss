@@ -5,7 +5,6 @@
   @include text-height($font-medium);
   @include focus($border-rad-small);
   box-sizing: border-box;
-  color: $color-text-primary;
   background-color: transparent;
   border: none;
   padding-left: 0.4vw;
@@ -21,18 +20,19 @@
   display: flex;
   flex-flow: row nowrap;
   align-items: stretch;
-  border: $border-thin-inverted;
 
   .color-helper {
+    @include border(1px);
     font-size: $font-medium;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-right: $border-thin-inverted;
     width: 2ch;
   }
 
   input {
+    @include border(1px);
+    border-left: unset;
     width: calc(8ch + 0.4vw);
   }
 }
@@ -45,6 +45,7 @@
   flex-flow: row nowrap;
   justify-self: flex-start;
   align-items: center;
+  justify-content: space-between;
   overflow: hidden;
 
   .label-text {
@@ -52,6 +53,5 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    color: inherit;
   }
 }

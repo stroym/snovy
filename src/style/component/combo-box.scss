@@ -8,40 +8,22 @@
   width: 100%;
 
   .snovy-combo-box-input-wrapper {
+    min-width: 0;
+    flex-grow: 1;
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
-    outline: none;
-
-    & * {
-      color: $color-text-primary;
-    }
-
-    .inner-wrapper {
-      min-width: 0;
-      flex-grow: 1;
-      display: flex;
-      flex-flow: row nowrap;
-      align-items: center;
-      justify-content: flex-start;
-    }
+    justify-content: flex-start;
 
     .snovy-input {
       width: 100%;
-    }
-
-    .snovy-button {
-      @include circular($font-medium);
-
-      &:hover {
-        background-color: transparentize($color-text-primary, 0.5);
-      }
     }
   }
 }
 
 .snovy-dropdown {
   @include scrollbar();
+  @include border(1px);
   max-height: 50vh;
   left: -1px;
   width: 100%;
@@ -49,8 +31,6 @@
   padding: 0;
   z-index: 10;
   position: absolute;
-  background-color: $color-primary;
-  border: $border-thin;
   display: flex;
   flex-flow: row wrap;
   align-content: flex-start;
@@ -62,7 +42,6 @@
     left: unset;
     width: 100%;
     border: unset;
-    border-top: $border-thin;
     position: unset;
   }
 
@@ -73,7 +52,6 @@
     width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: $color-text-primary;
     padding: 0 2%;
     cursor: default;
     user-select: none;

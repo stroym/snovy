@@ -3,7 +3,6 @@ import "./App.scss"
 import "./util/Augments"
 import Notebook from "./data/model/Notebook"
 import Section from "./data/model/Section"
-import Tag from "./data/model/Tag"
 import Note from "./data/model/Note"
 import Editor from "./component/editor/Editor"
 import {isArray} from "./util/Utils"
@@ -21,6 +20,11 @@ import {saveAs} from "file-saver"
 import NoteDetail from "./component/sidebar/right/NoteDetail"
 import TagManager from "./component/sidebar/right/TagManager"
 import OptionsManager from "./component/OptionsManager"
+import {css} from "@emotion/react"
+
+//TODO move props into interfaces, extend basic html props, use destructuring wherever possible
+
+//TODO class names/ids into enums?
 
 const App = (props: {
   dexie: Database
@@ -33,7 +37,6 @@ const App = (props: {
   const [selectedNotebook, setSelectedNotebook] = useState<Notebook | undefined>()
   const [selectedSections, setSelectedSections] = useState<Array<Section>>([])
   const [selectedNotes, setSelectedNotes] = useState<Array<Note>>([])
-  const [tag, setTag] = useState<Tag | undefined>()
 
   useEffect(
     () => {
@@ -58,9 +61,12 @@ const App = (props: {
     }, [props.dexie]
   )
 
-  //TODO make sure to load everything before exporting... or maybe export dexie tables?
   const exportData = () => {
-    return serialize(notebooks)
+    saveAs(new File(
+      [serialize([dexie.notebooks.toArray(), dexie.options.toArray()])],
+      "data.json",
+      {type: "text/json;charset=utf-8"}
+    ))
   }
 
   const resetSelected = () => {
@@ -102,12 +108,8 @@ const App = (props: {
     }
   }
 
-  const selectTag = (active: Tag | undefined) => {
-    setTag(active)
-  }
-
-  const untag = (note: Note, tag: Tag) => {
-    note.untag(tag)
+  const updateOptions = async (options: Options) => {
+    setOptions(await options.save())
   }
 
   const mappingsLeft = {
@@ -128,13 +130,22 @@ const App = (props: {
 
   return (
     <OptionsContext.Provider value={options}>
-      <span id="snovy-app" onContextMenu={(e) => e.preventDefault()}>
+      <span
+        id="snovy-app" onContextMenu={(e) => e.preventDefault()}
+        css={css`
+          * {
+            border-color: ${options.theme.borderColor};
+          }
+        `}
+        style={{
+          backgroundColor: options.theme.primaryColor,
+          scrollbarColor: `${options.theme.scrollbarColor} ${options.theme.accentColor}`
+        }}
+      >
         <TabMenu orientation={Orientation.LEFT} id="left-menu">{[
           makeTab(mappingsLeft.notes, Alignment.START, setActiveTabLeft, activeTabLeft),
           makeTab(mappingsLeft.search, Alignment.START, setActiveTabLeft, activeTabLeft),
-          makeTab("⮉", Alignment.END, () => {
-            saveAs(new File([exportData()], "data.json", {type: "text/json;charset=utf-8"}))
-          }, activeTabLeft, true),
+          makeTab("⮉", Alignment.END, exportData, activeTabLeft, true),
           makeTab("☠", Alignment.END, async () => await dexie.delete(), activeTabLeft, true),
           makeTab(mappingsLeft.options, Alignment.END, text => {
             if (activeTabLeft == mappingsLeft.options && text == mappingsLeft.options) {
@@ -162,7 +173,7 @@ const App = (props: {
           <NoteDetail note={selectedNotes.first()!} notebook={selectedNotebook}/>
           }
           {activeTab == mappings.tagManager &&
-          <TagManager notebook={selectedNotebook} tag={tag} onTagChange={selectTag}/>
+          <TagManager notebook={selectedNotebook}/>
           }
         </div>
         <TabMenu orientation={Orientation.RIGHT} id="right-menu">{[
@@ -173,7 +184,7 @@ const App = (props: {
           makeTab("❰", Alignment.END, setActiveTab, activeTab, true)
         ]}
         </TabMenu>
-        {activeTabLeft == mappingsLeft.options && <OptionsManager/>}
+        {activeTabLeft == mappingsLeft.options && <OptionsManager options={options} updateOptions={updateOptions}/>}
       </span>
     </OptionsContext.Provider>
   )

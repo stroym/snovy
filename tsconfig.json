@@ -20,7 +20,10 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "jsx": "react",
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "types": [
+      "@emotion/react/types/css-prop"
+    ]
   },
   "extends": "@tsconfig/recommended/tsconfig.json",
   "include": [

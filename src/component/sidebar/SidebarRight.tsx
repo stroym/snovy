@@ -31,7 +31,7 @@ const SidebarRight = (props: {
         <NoteDetail note={props.note} notebook={props.notebook}/>
         }
         {activeTab == mappings.tagManager &&
-        <TagManager notebook={props.notebook} tag={props.tag} onTagChange={props.onTagChange}/>
+        <TagManager notebook={props.notebook}/>
         }
       </div>
       <TabMenu orientation={Orientation.RIGHT} id="right-menu">{[

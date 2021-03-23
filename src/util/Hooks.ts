@@ -2,7 +2,6 @@ import useResizeObserver from "@react-hook/resize-observer"
 import React, {Dispatch, SetStateAction, useEffect, useLayoutEffect, useReducer, useState} from "react"
 import {Key} from "ts-key-enum"
 import {isArray, isItem} from "./Utils"
-import {Extras} from "./ComponentUtils"
 
 type mouseEventType = "mousedown" | "click"
 
@@ -55,8 +54,8 @@ export function useContextMenu(contextRef: React.RefObject<Element | null>, pare
 
   const [, setContextItem] = useReducer(
     (prevState: HTMLElement | null, newState: HTMLElement | null): HTMLElement | null => {
-      prevState?.classList.remove(Extras.CONTEXT)
-      newState?.classList.add(Extras.CONTEXT)
+      prevState?.setAttribute("data-context", "false")
+      newState?.setAttribute("data-context", "true")
 
       return newState
     },
