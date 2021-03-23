@@ -5,8 +5,6 @@ import Scope from "../../data/model/Scope"
 import {default as TinyColor} from "tinycolor2"
 import OptionsContext from "../../util/OptionsContext"
 
-//TODO invert button onHover as well as the text color
-
 export const TagItem = (props: {
   mapped: Tag,
   onRemove: (tag: Tag) => void,
@@ -26,7 +24,7 @@ export const TagItemScoped = (props: TagItemProps) => {
 
   const [collapsed, setCollapsed] = useState(false)
 
-  const tiny = new TinyStyle(props.scope.color, 20)
+  const tiny = new TinyStyle(props.scope.color, 10)
 
   return (
     <span className="snovy-tag-item tag-grouped" style={tiny.style}>
@@ -63,38 +61,36 @@ type TagItemProps = {
 
 export class TinyStyle {
 
+  theme = useContext(OptionsContext).theme
+
   tiny: TinyColor.Instance
   style: React.CSSProperties = {}
   invert = false
 
   constructor(color: string, maxAdjustment?: number) {
-    const theme = useContext(OptionsContext).theme
-
     this.tiny = new TinyColor(color)
 
     if (!color.isBlank()) {
       this.style["backgroundColor"] = this.tiny.toHex8String()
-    }
 
-    if (maxAdjustment) {
-      if (maxAdjustment > 0) {
-        if (this.tiny.clone().lighten(maxAdjustment).isDark()) {
-          this.style["color"] = theme.primaryTextColor
+      if (maxAdjustment) {
+        if (maxAdjustment > 0) {
+          this.evaluate(this.tiny.clone().lighten(maxAdjustment))
         } else {
-          this.style["color"] = theme.secondaryTextColor
-          this.invert = true
+          this.evaluate(this.tiny.clone().darken(-maxAdjustment))
         }
       } else {
-        if (this.tiny.clone().darken(-maxAdjustment).isDark()) {
-          this.style["color"] = theme.primaryTextColor
-        } else {
-          this.style["color"] = theme.secondaryTextColor
-          this.invert = true
-        }
+        this.evaluate(this.tiny.clone())
       }
+    }
+  }
+
+  private evaluate(adjusted: TinyColor.Instance) {
+    if (TinyColor.isReadable(adjusted, this.theme.primaryTextColor)) {
+      this.style["color"] = this.theme.primaryTextColor
     } else {
-      this.style["color"] = this.tiny.isDark() ? theme.primaryTextColor : theme.secondaryTextColor
-      this.invert = this.tiny.isDark()
+      this.style["color"] = this.theme.secondaryTextColor
+      this.invert = true
     }
   }
 
