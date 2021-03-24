@@ -23,9 +23,9 @@
 
 .snovy-dropdown {
   @include scrollbar();
-  @include border(1px);
+  @include border(0 1px 1px 1px);
+  box-sizing: border-box;
   max-height: 50vh;
-  left: -1px;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -37,7 +37,7 @@
   list-style: none;
 
   &.slide {
-    box-sizing: border-box;
+    @include border(1px);
     max-height: unset;
     left: unset;
     width: 100%;

@@ -22,6 +22,12 @@ const ComboBox = <T extends Record<string, any> | string>({itemColors, ...props}
 
   const [dropdownItems, setDropdownItems] = useDefaultEmpty<T>()
 
+  useEffect(
+    () => {
+      console.log(props.selectedItem?.toString())
+    }, [props.selectedItem]
+  )
+
   const stateReducer = (state: UseComboboxState<T>, stateChange: UseComboboxStateChangeOptions<T>) => {
     const {type, changes} = stateChange
 

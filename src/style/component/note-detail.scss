@@ -23,6 +23,10 @@
 
     .snovy-combo-box {
       position: unset;
+
+      .snovy-dropdown {
+        left: 0;
+      }
     }
 
     .snovy-button {

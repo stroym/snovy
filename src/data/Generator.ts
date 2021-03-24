@@ -5,7 +5,6 @@ import Scope from "./model/Scope"
 import {dexie} from "../index"
 import Tag from "./model/Tag"
 import {notebookId} from "./Database"
-import {defaultOptions} from "./model/options/Options"
 
 const content =
   "# asdasddsasd\n" +
@@ -104,8 +103,6 @@ async function tagNote(ntbId: number, noteId: number) {
 
 export default async function generate() {
   console.log("generating...")
-
-  await defaultOptions.save()
 
   for (let i = 0; i < 3; i++) {
     const notebookId = (await addNotebook("" + randomNumber(100000, 10000)))!

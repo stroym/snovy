@@ -39,7 +39,7 @@ const Editor = (props: {
     quote: currentTheme.secondary,
     codeBackground: currentTheme.secondary,
     codeBorder: currentTheme.textPrimary,
-    codeString: currentTheme.selectedItem,
+    codeString: currentTheme.activeItem,
     horizontalRule: currentTheme.secondary,
 
     blockToolbarBackground: currentTheme.primary,
@@ -50,7 +50,7 @@ const Editor = (props: {
     blockToolbarHoverBackground: currentTheme.hover,
     blockToolbarDivider: currentTheme.secondary,
 
-    scrollbarBackground: currentTheme.scrollbar,
+    scrollbarBackground: currentTheme.accent,
     scrollbarThumb: currentTheme.secondary
   }
 

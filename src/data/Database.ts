@@ -6,6 +6,7 @@ import Tag from "./model/Tag"
 import Note from "./model/Note"
 import Section from "./model/Section"
 import Options from "./model/options/Options"
+import {Theme} from "./model/options/Theme"
 
 export const notebookId = "notebookId"
 export const sectionId = "sectionId"
@@ -13,6 +14,7 @@ export const noteId = "noteId"
 export const scopeId = "scopeId"
 export const tagId = "tagId"
 export const stateId = "stateId"
+export const themeId = "themeId"
 
 export const title = "title"
 export const order = "order"
@@ -24,6 +26,7 @@ const updatedAt = "updatedAt"
 class Database extends Dexie {
 
   options: Dexie.Table<Options, number>
+  themes: Dexie.Table<Theme, number>
   notebooks: Dexie.Table<Notebook, number>
   sections: Dexie.Table<Section, number>
   notes: Dexie.Table<Note, number>
@@ -35,7 +38,10 @@ class Database extends Dexie {
     super("snovyDB")
 
     this.version(1).stores({
-      options: Database.buildColumns(["singleNotebook", "theme"]),
+      options: Database.buildColumns(["singleNotebook", themeId]),
+      themes: Database.buildColumns([title,
+        "primary", "secondary", "textPrimary", "textSecondary",
+        "accent", "border", "hover", "activeItem"]),
       notebooks: Database.buildColumns([notebookId, title]),
       sections: Database.buildColumns([notebookId, title, order]),
       notes: Database.buildColumns([sectionId, stateId, "*tagIds", title, "content", order]),
@@ -45,6 +51,7 @@ class Database extends Dexie {
     })
 
     this.options = this.table("options")
+    this.themes = this.table("themes")
     this.notebooks = this.table("notebooks")
     this.sections = this.table("sections")
     this.notes = this.table("notes")
@@ -53,6 +60,7 @@ class Database extends Dexie {
     this.states = this.table("states")
 
     this.options.mapToClass(Options)
+    this.themes.mapToClass(Theme)
     this.notebooks.mapToClass(Notebook)
     this.sections.mapToClass(Section)
     this.notes.mapToClass(Note)

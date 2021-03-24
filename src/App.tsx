@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useContext, useEffect, useState} from "react"
 import "./App.scss"
 import "./util/Augments"
 import Notebook from "./data/model/Notebook"
@@ -11,8 +11,8 @@ import {dexie} from "./index"
 import generate from "./data/Generator"
 import {serialize} from "class-transformer"
 import {Table} from "./data/model/Base"
-import OptionsContext from "./util/OptionsContext"
-import Options, {defaultOptions} from "./data/model/options/Options"
+import OptionsContext, {OptionsProvider} from "./util/OptionsContext"
+import {defaultOptions} from "./data/model/options/Options"
 import TabMenu, {Alignment, Orientation} from "./component/tab_menu/TabMenu"
 import {makeTab} from "./component/tab_menu/TabMenuItem"
 import Selector from "./component/sidebar/left/Selector"
@@ -21,6 +21,8 @@ import NoteDetail from "./component/sidebar/right/NoteDetail"
 import TagManager from "./component/sidebar/right/TagManager"
 import OptionsManager from "./component/OptionsManager"
 import {css} from "@emotion/react"
+import {lighten} from "polished"
+import {builtinThemes} from "./data/model/options/Theme"
 
 //TODO move props into interfaces, extend basic html props, use destructuring wherever possible
 
@@ -30,7 +32,7 @@ const App = (props: {
   dexie: Database
 }) => {
 
-  const [options, setOptions] = useState<Options>(defaultOptions)
+  const context = useContext(OptionsContext)
 
   const [notebooks, setNotebooks] = useState<Array<Notebook>>([])
 
@@ -42,13 +44,27 @@ const App = (props: {
     () => {
       props.dexie.open()
 
-      dexie.transaction("rw", [dexie.options, dexie.notebooks, dexie.sections, dexie.notes, dexie.scopes, dexie.tags,
+      dexie.transaction("rw", [dexie.options, dexie.themes, dexie.notebooks, dexie.sections, dexie.notes, dexie.scopes, dexie.tags,
         dexie.states], async () => {
-        setOptions(await Options.getFromDb())
+
+        await dexie.themes.toArray().then(async (themes) => {
+
+          if (themes.isEmpty()) {
+            for (const theme of builtinThemes) {
+              await theme.create()
+            }
+          }
+        })
+
+        await dexie.options.toArray().then(async (options) => {
+          const dbOptions = options.isEmpty() ? await defaultOptions.create() : await options.first()!.load()
+
+          context.setOptions(dbOptions)
+          // context.setTheme((await dexie.themes.get(dbOptions.id))!)
+        })
 
         await dexie.notebooks.toArray().then(async function (values) {
           const loaded = values.length == 0 ? await generate() : values
-          // const loaded = values
 
           setNotebooks(loaded.sort(Table.compareById))
           await selectNotebook(loaded.first())
@@ -108,10 +124,6 @@ const App = (props: {
     }
   }
 
-  const updateOptions = async (options: Options) => {
-    setOptions(await options.save())
-  }
-
   const mappingsLeft = {
     notes: "Notes",
     search: "Search",
@@ -129,15 +141,19 @@ const App = (props: {
   const [activeTab, setActiveTab] = useState<string>(mappings.detail)
 
   return (
-    <OptionsContext.Provider value={options}>
+    <OptionsProvider>
       <span
         id="snovy-app" onContextMenu={(e) => e.preventDefault()}
         css={css`
-          background-color: ${options.theme.primary};
-          scrollbar-color: ${options.theme.scrollbar} ${options.theme.accent};
+          background-color: ${context.theme.primary};
+          scrollbar-color: ${context.theme.accent} ${lighten(0.1, context.theme.accent)};
 
           * {
-            border-color: ${options.theme.border};
+            border-color: ${context.theme.border};
+
+            &:focus {
+              outline-color: ${context.theme.accent};
+            }
           }
         `}
       >
@@ -184,9 +200,9 @@ const App = (props: {
         ]}
         </TabMenu>
         {activeTabLeft == mappingsLeft.options &&
-        <OptionsManager activeOptions={options} saveOptions={updateOptions}/>}
+        <OptionsManager/>}
       </span>
-    </OptionsContext.Provider>
+    </OptionsProvider>
   )
 }
 

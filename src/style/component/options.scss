@@ -1,3 +1,6 @@
+@import "../theme";
+@import "../mixins";
+
 .snovy-options {
   grid-area: 1 / left / 1 / rightmenu;
   width: 100%;
@@ -5,13 +8,17 @@
   padding: 1%;
   z-index: 5;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(3, 1fr) 10%;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr 10%;
+  grid-template-areas: "left center right" "opt opt opt";
   justify-items: center;
   align-items: start;
 
   #theme-options {
-    grid-area: 1 / 4 / 3 / 4;
+    @include scrollbar();
+    grid-area: right;
+    width: 100%;
+    height: 100%;
 
     & > * {
       padding: 0.1em 0;
@@ -19,9 +26,9 @@
   }
 
   #control-buttons {
+    grid-area: opt;
     justify-self: end;
     align-self: center;
-    grid-area: 4 / 3 / 4 / 5;
   }
 
 }

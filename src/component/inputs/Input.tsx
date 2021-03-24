@@ -5,7 +5,7 @@ import {KeyMapping, useKey} from "../../util/Utils"
 import {Key} from "ts-key-enum"
 import OptionsContext from "../../util/OptionsContext"
 
-export interface InputProps extends React.AllHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onValueChange?: (str: string) => void
 }
 
@@ -19,7 +19,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <input
         style={{color: theme.textPrimary, ...style}}
-        {...props} ref={selfRef} type="text" className={"snovy-input " + className} autoComplete="off"
+        {...props} ref={selfRef} type="text" className={`snovy-input ${className ?? ""}`} autoComplete="off"
         onChange={e => {
           onChange && onChange(e)
           onValueChange && onValueChange(e.target.value)
@@ -96,21 +96,30 @@ export const ColoredInput = ({onValueChange, value, defaultValue, observe, ...pr
 
   const defaultColor = defaultValue?.toString() ?? value?.toString() ?? ""
 
-  const currentColor = value?.toString() ?? ""
-
   const selfRef = useRef<HTMLInputElement>(null)
 
-  const [color, setColorState] = useState(currentColor)
+  const [color, setColorState] = useState(value?.toString() ?? "")
+
+  useEffect(
+    () => {
+      setColor(value?.toString() ?? "")
+    }, [value]
+  )
+
+  useEffect(
+    () => {
+      if (observe) {
+        getColor()
+      }
+    }, [color]
+  )
 
   const setColor = (value: string) => {
     const hex = value.includes("#") ? value : "#" + value
     setColorState(hex)
-
-    if (observe) {
-      onValueChange(hex)
-    }
   }
 
+  //TODO check color validity
   const getColor = () => {
     if (color.length > 1) {
       onValueChange(color)
@@ -129,8 +138,8 @@ export const ColoredInput = ({onValueChange, value, defaultValue, observe, ...pr
     <div className="colored-input-wrapper">
       <ColorHelper color={color} text="#" style={props.style}/>
       <Input
-        {...props} ref={selfRef} value={color.replaceAll("#", "")} onValueChange={setColor}
-        placeholder="Hex code" maxLength={8} onKeyDown={e => useKey(e, keyMap)}
+        {...props} className="color-input" ref={selfRef} value={color.replaceAll("#", "")} onValueChange={setColor}
+        placeholder="Hex code" maxLength={8} onKeyDown={e => useKey(e, keyMap)} pattern="[a-f0-9]{6,8}"
       />
     </div>
   )

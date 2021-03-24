@@ -27,7 +27,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <button
-        css={emotionCss} ref={ref} {...props} type="button" className={"snovy-button " + className}
+        css={emotionCss} ref={ref} {...props} type="button" className={`snovy-button ${className ?? ""}`}
         data-disabled={props.disabled}
       >
         {value || defaultValue}
@@ -39,19 +39,19 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
 export const AddButton = forwardRef<HTMLButtonElement, ButtonProps>(
   function AddButton({className, ...props}: ButtonProps, ref?: React.Ref<HTMLButtonElement>) {
-    return <Button {...props} ref={ref} className={"snovy-add-button " + className} value={"+"}/>
+    return <Button {...props} ref={ref} className={`snovy-add-button ${className ?? ""}`} value={"+"}/>
   }
 )
 
 export const RemoveButton = forwardRef<HTMLButtonElement, ButtonProps>(
   function RemoveButton({className, ...props}: ButtonProps, ref?: React.Ref<HTMLButtonElement>) {
-    return <Button {...props} ref={ref} className={"snovy-remove-button " + className} value={"×"}/>
+    return <Button {...props} ref={ref} className={`snovy-remove-button ${className ?? ""}`} value={"×"}/>
   }
 )
 
 export const CollapseButton = forwardRef<HTMLButtonElement, ButtonProps>(
   function CollapseButton({toggle, className, ...props}: ButtonProps, ref?: React.Ref<HTMLButtonElement>) {
-    return <Button {...props} ref={ref} className={"snovy-collapse-button " + className}
+    return <Button {...props} ref={ref} className={`snovy-collapse-button ${className ?? ""}`}
                    value={toggle ? "▲" : "▼"}
     />
   }
@@ -68,7 +68,7 @@ export const TextButton = forwardRef<HTMLButtonElement, ButtonProps>(
       }
     `
 
-    return <Button css={emotionCss} {...props} ref={ref} className={"snovy-text-button " + className}/>
+    return <Button css={emotionCss} {...props} ref={ref} className={`snovy-text-button ${className ?? ""}`}/>
   }
 )
 
@@ -85,7 +85,7 @@ export const CheckButton = forwardRef<HTMLButtonElement, ButtonProps>(
     `
 
     return <Button
-      css={emotionCss} {...props} ref={ref} className={"snovy-check-button " + className}
+      css={emotionCss} {...props} ref={ref} className={`snovy-check-button ${className ?? ""}`}
       value={toggle ? "✓" : ""}
     />
   }

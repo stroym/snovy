@@ -2,6 +2,7 @@ import React, {useContext, useRef} from "react"
 import {EditableInput} from "../inputs/Input"
 import {css} from "@emotion/react"
 import OptionsContext from "../../util/OptionsContext"
+import {darken} from "polished"
 
 interface ListItemProps<T extends Record<string, any>> {
   mapped: T
@@ -34,7 +35,7 @@ const ListItem = <T extends Record<string, any>>(
   return (
     <EditableInput
       css={css`
-        background-color: ${active ? theme.activeItem : selected ? theme.selectedItem : "transparent"};
+        background-color: ${active ? theme.activeItem : selected ? darken(0.05, theme.activeItem) : "transparent"};
 
         &:hover {
           background-color: ${theme.hover};

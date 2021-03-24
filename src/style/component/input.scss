@@ -16,7 +16,6 @@
 }
 
 .colored-input-wrapper {
-  grid-area: input;
   display: flex;
   flex-flow: row nowrap;
   align-items: stretch;
@@ -30,7 +29,7 @@
     width: 2ch;
   }
 
-  input {
+  .color-input {
     @include border(1px);
     border-left: unset;
     width: calc(8ch + 0.4vw);

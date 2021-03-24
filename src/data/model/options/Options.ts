@@ -1,32 +1,21 @@
 import {Table} from "../Base"
-import {defaultTheme, Theme} from "./Theme"
 import {dexie} from "../../../index"
 import {deserialize, serialize} from "class-transformer"
 
 export default class Options extends Table {
 
-  singleNotebook: boolean
-  theme: Theme
+  themeId: number
 
-  constructor(singleNotebook: boolean, theme: Theme, id?: number) {
+  singleNotebook: boolean
+
+  constructor(themeId: number, singleNotebook: boolean, id?: number) {
     super(id)
     this.singleNotebook = singleNotebook
-    this.theme = theme
+    this.themeId = themeId
   }
 
-  static async getFromDb() {
-    return dexie.options.toArray().then(options => {
-      if (options.isEmpty()) {
-        return defaultOptions
-      } else {
-        return options.first()!
-      }
-    })
-  }
-
-  //useless
   async create() {
-    return this
+    return dexie.transaction("rw", dexie.options, () => {dexie.options.add(this)}).then(_it => this)
   }
 
   //useless
@@ -34,21 +23,13 @@ export default class Options extends Table {
     return false
   }
 
-  //probably useless
   async load() {
     return Promise.all([
-      dexie.options.toArray().then(options => {
-          if (options.isEmpty()) {
-            this.singleNotebook = defaultOptions.singleNotebook
-            this.theme = defaultOptions.theme
-          } else {
-            const opt = options.first()!
-
-            this.singleNotebook = opt.singleNotebook
-            this.theme = opt.theme
-          }
+      this.themeId == -1 ? await dexie.themes.toArray().then(themes => {
+        if (!themes.isEmpty()) {
+          this.themeId = themes.first()!.id
         }
-      )
+      }) : () => false
     ]).then(_it => this)
   }
 
@@ -69,6 +50,6 @@ export default class Options extends Table {
 }
 
 export const defaultOptions = new Options(
-  false,
-  defaultTheme
+  -1,
+  false
 )
