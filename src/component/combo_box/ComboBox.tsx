@@ -8,24 +8,40 @@ import {Key} from "ts-key-enum"
 import ComboBoxDropdown from "./ComboBoxDropdown"
 import ComboBoxItem from "./ComboBoxItem"
 
+type ComboBoxOptions = {
+  selectPreviousOnEsc?: boolean
+  resetInputOnSelect?: boolean
+  slideDropdown?: boolean
+  unboundDropdown?: boolean
+}
+
+const defaultOptions = {
+  selectPreviousOnEsc: true,
+  resetInputOnSelect: false,
+  slideDropdown: false,
+  unboundDropdown: false
+}
+
 export interface ComboBoxProps<T extends Record<string, any> | string> extends React.HTMLProps<HTMLInputElement> {
   onItemSelect?: (active: T | undefined) => void
   items: Array<T> | undefined
   selectedItem?: T
   newItem?: { getInputValue: (value: string) => void, name: string }
-  options?: { selectPreviousOnEsc?: boolean, resetInputOnSelect?: boolean, slideDropdown?: boolean, unboundDropdown?: boolean }
+  options?: ComboBoxOptions,
   externalClose?: { closeMenu: boolean, menuVisible: (visible: boolean) => void }
   itemColors?: { select: string, highlight: string }
 }
 
 const ComboBox = <T extends Record<string, any> | string>({itemColors, ...props}: ComboBoxProps<T>) => {
 
+  const options = props.options ? {...defaultOptions, ...props.options} : defaultOptions
+
   const [dropdownItems, setDropdownItems] = useDefaultEmpty<T>()
 
   const stateReducer = (state: UseComboboxState<T>, stateChange: UseComboboxStateChangeOptions<T>) => {
     const {type, changes} = stateChange
 
-    if (type == useCombobox.stateChangeTypes.InputKeyDownEscape && props.options?.selectPreviousOnEsc) {
+    if (type == useCombobox.stateChangeTypes.InputKeyDownEscape && options.selectPreviousOnEsc) {
       return {...changes, selectedItem: state.selectedItem, inputValue: state.inputValue}
     } else if (type == useCombobox.stateChangeTypes.InputBlur && changes.selectedItem !== undefined) {
       changes.selectedItem = selectedItem
@@ -64,17 +80,18 @@ const ComboBox = <T extends Record<string, any> | string>({itemColors, ...props}
         }
       }
     },
-    onIsOpenChange: ({selectedItem}) => {
-      props.externalClose?.menuVisible(isOpen)
+    onIsOpenChange: ({selectedItem, isOpen}) => {
+      props.externalClose?.menuVisible(!isOpen)
 
-      if (!isOpen) {
+      if (isOpen) {
         setInputValue("")
       } else {
-        if (props.options?.resetInputOnSelect) {
+        if (options.resetInputOnSelect) {
           setInputValue("")
         } else {
           setInputValue(selectedItem?.toString() ?? "")
         }
+
       }
     }
   })
@@ -138,7 +155,7 @@ const ComboBox = <T extends Record<string, any> | string>({itemColors, ...props}
   //TODO the info items should probably be sticky
   const ComboDropdown =
     <ComboBoxDropdown
-      style={props.style} getMenuProps={getMenuProps()} isOpen={isOpen} slide={props.options?.slideDropdown}
+      style={props.style} getMenuProps={getMenuProps()} isOpen={isOpen} slide={options.slideDropdown}
     >
       {dropdownItems?.map((item, index) => (
         <ComboBoxItem
@@ -170,9 +187,9 @@ const ComboBox = <T extends Record<string, any> | string>({itemColors, ...props}
             onFocus: props.onFocus
           })}
         />
-        {!props.options?.unboundDropdown && ComboDropdown}
+        {!options.unboundDropdown && ComboDropdown}
       </div>
-      {props.options?.unboundDropdown && ComboDropdown}
+      {options.unboundDropdown && ComboDropdown}
     </>
   )
 

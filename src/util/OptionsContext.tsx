@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react"
-import Options, {defaultOptions} from "../data/model/options/Options"
-import {builtinThemes, Theme} from "../data/model/options/Theme"
+import Options from "../data/model/options/Options"
+import {Theme} from "../data/model/options/Theme"
 import {dexie} from "../index"
+import {defaults} from "../data/model/options/Defaults"
 
 const OptionsContext = React.createContext<OptionsContextType>({
-  options: defaultOptions,
+  options: defaults.options,
   setOptions: () => false,
-  theme: builtinThemes.first()!,
+  theme: defaults.themes.first()!,
   setTheme: () => false,
   getThemes: async () => new Array<Theme>()
 })
@@ -24,12 +25,12 @@ export const OptionsProvider = (props: {
 }) => {
 
   //TODO these things should probably be set using the methods below...
-  const [options, setIntOptions] = useState<Options>(defaultOptions)
-  const [theme, setTheme] = useState<Theme>(builtinThemes.first()!)
+  const [options, setIntOptions] = useState<Options>(defaults.options)
+  const [theme, setTheme] = useState<Theme>(defaults.themes.first()!)
 
   const initOptions = async () => {
     return await dexie.options.toArray().then(async (options) => {
-      return options.isEmpty() ? await defaultOptions.create() : await options.first()!.load()
+      return options.isEmpty() ? await defaults.options.create() : await options.first()!.load()
     })
   }
 
@@ -45,7 +46,7 @@ export const OptionsProvider = (props: {
   const getThemes = async () => {
     return dexie.themes.toArray().then(async (loadedThemes) => {
       if (loadedThemes.isEmpty()) {
-        for (const theme of builtinThemes) {
+        for (const theme of defaults.themes) {
           await theme.create()
         }
 

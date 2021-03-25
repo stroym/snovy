@@ -1,6 +1,5 @@
 import {Table} from "../Base"
 import {dexie} from "../../../index"
-import {deserialize, serialize} from "class-transformer"
 
 export default class Options extends Table {
 
@@ -43,13 +42,8 @@ export default class Options extends Table {
     }).then(_it => this)
   }
 
-  copy() {
-    return deserialize(Options, serialize(this))
+  clone() {
+    return Object.create(this)
   }
 
 }
-
-export const defaultOptions = new Options(
-  -1,
-  false
-)

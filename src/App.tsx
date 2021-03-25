@@ -17,9 +17,9 @@ import Selector from "./component/sidebar/left/Selector"
 import {saveAs} from "file-saver"
 import NoteDetail from "./component/sidebar/right/NoteDetail"
 import TagManager from "./component/sidebar/right/TagManager"
-import OptionsManager from "./component/OptionsManager"
 import {css} from "@emotion/react"
 import {lighten} from "polished"
+import OptionsManager from "./component/options/OptionsManager"
 
 //TODO move props into interfaces, extend basic html props, use destructuring wherever possible
 
@@ -171,8 +171,7 @@ const App = () => {
           makeTab("❰", Alignment.END, setActiveTab, activeTab, true)
         ]}
         </TabMenu>
-        {activeTabLeft == mappingsLeft.options &&
-        <OptionsManager/>}
+        {activeTabLeft == mappingsLeft.options && <OptionsManager/>}
       </span>
     </OptionsProvider>
   )

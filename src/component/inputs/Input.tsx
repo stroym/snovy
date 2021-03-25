@@ -12,14 +12,12 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   function Input({onValueChange, onChange, className, style, ...props}: InputProps, ref?: React.Ref<HTMLInputElement>) {
 
-    const selfRef = ref ? (ref as MutableRefObject<HTMLInputElement>) : useRef<HTMLInputElement>(null)
-
     const theme = useContext(OptionsContext).theme
 
     return (
       <input
         style={{color: theme.textPrimary, ...style}}
-        {...props} ref={selfRef} type="text" className={`snovy-input ${className ?? ""}`} autoComplete="off"
+        {...props} ref={ref} type="text" className={`snovy-input ${className ?? ""}`} autoComplete="off"
         onChange={e => {
           onChange && onChange(e)
           onValueChange && onValueChange(e.target.value)
@@ -32,8 +30,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
 export const SynchronizedInput = forwardRef<HTMLInputElement, InputProps>(
   function SynchronizedInput({value, onValueChange, ...props}: InputProps, ref?: React.Ref<HTMLInputElement>) {
-
-    const selfRef = ref ? (ref as MutableRefObject<HTMLInputElement>) : useRef<HTMLInputElement>(null)
 
     const [inputValue, setInputValue] = useState(value)
 
@@ -49,7 +45,7 @@ export const SynchronizedInput = forwardRef<HTMLInputElement, InputProps>(
     }
 
     return (
-      <Input ref={selfRef} {...props} onValueChange={handleChange} value={inputValue}/>
+      <Input ref={ref} {...props} onValueChange={handleChange} value={inputValue}/>
     )
 
   }
@@ -96,8 +92,6 @@ export const ColoredInput = ({onValueChange, value, defaultValue, observe, ...pr
 
   const defaultColor = defaultValue?.toString() ?? value?.toString() ?? ""
 
-  const selfRef = useRef<HTMLInputElement>(null)
-
   const [color, setColorState] = useState(value?.toString() ?? "")
 
   useEffect(
@@ -121,7 +115,7 @@ export const ColoredInput = ({onValueChange, value, defaultValue, observe, ...pr
 
   //TODO check color validity
   const getColor = () => {
-    if (color.length > 1) {
+    if (color.length > 0) {
       onValueChange(color)
     } else {
       setColor(defaultColor)
@@ -138,7 +132,7 @@ export const ColoredInput = ({onValueChange, value, defaultValue, observe, ...pr
     <div className="colored-input-wrapper">
       <ColorHelper color={color} text="#" style={props.style}/>
       <Input
-        {...props} className="color-input" ref={selfRef} value={color.replaceAll("#", "")} onValueChange={setColor}
+        {...props} className="color-input" value={color.replaceAll("#", "")} onValueChange={setColor}
         placeholder="Hex code" maxLength={8} onKeyDown={e => useKey(e, keyMap)} pattern="[a-f0-9]{6,8}"
       />
     </div>
