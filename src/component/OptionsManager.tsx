@@ -4,6 +4,7 @@ import {defaultOptions} from "../data/model/options/Options"
 import {TextButton} from "./inputs/Button"
 import OptionsContext from "../util/OptionsContext"
 import ThemeManager from "./options/ThemeManager"
+import {Theme} from "../data/model/options/Theme"
 
 const OptionsManager = () => {
 
@@ -13,9 +14,20 @@ const OptionsManager = () => {
 
   const [currentTheme, setCurrentTheme] = useState(context.theme.copy())
 
+  const [themes, setThemes] = useState<Array<Theme>>([])
+
   useEffect(
     () => {
-      console.log(options)
+      async function fetchThemes() {
+        setThemes(await context.getThemes())
+      }
+
+      fetchThemes()
+    }, []
+  )
+
+  useEffect(
+    () => {
       setCurrentTheme(context.theme.copy())
     }, [options]
   )
@@ -42,7 +54,7 @@ const OptionsManager = () => {
         }
       `}
     >
-      <ThemeManager theme={currentTheme} setTheme={setCurrentTheme}/>
+      <ThemeManager themes={themes} theme={currentTheme} setTheme={value => value && setCurrentTheme(value)}/>
       <div id="control-buttons">
         <TextButton value="Restore defaults" onClick={() => setOptions(defaultOptions.copy())}/>
         <TextButton value="Cancel" onClick={() => setOptions(context.options.copy())}/>

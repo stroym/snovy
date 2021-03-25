@@ -6,13 +6,11 @@ import Section from "./data/model/Section"
 import Note from "./data/model/Note"
 import Editor from "./component/editor/Editor"
 import {isArray} from "./util/Utils"
-import Database from "./data/Database"
 import {dexie} from "./index"
 import generate from "./data/Generator"
 import {serialize} from "class-transformer"
 import {Table} from "./data/model/Base"
 import OptionsContext, {OptionsProvider} from "./util/OptionsContext"
-import {defaultOptions} from "./data/model/options/Options"
 import TabMenu, {Alignment, Orientation} from "./component/tab_menu/TabMenu"
 import {makeTab} from "./component/tab_menu/TabMenuItem"
 import Selector from "./component/sidebar/left/Selector"
@@ -22,15 +20,12 @@ import TagManager from "./component/sidebar/right/TagManager"
 import OptionsManager from "./component/OptionsManager"
 import {css} from "@emotion/react"
 import {lighten} from "polished"
-import {builtinThemes} from "./data/model/options/Theme"
 
 //TODO move props into interfaces, extend basic html props, use destructuring wherever possible
 
 //TODO class names/ids into enums?
 
-const App = (props: {
-  dexie: Database
-}) => {
+const App = () => {
 
   const context = useContext(OptionsContext)
 
@@ -42,26 +37,7 @@ const App = (props: {
 
   useEffect(
     () => {
-      props.dexie.open()
-
-      dexie.transaction("rw", [dexie.options, dexie.themes, dexie.notebooks, dexie.sections, dexie.notes, dexie.scopes, dexie.tags,
-        dexie.states], async () => {
-
-        await dexie.themes.toArray().then(async (themes) => {
-
-          if (themes.isEmpty()) {
-            for (const theme of builtinThemes) {
-              await theme.create()
-            }
-          }
-        })
-
-        await dexie.options.toArray().then(async (options) => {
-          const dbOptions = options.isEmpty() ? await defaultOptions.create() : await options.first()!.load()
-
-          context.setOptions(dbOptions)
-          // context.setTheme((await dexie.themes.get(dbOptions.id))!)
-        })
+      dexie.transaction("rw", [dexie.notebooks, dexie.sections, dexie.notes, dexie.scopes, dexie.tags, dexie.states], async () => {
 
         await dexie.notebooks.toArray().then(async function (values) {
           const loaded = values.length == 0 ? await generate() : values
@@ -70,11 +46,7 @@ const App = (props: {
           await selectNotebook(loaded.first())
         })
       })
-
-      return () => {
-        props.dexie.close()
-      }
-    }, [props.dexie]
+    }, []
   )
 
   const exportData = () => {

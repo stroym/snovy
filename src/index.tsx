@@ -10,7 +10,7 @@ whatInput.specificKeys([9])
 
 ReactDOM.render(
   <React.StrictMode>
-    <App dexie={dexie}/>
+    <App/>
   </React.StrictMode>,
   document.getElementById("root")
 )

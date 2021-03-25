@@ -1,26 +1,18 @@
-import React, {useEffect, useState} from "react"
+import React from "react"
 import Input from "../inputs/Input"
-import {builtinThemes, Theme} from "../../data/model/options/Theme"
+import {Theme} from "../../data/model/options/Theme"
 import ComboBox from "../combo_box/ComboBox"
 import ThemeInput from "./ThemeInput"
 import {css} from "@emotion/react"
 import WithLabel from "../inputs/WithLabel"
 
 interface ThemeProps {
+  themes: Array<Theme>
   theme: Theme
-  setTheme: (theme: Theme) => void
+  setTheme: (theme: Theme | undefined) => void
 }
 
-const ThemeManager = ({theme, setTheme, ...props}: ThemeProps) => {
-
-  const [current, setCurrent] = useState(theme)
-
-  useEffect(
-    () => {
-      console.log(theme.toString())
-      setCurrent(theme)
-    }, [theme]
-  )
+const ThemeManager = ({themes, theme, setTheme, ...props}: ThemeProps) => {
 
   return (
     <div
@@ -37,11 +29,7 @@ const ThemeManager = ({theme, setTheme, ...props}: ThemeProps) => {
         }`
       }
     >
-      <ComboBox
-        items={builtinThemes} selectedItem={current}
-        onItemSelect={value => value ? setTheme(value) : setTheme(builtinThemes.first()!)}
-        options={{selectPreviousOnEsc: true}}
-      />
+      <ComboBox items={themes} selectedItem={theme} onItemSelect={setTheme} options={{selectPreviousOnEsc: true}}/>
       <WithLabel value="Theme name" position="before">
         <Input
           id="title-input"
