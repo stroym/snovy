@@ -19,7 +19,7 @@ export default class Section extends Ordered {
   }
 
   get itemsSortedAlphabetically() {
-    return this.notes.sort(Titled.compareByName)
+    return this.notes.sort(Titled.compareByTitle)
   }
 
   get itemsSortedByOrder() {

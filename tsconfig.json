@@ -22,11 +22,15 @@
     "jsx": "react",
     "downlevelIteration": true,
     "types": [
+      "node",
       "@emotion/react/types/css-prop"
     ]
   },
   "extends": "@tsconfig/recommended/tsconfig.json",
   "include": [
     "src"
+  ],
+  "files": [
+    "./emotion.d.ts"
   ]
 }

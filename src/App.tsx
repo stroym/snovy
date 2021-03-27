@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react"
+import React, {useEffect, useState} from "react"
 import "./App.scss"
 import "./util/Augments"
 import Notebook from "./data/model/Notebook"
@@ -10,14 +10,13 @@ import {dexie} from "./index"
 import generate from "./data/Generator"
 import {serialize} from "class-transformer"
 import {Table} from "./data/model/Base"
-import OptionsContext, {OptionsProvider} from "./util/OptionsContext"
 import TabMenu, {Alignment, Orientation} from "./component/tab_menu/TabMenu"
 import {makeTab} from "./component/tab_menu/TabMenuItem"
 import Selector from "./component/sidebar/left/Selector"
 import {saveAs} from "file-saver"
 import NoteDetail from "./component/sidebar/right/NoteDetail"
 import TagManager from "./component/sidebar/right/TagManager"
-import {css} from "@emotion/react"
+import {css, useTheme} from "@emotion/react"
 import {lighten} from "polished"
 import OptionsManager from "./component/options/OptionsManager"
 
@@ -27,7 +26,7 @@ import OptionsManager from "./component/options/OptionsManager"
 
 const App = () => {
 
-  const context = useContext(OptionsContext)
+  const theme = useTheme()
 
   const [notebooks, setNotebooks] = useState<Array<Notebook>>([])
 
@@ -113,22 +112,21 @@ const App = () => {
   const [activeTab, setActiveTab] = useState<string>(mappings.detail)
 
   return (
-    <OptionsProvider>
-      <span
-        id="snovy-app" onContextMenu={(e) => e.preventDefault()}
-        css={css`
-          background-color: ${context.theme.primary};
-          scrollbar-color: ${context.theme.accent} ${lighten(0.1, context.theme.accent)};
+    <span
+      id="snovy-app" onContextMenu={(e) => e.preventDefault()}
+      css={css`
+        background-color: ${theme.primary};
+        scrollbar-color: ${theme.accent} ${lighten(0.1, theme.accent)};
 
-          * {
-            border-color: ${context.theme.border};
+        * {
+          border-color: ${theme.border};
 
-            &:focus {
-              outline-color: ${context.theme.accent};
-            }
+          &:focus {
+            outline-color: ${theme.accent};
           }
-        `}
-      >
+        }
+      `}
+    >
         <TabMenu orientation={Orientation.LEFT} id="left-menu">{[
           makeTab(mappingsLeft.notes, Alignment.START, setActiveTabLeft, activeTabLeft),
           makeTab(mappingsLeft.search, Alignment.START, setActiveTabLeft, activeTabLeft),
@@ -171,9 +169,8 @@ const App = () => {
           makeTab("❰", Alignment.END, setActiveTab, activeTab, true)
         ]}
         </TabMenu>
-        {activeTabLeft == mappingsLeft.options && <OptionsManager/>}
+      {activeTabLeft == mappingsLeft.options && <OptionsManager/>}
       </span>
-    </OptionsProvider>
   )
 }
 

@@ -1,8 +1,8 @@
-import React, {useContext, useRef} from "react"
+import React, {useRef} from "react"
 import ContextMenuItem from "./ContextMenuItem"
 import {useContextMenu} from "../../util/Hooks"
 import {isArray} from "../../util/Utils"
-import OptionsContext from "../../util/OptionsContext"
+import {useTheme} from "@emotion/react"
 
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
@@ -16,7 +16,7 @@ const ContextMenu = (props: {
 
   const selfRef = useRef<HTMLDivElement>(null)
 
-  const theme = useContext(OptionsContext).theme
+  const theme = useTheme()
 
   const {visible, setVisible, position} = useContextMenu(selfRef, props.parentRef)
 

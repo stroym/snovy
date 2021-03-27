@@ -19,6 +19,17 @@
     grid-area: center;
     width: 100%;
     height: 100%;
+
+    .buttons-wrapper {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+
+      .snovy-button {
+        width: 32%;
+      }
+    }
   }
 
   #control-buttons {

@@ -4,7 +4,6 @@ import {useDefaultEmpty} from "../../util/Hooks"
 import ComboInfoItem from "./ComboInfoItem"
 import {KeyMapping, useKey} from "../../util/Utils"
 import {Key} from "ts-key-enum"
-import ComboBoxDropdown from "./ComboBoxDropdown"
 import ComboBoxItem from "./ComboBoxItem"
 import WithLabel from "../inputs/WithLabel"
 import Input from "../inputs/Input"
@@ -32,10 +31,13 @@ export interface ComboBoxProps<T extends Record<string, any> | string> extends R
   options?: ComboBoxOptions,
   externalClose?: { closeMenu: boolean, menuVisible: (visible: boolean) => void }
   label?: { value: string, position: "before" | "after" }
-  itemColors?: { select: string, highlight: string }
+  itemColors?: { selected: string, highlight: string }
 }
 
 const ComboBox = <T extends Record<string, any> | string>({itemColors, label, ...props}: ComboBoxProps<T>) => {
+
+  const highlightColor = itemColors ? itemColors.highlight : "lightblue"
+  const selectedColor = itemColors ? itemColors.selected : "darkblue"
 
   const options = props.options ? {...defaultOptions, ...props.options} : defaultOptions
 
@@ -160,36 +162,43 @@ const ComboBox = <T extends Record<string, any> | string>({itemColors, label, ..
     }
   ]
 
-  const makeItemColor = (item, index) => {
-    if (itemColors) {
-      return highlightedIndex == index ? itemColors.highlight : props.selectedItem == item ? itemColors.select : "transparent"
-    } else {
-      return highlightedIndex == index ? "lightblue" : props.selectedItem == item ? "darkblue" : "transparent"
-    }
-  }
-
   //TODO the info items should probably be sticky
   const ComboDropdown =
-    <ComboBoxDropdown
-      style={props.style} getMenuProps={getMenuProps()} isOpen={isOpen} slide={options.slideDropdown}
+    <ol
+      {...getMenuProps()} className={`snovy-dropdown ${options.slideDropdown ? " slide" : ""}`} data-visible={isOpen}
+      style={props.style}
     >
-      {dropdownItems?.map((item, index) => (
-        <ComboBoxItem
-          style={{backgroundColor: makeItemColor(item, index)}} {...getItemProps({item, index})} key={index} item={item}
-        />
-      ))}
-      {dropdownItems[highlightedIndex] &&
-      <ComboInfoItem value={`Press Enter to select ${dropdownItems[highlightedIndex].toString()}`}/>
+      {
+        isOpen && dropdownItems.isEmpty() &&
+        <ComboBoxItem className="snovy-dropdown-no-match" item={"No matching items found."}/>
       }
-      {props.newItem && dropdownItems[highlightedIndex]?.toString() != inputValue &&
-      <ComboInfoItem
-        value={
-          `Press ${dropdownItems.isEmpty() ? "Enter/Shift+Enter" : "Shift+Enter"} 
+      {
+        dropdownItems?.map((item, index) => (
+          <ComboBoxItem
+            style={{
+              backgroundColor:
+                highlightedIndex == index ? highlightColor :
+                  selectedItem == item ? selectedColor :
+                    "transparent"
+            }} {...getItemProps({item, index})} key={index}
+            item={item}
+          />
+        ))
+      }
+      {
+        dropdownItems[highlightedIndex] &&
+        <ComboInfoItem value={`Press Enter to select ${dropdownItems[highlightedIndex].toString()}`}/>
+      }
+      {
+        props.newItem && dropdownItems[highlightedIndex]?.toString() != inputValue &&
+        <ComboInfoItem
+          value={
+            `Press ${dropdownItems.isEmpty() ? "Enter/Shift+Enter" : "Shift+Enter"} 
           to create ${inputValue.isBlank() ? ` new ${props.newItem.name}...` : inputValue}`
-        }
-      />
+          }
+        />
       }
-    </ComboBoxDropdown>
+    </ol>
 
   const ComboBox =
     <>
@@ -202,7 +211,7 @@ const ComboBox = <T extends Record<string, any> | string>({itemColors, label, ..
             onClick: e => toggleMenu()
           })}
         />
-        <CollapseButton aria-label={"toggle menu"} tabIndex={0} {...getToggleButtonProps()}/>
+        <CollapseButton aria-label="toggle menu" {...getToggleButtonProps()} tabIndex={0}/>
         {!options.unboundDropdown && ComboDropdown}
       </div>
       {options.unboundDropdown && ComboDropdown}

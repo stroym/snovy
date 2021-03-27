@@ -13,6 +13,7 @@
   text-overflow: ellipsis;
   min-width: 0;
   outline-offset: -1px;
+  border-radius: $border-rad-small;
 }
 
 .colored-input-wrapper {
@@ -27,12 +28,14 @@
     align-items: center;
     justify-content: center;
     width: 2ch;
+    border-radius: $border-rad-small 0 0 $border-rad-small;
   }
 
   .color-input {
     @include border(1px);
     border-left: unset;
     width: calc(8ch + 0.4vw);
+    border-radius: 0 $border-rad-small $border-rad-small 0;
   }
 }
 

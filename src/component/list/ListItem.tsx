@@ -1,7 +1,6 @@
-import React, {useContext, useRef} from "react"
+import React, {useRef} from "react"
 import {EditableInput} from "../inputs/Input"
-import {css} from "@emotion/react"
-import OptionsContext from "../../util/OptionsContext"
+import {css, useTheme} from "@emotion/react"
 import {darken} from "polished"
 
 interface ListItemProps<T extends Record<string, any>> {
@@ -30,7 +29,7 @@ const ListItem = <T extends Record<string, any>>(
     }
   }
 
-  const theme = useContext(OptionsContext).theme
+  const theme = useTheme()
 
   return (
     <EditableInput

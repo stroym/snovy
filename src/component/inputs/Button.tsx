@@ -1,6 +1,5 @@
-import React, {forwardRef, useContext} from "react"
-import OptionsContext from "../../util/OptionsContext"
-import {css} from "@emotion/react"
+import React, {forwardRef} from "react"
+import {css, useTheme} from "@emotion/react"
 import {lighten, transparentize} from "polished"
 
 export interface ButtonProps extends React.HTMLProps<HTMLButtonElement> {
@@ -14,7 +13,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     {invert, className, value, defaultValue, ...props}: ButtonProps,
     ref?: React.Ref<HTMLButtonElement>) {
 
-    const theme = useContext(OptionsContext).theme
+    const theme = useTheme()
 
     const emotionCss = css`
       color: ${invert ? theme.textSecondary : theme.textPrimary};
@@ -60,7 +59,7 @@ export const CollapseButton = forwardRef<HTMLButtonElement, ButtonProps>(
 export const TextButton = forwardRef<HTMLButtonElement, ButtonProps>(
   function TextButton({className, ...props}: ButtonProps, ref?: React.Ref<HTMLButtonElement>) {
 
-    const theme = useContext(OptionsContext).theme
+    const theme = useTheme()
 
     const emotionCss = css`
       &:hover {
@@ -75,7 +74,7 @@ export const TextButton = forwardRef<HTMLButtonElement, ButtonProps>(
 export const CheckButton = forwardRef<HTMLButtonElement, ButtonProps>(
   function CheckButton({toggle, className, ...props}: ButtonProps, ref?: React.Ref<HTMLButtonElement>) {
 
-    const theme = useContext(OptionsContext).theme
+    const theme = useTheme()
 
     const emotionCss = css`
       ${toggle && `background-color: ${theme.activeItem};`}
@@ -98,7 +97,7 @@ interface ColorButtonProps extends ButtonProps {
 export const ColorButton = forwardRef<HTMLButtonElement, ColorButtonProps>(
   function ColorButton({color, className, ...props}: ColorButtonProps, ref?: React.Ref<HTMLButtonElement>) {
 
-    const theme = useContext(OptionsContext).theme
+    const theme = useTheme()
 
     const emotionCss = color && css`
       background-color: ${color};

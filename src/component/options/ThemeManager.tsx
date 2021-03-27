@@ -1,10 +1,9 @@
-import React, {useContext, useEffect, useState} from "react"
+import React from "react"
 import {Theme} from "../../data/model/options/Theme"
 import ComboBox from "../combo_box/ComboBox"
-import {css} from "@emotion/react"
+import {css, useTheme} from "@emotion/react"
 import WithLabel from "../inputs/WithLabel"
 import {TextButton} from "../inputs/Button"
-import OptionsContext from "../../util/OptionsContext"
 import FocusTrap from "focus-trap-react"
 import {SynchronizedInput} from "../inputs/Input"
 import ThemeInput from "./ThemeInput"
@@ -12,35 +11,22 @@ import ThemeInput from "./ThemeInput"
 interface ThemeProps {
   currentTheme: Theme
   setCurrentTheme: (theme: Theme) => void
+  themes: Array<Theme>
+  setThemes: (themes: Array<Theme>) => void
 }
 
-const ThemeManager = ({currentTheme, setCurrentTheme}: ThemeProps) => {
+const ThemeManager = ({themes, setThemes, currentTheme, setCurrentTheme}: ThemeProps) => {
 
-  const context = useContext(OptionsContext)
+  const theme = useTheme()
 
-  const [themes, setThemes] = useState<Array<Theme>>([])
-
-  useEffect(
-    () => {
-      fetchThemes()
-    }, []
-  )
-
-  async function fetchThemes() {
-    setThemes(await context.getThemes())
-  }
-
-  const deleteTheme = async () => {
-    await currentTheme.delete()
-    await context.getThemes().then(themes => {
-      setThemes(themes)
-      setCurrentTheme(themes.last()!)
-    })
+  const deleteTheme = () => {
+    const tempThemes = Array.from(themes)
+    setCurrentTheme(tempThemes.deleteAndGet(currentTheme)!)
+    setThemes(tempThemes)
   }
 
   const createTheme = async () => {
-    await Theme.makeFrom(currentTheme, currentTheme.title).create()
-    await fetchThemes()
+    setThemes([...Array.from(themes), Theme.makeFrom(currentTheme, currentTheme.title)])
   }
 
   //TODO deleting a theme and then not saving causes crashes... maybe don't actually delete the themes ? (but it's so convinient)
@@ -72,7 +58,7 @@ const ThemeManager = ({currentTheme, setCurrentTheme}: ThemeProps) => {
           <ComboBox
             label={{value: "Active theme", position: "before"}}
             items={themes} selectedItem={currentTheme} onItemSelect={value => value && setCurrentTheme(value)}
-            itemColors={{select: context.theme.activeItem, highlight: context.theme.hover}}
+            itemColors={{selected: theme.activeItem, highlight: theme.hover}}
           />
           <WithLabel value="Theme name" position="before">
             <SynchronizedInput
@@ -118,6 +104,7 @@ const ThemeManager = ({currentTheme, setCurrentTheme}: ThemeProps) => {
         </div>
         <div className="buttons-wrapper">
           <TextButton value="Delete theme" onClick={() => deleteTheme()}/>
+          <TextButton value="Reset theme" onClick={() => false}/>
           <TextButton value="Create theme" onClick={() => createTheme()}/>
         </div>
       </div>

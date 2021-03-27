@@ -1,7 +1,6 @@
-import React, {useContext} from "react"
+import React from "react"
 import {Alignment} from "./TabMenu"
-import OptionsContext from "../../util/OptionsContext"
-import {css} from "@emotion/react"
+import {css, useTheme} from "@emotion/react"
 
 export interface TabMenuItemProps {
   alignment: Alignment
@@ -13,7 +12,7 @@ export interface TabMenuItemProps {
 
 const TabMenuItem = (props: TabMenuItemProps) => {
 
-  const theme = useContext(OptionsContext).theme
+  const theme = useTheme()
 
   const emotionCss = css`
     ${props.active && `background-color: ${theme.activeItem};`}

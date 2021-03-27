@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from "react"
+import React, {useEffect, useRef, useState} from "react"
 import Tag from "../../../data/model/Tag"
 import {TagItem, TagItemScoped, TagItemScopedUnique} from "../../tag/TagItem"
 import Scope from "../../../data/model/Scope"
@@ -10,14 +10,14 @@ import {AddButton} from "../../inputs/Button"
 import {useHideOnOutsideClick} from "../../../util/Hooks"
 import TagForm from "../../tag/TagForm"
 import ComboBox from "../../combo_box/ComboBox"
-import OptionsContext from "../../../util/OptionsContext"
+import {useTheme} from "@emotion/react"
 
 const NoteDetail = (props: {
   note: Note,
   notebook: Notebook
 }) => {
 
-  const theme = useContext(OptionsContext).theme
+  const theme = useTheme()
 
   const [refresh, setRefresh] = useState(false)
 
@@ -119,7 +119,7 @@ const NoteDetail = (props: {
           options={{selectPreviousOnEsc: false, resetInputOnSelect: true, unboundDropdown: true}} onItemSelect={onTag}
           externalClose={{menuVisible: setMenuVisible, closeMenu: menuVisible}} onFocus={() => {setFormVisible(false)}}
           style={{backgroundColor: theme.primary, color: theme.textPrimary}}
-          itemColors={{select: theme.activeItem, highlight: theme.hover}}
+          itemColors={{selected: theme.activeItem, highlight: theme.hover}}
         />
       </div>
       <div className="note-detail-body">

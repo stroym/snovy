@@ -42,7 +42,9 @@
     .snovy-dropdown {
       @include border(1px);
       grid-area: input-dropdown;
+      box-sizing: border-box;
       border-top: unset;
+      border-radius: 0 0 $border-rad-small $border-rad-small;
 
       .snovy-dropdown-item {
         @include text-height-padded($font-small, 1.5);

@@ -63,7 +63,7 @@ export default class Notebook extends Titled {
   }
 
   get itemsSortedAlphabetically() {
-    return this.sections.sort(Titled.compareByName)
+    return this.sections.sort(Titled.compareByTitle)
   }
 
   get itemsSortedByOrder() {
@@ -99,7 +99,7 @@ export default class Notebook extends Titled {
       return a.scope!.title.localeCompare(b.scope!.title) || a.title.localeCompare(b.title)
     })
 
-    const unscopedTags = tags.filter(it => !it.scope).sort(Titled.compareByName)
+    const unscopedTags = tags.filter(it => !it.scope).sort(Titled.compareByTitle)
 
     return scopedTags.concat(scopedUniqueTags, unscopedTags)
   }

@@ -7,6 +7,8 @@ declare global {
 
     delete(item: T): number
 
+    deleteAndGet(item: T): T | undefined
+
     deleteAll(items: Array<T>): number
 
     remove(item: T): Array<T>
@@ -67,6 +69,16 @@ Array.prototype.includesAll = function <T>(array: Array<T>): boolean {
 
 Array.prototype.hasMore = function (): boolean {
   return this.length > 1
+}
+
+Array.prototype.deleteAndGet = function <T>(item: T): T | undefined {
+  const index = this.delete(item) - 1
+
+  if (this.length > 0) {
+    return this[index > 0 ? index : 0]
+  } else {
+    return undefined
+  }
 }
 
 String.prototype.isBlank = function (): boolean {

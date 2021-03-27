@@ -8,8 +8,13 @@
   width: 100%;
   min-width: 0;
   flex-grow: 1;
+  border-radius: $border-rad-small;
   display: grid;
   grid-template-areas: "input button" "dropdown dropdown";
+
+  &[aria-expanded="true"] {
+    border-radius: $border-rad-small $border-rad-small 0 0;
+  }
 
   .snovy-input {
     grid-area: input;
@@ -38,9 +43,7 @@
   list-style: none;
 
   &.slide {
-    @include border(1px);
     max-height: unset;
-    border: unset;
     position: unset;
   }
 

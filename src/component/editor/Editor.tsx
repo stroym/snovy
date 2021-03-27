@@ -1,8 +1,8 @@
-import React, {useContext, useEffect, useState} from "react"
+import React, {useEffect, useState} from "react"
 import Note from "../../data/model/Note"
 import {default as OutlineEditor, theme} from "rich-markdown-editor"
 import base from "rich-markdown-editor/dist/dictionary"
-import OptionsContext from "../../util/OptionsContext"
+import {useTheme} from "@emotion/react"
 
 const dictionary = {
   ...base,
@@ -14,7 +14,7 @@ const Editor = (props: {
   activeNote: Note | undefined
 }) => {
 
-  const currentTheme = useContext(OptionsContext).theme
+  const currentTheme = useTheme()
 
   const [value, setValue] = useState("")
   const [sourceMode, setSourceMode] = useState(false)

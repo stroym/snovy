@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from "react"
+import React, {useEffect, useRef, useState} from "react"
 import Section from "../../../data/model/Section"
 import Note from "../../../data/model/Note"
 import ComboBox from "../../combo_box/ComboBox"
@@ -6,7 +6,7 @@ import Notebook from "../../../data/model/Notebook"
 import List from "../../list/List"
 import {makeContext, makeSharedContext} from "../../context_menu/ContextMenuItem"
 import ContextMenu from "../../context_menu/ContextMenu"
-import OptionsContext from "../../../util/OptionsContext"
+import {useTheme} from "@emotion/react"
 
 export const Selector = (props: {
   onNotebookChange: (active: Notebook | undefined) => void,
@@ -18,7 +18,7 @@ export const Selector = (props: {
   selectedNotes: Array<Note>
 }) => {
 
-  const theme = useContext(OptionsContext).theme
+  const theme = useTheme()
 
   const [contextActive, setContextActive] = useState(false)
 
@@ -75,7 +75,7 @@ export const Selector = (props: {
         id="notebook-selector" newItem={{getInputValue: createItem, name: "notebook"}}
         items={props.notebooks} selectedItem={props.selectedNotebook} onItemSelect={props.onNotebookChange}
         style={{backgroundColor: theme.primary, color: theme.textPrimary}}
-        itemColors={{select: theme.activeItem, highlight: theme.hover}}
+        itemColors={{selected: theme.activeItem, highlight: theme.hover}}
       />
       <List
         ref={secRef} id="snovy-list-section" defaultFirst items={props.selectedNotebook?.itemsSortedByOrder}

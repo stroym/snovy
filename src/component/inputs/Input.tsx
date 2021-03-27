@@ -1,9 +1,9 @@
-import React, {forwardRef, MutableRefObject, useContext, useEffect, useRef, useState} from "react"
+import React, {forwardRef, MutableRefObject, useEffect, useRef, useState} from "react"
 import {useHideOnOutsideClick} from "../../util/Hooks"
 import {ColorHelper} from "./ColorPicker"
 import {KeyMapping, useKey} from "../../util/Utils"
 import {Key} from "ts-key-enum"
-import OptionsContext from "../../util/OptionsContext"
+import {useTheme} from "@emotion/react"
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onValueChange?: (str: string) => void
@@ -12,7 +12,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   function Input({onValueChange, onChange, className, style, ...props}: InputProps, ref?: React.Ref<HTMLInputElement>) {
 
-    const theme = useContext(OptionsContext).theme
+    const theme = useTheme()
 
     return (
       <input

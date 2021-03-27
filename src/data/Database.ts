@@ -7,6 +7,8 @@ import Note from "./model/Note"
 import Section from "./model/Section"
 import Options from "./model/options/Options"
 import {Theme} from "./model/options/Theme"
+import {dexie} from "../index"
+import {defaults} from "./model/options/Defaults"
 
 export const notebookId = "notebookId"
 export const sectionId = "sectionId"
@@ -73,6 +75,20 @@ class Database extends Dexie {
     return "++id,".concat(names.join(",")).concat(createdAt + ",", updatedAt)
   }
 
+}
+
+export const fetchThemes = async () => {
+  return dexie.themes.toArray().then(async (loadedThemes) => {
+    if (loadedThemes.isEmpty()) {
+      for (const theme of defaults.themes) {
+        await theme.create()
+      }
+
+      return await dexie.themes.toArray()
+    } else {
+      return loadedThemes
+    }
+  })
 }
 
 export default Database

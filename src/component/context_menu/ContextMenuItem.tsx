@@ -1,7 +1,6 @@
-import {css} from "@emotion/react"
-import React, {useContext, useRef, useState} from "react"
+import {css, useTheme} from "@emotion/react"
+import React, {useRef, useState} from "react"
 import {useRelativePosition} from "../../util/Hooks"
-import OptionsContext from "../../util/OptionsContext"
 
 export const ContextMenuItem = (props: {
   icon?: string
@@ -13,7 +12,7 @@ export const ContextMenuItem = (props: {
 
   const nestedRef = useRef(null)
 
-  const theme = useContext(OptionsContext).theme
+  const theme = useTheme()
 
   const [nested, setNested] = useState(false)
   const position = useRelativePosition(nestedRef, nested)

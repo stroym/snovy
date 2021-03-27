@@ -1,4 +1,4 @@
-import React, {forwardRef, useContext, useEffect, useState} from "react"
+import React, {forwardRef, useEffect, useState} from "react"
 import Scope from "../../data/model/Scope"
 import {CheckButton, TextButton} from "../inputs/Button"
 import ColorPicker from "../inputs/ColorPicker"
@@ -6,7 +6,7 @@ import ComboBox from "../combo_box/ComboBox"
 import Input from "../inputs/Input"
 import FocusTrap from "focus-trap-react"
 import WithLabel from "../inputs/WithLabel"
-import OptionsContext from "../../util/OptionsContext"
+import {useTheme} from "@emotion/react"
 
 interface FormProps {
   initialValue?: string
@@ -17,7 +17,7 @@ interface FormProps {
 const TagForm = forwardRef<HTMLFormElement, FormProps>(
   function TagForm(props: FormProps, ref: React.Ref<HTMLFormElement>) {
 
-    const theme = useContext(OptionsContext).theme
+    const theme = useTheme()
 
     const [tagText, setTagText] = useState<string>()
     const [tagColor, setTagColor] = useState<string>()
@@ -106,7 +106,7 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
               newItem={{getInputValue: makeScope, name: "scope"}}
               options={{slideDropdown: true, unboundDropdown: true}}
               style={{backgroundColor: theme.primary, color: theme.textPrimary, borderColor: theme.textPrimary}}
-              itemColors={{select: theme.activeItem, highlight: theme.hover}}
+              itemColors={{selected: theme.activeItem, highlight: theme.hover}}
 
             />
           </TagFormItem>

@@ -3,21 +3,17 @@ import Options from "../data/model/options/Options"
 import {Theme} from "../data/model/options/Theme"
 import {dexie} from "../index"
 import {defaults} from "../data/model/options/Defaults"
+import {ThemeProvider} from "@emotion/react"
+import {fetchThemes} from "../data/Database"
 
 const OptionsContext = React.createContext<OptionsContextType>({
   options: defaults.options,
-  setOptions: () => false,
-  theme: defaults.themes.first()!,
-  setTheme: () => false,
-  getThemes: async () => new Array<Theme>()
+  setOptions: () => false
 })
 
 interface OptionsContextType {
   options: Options
   setOptions: (options: Options) => void
-  theme: Theme
-  setTheme: (options: Theme) => void
-  getThemes: () => Promise<Array<Theme>>
 }
 
 export const OptionsProvider = (props: {
@@ -28,32 +24,18 @@ export const OptionsProvider = (props: {
   const [options, setIntOptions] = useState<Options>(defaults.options)
   const [theme, setTheme] = useState<Theme>(defaults.themes.first()!)
 
-  const initOptions = async () => {
-    return await dexie.options.toArray().then(async (options) => {
-      return options.isEmpty() ? await defaults.options.create() : await options.first()!.load()
-    })
-  }
-
   useEffect(
     () => {
       dexie.transaction("rw", [dexie.options, dexie.themes], async () => {
-        await getThemes()
+        await fetchThemes()
         await initOptions().then(options => setOptions(options))
       })
     }, []
   )
 
-  const getThemes = async () => {
-    return dexie.themes.toArray().then(async (loadedThemes) => {
-      if (loadedThemes.isEmpty()) {
-        for (const theme of defaults.themes) {
-          await theme.create()
-        }
-
-        return await dexie.themes.toArray()
-      } else {
-        return loadedThemes
-      }
+  const initOptions = async () => {
+    return await dexie.options.toArray().then(async (options) => {
+      return options.isEmpty() ? await defaults.options.create() : await options.first()!.load()
     })
   }
 
@@ -69,7 +51,7 @@ export const OptionsProvider = (props: {
       .catch(async (error) => {
         console.error(`Error while fetching theme! Reverting to default theme...\n${error}`)
 
-        const backup = (await getThemes()).first()!
+        const backup = (await fetchThemes()).first()!
         setTheme(backup)
         options.themeId = backup.id
       })
@@ -78,16 +60,10 @@ export const OptionsProvider = (props: {
   }
 
   return (
-    <OptionsContext.Provider
-      value={{
-        options,
-        setOptions,
-        theme,
-        setTheme,
-        getThemes
-      }}
-    >
-      {props.children}
+    <OptionsContext.Provider value={{options, setOptions}}>
+      <ThemeProvider theme={theme}>
+        {props.children}
+      </ThemeProvider>
     </OptionsContext.Provider>
   )
 }

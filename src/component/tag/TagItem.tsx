@@ -1,9 +1,9 @@
-import React, {useContext, useState} from "react"
+import React, {useState} from "react"
 import Tag from "../../data/model/Tag"
 import {CollapseButton, RemoveButton} from "../inputs/Button"
 import Scope from "../../data/model/Scope"
 import {default as TinyColor} from "tinycolor2"
-import OptionsContext from "../../util/OptionsContext"
+import {useTheme} from "@emotion/react"
 
 export const TagItem = (props: {
   mapped: Tag,
@@ -61,7 +61,7 @@ type TagItemProps = {
 
 export class TinyStyle {
 
-  theme = useContext(OptionsContext).theme
+  private theme = useTheme()
 
   tiny: TinyColor.Instance
   style: React.CSSProperties = {}

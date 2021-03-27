@@ -1,6 +1,7 @@
-import React, {useContext} from "react"
+import {useTheme} from "@emotion/react"
+import React from "react"
 import {TabMenuItemProps} from "./TabMenuItem"
-import OptionsContext from "../../util/OptionsContext"
+import {TinyStyle} from "../tag/TagItem"
 
 const TabMenu = (props: {
   id?: string,
@@ -8,13 +9,10 @@ const TabMenu = (props: {
   children: Array<React.ReactElement<TabMenuItemProps>>
 }) => {
 
-  const theme = useContext(OptionsContext).theme
+  const tiny = new TinyStyle(useTheme().accent)
 
   return (
-    <div
-      id={props.id} className={"snovy-tab-menu " + props.orientation}
-      style={{backgroundColor: theme.accent}}
-    >
+    <div id={props.id} className={"snovy-tab-menu " + props.orientation} style={tiny.style}>
       <div className={"menu-section " + Alignment.START}>
         {props.children.filter(it => it.props.alignment == Alignment.START)}
       </div>

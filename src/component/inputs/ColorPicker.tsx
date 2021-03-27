@@ -1,11 +1,11 @@
-import React, {useContext, useRef} from "react"
+import React, {useRef} from "react"
 
 import {ColorButton} from "./Button"
 import {useHideOnOutsideClick} from "../../util/Hooks"
 import {TinyStyle} from "../tag/TagItem"
 import {ColoredInput} from "./Input"
 import FocusTrap from "focus-trap-react"
-import OptionsContext from "../../util/OptionsContext"
+import {useTheme} from "@emotion/react"
 
 export const ColorPicker = (props: {
   colors: Array<string>
@@ -14,7 +14,7 @@ export const ColorPicker = (props: {
   getColorFromInput: (hex: string) => void
 }) => {
 
-  const theme = useContext(OptionsContext).theme
+  const theme = useTheme()
 
   const buttonRef = useRef<HTMLButtonElement>(null)
   const pickerRef = useRef<HTMLDivElement>(null)
