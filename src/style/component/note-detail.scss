@@ -16,21 +16,19 @@
   .note-detail-header {
     @include border(0 0 2px 0);
     grid-area: header;
+    position: relative;
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
     justify-items: flex-start;
 
-    .snovy-combo-box {
-      position: unset;
-
-      .snovy-dropdown {
-        left: 0;
-      }
+    .snovy-dropdown {
+      top: 100%;
     }
 
     .snovy-button {
       @include circular($font-huge);
+      border-style: unset;
       font-size: $font-big;
       border-width: 2px;
     }

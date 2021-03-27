@@ -4,29 +4,30 @@
 .snovy-combo-box {
   font-size: $font-big;
   position: relative;
-  min-width: 0;
+  box-sizing: border-box;
   width: 100%;
+  min-width: 0;
+  flex-grow: 1;
+  display: grid;
+  grid-template-areas: "input button" "dropdown dropdown";
 
-  .snovy-combo-box-input-wrapper {
-    min-width: 0;
-    flex-grow: 1;
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: flex-start;
+  .snovy-input {
+    grid-area: input;
+    align-self: center;
+  }
 
-    .snovy-input {
-      width: 100%;
-    }
+  .snovy-collapse-button {
+    grid-area: button;
+    align-self: center;
+    border-style: unset;
   }
 }
 
 .snovy-dropdown {
   @include scrollbar();
-  @include border(0 1px 1px 1px);
-  box-sizing: border-box;
-  max-height: 50vh;
+  grid-area: dropdown;
   width: 100%;
+  max-height: 50vh;
   margin: 0;
   padding: 0;
   z-index: 10;
@@ -39,8 +40,6 @@
   &.slide {
     @include border(1px);
     max-height: unset;
-    left: unset;
-    width: 100%;
     border: unset;
     position: unset;
   }

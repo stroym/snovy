@@ -27,6 +27,7 @@ const OptionsManager = () => {
   )
 
   const submit = async () => {
+    await theme.save()
     options.themeId = theme.id
     context.setOptions(await options.save())
   }
@@ -35,9 +36,15 @@ const OptionsManager = () => {
     <div
       className="snovy-options"
       css={css`
-        .snovy-combo-box-input-wrapper {
+        .snovy-combo-box {
           border-style: solid;
           border-width: 1px;
+
+          .snovy-dropdown {
+            top: 1px;
+            left: -1px;
+            width: calc(100% + 2px);
+          }
         }
 
         &, * {

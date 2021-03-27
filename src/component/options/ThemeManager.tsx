@@ -65,17 +65,15 @@ const ThemeManager = ({currentTheme, setCurrentTheme}: ThemeProps) => {
         <div
           className="inputs-wrapper" css={css`
           .labeled-input-wrapper {
-            padding: 0.1em 0;
+            padding: 0.2em 0;
           }
         `}
         >
-          {/*TODO for some clicking doesn't close the dropdown when wrapped with a label...*/}
-          <WithLabel value="Active theme" position="before">
-            <ComboBox
-              items={themes} selectedItem={currentTheme} onItemSelect={value => value && setCurrentTheme(value)}
-              itemColors={{select: context.theme.activeItem, highlight: context.theme.hover}}
-            />
-          </WithLabel>
+          <ComboBox
+            label={{value: "Active theme", position: "before"}}
+            items={themes} selectedItem={currentTheme} onItemSelect={value => value && setCurrentTheme(value)}
+            itemColors={{select: context.theme.activeItem, highlight: context.theme.hover}}
+          />
           <WithLabel value="Theme name" position="before">
             <SynchronizedInput
               id="title-input" value={currentTheme.title} onValueChange={value => currentTheme.title = value}

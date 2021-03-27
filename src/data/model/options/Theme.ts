@@ -70,8 +70,6 @@ export class Theme extends Titled {
 
   async save() {
     return dexie.transaction("rw", dexie.themes, async () => {
-      await dexie.options.clear()
-
       dexie.themes.put(this, this.id)
     }).then(_it => this)
   }

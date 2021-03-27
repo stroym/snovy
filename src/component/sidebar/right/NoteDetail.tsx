@@ -116,7 +116,7 @@ const NoteDetail = (props: {
         <AddButton ref={buttonRef} onClick={flip}/>
         <ComboBox
           items={props.notebook.availableTags(props.note)} newItem={{getInputValue: getInputValue, name: "tag"}}
-          options={{selectPreviousOnEsc: false, resetInputOnSelect: true}} onItemSelect={onTag}
+          options={{selectPreviousOnEsc: false, resetInputOnSelect: true, unboundDropdown: true}} onItemSelect={onTag}
           externalClose={{menuVisible: setMenuVisible, closeMenu: menuVisible}} onFocus={() => {setFormVisible(false)}}
           style={{backgroundColor: theme.primary, color: theme.textPrimary}}
           itemColors={{select: theme.activeItem, highlight: theme.hover}}

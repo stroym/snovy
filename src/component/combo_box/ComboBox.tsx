@@ -2,11 +2,13 @@ import React, {useEffect} from "react"
 import {useCombobox, UseComboboxState, UseComboboxStateChangeOptions} from "downshift"
 import {useDefaultEmpty} from "../../util/Hooks"
 import ComboInfoItem from "./ComboInfoItem"
-import ComboBoxInput from "./ComboBoxInput"
 import {KeyMapping, useKey} from "../../util/Utils"
 import {Key} from "ts-key-enum"
 import ComboBoxDropdown from "./ComboBoxDropdown"
 import ComboBoxItem from "./ComboBoxItem"
+import WithLabel from "../inputs/WithLabel"
+import Input from "../inputs/Input"
+import {CollapseButton} from "../inputs/Button"
 
 type ComboBoxOptions = {
   selectPreviousOnEsc?: boolean
@@ -22,17 +24,18 @@ const defaultOptions = {
   unboundDropdown: false
 }
 
-export interface ComboBoxProps<T extends Record<string, any> | string> extends React.HTMLProps<HTMLInputElement> {
+export interface ComboBoxProps<T extends Record<string, any> | string> extends React.HTMLAttributes<HTMLInputElement> {
   onItemSelect?: (active: T | undefined) => void
   items: Array<T> | undefined
   selectedItem?: T
   newItem?: { getInputValue: (value: string) => void, name: string }
   options?: ComboBoxOptions,
   externalClose?: { closeMenu: boolean, menuVisible: (visible: boolean) => void }
+  label?: { value: string, position: "before" | "after" }
   itemColors?: { select: string, highlight: string }
 }
 
-const ComboBox = <T extends Record<string, any> | string>({itemColors, ...props}: ComboBoxProps<T>) => {
+const ComboBox = <T extends Record<string, any> | string>({itemColors, label, ...props}: ComboBoxProps<T>) => {
 
   const options = props.options ? {...defaultOptions, ...props.options} : defaultOptions
 
@@ -51,8 +54,21 @@ const ComboBox = <T extends Record<string, any> | string>({itemColors, ...props}
   }
 
   const {
-    isOpen, getToggleButtonProps, getMenuProps, getInputProps, getComboboxProps, getItemProps, inputValue,
-    selectedItem, highlightedIndex, selectItem, setInputValue, setHighlightedIndex, closeMenu
+    isOpen,
+    getToggleButtonProps,
+    getMenuProps,
+    getInputProps,
+    getComboboxProps,
+    getItemProps,
+    getLabelProps,
+    inputValue,
+    selectedItem,
+    highlightedIndex,
+    selectItem,
+    setInputValue,
+    setHighlightedIndex,
+    closeMenu,
+    toggleMenu
   } = useCombobox({
     items: dropdownItems,
     itemToString: item => item ? item.toString() : "",
@@ -175,23 +191,32 @@ const ComboBox = <T extends Record<string, any> | string>({itemColors, ...props}
       }
     </ComboBoxDropdown>
 
-  return (
+  const ComboBox =
     <>
       <div style={props.style} className="snovy-combo-box" id={props.id} {...getComboboxProps()}>
-        <ComboBoxInput
-          style={props.style}
-          getToggleButtonProps={getToggleButtonProps()}
-          getInputProps={getInputProps({
+        <Input
+          {...getInputProps({
             placeholder: props.placeholder,
             onKeyDown: e => useKey(e, keyMap),
-            onFocus: props.onFocus
+            onFocus: props.onFocus, //TODO focus with label
+            onClick: e => toggleMenu()
           })}
         />
+        <CollapseButton aria-label={"toggle menu"} tabIndex={0} {...getToggleButtonProps()}/>
         {!options.unboundDropdown && ComboDropdown}
       </div>
       {options.unboundDropdown && ComboDropdown}
     </>
-  )
+
+  if (label) {
+    return (
+      <WithLabel  {...getLabelProps()} value={label.value} position={label.position}>
+        {ComboBox}
+      </WithLabel>
+    )
+  } else {
+    return ComboBox
+  }
 
 }
 

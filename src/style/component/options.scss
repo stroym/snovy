@@ -16,7 +16,7 @@
 
   #theme-options {
     @include scrollbar();
-    grid-area: right;
+    grid-area: center;
     width: 100%;
     height: 100%;
   }

@@ -10,9 +10,9 @@ export const ComboBoxInput = (props: {
 }) => {
 
   return (
-    <span style={props.style} className="snovy-combo-box-input-wrapper" {...props.getToggleButtonProps}>
+    <span style={props.style} className="snovy-combo-box-input-wrapper">
       <Input {...props.getInputProps}/>
-      <CollapseButton aria-label={"toggle menu"} tabIndex={0}/>
+      <CollapseButton aria-label={"toggle menu"} tabIndex={0} {...props.getToggleButtonProps}/>
     </span>
   )
 
