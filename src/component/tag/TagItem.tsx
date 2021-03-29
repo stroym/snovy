@@ -3,7 +3,8 @@ import Tag from "../../data/model/Tag"
 import {CollapseButton, RemoveButton} from "../inputs/Button"
 import Scope from "../../data/model/Scope"
 import {default as TinyColor} from "tinycolor2"
-import {useTheme} from "@emotion/react"
+import {css, useTheme} from "@emotion/react"
+import {transparentize} from "polished"
 
 export const TagItem = (props: {
   mapped: Tag,
@@ -15,7 +16,7 @@ export const TagItem = (props: {
   return (
     <span className="snovy-tag-item" style={tiny.style}>
       <span className="tag-name" style={tiny.lighten(10)}>{props.mapped.title}</span>
-      <RemoveButton onClick={() => props.onRemove(props.mapped)} invert={tiny.invert}/>
+      <RemoveButton onClick={() => props.onRemove(props.mapped)} css={tiny.makeButtonCss()}/>
     </span>
   )
 }
@@ -29,9 +30,9 @@ export const TagItemScoped = (props: TagItemProps) => {
   return (
     <span className="snovy-tag-item tag-grouped" style={tiny.style}>
       <div className="tag-group-header">
-        <CollapseButton onClick={() => {setCollapsed(!collapsed)}} toggle={collapsed} invert={tiny.invert}/>
+        <CollapseButton onClick={() => {setCollapsed(!collapsed)}} toggle={collapsed} css={tiny.makeButtonCss()}/>
         <span className="tag-scope">{props.scope.title}</span>
-        <RemoveButton onClick={() => props.onRemove(props.mapped)} invert={tiny.invert}/>
+        <RemoveButton onClick={() => props.onRemove(props.mapped)} css={tiny.makeButtonCss()}/>
       </div>
       {!collapsed && <div className="tag-container" style={tiny.lighten(50)}>
         {props.mapped.map((tag) => <TagItem key={tag.toString()} mapped={tag} onRemove={props.onRemove}/>)}
@@ -48,7 +49,7 @@ export const TagItemScopedUnique = (props: TagItemProps) => {
     <span className="snovy-tag-item tag-unique" style={tiny.style}>
       <span className="tag-scope" style={tiny.lighten(20)}>{props.scope.title}</span>
       <span className="tag-name" style={tiny.lighten(10)}>{props.mapped[0].title}</span>
-      <RemoveButton onClick={() => props.onRemove(props.mapped)} invert={tiny.invert}/>
+      <RemoveButton onClick={() => props.onRemove(props.mapped)} css={tiny.makeButtonCss()}/>
     </span>
   )
 }
@@ -100,6 +101,17 @@ export class TinyStyle {
 
   darken(amount: number) {
     return {backgroundColor: this.tiny.clone().darken(amount).toHex8String()}
+  }
+
+  makeButtonCss() {
+    return css`
+      color: ${this.invert ? this.theme.textSecondary : this.theme.textPrimary};
+      border-color: ${this.invert ? this.theme.textSecondary : this.theme.textPrimary};
+
+      &:hover {
+        background-color: ${transparentize(0.6, this.invert ? this.theme.textSecondary : this.theme.textPrimary)};
+      }
+    `
   }
 
 }

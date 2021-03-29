@@ -2,7 +2,7 @@ import React, {forwardRef} from "react"
 import Tag from "../../data/model/Tag"
 import TagDisplayItem from "../tag/TagDisplayItem"
 
-interface ComboBoxItemProps extends React.AllHTMLAttributes<HTMLLIElement> {
+interface ComboBoxItemProps extends React.HTMLProps<HTMLLIElement> {
   className?: string
   item: Record<string, any> | string
 }

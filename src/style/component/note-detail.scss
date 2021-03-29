@@ -43,6 +43,7 @@
 
     #tag-display-area {
       @include scrollbar();
+      scrollbar-width: none; //TODO draw arrow that scrolls on hover/click when scroll is available
       min-width: 0;
       min-height: 0;
       max-width: 100%;

@@ -9,6 +9,7 @@ import Options from "./model/options/Options"
 import {Theme} from "./model/options/Theme"
 import {dexie} from "../index"
 import {defaults} from "./model/options/Defaults"
+import {saveAs} from "file-saver"
 
 export const notebookId = "notebookId"
 export const sectionId = "sectionId"
@@ -89,6 +90,24 @@ export const fetchThemes = async () => {
       return loadedThemes
     }
   })
+}
+
+export const importData = async (files: FileList | null) => {
+  if (files && files.length > 0) {
+    const blob = files.item(0)
+
+    if (blob) {
+      await dexie.import(blob, {overwriteValues: true})
+    }
+  }
+}
+
+export const exportData = async () => {
+  saveAs(new File(
+    [await dexie.export({prettyJson: true})],
+    `snovy-export-${new Date().toISOString().replace("T", "_").substr(0, 19)}.json`,
+    {type: "text/json;charset=utf-8"}
+  ))
 }
 
 export default Database

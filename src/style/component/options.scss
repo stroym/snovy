@@ -14,6 +14,10 @@
   justify-items: center;
   align-items: start;
 
+  #import-export {
+    grid-area: left;
+  }
+
   #theme-options {
     @include scrollbar();
     grid-area: center;

@@ -70,10 +70,7 @@ module.exports = (env, argv) => {
       isDevelopment && new webpack.HotModuleReplacementPlugin(),
       isDevelopment && new ReactRefreshWebpackPlugin(),
       new SplitChunksPlugin(),
-      new ForkTsCheckerWebpackPlugin(),
-      new webpack.ProvidePlugin({
-        process: "process/browser"
-      })
+      new ForkTsCheckerWebpackPlugin()
     ].filter(Boolean)
   }
 }

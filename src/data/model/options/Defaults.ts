@@ -6,7 +6,6 @@ const options = new Options(-1, false)
 const dark = new Theme(
   "plaindark",
   "#282424",
-  "#3c3737",
   "#f8f8ff",
   "#000000",
   "#a9a9a9",
@@ -18,7 +17,6 @@ const dark = new Theme(
 const light = new Theme(
   "plainlight",
   "#b0a1a1",
-  "#9f9898",
   "#000000",
   "#f8f8ff",
   "#a9a9a9",
@@ -32,7 +30,7 @@ const green = Theme.makeFrom(
   "greendark",
   {
     accent: "#556b2f",
-    hover: "#cdcd00",
+    hover: "#6a6a00",
     activeItem: "#9b9b00"
   }
 )

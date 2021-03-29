@@ -27,20 +27,20 @@ const Editor = (props: {
     code: currentTheme.textPrimary,
     cursor: currentTheme.textPrimary,
 
-    toolbarBackground: currentTheme.secondary,
+    toolbarBackground: currentTheme.primary,
     toolbarHoverBackground: currentTheme.hover,
-    toolbarInput: currentTheme.secondary,
+    toolbarInput: currentTheme.primary,
     toolbarItem: currentTheme.activeItem,
 
-    tableDivider: currentTheme.secondary,
+    tableDivider: currentTheme.primary,
     tableSelected: currentTheme.textPrimary,
     tableSelectedBackground: currentTheme.accent,
 
-    quote: currentTheme.secondary,
-    codeBackground: currentTheme.secondary,
+    quote: currentTheme.primary,
+    codeBackground: currentTheme.primary,
     codeBorder: currentTheme.textPrimary,
     codeString: currentTheme.activeItem,
-    horizontalRule: currentTheme.secondary,
+    horizontalRule: currentTheme.primary,
 
     blockToolbarBackground: currentTheme.primary,
     blockToolbarTrigger: currentTheme.activeItem,
@@ -48,10 +48,10 @@ const Editor = (props: {
     blockToolbarItem: currentTheme.primary,
     blockToolbarText: currentTheme.textPrimary,
     blockToolbarHoverBackground: currentTheme.hover,
-    blockToolbarDivider: currentTheme.secondary,
+    blockToolbarDivider: currentTheme.primary,
 
     scrollbarBackground: currentTheme.accent,
-    scrollbarThumb: currentTheme.secondary
+    scrollbarThumb: currentTheme.primary
   }
 
   useEffect(

@@ -25,9 +25,6 @@
   @include text-height-padded($font-big, 1.5);
   @include focus($border-rad-medium);
   @include border(1px);
-  width: unset;
-  height: unset;
-  max-width: 80%;
   padding: 0 0.5em;
   border-radius: $border-rad-medium;
   overflow: hidden;

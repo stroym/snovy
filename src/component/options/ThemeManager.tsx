@@ -74,10 +74,6 @@ const ThemeManager = ({themes, setThemes, currentTheme, setCurrentTheme}: ThemeP
             setColor={value => currentTheme.primary = value}
           />
           <ThemeInput
-            label="Secondary color" currentColor={currentTheme.secondary} defaultColor={currentTheme.secondary}
-            setColor={value => currentTheme.secondary = value}
-          />
-          <ThemeInput
             label="Text color" currentColor={currentTheme.textPrimary} defaultColor={currentTheme.textPrimary}
             setColor={value => currentTheme.textPrimary = value}
           />

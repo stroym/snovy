@@ -4,7 +4,6 @@ import {dexie} from "../../../index"
 export class Theme extends Titled {
 
   primary: string
-  secondary: string
 
   textPrimary: string
   textSecondary: string
@@ -15,11 +14,10 @@ export class Theme extends Titled {
 
   activeItem: string
 
-  constructor(title: string, primary: string, secondary: string, textPrimary: string, textSecondary: string, accent: string,
+  constructor(title: string, primary: string, textPrimary: string, textSecondary: string, accent: string,
               border: string, hover: string, activeItem: string, id?: number) {
     super(title, id)
     this.primary = primary
-    this.secondary = secondary
     this.textPrimary = textPrimary
     this.textSecondary = textSecondary
     this.accent = accent
@@ -41,7 +39,6 @@ export class Theme extends Titled {
     return new Theme(
       title,
       colors?.primary ? colors.primary : source.primary,
-      colors?.secondary ? colors.secondary : source.secondary,
       colors?.textPrimary ? colors.textPrimary : source.textPrimary,
       colors?.textSecondary ? colors.textSecondary : source.textSecondary,
       colors?.accent ? colors.accent : source.accent,
@@ -52,7 +49,7 @@ export class Theme extends Titled {
   }
 
   static makeEmpty() {
-    return new Theme("", "", "", "", "", "", "", "", "")
+    return new Theme("", "", "", "", "", "", "", "")
   }
 
   async create() {

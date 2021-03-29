@@ -207,8 +207,8 @@ const ComboBox = <T extends Record<string, any> | string>({itemColors, label, ..
           {...getInputProps({
             placeholder: props.placeholder,
             onKeyDown: e => useKey(e, keyMap),
-            onFocus: props.onFocus, //TODO focus with label
-            onClick: e => toggleMenu()
+            onFocus: props.onFocus,
+            onClick: () => toggleMenu()
           })}
         />
         <CollapseButton aria-label="toggle menu" {...getToggleButtonProps()} tabIndex={0}/>
@@ -217,9 +217,10 @@ const ComboBox = <T extends Record<string, any> | string>({itemColors, label, ..
       {options.unboundDropdown && ComboDropdown}
     </>
 
+  //TODO try to make the label functional... i could probably use a ref and one of my hooks, but I don't really wanna
   if (label) {
     return (
-      <WithLabel  {...getLabelProps()} value={label.value} position={label.position}>
+      <WithLabel  {...getLabelProps()} value={label.value} position={label.position} onClick={e => e.preventDefault()}>
         {ComboBox}
       </WithLabel>
     )

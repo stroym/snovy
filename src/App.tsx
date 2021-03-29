@@ -7,13 +7,12 @@ import Note from "./data/model/Note"
 import Editor from "./component/editor/Editor"
 import {isArray} from "./util/Utils"
 import {dexie} from "./index"
+import "dexie-export-import"
 import generate from "./data/Generator"
-import {serialize} from "class-transformer"
 import {Table} from "./data/model/Base"
 import TabMenu, {Alignment, Orientation} from "./component/tab_menu/TabMenu"
 import {makeTab} from "./component/tab_menu/TabMenuItem"
 import Selector from "./component/sidebar/left/Selector"
-import {saveAs} from "file-saver"
 import NoteDetail from "./component/sidebar/right/NoteDetail"
 import TagManager from "./component/sidebar/right/TagManager"
 import {css, useTheme} from "@emotion/react"
@@ -37,7 +36,6 @@ const App = () => {
   useEffect(
     () => {
       dexie.transaction("rw", [dexie.notebooks, dexie.sections, dexie.notes, dexie.scopes, dexie.tags, dexie.states], async () => {
-
         await dexie.notebooks.toArray().then(async function (values) {
           const loaded = values.length == 0 ? await generate() : values
 
@@ -47,14 +45,6 @@ const App = () => {
       })
     }, []
   )
-
-  const exportData = () => {
-    saveAs(new File(
-      [serialize([dexie.notebooks.toArray(), dexie.options.toArray()])],
-      "data.json",
-      {type: "text/json;charset=utf-8"}
-    ))
-  }
 
   const resetSelected = () => {
     setSelectedSections([])
@@ -115,11 +105,15 @@ const App = () => {
     <span
       id="snovy-app" onContextMenu={(e) => e.preventDefault()}
       css={css`
+        color: ${theme.textPrimary};
         background-color: ${theme.primary};
         scrollbar-color: ${theme.accent} ${lighten(0.1, theme.accent)};
 
-        * {
+        *:not(.snovy-button) {
           border-color: ${theme.border};
+        }
+
+        * {
 
           &:focus {
             outline-color: ${theme.accent};
@@ -130,7 +124,6 @@ const App = () => {
         <TabMenu orientation={Orientation.LEFT} id="left-menu">{[
           makeTab(mappingsLeft.notes, Alignment.START, setActiveTabLeft, activeTabLeft),
           makeTab(mappingsLeft.search, Alignment.START, setActiveTabLeft, activeTabLeft),
-          makeTab("⮉", Alignment.END, exportData, activeTabLeft, true),
           makeTab("☠", Alignment.END, async () => await dexie.delete(), activeTabLeft, true),
           makeTab(mappingsLeft.options, Alignment.END, text => {
             if (activeTabLeft == mappingsLeft.options && text == mappingsLeft.options) {

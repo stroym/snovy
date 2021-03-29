@@ -105,9 +105,8 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
               placeholder="Scope" tabIndex={0}
               newItem={{getInputValue: makeScope, name: "scope"}}
               options={{slideDropdown: true, unboundDropdown: true}}
-              style={{backgroundColor: theme.primary, color: theme.textPrimary, borderColor: theme.textPrimary}}
+              style={{backgroundColor: theme.primary, color: theme.textPrimary, borderColor: theme.border}}
               itemColors={{selected: theme.activeItem, highlight: theme.hover}}
-
             />
           </TagFormItem>
           <TagFormItem
@@ -122,8 +121,7 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
             }}
           >
             <Input
-              placeholder="Tag" onValueChange={setTagText} defaultValue={tagText}
-              style={{borderColor: theme.textPrimary}}
+              placeholder="Tag" onValueChange={setTagText} defaultValue={tagText} style={{borderColor: theme.border}}
             />
           </TagFormItem>
           <TextButton value="Add & tag" onClick={() => createTag()}/>

@@ -5,7 +5,6 @@ import {useHideOnOutsideClick} from "../../util/Hooks"
 import {TinyStyle} from "../tag/TagItem"
 import {ColoredInput} from "./Input"
 import FocusTrap from "focus-trap-react"
-import {useTheme} from "@emotion/react"
 
 export const ColorPicker = (props: {
   colors: Array<string>
@@ -13,8 +12,6 @@ export const ColorPicker = (props: {
   getColor: (hex: string) => void
   getColorFromInput: (hex: string) => void
 }) => {
-
-  const theme = useTheme()
 
   const buttonRef = useRef<HTMLButtonElement>(null)
   const pickerRef = useRef<HTMLDivElement>(null)
@@ -38,7 +35,7 @@ export const ColorPicker = (props: {
               <ColorItem key={index} onClick={getColor} color={color}/>
             )}
           </div>
-          <ColoredInput onValueChange={getColor} style={{borderColor: theme.textPrimary}}/>
+          <ColoredInput onValueChange={getColor}/>
         </span>
       </FocusTrap>
       }
