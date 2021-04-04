@@ -2,20 +2,30 @@ import React from "react"
 import {Alignment} from "./TabMenu"
 import {css, useTheme} from "@emotion/react"
 
-export interface TabMenuItemProps {
+export interface TabMenuItemProps extends React.HTMLProps<HTMLDivElement> {
   alignment: Alignment
   text: string
-  onClick: (text: string) => void
-  active: boolean
+  onActiveChange: (text: string) => void
+  active: string
   icon?: boolean
+  tooltip?: string
 }
 
-const TabMenuItem = (props: TabMenuItemProps) => {
+const TabMenuItem = (
+  {
+    alignment,
+    text,
+    onActiveChange,
+    active,
+    icon,
+    tooltip,
+    ...props
+  }: TabMenuItemProps) => {
 
   const theme = useTheme()
 
   const emotionCss = css`
-    ${props.active && `background-color: ${theme.activeItem};`}
+    ${active == text && `background-color: ${theme.activeItem};`}
     &:hover {
       background-color: ${theme.hover};
     }
@@ -23,21 +33,13 @@ const TabMenuItem = (props: TabMenuItemProps) => {
 
   return (
     <div
-      css={emotionCss} className={`snovy-tab-menu-item ${props.alignment} ${props.icon ? "icon" : ""}`}
-      onClick={() => props.onClick(props.text)}
+      {...props} css={emotionCss} className={`snovy-tab-menu-item ${alignment} ${icon ? "icon" : ""}`}
+      onClick={() => onActiveChange(text)} data-tip={tooltip}
     >
-      {props.text}
+      {text}
     </div>
   )
 
-}
-
-export function makeTab(text: string, alignment: Alignment, onClick: (text: string) => void, active: string, icon = false) {
-  return (
-    <TabMenuItem
-      key={text} text={text} alignment={alignment} onClick={onClick} active={text == active} icon={icon}
-    />
-  )
 }
 
 export default TabMenuItem

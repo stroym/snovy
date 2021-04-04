@@ -1,9 +1,11 @@
 import React from "react"
 import Notebook from "../../../data/model/Notebook"
 
-const TagManager = (props: {
+const Manager = (props: {
   notebook: Notebook | undefined
 }) => {
+
+  //todo top tab menu, manage tags, scopes, states...
 
   return (
     <div id="snovy-tag-manager">
@@ -14,4 +16,4 @@ const TagManager = (props: {
 
 }
 
-export default TagManager
+export default Manager

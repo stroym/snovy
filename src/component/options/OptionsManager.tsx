@@ -32,7 +32,8 @@ const OptionsManager = () => {
       //TODO actually track changes, as is, it'll ask even with no changes made
       return () => {
         if ((confirm("You have unsaved changes. Would you like to save them?"))) {
-          submit()
+          // submit()
+          cancel()
         } else {
           cancel()
         }
