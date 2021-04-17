@@ -9,7 +9,7 @@
   &.left {
     @include border(0 2px 0 0);
 
-    .snovy-tab-menu-item {
+    .snovy-tab-menu-item :not(icon) {
       writing-mode: sideways-lr;
     }
   }
@@ -17,7 +17,7 @@
   &.right {
     @include border(0 0 0 2px);
 
-    .snovy-tab-menu-item {
+    .snovy-tab-menu-item :not(icon) {
       writing-mode: sideways-rl;
     }
   }
@@ -41,6 +41,7 @@
 
 .snovy-tab-menu-item {
   @include text-height-padded(1vw, 1.4);
+  @include focus($border-rad-small);
   padding: 0.4em 0;
   cursor: default;
   user-select: none;
@@ -48,8 +49,4 @@
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
-
-  &.icon {
-    writing-mode: unset !important;
-  }
 }

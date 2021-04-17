@@ -1,5 +1,5 @@
-import React from "react"
-import {Alignment} from "./TabMenu"
+import React, {useState} from "react"
+import {Alignment, Orientation} from "./TabMenu"
 import {css, useTheme} from "@emotion/react"
 
 export interface TabMenuItemProps extends React.HTMLProps<HTMLDivElement> {
@@ -9,6 +9,12 @@ export interface TabMenuItemProps extends React.HTMLProps<HTMLDivElement> {
   active: string
   icon?: boolean
   tooltip?: string
+}
+
+export interface CollapseTabMenuItemProps extends React.HTMLProps<HTMLDivElement> {
+  alignment: Alignment
+  orientation: Orientation
+  onActiveChange: () => void
 }
 
 const TabMenuItem = (
@@ -34,11 +40,52 @@ const TabMenuItem = (
   return (
     <div
       {...props} css={emotionCss} className={`snovy-tab-menu-item ${alignment} ${icon ? "icon" : ""}`}
-      onClick={() => onActiveChange(text)} data-tip={tooltip}
+      onClick={() => onActiveChange(text)} data-tip={tooltip} tabIndex={0}
     >
       {text}
     </div>
   )
+
+}
+
+export const CollapseTabMenuItem = ({alignment, orientation, onActiveChange}: CollapseTabMenuItemProps) => {
+
+  const arrows = {
+    UP: "⮝",
+    DOWN: "⮟",
+    LEFT: "⮜",
+    RIGHT: "⮞"
+  }
+
+  const [toggle, setToggle] = useState(false)
+
+  const getText = () => {
+    let chars
+
+    switch (orientation) {
+      case Orientation.TOP:
+        chars = [arrows.UP, arrows.DOWN]
+        break
+      case Orientation.BOTTOM:
+        chars = [arrows.DOWN, arrows.UP]
+        break
+      case Orientation.LEFT:
+        chars = [arrows.LEFT, arrows.RIGHT]
+        break
+      case Orientation.RIGHT:
+        chars = [arrows.RIGHT, arrows.LEFT]
+    }
+
+    return toggle ? chars[1] : chars[0]
+  }
+
+  return <TabMenuItem
+    text={getText()} alignment={alignment} active="" icon
+    onActiveChange={() => {
+      setToggle(!toggle)
+      onActiveChange()
+    }}
+  />
 
 }
 

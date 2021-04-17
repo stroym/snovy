@@ -92,12 +92,15 @@ export const fetchThemes = async () => {
   })
 }
 
-export const importData = async (files: FileList | null) => {
+export const importData = async (files: FileList | null, replaceData = false) => {
   if (files && files.length > 0) {
     const blob = files.item(0)
 
     if (blob) {
-      await dexie.import(blob, {overwriteValues: true})
+      await dexie.options.clear() //FIXME it shouldn't be necessary to drop current options on import
+      await dexie.import(blob, {overwriteValues: true, clearTablesBeforeImport: replaceData})
+
+      window.location.reload()
     }
   }
 }
@@ -105,7 +108,13 @@ export const importData = async (files: FileList | null) => {
 export const exportData = async () => {
   saveAs(new File(
     [await dexie.export({prettyJson: true})],
-    `snovy-export-${new Date().toISOString().replace("T", "_").substr(0, 19)}.json`,
+    `snovy-export-\
+    ${new Date().toISOString()
+      .replace("T", "_")
+      .replaceAll(":", "-")
+      .substr(0, 19)
+    }\
+    .json`,
     {type: "text/json;charset=utf-8"}
   ))
 }

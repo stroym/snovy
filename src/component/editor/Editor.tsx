@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useRef, useState} from "react"
 import Note from "../../data/model/Note"
-import {default as OutlineEditor, theme} from "rich-markdown-editor"
+import RichMarkdownEditor, {theme} from "rich-markdown-editor"
 import base from "rich-markdown-editor/dist/dictionary"
 import {useTheme} from "@emotion/react"
 
@@ -15,6 +15,8 @@ const Editor = (props: {
 }) => {
 
   const currentTheme = useTheme()
+
+  const ref = useRef<RichMarkdownEditor>(null)
 
   const [value, setValue] = useState("")
   const [sourceMode, setSourceMode] = useState(false)
@@ -65,10 +67,10 @@ const Editor = (props: {
   )
 
   return (
-    <div id="snovy-editor" data-disabled={!props.activeNote}>
+    <div id="snovy-editor" data-disabled={!props.activeNote} tabIndex={-1} onFocus={() => ref.current?.focusAtEnd()}>
       {/*<CheckButton toggle={sourceMode} onClick={() => setSourceMode(!sourceMode)}/>*/}
-      <OutlineEditor
-        theme={dark} dictionary={dictionary} placeholder="" value={value} readOnly={!props.activeNote}
+      <RichMarkdownEditor
+        theme={dark} dictionary={dictionary} ref={ref} placeholder="" value={value} readOnly={!props.activeNote}
         onChange={value => {props.activeNote!.updateContent(value().replaceAll("\\\n", "\n"))}}
       />
     </div>

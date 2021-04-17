@@ -1,12 +1,12 @@
 import {useTheme} from "@emotion/react"
 import React from "react"
-import {TabMenuItemProps} from "./TabMenuItem"
+import {CollapseTabMenuItemProps, TabMenuItemProps} from "./TabMenuItem"
 import {TinyStyle} from "../tag/TagItem"
 
 const TabMenu = (props: {
   id?: string,
   orientation: Orientation,
-  children: Array<React.ReactElement<TabMenuItemProps>>
+  children: Array<React.ReactElement<TabMenuItemProps | CollapseTabMenuItemProps>>
 }) => {
 
   const tiny = new TinyStyle(useTheme().accent)

@@ -47,7 +47,7 @@ html, body, #root {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: 1.5vw 21vw 55vw 21vw 1.5vw;
+  grid-template-columns: 1.5vw fit-content(21vw) 1fr fit-content(21vw) 1.5vw;
   grid-template-rows: 100%;
   grid-template-areas: "leftmenu left centre right rightmenu";
 

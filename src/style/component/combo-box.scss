@@ -11,6 +11,8 @@
   border-radius: $border-rad-small;
   display: grid;
   grid-template-areas: "input button" "dropdown dropdown";
+  grid-auto-columns: auto min-content;
+  //justify-content: space-between;
 
   &[aria-expanded="true"] {
     border-radius: $border-rad-small $border-rad-small 0 0;

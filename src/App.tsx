@@ -8,10 +8,9 @@ import Editor from "./component/editor/Editor"
 import {isArray} from "./util/Utils"
 import {dexie} from "./index"
 import "dexie-export-import"
-import generate from "./data/Generator"
 import {Table} from "./data/model/Base"
 import TabMenu, {Alignment, Orientation} from "./component/tab_menu/TabMenu"
-import TabMenuItem from "./component/tab_menu/TabMenuItem"
+import TabMenuItem, {CollapseTabMenuItem} from "./component/tab_menu/TabMenuItem"
 import Selector from "./component/sidebar/left/Selector"
 import NoteDetail from "./component/sidebar/right/NoteDetail"
 import Manager from "./component/sidebar/right/Manager"
@@ -38,7 +37,7 @@ const App = () => {
     () => {
       dexie.transaction("rw", [dexie.notebooks, dexie.sections, dexie.notes, dexie.scopes, dexie.tags, dexie.states], async () => {
         await dexie.notebooks.toArray().then(async function (values) {
-          const loaded = values.length == 0 ? await generate() : values
+          const loaded = values
 
           setNotebooks(loaded.sort(Table.compareById))
           await selectNotebook(loaded.first())
@@ -99,6 +98,9 @@ const App = () => {
   const [leftTab, setLeftTab] = useState<string>(mappings.notes)
   const [rightTab, setRightTab] = useState<string>(mappings.detail)
 
+  const [leftVisible, setLeftVisible] = useState(true)
+  const [rightVisible, setRightVisible] = useState(true)
+
   return (
     <span
       id="snovy-app" onContextMenu={e => e.preventDefault()}
@@ -128,7 +130,10 @@ const App = () => {
         />
         <TabMenuItem
           text={mappings.search} alignment={Alignment.START} active={leftTab} icon
-          style={{transform: "rotate(-45deg)"}}
+          style={{
+            transform: "rotate(-45deg)",
+            fontSize: "1.5vw"
+          }}
           onActiveChange={value => {
             setRightTab(value)
             setLeftTab(value)
@@ -138,7 +143,11 @@ const App = () => {
           text={mappings.archive} alignment={Alignment.END} onActiveChange={setLeftTab} active={leftTab} icon
         />
         <TabMenuItem
-          text={"☠"} alignment={Alignment.END} onActiveChange={async () => await dexie.delete()} active={leftTab} icon
+          text={"☠"} alignment={Alignment.END} active={leftTab} icon
+          onActiveChange={async () => {
+            await dexie.delete()
+            window.location.reload()
+          }}
         />
         <TabMenuItem
           text={mappings.options} alignment={Alignment.END} active={leftTab} icon tooltip="Options"
@@ -150,9 +159,21 @@ const App = () => {
             }
           }}
         />
-        <TabMenuItem text={"❱"} alignment={Alignment.END} onActiveChange={setLeftTab} active={leftTab} icon/>
+        <CollapseTabMenuItem
+          alignment={Alignment.END} orientation={Orientation.RIGHT}
+          onActiveChange={() => {
+            setLeftVisible(!leftVisible)
+            document.getElementById("snovy-editor")?.focus()
+          }}
+        />
       </TabMenu>
-      <div className={"snovy-sidebar " + Orientation.LEFT} id="left-sidebar">
+      <div
+        className={"snovy-sidebar " + Orientation.LEFT} id="left-sidebar"
+        style={{
+          display: leftVisible ? "initial" : "none",
+          visibility: leftVisible ? "initial" : "hidden"
+        }}
+      >
         {leftTab == mappings.notes &&
         <Selector
           notebooks={notebooks}
@@ -163,7 +184,13 @@ const App = () => {
         }
       </div>
       <Editor activeNote={selectedNotes.first()}/>
-      <div className={"snovy-sidebar " + Orientation.RIGHT} id="right-sidebar">
+      <div
+        className={"snovy-sidebar " + Orientation.RIGHT} id="right-sidebar"
+        style={{
+          display: rightVisible ? "initial" : "none",
+          visibility: rightVisible ? "initial" : "hidden"
+        }}
+      >
         {
           rightTab == mappings.detail && selectedNotebook && !selectedNotes.isEmpty() && selectedNotes.first() &&
           <NoteDetail note={selectedNotes.first()!} notebook={selectedNotebook}/>
@@ -181,9 +208,18 @@ const App = () => {
         />
         <TabMenuItem
           text={mappings.search} alignment={Alignment.START} onActiveChange={setRightTab} active={rightTab} icon
-          style={{transform: "rotate(-45deg)"}}
+          style={{
+            transform: "rotate(-45deg)",
+            fontSize: "1.5vw"
+          }}
         />
-        <TabMenuItem text={"❰"} alignment={Alignment.END} onActiveChange={setRightTab} active={rightTab} icon/>
+        <CollapseTabMenuItem
+          alignment={Alignment.END} orientation={Orientation.LEFT}
+          onActiveChange={() => {
+            setRightVisible(!rightVisible)
+            document.getElementById("snovy-editor")?.focus()
+          }}
+        />
       </TabMenu>
       {
         leftTab == mappings.options && <OptionsManager/>
