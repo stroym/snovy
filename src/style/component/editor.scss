@@ -2,51 +2,59 @@
 @import "../mixins";
 
 #snovy-editor {
-  @include scrollbar();
   grid-area: centre;
+  display: grid;
+  grid-template-areas: "toolbar" "editor";
+  grid-auto-rows: min-content auto;
 
-  .heading-content {
-    cursor: text;
-    margin: 0;
+  .toolbar {
+    grid-area: toolbar;
   }
 
-  h1::before, h2::before, h3::before, h4::before, h5::before, h6::before {
-    display: none;
-  }
+  .editor-wrapper {
+    @include scrollbar();
+    grid-area: editor;
+    padding: 0.5em;
 
-  //TODO only do this when ctrl is held down, obv
-  //p a {
-  //  cursor: pointer;
-  //}
+    & > * {
+      background-color: transparent;
+    }
 
-  .block-menu-trigger {
-    display: none !important;
+    textarea {
+      width: 100%;
+      outline: none;
+      border: none;
+      box-sizing: border-box;
+      resize: none;
+    }
+
   }
+}
+
+//outline prosemirror style adjustments
+
+.heading-content {
+  cursor: text;
+  margin: 0;
+}
+
+h1::before, h2::before, h3::before, h4::before, h5::before, h6::before {
+  display: none;
+}
+
+.block-menu-trigger {
+  display: none;
+  visibility: hidden;
 }
 
 #block-menu-container {
-  @include scrollbar();
-  max-height: 50vh;
-
-  button {
-    svg {
-      //filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
-    }
-
-    span {
-      font-weight: bold;
-      //filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
-    }
-  }
+  display: none;
+  visibility: hidden;
 }
 
-#snovy-editor > *,
-#snovy-editor > * > *,
+#snovy-editor > .editor-wrapper > *,
+#snovy-editor > .editor-wrapper > * > *,
 .ProseMirror {
   height: 100%;
   box-sizing: border-box;
-}
-
-.ProseMirror {
-  padding: 0.5em;
 }

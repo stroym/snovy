@@ -1,8 +1,9 @@
-import React, {useEffect, useRef, useState} from "react"
+import React, {useEffect, useState} from "react"
 import Note from "../../data/model/Note"
 import RichMarkdownEditor, {theme} from "rich-markdown-editor"
 import base from "rich-markdown-editor/dist/dictionary"
 import {useTheme} from "@emotion/react"
+import {CheckButton} from "../inputs/Button"
 
 const dictionary = {
   ...base,
@@ -16,15 +17,13 @@ const Editor = (props: {
 
   const currentTheme = useTheme()
 
-  const ref = useRef<RichMarkdownEditor>(null)
-
   const [value, setValue] = useState("")
   const [sourceMode, setSourceMode] = useState(false)
 
   //https://github.com/outline/rich-markdown-editor/blob/main/src/theme.ts
   const dark = {
     ...theme,
-    background: currentTheme.primary,
+    background: "transparent",
     text: currentTheme.textPrimary,
     code: currentTheme.textPrimary,
     cursor: currentTheme.textPrimary,
@@ -66,13 +65,42 @@ const Editor = (props: {
     }, [props.activeNote]
   )
 
+  useEffect(
+    () => {
+      props.activeNote?.updateContent(value)
+    }, [value]
+  )
+
+  //TODO outline doesn't like being unmounted... -.-
   return (
-    <div id="snovy-editor" data-disabled={!props.activeNote} tabIndex={-1} onFocus={() => ref.current?.focusAtEnd()}>
-      {/*<CheckButton toggle={sourceMode} onClick={() => setSourceMode(!sourceMode)}/>*/}
-      <RichMarkdownEditor
-        theme={dark} dictionary={dictionary} ref={ref} placeholder="" value={value} readOnly={!props.activeNote}
-        onChange={value => {props.activeNote!.updateContent(value().replaceAll("\\\n", "\n"))}}
-      />
+    <div
+      id="snovy-editor" data-disabled={!props.activeNote}
+      style={{
+        backgroundColor: currentTheme.primary
+      }}
+    >
+      <div className="toolbar">
+        <CheckButton toggle={sourceMode} onClick={() => setSourceMode(!sourceMode)}/>
+      </div>
+      <div className="editor-wrapper">
+        <RichMarkdownEditor
+          theme={dark} dictionary={dictionary} placeholder="" value={value} readOnly={!props.activeNote}
+          onChange={value => setValue(value())}
+        />
+        {/*{*/}
+        {/*  sourceMode ?*/}
+        {/*    <textarea*/}
+        {/*      value={value} onChange={e => {setValue(e.target.value)}}*/}
+        {/*      style={{*/}
+        {/*        color: currentTheme.textPrimary*/}
+        {/*      }}*/}
+        {/*    /> :*/}
+        {/*    <RichMarkdownEditor*/}
+        {/*      theme={dark} dictionary={dictionary} placeholder="" value={value} readOnly={!props.activeNote}*/}
+        {/*      onChange={value => setValue(value())}*/}
+        {/*    />*/}
+        {/*}*/}
+      </div>
     </div>
   )
 

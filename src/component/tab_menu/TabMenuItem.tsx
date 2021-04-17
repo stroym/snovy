@@ -64,16 +64,16 @@ export const CollapseTabMenuItem = ({alignment, orientation, onActiveChange}: Co
 
     switch (orientation) {
       case Orientation.TOP:
-        chars = [arrows.UP, arrows.DOWN]
-        break
-      case Orientation.BOTTOM:
         chars = [arrows.DOWN, arrows.UP]
         break
+      case Orientation.BOTTOM:
+        chars = [arrows.UP, arrows.DOWN]
+        break
       case Orientation.LEFT:
-        chars = [arrows.LEFT, arrows.RIGHT]
+        chars = [arrows.RIGHT, arrows.LEFT]
         break
       case Orientation.RIGHT:
-        chars = [arrows.RIGHT, arrows.LEFT]
+        chars = [arrows.LEFT, arrows.RIGHT]
     }
 
     return toggle ? chars[1] : chars[0]
