@@ -9,9 +9,6 @@ export default class Scope extends Colored {
 
   unique: boolean
 
-  //TODO do I ever need this?
-  // scopedTags: Array<Tag> = new Array<Tag>()
-
   constructor(notebookId: number, title: string, color: string, unique = false, id?: number) {
     super(title, color, id)
     this.notebookId = notebookId

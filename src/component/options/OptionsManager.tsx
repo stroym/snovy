@@ -19,6 +19,8 @@ const OptionsManager = () => {
 
   const context = useContext(OptionsContext)
 
+  const [unsavedChanges, setUnsavedChanges] = useState(false) //TODO track changes...
+
   const [options, setOptions] = useState(context.options.clone())
   const [theme, setTheme] = useState<Theme>(defaults.themes.first()!)
 
@@ -28,12 +30,9 @@ const OptionsManager = () => {
     () => {
       getThemes()
 
-      //TODO cancel should probably only prevent leaving instead of throwing away changes... but good enough for now
-      //TODO actually track changes, as is, it'll ask even with no changes made
       return () => {
-        if ((confirm("You have unsaved changes. Would you like to save them?"))) {
-          // submit()
-          cancel()
+        if (unsavedChanges && (confirm("You have unsaved changes. Would you like to save them?"))) {
+          submit()
         } else {
           cancel()
         }
@@ -70,9 +69,9 @@ const OptionsManager = () => {
     await getThemes()
 
     const options = context.options.clone()
+    setUnsavedChanges(false)
     setOptions(options)
     await fetchTheme()
-    // setTheme((await dexie.themes.get(options.themeId))!)
   }
 
   return (

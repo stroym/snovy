@@ -29,8 +29,6 @@ const ThemeManager = ({themes, setThemes, currentTheme, setCurrentTheme}: ThemeP
     setThemes([...Array.from(themes), Theme.makeFrom(currentTheme, currentTheme.title)])
   }
 
-  //TODO deleting a theme and then not saving causes crashes... maybe don't actually delete the themes ? (but it's so convinient)
-
   return (
     <FocusTrap focusTrapOptions={{clickOutsideDeactivates: true}}>
       <div
