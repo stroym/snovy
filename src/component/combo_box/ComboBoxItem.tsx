@@ -5,24 +5,30 @@ import TagDisplayItem from "../tag/TagDisplayItem"
 interface ComboBoxItemProps extends React.HTMLProps<HTMLLIElement> {
   className?: string
   item: Record<string, any> | string
+  active?: boolean
+  highlighted?: boolean
 }
 
 const ComboBoxItem = forwardRef<HTMLLIElement, ComboBoxItemProps>(
-  function ComboBoxItem({item, ...props}: ComboBoxItemProps, ref: React.Ref<HTMLLIElement>) {
+  function ComboBoxItem(
+    {item, active, highlighted, className, ...props}: ComboBoxItemProps,
+    ref: React.Ref<HTMLLIElement>
+  ) {
 
-    const className = "snovy-dropdown-item " + props.className
+    const clazzName =
+      `snovy-dropdown-item ${className ?? ""} ${highlighted ? "highlighted-item" : active ? "active-item" : ""}`
 
     //TODO while this works, there's probably a better way to do this
     if (item instanceof Tag) {
       return (
-        <li {...props} ref={ref} className={"tag-dropdown " + className}>
+        <li {...props} ref={ref} className={"tag-dropdown " + clazzName}>
           <TagDisplayItem tag={item}/>
         </li>
       )
     }
 
     return (
-      <li {...props} ref={ref} className={className}>
+      <li {...props} ref={ref} className={clazzName}>
         {item.toString()}
       </li>
     )

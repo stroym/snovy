@@ -6,7 +6,6 @@ import ComboBox from "../combo_box/ComboBox"
 import Input from "../inputs/Input"
 import FocusTrap from "focus-trap-react"
 import WithLabel from "../inputs/WithLabel"
-import {useTheme} from "@emotion/react"
 
 interface FormProps {
   initialValue?: string
@@ -16,8 +15,6 @@ interface FormProps {
 
 const TagForm = forwardRef<HTMLFormElement, FormProps>(
   function TagForm(props: FormProps, ref: React.Ref<HTMLFormElement>) {
-
-    const theme = useTheme()
 
     const [tagText, setTagText] = useState<string>()
     const [tagColor, setTagColor] = useState<string>()
@@ -92,21 +89,15 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
     //TODO move the (optional) show button here inside a fragment?
     return (
       <FocusTrap focusTrapOptions={{clickOutsideDeactivates: true}}>
-        <form
-          ref={ref} id="snovy-tag-create-form" className="snovy-form" tabIndex={-1}
-          style={{backgroundColor: theme.primary}}
-        >
+        <form ref={ref} id="snovy-tag-create-form" className="snovy-form" tabIndex={-1}>
           <TagFormItem
             color={{value: scopeColor, get: setScopeColor}}
             check={{toggled: unique, toggle: setUnique, descriptor: "Exclusive"}}
           >
             <ComboBox
               onItemSelect={selectScope} items={props.scopes.map(it => it.toString())} selectedItem={scopeText}
-              placeholder="Scope" tabIndex={0}
-              newItem={{getInputValue: makeScope, name: "scope"}}
+              placeholder="Scope" tabIndex={0} newItem={{getInputValue: makeScope, name: "scope"}}
               options={{slideDropdown: true, unboundDropdown: true}}
-              style={{backgroundColor: theme.primary, color: theme.textPrimary, borderColor: theme.border}}
-              itemColors={{selected: theme.activeItem, highlight: theme.hover}}
             />
           </TagFormItem>
           <TagFormItem
@@ -120,9 +111,7 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
               }, descriptor: "Unify"
             }}
           >
-            <Input
-              placeholder="Tag" onValueChange={setTagText} defaultValue={tagText} style={{borderColor: theme.border}}
-            />
+            <Input placeholder="Tag" onValueChange={setTagText} defaultValue={tagText}/>
           </TagFormItem>
           <Button id="add-tag-button" value="Add & tag" onClick={() => createTag()}/>
         </form>

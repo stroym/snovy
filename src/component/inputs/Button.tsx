@@ -1,7 +1,8 @@
 import React, {forwardRef, useEffect, useState} from "react"
-import {css, useTheme} from "@emotion/react"
+import {css} from "@emotion/react"
 import {transparentize} from "polished"
 import {arrows} from "../../util/values"
+import {cls} from "../../util/Utils"
 
 export interface ButtonProps extends React.HTMLProps<HTMLButtonElement> {
   mono?: boolean
@@ -15,26 +16,16 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref?: React.Ref<HTMLButtonElement>
   ) {
 
-    const theme = useTheme()
-
     return (
       <button
-        ref={ref} {...props} type="button"
-        className={`snovy-button ${circular ? "snovy-button-circular" : ""} ${className ?? ""}`}
-        data-disabled={props.disabled}
-        css={css`
-          color: ${theme.textPrimary};
-          border-color: ${theme.border};
-
-          &:hover {
-            background-color: ${mono ? transparentize(0.6, theme.textPrimary) : theme.hover};
-          }
-        `}
+        ref={ref} {...props} type="button" data-disabled={props.disabled}
+        className={"snovy-button styled-hover".concat(
+          cls("snovy-button-circular", circular ?? false),
+          cls("mono", mono ?? false),
+          cls(className)
+        )}
       >
-        {
-          !preset ? children || value || defaultValue :
-            preset == "remove" && "×"
-        }
+        {!preset ? children || value || defaultValue : preset == "remove" && "×"}
       </button>
     )
 
@@ -48,11 +39,9 @@ export interface ToggleButtonProps extends ButtonProps {
 
 export const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
   function ToggleButton(
-    {onClick, getState, setState, value, defaultValue, preset, ...props}: ToggleButtonProps,
+    {onClick, className, getState, setState, value, defaultValue, preset, ...props}: ToggleButtonProps,
     ref?: React.Ref<HTMLButtonElement>
   ) {
-
-    const theme = useTheme()
 
     const [toggled, setToggled] = useState(setState ?? false)
 
@@ -82,10 +71,8 @@ export const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
     }
 
     return <Button
-      {...props} ref={ref} onClick={handleClick} circular
-      css={css`
-        ${!props.mono && toggled && `background-color: ${theme.activeItem};`}
-      `}
+      {...props} ref={ref} className={`${toggled ? "active-item" : ""} ${className ?? ""}`}
+      onClick={handleClick} circular
     >
       {preset ? resolvePreset() : toggled ? value : defaultValue}
     </Button>

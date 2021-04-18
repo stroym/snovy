@@ -1,19 +1,17 @@
 import React, {useRef} from "react"
 import {EditableInput} from "../inputs/Input"
-import {css, useTheme} from "@emotion/react"
-import {darken} from "polished"
 
-interface ListItemProps<T extends Record<string, any>> {
+interface ListItemProps<T extends Record<string, any>> extends React.HTMLProps<HTMLInputElement> {
   mapped: T
   active: boolean
   selected: boolean
-  onClick: (item: T) => void
+  onItemClick: (item: T) => void
   onContext?: (item: T) => void
   onValueChange?: (str: string) => void
 }
 
 const ListItem = <T extends Record<string, any>>(
-  {mapped, active, selected, onClick, onContext, onValueChange}: ListItemProps<T>
+  {mapped, active, selected, onItemClick, onContext, onValueChange, ...props}: ListItemProps<T>
 ) => {
 
   const selfRef = useRef<HTMLInputElement>(null)
@@ -29,20 +27,15 @@ const ListItem = <T extends Record<string, any>>(
     }
   }
 
-  const theme = useTheme()
-
   return (
     <EditableInput
-      css={css`
-        background-color: ${active ? theme.activeItem : selected ? darken(0.05, theme.activeItem) : "transparent"};
-
-        &:hover {
-          background-color: ${theme.hover};
-        }
-      `}
-      ref={selfRef} className="snovy-list-item" placeholder="Title" onValueChange={onValueChange}
+      {...props} ref={selfRef}
+      className={`snovy-list-item styled-hover ${active ? "active-item" : selected ? "selected-item" : ""}`}
+      placeholder="Title"
+      onValueChange={onValueChange}
       value={mapped.toString()}
-      onClick={() => {onClick(mapped)}} onFocus={handleFocus} onContextMenu={handleContext}
+      onClick={() => {onItemClick(mapped)}} onFocus={handleFocus} onContextMenu={handleContext}
+      data-fontsize="medium"
     />
   )
 

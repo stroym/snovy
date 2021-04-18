@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from "react"
 import Note from "../../data/model/Note"
-import RichMarkdownEditor, {theme} from "rich-markdown-editor"
+import RichMarkdownEditor from "rich-markdown-editor"
 import base from "rich-markdown-editor/dist/dictionary"
-import {useTheme} from "@emotion/react"
 import {ToggleButton} from "../inputs/Button"
 
 const dictionary = {
@@ -13,47 +12,11 @@ const dictionary = {
 
 const Editor = (props: {
   activeNote: Note | undefined
+  editorStyle: any
 }) => {
-
-  const currentTheme = useTheme()
 
   const [value, setValue] = useState("")
   const [sourceMode, setSourceMode] = useState(false)
-
-  //https://github.com/outline/rich-markdown-editor/blob/main/src/theme.ts
-  const dark = {
-    ...theme,
-    background: "transparent",
-    text: currentTheme.textPrimary,
-    code: currentTheme.textPrimary,
-    cursor: currentTheme.textPrimary,
-
-    toolbarBackground: currentTheme.primary,
-    toolbarHoverBackground: currentTheme.hover,
-    toolbarInput: currentTheme.primary,
-    toolbarItem: currentTheme.activeItem,
-
-    tableDivider: currentTheme.primary,
-    tableSelected: currentTheme.textPrimary,
-    tableSelectedBackground: currentTheme.accent,
-
-    quote: currentTheme.primary,
-    codeBackground: currentTheme.primary,
-    codeBorder: currentTheme.textPrimary,
-    codeString: currentTheme.activeItem,
-    horizontalRule: currentTheme.primary,
-
-    blockToolbarBackground: currentTheme.primary,
-    blockToolbarTrigger: currentTheme.activeItem,
-    blockToolbarTriggerIcon: currentTheme.textPrimary,
-    blockToolbarItem: currentTheme.primary,
-    blockToolbarText: currentTheme.textPrimary,
-    blockToolbarHoverBackground: currentTheme.hover,
-    blockToolbarDivider: currentTheme.primary,
-
-    scrollbarBackground: currentTheme.accent,
-    scrollbarThumb: currentTheme.primary
-  }
 
   useEffect(
     () => {
@@ -65,27 +28,16 @@ const Editor = (props: {
     }, [props.activeNote]
   )
 
-  useEffect(
-    () => {
-      props.activeNote?.updateContent(value)
-    }, [value]
-  )
-
   //TODO outline doesn't like being unmounted... -.-
   return (
-    <div
-      id="snovy-editor" data-disabled={!props.activeNote}
-      style={{
-        backgroundColor: currentTheme.primary
-      }}
-    >
+    <div id="snovy-editor" data-disabled={!props.activeNote}>
       <div className="toolbar">
         <ToggleButton preset="check" getState={setSourceMode}/>
       </div>
       <div className="editor-wrapper">
         <RichMarkdownEditor
-          theme={dark} dictionary={dictionary} placeholder="" value={value} readOnly={!props.activeNote}
-          onChange={value => setValue(value())}
+          theme={props.editorStyle} dictionary={dictionary} placeholder="" value={value} readOnly={!props.activeNote}
+          onChange={value => props.activeNote?.updateContent(value())}
         />
         {/*{*/}
         {/*  sourceMode ?*/}

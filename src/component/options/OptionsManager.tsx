@@ -1,5 +1,5 @@
 import React, {useContext, useLayoutEffect, useRef, useState} from "react"
-import {css, useTheme} from "@emotion/react"
+import {css} from "@emotion/react"
 import OptionsContext from "../../util/OptionsContext"
 import {Button} from "../inputs/Button"
 import ThemeManager from "./ThemeManager"
@@ -15,7 +15,6 @@ const OptionsManager = () => {
 
   const importRef = useRef<HTMLInputElement>(null)
 
-  const activeTheme = useTheme()
 
   const context = useContext(OptionsContext)
 
@@ -87,11 +86,6 @@ const OptionsManager = () => {
             left: -1px;
             width: calc(100% + 2px);
           }
-        }
-
-        &, * {
-          color: ${activeTheme.textPrimary};
-          background-color: ${activeTheme.primary};
         }
       `}
     >

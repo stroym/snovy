@@ -10,14 +10,11 @@ import {ToggleButton} from "../../inputs/Button"
 import {useHideOnOutsideClick} from "../../../util/Hooks"
 import TagForm from "../../tag/TagForm"
 import ComboBox from "../../combo_box/ComboBox"
-import {useTheme} from "@emotion/react"
 
 const NoteDetail = (props: {
   note: Note,
   notebook: Notebook
 }) => {
-
-  const theme = useTheme()
 
   const [refresh, setRefresh] = useState(false)
 
@@ -118,8 +115,6 @@ const NoteDetail = (props: {
           items={props.notebook.availableTags(props.note)} newItem={{getInputValue: getInputValue, name: "tag"}}
           options={{selectPreviousOnEsc: false, resetInputOnSelect: true, unboundDropdown: true}} onItemSelect={onTag}
           externalClose={{menuVisible: setMenuVisible, closeMenu: menuVisible}} onFocus={() => {setFormVisible(false)}}
-          style={{backgroundColor: theme.primary, color: theme.textPrimary}}
-          itemColors={{selected: theme.activeItem, highlight: theme.hover}}
         />
       </div>
       <div className="note-detail-body">

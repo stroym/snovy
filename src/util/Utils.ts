@@ -33,3 +33,13 @@ export function useKey(e: React.KeyboardEvent, keyMappings: Array<KeyMapping>) {
     }
   }
 }
+
+export function cls(className: string | undefined, condition?: boolean) {
+  const temp = " " + className ?? ""
+
+  if (condition == undefined) {
+    return temp
+  } else {
+    return condition ? temp : ""
+  }
+}

@@ -14,11 +14,12 @@ import Selector from "./component/sidebar/left/Selector"
 import NoteDetail from "./component/sidebar/right/NoteDetail"
 import Manager from "./component/sidebar/right/Manager"
 import {css, useTheme} from "@emotion/react"
-import {lighten} from "polished"
+import {darken, lighten, transparentize} from "polished"
 import OptionsManager from "./component/options/OptionsManager"
 import ReactTooltip from "react-tooltip"
 import {Sidebar} from "./component/sidebar/Sidebar"
 import {Portal} from "react-portal"
+import {theme as outlineTheme} from "rich-markdown-editor"
 
 //TODO move props into interfaces, extend basic html props, use destructuring wherever possible
 
@@ -98,16 +99,61 @@ const App = () => {
     manager: "🏷"
   }
 
+  const outlineStyle = {
+    ...outlineTheme,
+    background: "transparent",
+    text: theme.textPrimary,
+    code: theme.textPrimary,
+    cursor: theme.textPrimary,
+
+    tableDivider: theme.primary,
+    tableSelected: theme.textPrimary,
+    tableSelectedBackground: theme.accent,
+
+    quote: theme.primary,
+    codeBackground: theme.primary,
+    codeBorder: theme.textPrimary,
+    codeString: theme.activeItem
+  }
+
   return (
     <span
       id="snovy-app" onContextMenu={e => e.preventDefault()}
       css={css`
-        color: ${theme.textPrimary};
-        background-color: ${theme.primary};
         scrollbar-color: ${theme.accent} ${lighten(0.1, theme.accent)};
 
-        *:not(.snovy-button) {
+        &,
+        .snovy-context-menu,
+        .snovy-dropdown,
+        .snovy-options,
+        .snovy-form {
+          background-color: ${theme.primary};
+        }
+
+        *:not(a, .snovy-tag-item *) {
+          color: ${theme.textPrimary};
           border-color: ${theme.border};
+        }
+
+        .highlighted-item,
+        .styled-hover:not(.color-item):hover {
+          background-color: ${theme.hover};
+        }
+
+        .active-item {
+          background-color: ${theme.activeItem};
+        }
+
+        .selected-item {
+          background-color: ${darken(0.05, theme.activeItem)};
+        }
+
+        .mono {
+          background-color: transparent;
+
+          &:hover {
+            background-color: ${transparentize(0.6, theme.textPrimary)};
+          }
         }
 
         * {
@@ -145,14 +191,14 @@ const App = () => {
               }
           },
           {
-            text: mappings.options, tabAlignment: Alignment.END, toggle: true, content:
+            text: mappings.options, tabAlignment: Alignment.END, toggle: true, tooltip: "Options", content:
               <Portal node={document.getElementById("snovy-app")}>
                 <OptionsManager/>
               </Portal>
           }
         ]}
       </Sidebar>
-      <Editor activeNote={selectedNotes.first()}/>
+      <Editor editorStyle={outlineStyle} activeNote={selectedNotes.first()}/>
       <Sidebar initialTab={mappings.detail} orientation={Orientation.RIGHT}>
         {[
           {

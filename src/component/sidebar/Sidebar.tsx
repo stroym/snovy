@@ -2,10 +2,19 @@ import React, {useState} from "react"
 import TabMenu, {Alignment, Orientation} from "../tab_menu/TabMenu"
 import TabMenuItem, {CollapseTabMenuItem} from "../tab_menu/TabMenuItem"
 
+type TabHelper = {
+  text: string,
+  tabAlignment: Alignment,
+  tooltip?: string,
+  toggle?: boolean
+  action?: () => void,
+  content?: JSX.Element | Array<JSX.Element> | false,
+}
+
 export interface SidebarProps extends React.HTMLProps<HTMLDivElement> {
   initialTab: string
   orientation: Orientation.LEFT | Orientation.RIGHT
-  children: Array<{ text: string, tabAlignment: Alignment, content?: JSX.Element | Array<JSX.Element> | false, action?: () => void, toggle?: boolean }>
+  children: Array<TabHelper>
 }
 
 export const Sidebar = ({initialTab, orientation, children, ...props}: SidebarProps) => {

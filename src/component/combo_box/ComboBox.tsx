@@ -31,13 +31,9 @@ export interface ComboBoxProps<T extends Record<string, any> | string> extends R
   options?: ComboBoxOptions,
   externalClose?: { closeMenu: boolean, menuVisible: (visible: boolean) => void }
   label?: { value: string, position: "before" | "after" }
-  itemColors?: { selected: string, highlight: string }
 }
 
-const ComboBox = <T extends Record<string, any> | string>({itemColors, label, ...props}: ComboBoxProps<T>) => {
-
-  const highlightColor = itemColors ? itemColors.highlight : "lightblue"
-  const selectedColor = itemColors ? itemColors.selected : "darkblue"
+const ComboBox = <T extends Record<string, any> | string>({label, ...props}: ComboBoxProps<T>) => {
 
   const options = props.options ? {...defaultOptions, ...props.options} : defaultOptions
 
@@ -175,13 +171,8 @@ const ComboBox = <T extends Record<string, any> | string>({itemColors, label, ..
       {
         dropdownItems?.map((item, index) => (
           <ComboBoxItem
-            style={{
-              backgroundColor:
-                highlightedIndex == index ? highlightColor :
-                  selectedItem == item ? selectedColor :
-                    "transparent"
-            }} {...getItemProps({item, index})} key={index}
-            item={item}
+            highlighted={index == highlightedIndex} active={selectedItem == item} key={index} item={item}
+            {...getItemProps({item, index})}
           />
         ))
       }

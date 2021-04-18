@@ -47,12 +47,8 @@ h1::before, h2::before, h3::before, h4::before, h5::before, h6::before {
   display: none;
 }
 
-.block-menu-trigger {
-  display: none;
-  visibility: hidden;
-}
-
-#block-menu-container {
+.block-menu-trigger,
+div:not([class]):not([id]) {
   display: none;
   visibility: hidden;
 }

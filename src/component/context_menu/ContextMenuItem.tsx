@@ -1,4 +1,3 @@
-import {css, useTheme} from "@emotion/react"
 import React, {useRef, useState} from "react"
 import {useRelativePosition} from "../../util/Hooks"
 
@@ -12,28 +11,14 @@ export const ContextMenuItem = (props: {
 
   const nestedRef = useRef(null)
 
-  const theme = useTheme()
 
   const [nested, setNested] = useState(false)
   const position = useRelativePosition(nestedRef, nested)
 
-  const emotionCss = css`
-    &:hover {
-      background-color: ${theme.accent};
-    }
-  `
-
   return (
-    <div
-      className="outer-wrapper" onMouseEnter={() => {setNested(true)}} onMouseLeave={() => {setNested(false)}}
-      css={css`
-        &:hover {
-          background-color: ${theme.hover};
-        }`
-      }
-    >
+    <div className="outer-wrapper" onMouseEnter={() => {setNested(true)}} onMouseLeave={() => {setNested(false)}}>
       <div className="snovy-context-menu-item" onClick={props.special ? () => false : props.onClick}>
-      <span css={emotionCss} className="context-wrapper" onClick={props.special ? props.onClick : () => false}>
+      <span className="context-wrapper styled-hover" onClick={props.special ? props.onClick : () => false}>
         <span className="context-icon">
           {props.icon}
         </span>
@@ -43,13 +28,13 @@ export const ContextMenuItem = (props: {
       </span>
         {/*TODO adjust makers*/}
         {props.special?.text &&
-        <span css={emotionCss} className="context-text-special" onClick={props.special.onClick}>
+        <span className="context-text-special styled-hover" onClick={props.special.onClick}>
           {props.special.text}
       </span>
         }
       </div>
       {props.children && nested &&
-      <div ref={nestedRef} className={"nested-context-menu"} style={{backgroundColor: theme.primary, ...position}}>
+      <div ref={nestedRef} className={"nested-context-menu"} style={position}>
         {props.children}
       </div>
       }

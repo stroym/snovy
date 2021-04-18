@@ -3,20 +3,16 @@ import {useHideOnOutsideClick} from "../../util/Hooks"
 import {ColorHelper} from "./ColorPicker"
 import {KeyMapping, useKey} from "../../util/Utils"
 import {Key} from "ts-key-enum"
-import {useTheme} from "@emotion/react"
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onValueChange?: (str: string) => void
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  function Input({onValueChange, onChange, className, style, ...props}: InputProps, ref?: React.Ref<HTMLInputElement>) {
-
-    const theme = useTheme()
+  function Input({onValueChange, onChange, className, ...props}: InputProps, ref?: React.Ref<HTMLInputElement>) {
 
     return (
       <input
-        style={{color: theme.textPrimary, ...style}}
         {...props} ref={ref} type="text" className={`snovy-input ${className ?? ""}`} autoComplete="off"
         onChange={e => {
           onChange && onChange(e)

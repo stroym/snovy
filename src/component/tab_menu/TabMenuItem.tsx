@@ -1,7 +1,7 @@
 import React, {useState} from "react"
 import {Alignment, Orientation} from "./TabMenu"
-import {css, useTheme} from "@emotion/react"
 import {arrows} from "../../util/values"
+import {cls} from "../../util/Utils"
 
 export interface TabMenuItemProps extends React.HTMLProps<HTMLDivElement> {
   alignment: Alignment
@@ -29,19 +29,14 @@ const TabMenuItem = (
     ...props
   }: TabMenuItemProps) => {
 
-  const theme = useTheme()
-
-  const emotionCss = css`
-    ${active == text && `background-color: ${theme.activeItem};`}
-    &:hover {
-      background-color: ${theme.hover};
-    }
-  `
-
   return (
     <div
-      {...props} css={emotionCss} className={`snovy-tab-menu-item ${alignment} ${icon ? "icon" : ""}`}
-      onClick={() => onActiveChange(text)} data-tip={tooltip} tabIndex={0}
+      {...props} onClick={() => onActiveChange(text)} data-tip={tooltip} tabIndex={0}
+      className={"snovy-tab-menu-item styled-hover".concat(
+        cls(alignment),
+        cls("icon", icon),
+        cls("active-item", active == text)
+      )}
     >
       {text}
     </div>

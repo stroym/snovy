@@ -1,7 +1,7 @@
 import React from "react"
 import {Theme} from "../../data/model/options/Theme"
 import ComboBox from "../combo_box/ComboBox"
-import {css, useTheme} from "@emotion/react"
+import {css} from "@emotion/react"
 import WithLabel from "../inputs/WithLabel"
 import {Button} from "../inputs/Button"
 import FocusTrap from "focus-trap-react"
@@ -16,8 +16,6 @@ interface ThemeProps {
 }
 
 const ThemeManager = ({themes, setThemes, currentTheme, setCurrentTheme}: ThemeProps) => {
-
-  const theme = useTheme()
 
   const deleteTheme = () => {
     const tempThemes = Array.from(themes)
@@ -56,7 +54,6 @@ const ThemeManager = ({themes, setThemes, currentTheme, setCurrentTheme}: ThemeP
           <ComboBox
             label={{value: "Active theme", position: "before"}}
             items={themes} selectedItem={currentTheme} onItemSelect={value => value && setCurrentTheme(value)}
-            itemColors={{selected: theme.activeItem, highlight: theme.hover}}
           />
           <WithLabel value="Theme name" position="before">
             <SynchronizedInput

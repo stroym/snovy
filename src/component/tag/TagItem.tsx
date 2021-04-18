@@ -60,6 +60,7 @@ type TagItemProps = {
   onRemove: (tag: Tag | Array<Tag>) => void
 }
 
+//TODO try to figure out a better way of doing this, I don't like the constructor and having tags dependent on theme
 export class TinyStyle {
 
   private theme = useTheme()

@@ -57,7 +57,7 @@ const List = forwardRef(<T extends Record<string, any>>(props: ListProps<T>, ref
         <ListItem
           key={index} mapped={item} onValueChange={props.onItemValueChange}
           selected={selectedItems.includes(item)} active={selectedItems.first() == item}
-          onClick={handleItemClick} onContext={props.getContextTarget}
+          onItemClick={handleItemClick} onContext={props.getContextTarget}
         />)
       }
       {props.children}
