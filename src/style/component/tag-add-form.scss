@@ -33,6 +33,11 @@
       grid-area: color;
     }
 
+    label .snovy-button-circular {
+      @include circular($font-big);
+      font-size: $font-small;
+    }
+
     & > input, .snovy-combo-box {
       @include border(1px);
       grid-area: input;
@@ -60,7 +65,7 @@
     }
   }
 
-  .snovy-text-button {
+  #add-tag-button {
     margin-top: 0;
   }
 

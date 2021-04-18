@@ -1,6 +1,7 @@
 import {Table} from "../Base"
 import {dexie} from "../../../index"
 
+//TODO add font sizes
 export default class Options extends Table {
 
   themeId: number

@@ -1,6 +1,7 @@
 import React, {useState} from "react"
 import {Alignment, Orientation} from "./TabMenu"
 import {css, useTheme} from "@emotion/react"
+import {arrows} from "../../util/values"
 
 export interface TabMenuItemProps extends React.HTMLProps<HTMLDivElement> {
   alignment: Alignment
@@ -49,13 +50,6 @@ const TabMenuItem = (
 }
 
 export const CollapseTabMenuItem = ({alignment, orientation, onActiveChange}: CollapseTabMenuItemProps) => {
-
-  const arrows = {
-    UP: "⮝",
-    DOWN: "⮟",
-    LEFT: "⮜",
-    RIGHT: "⮞"
-  }
 
   const [toggle, setToggle] = useState(false)
 

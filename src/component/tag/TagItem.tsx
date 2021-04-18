@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 import Tag from "../../data/model/Tag"
-import {CollapseButton, RemoveButton} from "../inputs/Button"
+import {Button, ToggleButton} from "../inputs/Button"
 import Scope from "../../data/model/Scope"
 import {default as TinyColor} from "tinycolor2"
 import {css, useTheme} from "@emotion/react"
@@ -16,7 +16,7 @@ export const TagItem = (props: {
   return (
     <span className="snovy-tag-item" style={tiny.style}>
       <span className="tag-name" style={tiny.lighten(10)}>{props.mapped.title}</span>
-      <RemoveButton onClick={() => props.onRemove(props.mapped)} css={tiny.makeButtonCss()}/>
+      <Button preset="remove" circular mono onClick={() => props.onRemove(props.mapped)} css={tiny.makeButtonCss()}/>
     </span>
   )
 }
@@ -30,9 +30,9 @@ export const TagItemScoped = (props: TagItemProps) => {
   return (
     <span className="snovy-tag-item tag-grouped" style={tiny.style}>
       <div className="tag-group-header">
-        <CollapseButton onClick={() => {setCollapsed(!collapsed)}} toggle={collapsed} css={tiny.makeButtonCss()}/>
+        <ToggleButton preset="collapse" getState={setCollapsed} css={tiny.makeButtonCss()} mono/>
         <span className="tag-scope">{props.scope.title}</span>
-        <RemoveButton onClick={() => props.onRemove(props.mapped)} css={tiny.makeButtonCss()}/>
+        <Button preset="remove" circular mono onClick={() => props.onRemove(props.mapped)} css={tiny.makeButtonCss()}/>
       </div>
       {!collapsed && <div className="tag-container" style={tiny.lighten(50)}>
         {props.mapped.map((tag) => <TagItem key={tag.toString()} mapped={tag} onRemove={props.onRemove}/>)}
@@ -49,7 +49,7 @@ export const TagItemScopedUnique = (props: TagItemProps) => {
     <span className="snovy-tag-item tag-unique" style={tiny.style}>
       <span className="tag-scope" style={tiny.lighten(20)}>{props.scope.title}</span>
       <span className="tag-name" style={tiny.lighten(10)}>{props.mapped[0].title}</span>
-      <RemoveButton onClick={() => props.onRemove(props.mapped)} css={tiny.makeButtonCss()}/>
+      <Button preset="remove" circular mono onClick={() => props.onRemove(props.mapped)} css={tiny.makeButtonCss()}/>
     </span>
   )
 }

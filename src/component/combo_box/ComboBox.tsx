@@ -7,7 +7,7 @@ import {Key} from "ts-key-enum"
 import ComboBoxItem from "./ComboBoxItem"
 import WithLabel from "../inputs/WithLabel"
 import Input from "../inputs/Input"
-import {CollapseButton} from "../inputs/Button"
+import {ToggleButton} from "../inputs/Button"
 
 type ComboBoxOptions = {
   selectPreviousOnEsc?: boolean
@@ -211,7 +211,9 @@ const ComboBox = <T extends Record<string, any> | string>({itemColors, label, ..
             onClick: () => toggleMenu()
           })}
         />
-        <CollapseButton aria-label="toggle menu" {...getToggleButtonProps()} tabIndex={0}/>
+        <ToggleButton
+          preset="collapse" aria-label="toggle menu" {...getToggleButtonProps()} setState={isOpen} tabIndex={0}
+        />
         {!options.unboundDropdown && ComboDropdown}
       </div>
       {options.unboundDropdown && ComboDropdown}

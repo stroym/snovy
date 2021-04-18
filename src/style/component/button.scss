@@ -2,26 +2,6 @@
 @import "../mixins";
 
 .snovy-button {
-  @include focus(50%);
-  @include border(1px);
-  flex-shrink: 0;
-  margin: 0.1em;
-  padding: 0;
-  background-color: transparent;
-}
-
-.snovy-remove-button,
-.snovy-collapse-button,
-.snovy-add-button {
-  @include circular($font-medium);
-  font-size: $font-medium;
-}
-
-.snovy-color-button {
-  @include circular($font-big);
-}
-
-.snovy-text-button {
   @include text-height-padded($font-big, 1.5);
   @include focus($border-rad-medium);
   @include border(1px);
@@ -30,9 +10,18 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
+  background-color: transparent;
 
-.snovy-check-button {
-  @include circular($font-big);
-  font-size: $font-small;
+  &.snovy-button-circular {
+    @include circular($font-medium);
+    @include focus(50%);
+    font-size: $font-medium;
+    margin: 0.1em;
+    padding: 0;
+    flex-shrink: 0;
+  }
+
+  &.snovy-color-button {
+    @include circular($font-big);
+  }
 }

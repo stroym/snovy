@@ -9,6 +9,11 @@
 
   .toolbar {
     grid-area: toolbar;
+
+    .snovy-button-circular {
+      @include circular($font-big);
+      font-size: $font-small;
+    }
   }
 
   .editor-wrapper {

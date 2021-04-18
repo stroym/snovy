@@ -3,7 +3,7 @@ import {Theme} from "../../data/model/options/Theme"
 import ComboBox from "../combo_box/ComboBox"
 import {css, useTheme} from "@emotion/react"
 import WithLabel from "../inputs/WithLabel"
-import {TextButton} from "../inputs/Button"
+import {Button} from "../inputs/Button"
 import FocusTrap from "focus-trap-react"
 import {SynchronizedInput} from "../inputs/Input"
 import ThemeInput from "./ThemeInput"
@@ -99,9 +99,9 @@ const ThemeManager = ({themes, setThemes, currentTheme, setCurrentTheme}: ThemeP
           />
         </div>
         <div className="buttons-wrapper">
-          <TextButton value="Delete theme" onClick={() => deleteTheme()}/>
-          <TextButton value="Reset theme" onClick={() => false}/>
-          <TextButton value="Create theme" onClick={() => createTheme()}/>
+          <Button value="Delete theme" onClick={() => deleteTheme()}/>
+          <Button value="Reset theme" onClick={() => false}/>
+          <Button value="Create theme" onClick={() => createTheme()}/>
         </div>
       </div>
     </FocusTrap>

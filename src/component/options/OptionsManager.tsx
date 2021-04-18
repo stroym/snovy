@@ -1,7 +1,7 @@
 import React, {useContext, useLayoutEffect, useRef, useState} from "react"
 import {css, useTheme} from "@emotion/react"
 import OptionsContext from "../../util/OptionsContext"
-import {TextButton} from "../inputs/Button"
+import {Button} from "../inputs/Button"
 import ThemeManager from "./ThemeManager"
 import {Theme} from "../../data/model/options/Theme"
 import {dexie} from "../../index"
@@ -98,18 +98,18 @@ const OptionsManager = () => {
     >
       <div id="import-export" className="snovy-options-container">
         <WithLabel value="Import" position="before" vertical>
-          <TextButton value="⮋" onClick={() => importRef.current?.click()}/>
+          <Button value="⮋" onClick={() => importRef.current?.click()}/>
           <input ref={importRef} type="file" onChange={e => importData(e.target.files)} style={{display: "none"}}/>
         </WithLabel>
         <WithLabel value="Export" position="before" vertical>
-          <TextButton value="⮉" onClick={exportData}/>
+          <Button value="⮉" onClick={exportData}/>
         </WithLabel>
       </div>
       <ThemeManager themes={themes} setThemes={setThemes} currentTheme={theme} setCurrentTheme={setTheme}/>
       <div id="control-buttons">
-        <TextButton value="Restore defaults" onClick={restore}/>
-        <TextButton value="Cancel" onClick={cancel}/>
-        <TextButton value="Save" onClick={submit}/>
+        <Button value="Restore defaults" onClick={restore}/>
+        <Button value="Cancel" onClick={cancel}/>
+        <Button value="Save" onClick={submit}/>
       </div>
     </div>
   )

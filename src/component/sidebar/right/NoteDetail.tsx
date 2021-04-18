@@ -6,7 +6,7 @@ import Notebook from "../../../data/model/Notebook"
 import Note from "../../../data/model/Note"
 import {dexie} from "../../../index"
 import {title} from "../../../data/Database"
-import {AddButton} from "../../inputs/Button"
+import {ToggleButton} from "../../inputs/Button"
 import {useHideOnOutsideClick} from "../../../util/Hooks"
 import TagForm from "../../tag/TagForm"
 import ComboBox from "../../combo_box/ComboBox"
@@ -113,7 +113,7 @@ const NoteDetail = (props: {
   return (
     <div id="snovy-note-detail">
       <div className="note-detail-header">
-        <AddButton ref={buttonRef} onClick={flip}/>
+        <ToggleButton preset="add" ref={buttonRef} onClick={flip} setState={formVisible}/>
         <ComboBox
           items={props.notebook.availableTags(props.note)} newItem={{getInputValue: getInputValue, name: "tag"}}
           options={{selectPreviousOnEsc: false, resetInputOnSelect: true, unboundDropdown: true}} onItemSelect={onTag}

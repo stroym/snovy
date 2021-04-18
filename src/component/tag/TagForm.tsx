@@ -1,6 +1,6 @@
 import React, {forwardRef, useEffect, useState} from "react"
 import Scope from "../../data/model/Scope"
-import {CheckButton, TextButton} from "../inputs/Button"
+import {Button, ToggleButton} from "../inputs/Button"
 import ColorPicker from "../inputs/ColorPicker"
 import ComboBox from "../combo_box/ComboBox"
 import Input from "../inputs/Input"
@@ -124,7 +124,7 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
               placeholder="Tag" onValueChange={setTagText} defaultValue={tagText} style={{borderColor: theme.border}}
             />
           </TagFormItem>
-          <TextButton value="Add & tag" onClick={() => createTag()}/>
+          <Button id="add-tag-button" value="Add & tag" onClick={() => createTag()}/>
         </form>
       </FocusTrap>
     )
@@ -149,7 +149,7 @@ const TagFormItem = (props: {
       {props.children}
       {props.check &&
       <WithLabel value={props.check.descriptor} position="after">
-        <CheckButton toggle={props.check.toggled} onClick={() => props.check!.toggle(!props.check!.toggled)}/>
+        <ToggleButton preset="check" setState={props.check.toggled} getState={val => props.check!.toggle(val)}/>
       </WithLabel>
       }
     </span>

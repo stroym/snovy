@@ -3,7 +3,7 @@ import Note from "../../data/model/Note"
 import RichMarkdownEditor, {theme} from "rich-markdown-editor"
 import base from "rich-markdown-editor/dist/dictionary"
 import {useTheme} from "@emotion/react"
-import {CheckButton} from "../inputs/Button"
+import {ToggleButton} from "../inputs/Button"
 
 const dictionary = {
   ...base,
@@ -80,7 +80,7 @@ const Editor = (props: {
       }}
     >
       <div className="toolbar">
-        <CheckButton toggle={sourceMode} onClick={() => setSourceMode(!sourceMode)}/>
+        <ToggleButton preset="check" getState={setSourceMode}/>
       </div>
       <div className="editor-wrapper">
         <RichMarkdownEditor
