@@ -167,7 +167,6 @@ const App = () => {
               fill: ${theme.accent};
             }
 
-            //noinspection CssInvalidPseudoSelector - is is valid -.-
             :is(.snovy-tab-menu-item) > svg {
               fill: ${theme.textSecondary};
             }
@@ -241,7 +240,7 @@ const App = () => {
             icon: <ManagerIcon/>,
             viewable: {
               text: mappings.manager,
-              content: <Manager notebook={selectedNotebook}/>
+              content: <Manager/>
             }
           },
           {

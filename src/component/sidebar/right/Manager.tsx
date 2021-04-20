@@ -1,9 +1,6 @@
 import React from "react"
-import Notebook from "../../../data/model/Notebook"
 
-const Manager = (props: {
-  notebook: Notebook | undefined
-}) => {
+const Manager = () => {
 
   //todo top tab menu, manage tags, scopes, states...
 

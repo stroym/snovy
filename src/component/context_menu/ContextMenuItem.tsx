@@ -25,7 +25,6 @@ export const ContextMenuItem = (props: {
           {props.text}
         </span>
       </span>
-        {/*TODO adjust makers*/}
         {props.special?.text &&
         <span className="context-text-special styled-hover" onClick={props.special.onClick}>
           {props.special.text}

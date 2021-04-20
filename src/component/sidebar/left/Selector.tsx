@@ -65,7 +65,6 @@ export const Selector = (props: {
   const secRef = useRef<HTMLDivElement>(null)
   const noteRef = useRef<HTMLDivElement>(null)
 
-  //TODO split selected and active? issues with onItemValueChange and who knows what in the future
   return (
     <div id="notes-selector">
       <ComboBox

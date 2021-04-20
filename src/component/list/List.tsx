@@ -16,6 +16,7 @@ interface ListProps<T extends GenericItem> {
   children?: Array<React.ReactElement> | React.ReactElement
 }
 
+//TODO maybe expose selectedItems AND activeItem
 const List = forwardRef(<T extends GenericItem>(props: ListProps<T>, ref?: React.Ref<HTMLDivElement>) => {
 
   const {selectedItems, setSelectedItems, handleItemClick} = useMultiSelect<T>(props.items)

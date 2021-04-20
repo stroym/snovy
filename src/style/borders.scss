@@ -56,7 +56,8 @@ $border-rad-small: 5px;
 // ---- Forms ----
 
 .snovy-form {
-  .snovy-input:not(.snovy-combo-box .snovy-input), .snovy-combo-box {
+  .snovy-input:not(.snovy-combo-box .snovy-input),
+  .snovy-combo-box {
     @include border(1px);
   }
 

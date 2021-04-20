@@ -11,8 +11,6 @@ import WithLabel from "../inputs/WithLabel"
 import {default as ExportIcon} from "../../../public/icons/import.svg"
 import {default as ImportIcon} from "../../../public/icons/export.svg"
 
-//TODO border css class?
-
 const OptionsManager = () => {
 
   const importRef = useRef<HTMLInputElement>(null)

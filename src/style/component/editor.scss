@@ -20,13 +20,13 @@
     }
 
     textarea {
+      font-size: inherit;
       width: 100%;
       outline: none;
       border: none;
       box-sizing: border-box;
       resize: none;
     }
-
   }
 }
 
@@ -54,7 +54,7 @@ div:not([class]):not([id]) {
   visibility: hidden;
 }
 
-#snovy-editor div,
+#snovy-editor :is(div, textarea),
 .ProseMirror {
   height: 100%;
   box-sizing: border-box;
