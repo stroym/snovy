@@ -17,5 +17,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById("root")
 )
-
-console.log(document.querySelector("div:not([class]):not([id])"))

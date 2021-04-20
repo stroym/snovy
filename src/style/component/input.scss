@@ -1,19 +1,13 @@
-@import "../theme";
-@import "../mixins";
-
 .snovy-input {
-  @include text-height($font-medium);
-  @include focus($border-rad-small);
   box-sizing: border-box;
   background-color: transparent;
   border: none;
-  padding-left: 0.4vw;
+  padding: 0.1em 0 0.1em 0.4vw;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
   outline-offset: -1px;
-  border-radius: $border-rad-small;
 }
 
 .colored-input-wrapper {
@@ -22,26 +16,20 @@
   align-items: stretch;
 
   .color-helper {
-    @include border(1px);
-    font-size: $font-medium;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 2ch;
-    border-radius: $border-rad-small 0 0 $border-rad-small;
   }
 
   .color-input {
-    @include border(1px);
     border-left: unset;
     width: calc(8ch + 0.4vw);
-    border-radius: 0 $border-rad-small $border-rad-small 0;
   }
 }
 
 
 .labeled-input-wrapper {
-  font-size: $font-small;
   max-width: 100%;
   margin: 0 0.2em;
   display: flex;

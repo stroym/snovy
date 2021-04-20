@@ -35,7 +35,7 @@ export function useKey(e: React.KeyboardEvent, keyMappings: Array<KeyMapping>) {
 }
 
 export function cls(className: string | undefined, condition?: boolean) {
-  const temp = " " + className ?? ""
+  const temp = className == undefined ? "" : " " + className
 
   if (condition == undefined) {
     return temp

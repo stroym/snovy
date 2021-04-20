@@ -129,7 +129,7 @@ const TagFormItem = (props: {
 }) => {
 
   return (
-    <span className="tag-form-item">
+    <span className="snovy-form-item">
       <ColorPicker
         getColor={props.color.get} getColorFromInput={color => props.color.get("#" + color)}
         selectedItem={props.color.value}
@@ -138,7 +138,9 @@ const TagFormItem = (props: {
       {props.children}
       {props.check &&
       <WithLabel value={props.check.descriptor} position="after">
-        <ToggleButton preset="check" setState={props.check.toggled} getState={val => props.check!.toggle(val)}/>
+        <ToggleButton
+          preset="check" circular setState={props.check.toggled} getState={val => props.check!.toggle(val)}
+        />
       </WithLabel>
       }
     </span>

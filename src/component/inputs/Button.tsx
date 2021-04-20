@@ -1,20 +1,59 @@
 import React, {forwardRef, useEffect, useState} from "react"
 import {css} from "@emotion/react"
 import {transparentize} from "polished"
-import {arrows} from "../../util/values"
 import {cls} from "../../util/Utils"
 
-export interface ButtonProps extends React.HTMLProps<HTMLButtonElement> {
+import {default as AddIcon} from "../../../public/icons/add.svg"
+import {default as CollapsedIcon} from "../../../public/icons/expanded.svg"
+import {default as ExpandedIcon} from "../../../public/icons/collapsed.svg"
+import {default as CollapsedCircledIcon} from "../../../public/icons/expanded_circled.svg"
+import {default as ExpandedCircledIcon} from "../../../public/icons/collapsed_circled.svg"
+import {default as CheckIcon} from "../../../public/icons/checked.svg"
+import {default as RemoveIcon} from "../../../public/icons/remove.svg"
+
+type BasePresets = "remove"
+
+type TogglePresets = "add" | "collapse" | "collapse_simple" | "check" | "provided"
+
+export interface ButtonProps<T extends BasePresets | TogglePresets> extends React.HTMLProps<HTMLButtonElement> {
+  preset?: T
   mono?: boolean
-  preset?: "add" | "collapse" | "check" | "remove"
   circular?: boolean
+  toggled?: boolean
 }
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button = forwardRef<HTMLButtonElement, ButtonProps<BasePresets | TogglePresets>>(
   function Button(
-    {className, value, defaultValue, children, mono, preset, circular, ...props}: ButtonProps,
+    {
+      className,
+      children,
+      value,
+      defaultValue,
+      preset,
+      mono,
+      circular,
+      toggled,
+      ...props
+    }: ButtonProps<BasePresets | TogglePresets>,
     ref?: React.Ref<HTMLButtonElement>
   ) {
+
+    function resolvePreset() {
+      switch (preset) {
+        case "add":
+          return <AddIcon/>
+        case "collapse":
+          return toggled ? <CollapsedCircledIcon/> : <ExpandedCircledIcon/>
+        case "collapse_simple":
+          return toggled ? <CollapsedIcon/> : <ExpandedIcon/>
+        case "check":
+          return toggled ? <CheckIcon/> : ""
+        case "remove":
+          return <RemoveIcon/>
+        default:
+          return children
+      }
+    }
 
     return (
       <button
@@ -22,28 +61,37 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={"snovy-button styled-hover".concat(
           cls("snovy-button-circular", circular ?? false),
           cls("mono", mono ?? false),
+          cls("svg-button " + preset, preset != undefined),
+          cls("active-item", toggled == true),
           cls(className)
         )}
+        css={css`
+          color: inherit;
+
+          &:hover svg {
+            opacity: 0.5;
+          }
+        `}
       >
-        {!preset ? children || value || defaultValue : preset == "remove" && "×"}
+        {preset ? resolvePreset() : value || defaultValue}
       </button>
     )
 
   }
 )
 
-export interface ToggleButtonProps extends ButtonProps {
+export interface ToggleButtonProps extends ButtonProps<TogglePresets> {
   getState?: (toggled: boolean) => void
   setState?: boolean
 }
 
 export const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
   function ToggleButton(
-    {onClick, className, getState, setState, value, defaultValue, preset, ...props}: ToggleButtonProps,
+    {onClick, getState, setState, ...props}: ToggleButtonProps,
     ref?: React.Ref<HTMLButtonElement>
   ) {
 
-    const [toggled, setToggled] = useState(setState ?? false)
+    const [toggled, setToggled] = useState(false)
 
     useEffect(
       () => {
@@ -59,27 +107,11 @@ export const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
       setToggled(!toggled)
     }
 
-    function resolvePreset() {
-      switch (preset) {
-        case "add":
-          return "+"
-        case "collapse":
-          return toggled ? arrows.UP : arrows.DOWN
-        case "check":
-          return toggled ? "✓" : ""
-      }
-    }
-
-    return <Button
-      {...props} ref={ref} className={`${toggled ? "active-item" : ""} ${className ?? ""}`}
-      onClick={handleClick} circular
-    >
-      {preset ? resolvePreset() : toggled ? value : defaultValue}
-    </Button>
+    return <Button {...props} ref={ref} toggled={toggled} onClick={handleClick}/>
   }
 )
 
-interface ColorButtonProps extends ButtonProps {
+interface ColorButtonProps extends ButtonProps<BasePresets> {
   color: string | undefined
 }
 

@@ -32,9 +32,9 @@ const Editor = (props: {
   return (
     <div id="snovy-editor" data-disabled={!props.activeNote}>
       <div className="toolbar">
-        <ToggleButton preset="check" getState={setSourceMode}/>
+        <ToggleButton preset="check" circular getState={setSourceMode}/>
       </div>
-      <div className="editor-wrapper">
+      <div className="editor-wrapper" tabIndex={-1}>
         <RichMarkdownEditor
           theme={props.editorStyle} dictionary={dictionary} placeholder="" value={value} readOnly={!props.activeNote}
           onChange={value => props.activeNote?.updateContent(value())}

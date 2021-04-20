@@ -1,9 +1,7 @@
-@import "../theme";
 @import "../mixins";
 
-@mixin tag-base {
-  @include text-height-padded($font-medium, 1.3);
-  border-radius: $border-rad-big;
+.tag-scope,
+.tag-name {
   flex-grow: 1;
   padding: 0 0.2em;
   overflow: hidden;
@@ -11,21 +9,13 @@
   text-align: center;
   white-space: nowrap;
   cursor: default;
-}
-
-.tag-scope {
-  @include tag-base;
-}
-
-.tag-name {
-  @include tag-base;
+  margin: auto 0;
 }
 
 .snovy-tag-item {
   @include autosize-margin(0.2em, 100%);
   box-sizing: border-box;
   padding: 0.2em;
-  border-radius: $border-rad-big;
   overflow: hidden;
   flex-grow: 1;
   display: flex;
@@ -33,25 +23,16 @@
   align-items: center;
 
   .tag-name {
-    margin-right: 0.1em;
-  }
-}
-
-.tag-unique {
-  border-radius: $border-rad-medium;
-
-  .tag-scope {
-    border-radius: $border-rad-medium 0 0 $border-rad-medium;
+    margin-right: 0.2em;
   }
 
-  .tag-name {
-    border-radius: 0 $border-rad-medium $border-rad-medium 0;
+  .snovy-button {
+    margin: unset;
   }
 }
 
 .tag-grouped {
   min-width: calc(100% - 2 * 0.2em); //prevent non-unique scoped tags from shrinking which can lead to empty spaces which look weird
-  border-radius: $border-rad-medium;
   flex-grow: 1;
   flex-flow: column nowrap;
   align-items: unset;
@@ -62,14 +43,10 @@
     flex-flow: row nowrap;
     align-items: center;
     justify-content: space-between;
-
-    .snovy-button {
-      margin: unset;
-    }
+    padding: 0.1em 0;
   }
 
   .tag-container {
-    border-radius: $border-rad-medium;
     padding: 0.1em;
     display: flex;
     flex-flow: row wrap;
@@ -92,6 +69,7 @@
   }
 
   .color-helper {
+    @include circular();
     grid-area: color;
     justify-self: center;
   }
@@ -99,23 +77,5 @@
   .title-helper {
     grid-area: title;
     justify-self: start;
-  }
-
-  .scope-detail {
-    @include text-height-padded($font-medium, 1.4);
-
-    .color-helper {
-      @include circular($font-medium);
-      font-size: $font-medium;
-    }
-  }
-
-  .tag-detail {
-    @include text-height-padded($font-big, 1.2);
-
-    .color-helper {
-      @include circular($font-big);
-      font-size: $font-big;
-    }
   }
 }

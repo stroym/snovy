@@ -3,8 +3,7 @@ import Tag from "../../data/model/Tag"
 import {Button, ToggleButton} from "../inputs/Button"
 import Scope from "../../data/model/Scope"
 import {default as TinyColor} from "tinycolor2"
-import {css, useTheme} from "@emotion/react"
-import {transparentize} from "polished"
+import {useTheme} from "@emotion/react"
 
 export const TagItem = (props: {
   mapped: Tag,
@@ -16,7 +15,7 @@ export const TagItem = (props: {
   return (
     <span className="snovy-tag-item" style={tiny.style}>
       <span className="tag-name" style={tiny.lighten(10)}>{props.mapped.title}</span>
-      <Button preset="remove" circular mono onClick={() => props.onRemove(props.mapped)} css={tiny.makeButtonCss()}/>
+      <Button preset="remove" circular mono onClick={() => props.onRemove(props.mapped)}/>
     </span>
   )
 }
@@ -30,12 +29,12 @@ export const TagItemScoped = (props: TagItemProps) => {
   return (
     <span className="snovy-tag-item tag-grouped" style={tiny.style}>
       <div className="tag-group-header">
-        <ToggleButton preset="collapse" getState={setCollapsed} css={tiny.makeButtonCss()} mono/>
+        <ToggleButton preset="collapse" circular mono getState={setCollapsed}/>
         <span className="tag-scope">{props.scope.title}</span>
-        <Button preset="remove" circular mono onClick={() => props.onRemove(props.mapped)} css={tiny.makeButtonCss()}/>
+        <Button preset="remove" circular mono onClick={() => props.onRemove(props.mapped)}/>
       </div>
       {!collapsed && <div className="tag-container" style={tiny.lighten(50)}>
-        {props.mapped.map((tag) => <TagItem key={tag.toString()} mapped={tag} onRemove={props.onRemove}/>)}
+        {props.mapped.map(tag => <TagItem key={tag.toString()} mapped={tag} onRemove={props.onRemove}/>)}
       </div>}
     </span>
   )
@@ -49,7 +48,7 @@ export const TagItemScopedUnique = (props: TagItemProps) => {
     <span className="snovy-tag-item tag-unique" style={tiny.style}>
       <span className="tag-scope" style={tiny.lighten(20)}>{props.scope.title}</span>
       <span className="tag-name" style={tiny.lighten(10)}>{props.mapped[0].title}</span>
-      <Button preset="remove" circular mono onClick={() => props.onRemove(props.mapped)} css={tiny.makeButtonCss()}/>
+      <Button preset="remove" circular mono onClick={() => props.onRemove(props.mapped)}/>
     </span>
   )
 }
@@ -102,17 +101,6 @@ export class TinyStyle {
 
   darken(amount: number) {
     return {backgroundColor: this.tiny.clone().darken(amount).toHex8String()}
-  }
-
-  makeButtonCss() {
-    return css`
-      color: ${this.invert ? this.theme.textSecondary : this.theme.textPrimary};
-      border-color: ${this.invert ? this.theme.textSecondary : this.theme.textPrimary};
-
-      &:hover {
-        background-color: ${transparentize(0.6, this.invert ? this.theme.textSecondary : this.theme.textPrimary)};
-      }
-    `
   }
 
 }

@@ -203,7 +203,8 @@ const ComboBox = <T extends Record<string, any> | string>({label, ...props}: Com
           })}
         />
         <ToggleButton
-          preset="collapse" aria-label="toggle menu" {...getToggleButtonProps()} setState={isOpen} tabIndex={0}
+          preset="collapse_simple" circular aria-label="toggle menu" {...getToggleButtonProps()} setState={isOpen}
+          tabIndex={0}
         />
         {!options.unboundDropdown && ComboDropdown}
       </div>

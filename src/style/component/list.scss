@@ -1,4 +1,3 @@
-@import "../theme";
 @import "../mixins";
 
 .snovy-list {
@@ -11,10 +10,8 @@
 }
 
 .snovy-list-item {
-  @include text-height-padded($font-medium, 2);
   scroll-snap-align: start;
   padding: 0 10%;
-  border: none;
   cursor: default;
   user-select: none;
   border-radius: unset;

@@ -1,20 +1,20 @@
-@use "style/component/input";
-@use "style/component/combo-box";
-@use "style/component/button";
-@use "style/component/editor";
-@use "style/component/sidebar";
-@use "style/component/list";
-@use "style/component/context-menu";
-@use "style/component/tab-menu";
-@use "style/component/note-detail";
-@use "style/component/tag-manager";
-@use "style/component/color-picker";
-@use "style/component/options";
+@use "component/input";
+@use "component/combo-box";
+@use "component/button";
+@use "component/editor";
+@use "component/sidebar";
+@use "component/list";
+@use "component/context-menu";
+@use "component/tab-menu";
+@use "component/note-detail";
+@use "component/tag-manager";
+@use "component/color-picker";
+@use "component/options";
+@use "typography";
+@use "borders";
 
-@import "./style/theme";
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
-
 
 html, body, #root {
   margin: 0;
@@ -41,6 +41,11 @@ html, body, #root {
 [data-visible="false"] {
   visibility: hidden;
   display: none !important;
+}
+
+svg {
+  fill: currentColor;
+  pointer-events: none;
 }
 
 #snovy-app {

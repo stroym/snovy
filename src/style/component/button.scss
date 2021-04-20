@@ -1,27 +1,32 @@
-@import "../theme";
+@import "../borders";
 @import "../mixins";
 
 .snovy-button {
-  @include text-height-padded($font-big, 1.5);
-  @include focus($border-rad-medium);
-  @include border(1px);
   padding: 0 0.5em;
-  border-radius: $border-rad-medium;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   background-color: transparent;
 
   &.snovy-button-circular {
-    @include circular($font-medium);
-    @include focus(50%);
-    font-size: $font-medium;
+    @include circular();
+    height: 1em;
+    width: 1em;
+    border: unset;
+    padding: unset;
     margin: 0.1em;
-    padding: 0;
     flex-shrink: 0;
+
+    svg {
+      transform: scale(1.2); //google svgs need to be scaled up to fit 100% of parent
+    }
   }
 
-  &.snovy-color-button {
-    @include circular($font-big);
+  &.svg-button {
+    //outline: none !important;
+
+    &.check svg {
+      transform: scale(0.75);
+    }
   }
 }

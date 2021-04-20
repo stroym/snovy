@@ -1,26 +1,10 @@
-@import "../theme";
+@import "../borders";
 @import "../mixins";
 
 .snovy-tab-menu {
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
-
-  &.left {
-    @include border(0 2px 0 0);
-
-    .snovy-tab-menu-item :not(icon) {
-      writing-mode: sideways-lr;
-    }
-  }
-
-  &.right {
-    @include border(0 0 0 2px);
-
-    .snovy-tab-menu-item :not(icon) {
-      writing-mode: sideways-rl;
-    }
-  }
 
   .menu-section {
     display: flex;
@@ -40,8 +24,7 @@
 }
 
 .snovy-tab-menu-item {
-  @include text-height-padded(1vw, 1.4);
-  @include focus($border-rad-small);
+  color: inherit;
   padding: 0.4em 0;
   cursor: default;
   user-select: none;
@@ -49,4 +32,13 @@
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  &.icon {
+    display: flex;
+    place-content: center;
+  }
+
+  svg {
+    transform: scale(0.9);
+  }
 }

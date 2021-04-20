@@ -1,62 +1,56 @@
-@import "../theme";
 @import "../mixins";
 
 .snovy-context-menu {
-  @include border(1px);
   z-index: 100;
 
   &:last-child {
     border-bottom: none;
   }
-}
 
-.snovy-context-menu-item {
-  @include text-height-padded($font-small, 2);
-  display: flex;
-  flex-flow: row nowrap;
-  align-content: space-evenly;
-  user-select: none;
+  .snovy-context-menu-item {
+    display: flex;
+    flex-flow: row nowrap;
+    align-content: space-evenly;
+    user-select: none;
 
-  :last-child {
-    flex-grow: 1;
-    align-self: flex-start;
-    padding-right: 10px;
-  }
-
-  .context-wrapper {
-    .context-icon {
-      @include border(0 1px 0 0);
-      text-align: center;
-      padding: 0 10px;
+    :last-child {
+      flex-grow: 1;
+      align-self: flex-start;
+      padding-right: 10px;
     }
 
-    .context-text {
-      padding: 0 0.5ch;
+    .context-wrapper {
+      .context-icon {
+        text-align: center;
+        padding: 0 10px;
+      }
+
+      .context-text {
+        padding: 0 0.5ch;
+        white-space: nowrap;
+      }
+    }
+
+    .context-text-special {
+      padding-left: 0.5ch;
       white-space: nowrap;
     }
   }
 
-  .context-text-special {
-    padding-left: 0.5ch;
-    white-space: nowrap;
-  }
-}
-
-.outer-wrapper {
-  @include border(0 0 1px 0);
-  position: relative;
-}
-
-.nested-context-menu {
-  @include border(1px);
-  z-index: 110;
-  position: absolute;
-
-  &:last-child {
-    border-bottom: none;
+  .outer-wrapper {
+    position: relative;
   }
 
-  .context-item-wrapper {
+  .nested-context-menu {
+    z-index: 110;
+    position: absolute;
 
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .context-item-wrapper {
+
+    }
   }
 }

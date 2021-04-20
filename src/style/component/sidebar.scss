@@ -1,6 +1,3 @@
-@import "../theme";
-@import "../mixins";
-
 #left-menu {
   grid-area: leftmenu;
 }
@@ -22,14 +19,6 @@
   min-height: 0;
   width: 100%;
   height: 100%;
-
-  &.left {
-    @include border(0 2px 0 0);
-  }
-
-  &.right {
-    @include border(0 0 0 2px);
-  }
 }
 
 #notes-selector {
@@ -41,23 +30,14 @@
   height: 100%;
 
   #notebook-selector {
-    @include border(0 0 2px 0);
     grid-area: notebook;
   }
 
   #snovy-list-section {
-    @include border(0 1px 0 0);
     grid-area: section;
   }
 
   #snovy-list-note {
-    @include border(0 0 0 1px);
     grid-area: note;
-  }
-
-  .snovy-button {
-    @include circular($font-huge);
-    font-size: $font-big;
-    border-width: 2px;
   }
 }

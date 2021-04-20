@@ -28,9 +28,8 @@
   },
   "extends": "@tsconfig/recommended/tsconfig.json",
   "include": [
-    "src"
-  ],
-  "files": [
-    "./emotion.d.ts"
+    "src",
+    "typings/emotion.d.ts",
+    "typings/svg.d.ts"
   ]
 }

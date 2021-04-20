@@ -1,4 +1,3 @@
-@import "../theme";
 @import "../mixins";
 
 #snovy-editor {
@@ -9,11 +8,6 @@
 
   .toolbar {
     grid-area: toolbar;
-
-    .snovy-button-circular {
-      @include circular($font-big);
-      font-size: $font-small;
-    }
   }
 
   .editor-wrapper {
@@ -38,23 +32,29 @@
 
 //outline prosemirror style adjustments
 
-.heading-content {
-  cursor: text;
-  margin: 0;
+.ProseMirror {
+
+  .heading-content {
+    cursor: text;
+  }
+
+  h1, h2, h3, h4, h5 {
+    margin: 0.5em 0 0.25em 0 !important;
+  }
+
+  h1::before, h2::before, h3::before, h4::before, h5::before, h6::before {
+    display: none !important;
+  }
 }
 
-h1::before, h2::before, h3::before, h4::before, h5::before, h6::before {
-  display: none;
-}
-
+//hide outline toolbar, floating menu and some trash divs
 .block-menu-trigger,
 div:not([class]):not([id]) {
   display: none;
   visibility: hidden;
 }
 
-#snovy-editor > .editor-wrapper > *,
-#snovy-editor > .editor-wrapper > * > *,
+#snovy-editor div,
 .ProseMirror {
   height: 100%;
   box-sizing: border-box;

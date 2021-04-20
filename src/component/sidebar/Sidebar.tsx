@@ -3,12 +3,10 @@ import TabMenu, {Alignment, Orientation} from "../tab_menu/TabMenu"
 import TabMenuItem, {CollapseTabMenuItem} from "../tab_menu/TabMenuItem"
 
 type TabHelper = {
-  text: string,
   tabAlignment: Alignment,
   tooltip?: string,
-  toggle?: boolean
-  action?: () => void,
-  content?: JSX.Element | Array<JSX.Element> | false,
+  viewable?: { text: string, toggle?: boolean, action?: () => void, content?: JSX.Element | Array<JSX.Element> | false }
+  icon?: JSX.Element
 }
 
 export interface SidebarProps extends React.HTMLProps<HTMLDivElement> {
@@ -34,13 +32,16 @@ export const Sidebar = ({initialTab, orientation, children, ...props}: SidebarPr
     <TabMenu orientation={orientation} id={`${orientation}-menu`}>
       {[
         ...children.map((it, index) => <TabMenuItem
-          key={index} alignment={it.tabAlignment} text={it.text}
-          onActiveChange={value => it.action ? it.action() : it.toggle ? toggleTab(it.text) : setActive(value)}
-          active={active}
+          key={index} alignment={it.tabAlignment} icon={it.icon}
+          viewable={it.viewable && {
+            text: it.viewable.text,
+            active: active,
+            onActiveChange: value => it.viewable!.action ? it.viewable!.action() : it.viewable!.toggle ? toggleTab(it.viewable!.text) : setActive(value)
+          }}
         />),
         <CollapseTabMenuItem
           key="collapse-item" alignment={Alignment.END} orientation={orientation}
-          onActiveChange={() => {
+          onClick={() => {
             setCollapsed(!collapsed)
 
             const editorElement = Array.from(document.getElementsByClassName("ProseMirror")).first() as HTMLElement
@@ -63,7 +64,7 @@ export const Sidebar = ({initialTab, orientation, children, ...props}: SidebarPr
         }}
       >
         {
-          children.find(it => it.text == active)?.content
+          children.find(it => it.viewable?.text == active)?.viewable?.content
         }
       </div>
       {orientation == Orientation.RIGHT && tabMenu}

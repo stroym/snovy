@@ -110,7 +110,7 @@ const NoteDetail = (props: {
   return (
     <div id="snovy-note-detail">
       <div className="note-detail-header">
-        <ToggleButton preset="add" ref={buttonRef} onClick={flip} setState={formVisible}/>
+        <ToggleButton preset="add" circular ref={buttonRef} onClick={flip} setState={formVisible}/>
         <ComboBox
           items={props.notebook.availableTags(props.note)} newItem={{getInputValue: getInputValue, name: "tag"}}
           options={{selectPreviousOnEsc: false, resetInputOnSelect: true, unboundDropdown: true}} onItemSelect={onTag}

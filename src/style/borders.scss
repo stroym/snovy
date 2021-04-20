@@ -1,0 +1,176 @@
+$border-rad-big: 40px;
+$border-rad-medium: 10px;
+$border-rad-small: 5px;
+
+@mixin border($width) {
+  border-width: #{$width};
+  border-style: solid;
+}
+
+@mixin focus($radius) {
+  outline: none;
+
+  [data-whatinput="keyboard"] &:focus {
+    outline-width: 2px;
+    outline-style: inset;
+    outline-offset: -2px;
+    -moz-outline-radius: #{$radius};
+    border-radius: #{$radius};
+  }
+}
+
+// ---- Buttons ----
+
+.snovy-button {
+  @include border(1px);
+  @include focus($border-rad-medium);
+  border-radius: $border-rad-medium;
+
+  &.snovy-button-circular {
+    @include focus(50%);
+  }
+}
+
+// ---- Inputs ----
+
+.snovy-input {
+  @include focus($border-rad-small);
+
+  &:not(.snovy-list-item) {
+    border-radius: $border-rad-small;
+  }
+}
+
+.colored-input-wrapper {
+  .color-helper {
+    @include border(1px);
+    border-radius: $border-rad-small 0 0 $border-rad-small;
+  }
+
+  .color-input {
+    @include border(1px);
+    border-radius: 0 $border-rad-small $border-rad-small 0;
+  }
+}
+
+// ---- Forms ----
+
+.snovy-form {
+  .snovy-input:not(.snovy-combo-box .snovy-input), .snovy-combo-box {
+    @include border(1px);
+  }
+
+  .snovy-combo-box {
+    border-radius: $border-rad-small;
+
+    &[aria-expanded="true"] {
+      border-radius: $border-rad-small $border-rad-small 0 0;
+    }
+  }
+
+  .snovy-button {
+    @include border(1px);
+  }
+
+  .snovy-dropdown {
+    @include border(1px);
+    border-radius: 0 0 $border-rad-small $border-rad-small;
+  }
+}
+
+// ---- Tags ----
+
+.tag-scope,
+.tag-name,
+.snovy-tag-item {
+  border-radius: $border-rad-big;
+}
+
+.tag-unique,
+.tag-grouped,
+.tag-grouped .tag-container {
+  border-radius: $border-rad-medium;
+}
+
+.tag-unique {
+  .tag-scope {
+    border-radius: $border-rad-medium 0 0 $border-rad-medium;
+  }
+
+  .tag-name {
+    border-radius: 0 $border-rad-medium $border-rad-medium 0;
+  }
+}
+
+// ---- Context Menu ---
+
+.snovy-context-menu,
+.nested-context-menu {
+  @include border(1px);
+
+  .outer-wrapper {
+    @include border(0 0 1px 0);
+  }
+
+  .context-icon {
+    @include border(0 1px 0 0);
+  }
+
+}
+
+// ---- Editor ----
+
+#snovy-editor {
+  .toolbar {
+    @include border(0 0 2px 0);
+
+    .snovy-button {
+      @include border(1px)
+    }
+  }
+}
+
+// ---- Positional borders ----
+
+.left {
+  @include border(0 2px 0 0);
+}
+
+.right {
+  @include border(0 0 0 2px);
+}
+
+// ---- Menu ----
+.snovy-tab-menu-item {
+  @include focus($border-rad-small);
+}
+
+// ---- Sidebars & their content ----
+
+#notes-selector {
+  #notebook-selector {
+    @include border(0 0 2px 0);
+  }
+
+  #snovy-list-section {
+    @include border(0 1px 0 0);
+  }
+
+  #snovy-list-note {
+    @include border(0 0 0 1px);
+  }
+}
+
+#snovy-note-detail {
+  .note-detail-header {
+    @include border(0 0 2px 0);
+  }
+}
+
+// ---- Options ----
+
+.snovy-options {
+  .snovy-combo-box {
+    border-radius: $border-rad-small;
+  }
+}

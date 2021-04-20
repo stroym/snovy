@@ -1,4 +1,3 @@
-@import "../theme";
 @import "../mixins";
 
 .snovy-options {
@@ -16,6 +15,9 @@
 
   #import-export {
     grid-area: left;
+    display: flex;
+    flex-flow: row nowrap;
+    place-content: center space-between;
   }
 
   #theme-options {
@@ -41,5 +43,4 @@
     justify-self: end;
     align-self: center;
   }
-
 }

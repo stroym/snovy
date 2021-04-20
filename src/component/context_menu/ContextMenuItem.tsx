@@ -11,7 +11,6 @@ export const ContextMenuItem = (props: {
 
   const nestedRef = useRef(null)
 
-
   const [nested, setNested] = useState(false)
   const position = useRelativePosition(nestedRef, nested)
 

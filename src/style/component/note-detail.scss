@@ -1,7 +1,6 @@
 @use "tag-add-form";
 @use "tags";
 
-@import "../theme";
 @import "../mixins";
 
 //TODO commonize header body footer content layout for sidebar
@@ -14,7 +13,6 @@
   grid-template-areas: "header" "body" "rest";
 
   .note-detail-header {
-    @include border(0 0 2px 0);
     grid-area: header;
     position: relative;
     display: flex;
@@ -27,10 +25,7 @@
     }
 
     .snovy-button {
-      @include circular($font-huge);
       border-style: unset;
-      font-size: $font-big;
-      border-width: 2px;
     }
   }
 

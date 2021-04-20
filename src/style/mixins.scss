@@ -1,13 +1,14 @@
-@import "theme";
-
 @mixin autosize-margin($margin, $width) {
   margin: $margin;
   max-width: calc(#{$width} - 2 * #{$margin});
 }
 
-@mixin circular($size) {
-  width: $size;
-  height: $size;
+@mixin button-size($size, $n) {
+  height: calc(#{$size} * #{$n});
+  width: calc(#{$size} * #{$n});
+}
+
+@mixin circular() {
   border-radius: 50%;
   text-align: center;
   display: flex;
@@ -15,37 +16,9 @@
   justify-content: center;
 }
 
-@mixin text-height($size) {
-  font-size: $size;
-  line-height: $size;
-  vertical-align: middle;
-}
-
-@mixin text-height-padded($size, $n) {
-  font-size: $size;
-  line-height: calc(#{$n} * #{$size});
-}
-
 @mixin scrollbar() {
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
   scroll-snap-type: y mandatory;
-}
-
-@mixin focus($radius) {
-  outline: none;
-
-  [data-whatinput="keyboard"] &:focus {
-    outline-width: 2px;
-    outline-style: inset;
-    outline-offset: -2px;
-    -moz-outline-radius: #{$radius};
-    border-radius: #{$radius};
-  }
-}
-
-@mixin border($width) {
-  border-width: #{$width};
-  border-style: solid;
 }

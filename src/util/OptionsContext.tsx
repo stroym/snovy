@@ -3,7 +3,7 @@ import Options from "../data/model/options/Options"
 import {Theme} from "../data/model/options/Theme"
 import {dexie} from "../index"
 import {defaults} from "../data/model/options/Defaults"
-import {css, Global, ThemeProvider} from "@emotion/react"
+import {ThemeProvider} from "@emotion/react"
 import {fetchThemes} from "../data/Database"
 
 const OptionsContext = React.createContext<OptionsContextType>({
@@ -61,21 +61,6 @@ export const OptionsProvider = (props: {
 
   return (
     <OptionsContext.Provider value={{options, setOptions}}>
-      <Global
-        styles={css`
-          [data-fontsize="small"] {
-            font-size: calc(8px + 0.5vw);
-          }
-
-          [data-fontsize="medium"] {
-            font-size: calc((8px + 0.5vw) * 1.5);
-          }
-
-          [data-fontsize="big"] {
-            font-size: calc((8px + 0.5vw) * 2);
-          }
-        `}
-      />
       <ThemeProvider theme={theme}>
         {props.children}
       </ThemeProvider>

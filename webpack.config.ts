@@ -52,8 +52,8 @@ module.exports = (env, argv) => {
           }
         },
         {
-          test: /\.md$/,
-          use: "raw-loader"
+          test: /\.svg$/,
+          use: ["@svgr/webpack"]
         },
         {
           test: /\.(s?)css$/i,

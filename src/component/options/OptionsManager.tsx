@@ -8,13 +8,14 @@ import {dexie} from "../../index"
 import {defaults} from "../../data/model/options/Defaults"
 import {exportData, fetchThemes, importData} from "../../data/Database"
 import WithLabel from "../inputs/WithLabel"
+import {default as ExportIcon} from "../../../public/icons/import.svg"
+import {default as ImportIcon} from "../../../public/icons/export.svg"
 
 //TODO border css class?
 
 const OptionsManager = () => {
 
   const importRef = useRef<HTMLInputElement>(null)
-
 
   const context = useContext(OptionsContext)
 
@@ -91,11 +92,11 @@ const OptionsManager = () => {
     >
       <div id="import-export" className="snovy-options-container">
         <WithLabel value="Import" position="before" vertical>
-          <Button value="⮋" onClick={() => importRef.current?.click()}/>
+          <Button preset="provided" onClick={() => importRef.current?.click()}><ImportIcon/></Button>
           <input ref={importRef} type="file" onChange={e => importData(e.target.files)} style={{display: "none"}}/>
         </WithLabel>
         <WithLabel value="Export" position="before" vertical>
-          <Button value="⮉" onClick={exportData}/>
+          <Button preset="provided" onClick={exportData}><ExportIcon/></Button>
         </WithLabel>
       </div>
       <ThemeManager themes={themes} setThemes={setThemes} currentTheme={theme} setCurrentTheme={setTheme}/>

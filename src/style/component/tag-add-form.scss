@@ -1,4 +1,3 @@
-@import "../theme";
 @import "../mixins";
 
 .snovy-form {
@@ -20,7 +19,7 @@
     margin: 1em 0;
   }
 
-  .tag-form-item {
+  .snovy-form-item {
     display: grid;
     grid-template-areas: "color input check" "color1 input-dropdown check1";
     grid-template-columns: fit-content(5%) 1fr 30%;
@@ -33,27 +32,16 @@
       grid-area: color;
     }
 
-    label .snovy-button-circular {
-      @include circular($font-big);
-      font-size: $font-small;
-    }
-
     & > input, .snovy-combo-box {
-      @include border(1px);
       grid-area: input;
       box-sizing: border-box;
+      width: 100%;
     }
 
     .snovy-dropdown {
-      @include border(1px);
       grid-area: input-dropdown;
       box-sizing: border-box;
       border-top: unset;
-      border-radius: 0 0 $border-rad-small $border-rad-small;
-
-      .snovy-dropdown-item {
-        @include text-height-padded($font-small, 1.5);
-      }
     }
 
     .snovy-color-picker {
@@ -67,6 +55,7 @@
 
   #add-tag-button {
     margin-top: 0;
+    margin-bottom: 0.5em;
   }
 
 }

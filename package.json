@@ -12,6 +12,7 @@
   "license": "GNU GPL V3",
   "dependencies": {
     "@emotion/react": "^11.1.5",
+    "@svgr/webpack": "^5.5.0",
     "@types/react-portal": "^4.0.2",
     "class-transformer": "^0.4.0",
     "core-js": "^3.8.3",

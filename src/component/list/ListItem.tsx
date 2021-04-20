@@ -35,7 +35,6 @@ const ListItem = <T extends Record<string, any>>(
       onValueChange={onValueChange}
       value={mapped.toString()}
       onClick={() => {onItemClick(mapped)}} onFocus={handleFocus} onContextMenu={handleContext}
-      data-fontsize="medium"
     />
   )
 

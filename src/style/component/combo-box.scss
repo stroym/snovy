@@ -1,22 +1,15 @@
-@import "../theme";
 @import "../mixins";
 
 .snovy-combo-box {
-  font-size: $font-big;
   position: relative;
   box-sizing: border-box;
   width: 100%;
   min-width: 0;
   flex-grow: 1;
-  border-radius: $border-rad-small;
   display: grid;
   grid-template-areas: "input button" "dropdown dropdown";
   grid-auto-columns: auto min-content;
   //justify-content: space-between;
-
-  &[aria-expanded="true"] {
-    border-radius: $border-rad-small $border-rad-small 0 0;
-  }
 
   .snovy-input {
     grid-area: input;
@@ -26,7 +19,7 @@
   .snovy-button-circular {
     grid-area: button;
     align-self: center;
-    border-style: unset;
+    border-style: unset !important;
   }
 }
 
@@ -49,9 +42,7 @@
     position: unset;
   }
 
-  .snovy-dropdown-item,
-  .snovy-dropdown-create-item {
-    @include text-height-padded($font-big, 2);
+  .snovy-dropdown-item {
     scroll-snap-align: start;
     width: 100%;
     overflow: hidden;
@@ -66,7 +57,6 @@
   }
 
   .info-dropdown-item {
-    @include text-height-padded($font-small, 2);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

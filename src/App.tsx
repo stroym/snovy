@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import "./App.scss"
+import "./style/App.scss"
 import "./util/Augments"
 import Notebook from "./data/model/Notebook"
 import Section from "./data/model/Section"
@@ -14,12 +14,22 @@ import Selector from "./component/sidebar/left/Selector"
 import NoteDetail from "./component/sidebar/right/NoteDetail"
 import Manager from "./component/sidebar/right/Manager"
 import {css, useTheme} from "@emotion/react"
-import {darken, lighten, transparentize} from "polished"
+import {darken, lighten} from "polished"
 import OptionsManager from "./component/options/OptionsManager"
 import ReactTooltip from "react-tooltip"
 import {Sidebar} from "./component/sidebar/Sidebar"
 import {Portal} from "react-portal"
 import {theme as outlineTheme} from "rich-markdown-editor"
+import {default as OptionsIcon} from "../public/icons/options.svg"
+import {default as FavoritesIcon} from "../public/icons/favorites.svg"
+import {default as FilterIcon} from "../public/icons/filter.svg"
+import {default as SearchIcon} from "../public/icons/search.svg"
+import {default as ArchiveIcon} from "../public/icons/archived.svg"
+import {default as NotesIcon} from "../public/icons/notes.svg"
+import {default as DetailIcon} from "../public/icons/detail.svg"
+import {default as ManagerIcon} from "../public/icons/manager.svg"
+import {default as ResourcesIcon} from "../public/icons/resources.svg"
+// import {default as Icon} from "../public/icons/"
 
 //TODO move props into interfaces, extend basic html props, use destructuring wherever possible
 
@@ -132,15 +142,15 @@ const App = () => {
 
         *:not(a, .snovy-tag-item *) {
           color: ${theme.textPrimary};
-          border-color: ${theme.border};
+          border-color: ${theme.border} !important; //TODO why are buttons now getting textPrimary for borders?
         }
 
         .highlighted-item,
-        .styled-hover:not(.color-item):hover {
+        .styled-hover:not(.color-item,.mono):hover {
           background-color: ${theme.hover};
         }
 
-        .active-item {
+        .active-item:not(.mono) {
           background-color: ${theme.activeItem};
         }
 
@@ -148,17 +158,19 @@ const App = () => {
           background-color: ${darken(0.05, theme.activeItem)};
         }
 
-        .mono {
-          background-color: transparent;
+        *:focus {
+          outline-color: ${theme.accent};
 
-          &:hover {
-            background-color: ${transparentize(0.6, theme.textPrimary)};
-          }
-        }
+          //TODO fancier focus
+          [data-whatinput="keyboard"] & {
+            :not(.snovy-tab-menu-item) > svg {
+              fill: ${theme.accent};
+            }
 
-        * {
-          &:focus {
-            outline-color: ${theme.accent};
+            //noinspection CssInvalidPseudoSelector - is is valid -.-
+            :is(.snovy-tab-menu-item) > svg {
+              fill: ${theme.textSecondary};
+            }
           }
         }
       `}
@@ -166,35 +178,49 @@ const App = () => {
       <Sidebar orientation={Orientation.LEFT} initialTab={mappings.notes}>
         {[
           {
-            text: mappings.notes, tabAlignment: Alignment.START, content:
-              <Selector
-                notebooks={notebooks}
-                selectedNotebook={selectedNotebook} onNotebookChange={selectNotebook}
-                selectedSections={selectedSections} onSectionChange={selectSections}
-                selectedNotes={selectedNotes} onNoteChange={selectNotes}
-              />
+            tabAlignment: Alignment.START,
+            icon: <NotesIcon/>,
+            viewable: {
+              text: mappings.notes,
+              content:
+                <Selector
+                  notebooks={notebooks}
+                  selectedNotebook={selectedNotebook} onNotebookChange={selectNotebook}
+                  selectedSections={selectedSections} onSectionChange={selectSections}
+                  selectedNotes={selectedNotes} onNoteChange={selectNotes}
+                />
+            }
           },
           {
-            text: mappings.favorites, tabAlignment: Alignment.START
+            tabAlignment: Alignment.START,
+            icon: <FavoritesIcon/>,
+            viewable: {
+              text: mappings.favorites
+            }
           },
           {
-            text: mappings.search, tabAlignment: Alignment.START
+            tabAlignment: Alignment.START,
+            icon: <SearchIcon/>,
+            viewable: {
+              text: mappings.search
+            }
           },
           {
-            text: mappings.archive, tabAlignment: Alignment.END
+            tabAlignment: Alignment.END,
+            icon: <ArchiveIcon/>,
+            viewable: {
+              text: mappings.archive
+            }
           },
           {
-            text: "☠", tabAlignment: Alignment.END, action:
-              async () => {
-                await dexie.delete()
-                window.location.reload()
-              }
-          },
-          {
-            text: mappings.options, tabAlignment: Alignment.END, toggle: true, tooltip: "Options", content:
-              <Portal node={document.getElementById("snovy-app")}>
-                <OptionsManager/>
-              </Portal>
+            tabAlignment: Alignment.END,
+            icon: <OptionsIcon/>,
+            tooltip: "Options",
+            viewable: {
+              text: mappings.options,
+              toggle: true,
+              content: <Portal node={document.getElementById("snovy-app")}><OptionsManager/></Portal>
+            }
           }
         ]}
       </Sidebar>
@@ -202,19 +228,28 @@ const App = () => {
       <Sidebar initialTab={mappings.detail} orientation={Orientation.RIGHT}>
         {[
           {
-            text: mappings.detail, tabAlignment: Alignment.START, content:
-              selectedNotebook && !selectedNotes.isEmpty() && selectedNotes.first() &&
-              <NoteDetail note={selectedNotes.first()!} notebook={selectedNotebook}/>
+            tabAlignment: Alignment.START,
+            icon: <DetailIcon/>,
+            viewable: {
+              text: mappings.detail, content:
+                selectedNotebook && !selectedNotes.isEmpty() && selectedNotes.first() &&
+                <NoteDetail note={selectedNotes.first()!} notebook={selectedNotebook}/>
+            }
           },
           {
-            text: mappings.manager, tabAlignment: Alignment.START, content:
-              <Manager notebook={selectedNotebook}/>
+            tabAlignment: Alignment.START,
+            icon: <ManagerIcon/>,
+            viewable: {text: mappings.manager, content: <Manager notebook={selectedNotebook}/>}
           },
           {
-            text: mappings.filtering, tabAlignment: Alignment.START
+            tabAlignment: Alignment.START,
+            icon: <FilterIcon/>,
+            viewable: {text: mappings.filtering}
           },
           {
-            text: mappings.resources, tabAlignment: Alignment.END
+            tabAlignment: Alignment.END,
+            icon: <ResourcesIcon/>,
+            viewable: {text: mappings.resources}
           }
         ]}
       </Sidebar>
