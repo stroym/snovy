@@ -1,4 +1,4 @@
-import {isArray, isItem} from "../../util/Utils"
+import {isArray, isItem} from "../../util/utils"
 
 export abstract class Table {
 

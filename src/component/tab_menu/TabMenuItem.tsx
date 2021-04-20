@@ -1,10 +1,11 @@
 import React, {useState} from "react"
 import {Alignment, Orientation} from "./TabMenu"
-import {cls} from "../../util/Utils"
+import {cls} from "../../util/utils"
 import {default as UpArrow} from "../../../public/icons/arrows/up.svg"
 import {default as RightArrow} from "../../../public/icons/arrows/right.svg"
 import {default as DownArrow} from "../../../public/icons/arrows/down.svg"
 import {default as LeftArrow} from "../../../public/icons/arrows/left.svg"
+import {activeItem} from "../../util/classes"
 
 export interface TabMenuItemProps extends React.HTMLProps<HTMLDivElement> {
   alignment: Alignment
@@ -30,7 +31,7 @@ const TabMenuItem = (
       className={"snovy-tab-menu-item styled-hover".concat(
         cls("icon", icon != undefined),
         cls(alignment),
-        cls("active-item", viewable != undefined && viewable.active == viewable.text)
+        cls(activeItem, viewable != undefined && viewable.active == viewable.text)
       )}
     >
       {icon ?? viewable?.text}

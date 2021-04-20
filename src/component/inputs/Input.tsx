@@ -1,7 +1,7 @@
 import React, {forwardRef, MutableRefObject, useEffect, useRef, useState} from "react"
-import {useHideOnOutsideClick} from "../../util/Hooks"
+import {useHideOnOutsideClick} from "../../util/hooks"
 import {ColorHelper} from "./ColorPicker"
-import {KeyMapping, useKey} from "../../util/Utils"
+import {KeyMapping, useKey} from "../../util/utils"
 import {Key} from "ts-key-enum"
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {

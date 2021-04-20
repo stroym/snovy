@@ -1,7 +1,10 @@
 import React, {useRef} from "react"
 import {EditableInput} from "../inputs/Input"
+import {GenericItem} from "../../util/types"
+import {cls} from "../../util/utils"
+import {activeItem, selectedItem} from "../../util/classes"
 
-interface ListItemProps<T extends Record<string, any>> extends React.HTMLProps<HTMLInputElement> {
+interface ListItemProps<T extends GenericItem> extends React.HTMLProps<HTMLInputElement> {
   mapped: T
   active: boolean
   selected: boolean
@@ -10,8 +13,8 @@ interface ListItemProps<T extends Record<string, any>> extends React.HTMLProps<H
   onValueChange?: (str: string) => void
 }
 
-const ListItem = <T extends Record<string, any>>(
-  {mapped, active, selected, onItemClick, onContext, onValueChange, ...props}: ListItemProps<T>
+const ListItem = <T extends GenericItem>(
+  {className, mapped, active, selected, onItemClick, onContext, onValueChange, ...props}: ListItemProps<T>
 ) => {
 
   const selfRef = useRef<HTMLInputElement>(null)
@@ -29,12 +32,13 @@ const ListItem = <T extends Record<string, any>>(
 
   return (
     <EditableInput
-      {...props} ref={selfRef}
-      className={`snovy-list-item styled-hover ${active ? "active-item" : selected ? "selected-item" : ""}`}
-      placeholder="Title"
-      onValueChange={onValueChange}
-      value={mapped.toString()}
+      {...props} ref={selfRef} placeholder="Title" onValueChange={onValueChange} value={mapped.toString()}
       onClick={() => {onItemClick(mapped)}} onFocus={handleFocus} onContextMenu={handleContext}
+      className={"snovy-list-item styled-hover".concat(
+        cls(className),
+        cls(selectedItem, selected),
+        cls(activeItem, active)
+      )}
     />
   )
 

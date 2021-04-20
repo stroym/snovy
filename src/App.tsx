@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react"
 import "./style/App.scss"
-import "./util/Augments"
+import "./util/augments"
 import Notebook from "./data/model/Notebook"
 import Section from "./data/model/Section"
 import Note from "./data/model/Note"
 import Editor from "./component/editor/Editor"
-import {isArray} from "./util/Utils"
+import {isArray} from "./util/utils"
 import {dexie} from "./index"
 import "dexie-export-import"
 import {Table} from "./data/model/Base"
@@ -29,6 +29,7 @@ import {default as NotesIcon} from "../public/icons/notes.svg"
 import {default as DetailIcon} from "../public/icons/detail.svg"
 import {default as ManagerIcon} from "../public/icons/manager.svg"
 import {default as ResourcesIcon} from "../public/icons/resources.svg"
+import {activeItem, highlightedItem, selectedItem} from "./util/classes"
 // import {default as Icon} from "../public/icons/"
 
 //TODO move props into interfaces, extend basic html props, use destructuring wherever possible
@@ -142,26 +143,25 @@ const App = () => {
 
         *:not(a, .snovy-tag-item *) {
           color: ${theme.textPrimary};
-          border-color: ${theme.border} !important; //TODO why are buttons now getting textPrimary for borders?
+          border-color: ${theme.border};
         }
 
-        .highlighted-item,
-        .styled-hover:not(.color-item,.mono):hover {
-          background-color: ${theme.hover};
-        }
-
-        .active-item:not(.mono) {
+        .${activeItem}:not(.mono) {
           background-color: ${theme.activeItem};
         }
 
-        .selected-item {
+        .${highlightedItem},
+        .styled-hover:not(.color-item,.mono):hover {
+          background-color: ${theme.hover} !important;
+        }
+
+        .${selectedItem} {
           background-color: ${darken(0.05, theme.activeItem)};
         }
 
         *:focus {
           outline-color: ${theme.accent};
 
-          //TODO fancier focus
           [data-whatinput="keyboard"] & {
             :not(.snovy-tab-menu-item) > svg {
               fill: ${theme.accent};
@@ -184,8 +184,7 @@ const App = () => {
               text: mappings.notes,
               content:
                 <Selector
-                  notebooks={notebooks}
-                  selectedNotebook={selectedNotebook} onNotebookChange={selectNotebook}
+                  notebooks={notebooks} selectedNotebook={selectedNotebook} onNotebookChange={selectNotebook}
                   selectedSections={selectedSections} onSectionChange={selectSections}
                   selectedNotes={selectedNotes} onNoteChange={selectNotes}
                 />
@@ -231,7 +230,8 @@ const App = () => {
             tabAlignment: Alignment.START,
             icon: <DetailIcon/>,
             viewable: {
-              text: mappings.detail, content:
+              text: mappings.detail,
+              content:
                 selectedNotebook && !selectedNotes.isEmpty() && selectedNotes.first() &&
                 <NoteDetail note={selectedNotes.first()!} notebook={selectedNotebook}/>
             }
@@ -239,17 +239,24 @@ const App = () => {
           {
             tabAlignment: Alignment.START,
             icon: <ManagerIcon/>,
-            viewable: {text: mappings.manager, content: <Manager notebook={selectedNotebook}/>}
+            viewable: {
+              text: mappings.manager,
+              content: <Manager notebook={selectedNotebook}/>
+            }
           },
           {
             tabAlignment: Alignment.START,
             icon: <FilterIcon/>,
-            viewable: {text: mappings.filtering}
+            viewable: {
+              text: mappings.filtering
+            }
           },
           {
             tabAlignment: Alignment.END,
             icon: <ResourcesIcon/>,
-            viewable: {text: mappings.resources}
+            viewable: {
+              text: mappings.resources
+            }
           }
         ]}
       </Sidebar>

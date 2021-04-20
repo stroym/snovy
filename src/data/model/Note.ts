@@ -2,7 +2,7 @@ import Tag from "./Tag"
 import State from "./State"
 import Scope from "./Scope"
 import {dexie} from "../../index"
-import {isArray, isItem} from "../../util/Utils"
+import {isArray, isItem} from "../../util/utils"
 import {Ordered} from "./Base"
 
 export default class Note extends Ordered {

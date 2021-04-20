@@ -1,5 +1,5 @@
 import React, {useRef, useState} from "react"
-import {useRelativePosition} from "../../util/Hooks"
+import {useRelativePosition} from "../../util/hooks"
 
 export const ContextMenuItem = (props: {
   icon?: string

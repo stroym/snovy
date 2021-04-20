@@ -1,10 +1,11 @@
 import React, {forwardRef, useEffect} from "react"
 import ListItem from "./ListItem"
-import {KeyMapping, useKey} from "../../util/Utils"
+import {KeyMapping, useKey} from "../../util/utils"
 import {Key} from "ts-key-enum"
-import {useMultiSelect} from "../../util/Hooks"
+import {useMultiSelect} from "../../util/hooks"
+import {GenericItem} from "../../util/types"
 
-interface ListProps<T extends Record<string, any>> {
+interface ListProps<T extends GenericItem> {
   id?: string
   items: Array<T> | undefined
   defaultFirst?: boolean //TODO defaultSelection, not this
@@ -15,7 +16,7 @@ interface ListProps<T extends Record<string, any>> {
   children?: Array<React.ReactElement> | React.ReactElement
 }
 
-const List = forwardRef(<T extends Record<string, any>>(props: ListProps<T>, ref?: React.Ref<HTMLDivElement>) => {
+const List = forwardRef(<T extends GenericItem>(props: ListProps<T>, ref?: React.Ref<HTMLDivElement>) => {
 
   const {selectedItems, setSelectedItems, handleItemClick} = useMultiSelect<T>(props.items)
 

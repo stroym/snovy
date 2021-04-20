@@ -1,39 +1,36 @@
 import React, {forwardRef} from "react"
-import Tag from "../../data/model/Tag"
-import TagDisplayItem from "../tag/TagDisplayItem"
+import {cls} from "../../util/utils"
+import {GenericItem} from "../../util/types"
+import {activeItem, highlightedItem} from "../../util/classes"
 
-interface ComboBoxItemProps extends React.HTMLProps<HTMLLIElement> {
+export interface ComboBoxItemProps<T extends GenericItem> extends React.HTMLProps<HTMLLIElement> {
   className?: string
-  item: Record<string, any> | string
+  item: T
   active?: boolean
   highlighted?: boolean
+  customItem?: (item: T) => React.ReactElement<ComboBoxItemProps<T>>
 }
 
-const ComboBoxItem = forwardRef<HTMLLIElement, ComboBoxItemProps>(
-  function ComboBoxItem(
-    {item, active, highlighted, className, ...props}: ComboBoxItemProps,
-    ref: React.Ref<HTMLLIElement>
-  ) {
-
-    const clazzName =
-      `snovy-dropdown-item ${className ?? ""} ${highlighted ? "highlighted-item" : active ? "active-item" : ""}`
-
-    //TODO while this works, there's probably a better way to do this
-    if (item instanceof Tag) {
-      return (
-        <li {...props} ref={ref} className={"tag-dropdown " + clazzName}>
-          <TagDisplayItem tag={item}/>
-        </li>
-      )
-    }
+const ComboBoxItem = forwardRef(<T extends GenericItem>(
+  {item, active, highlighted, className, customItem, ...props}: ComboBoxItemProps<T>,
+  ref: React.Ref<HTMLLIElement>
+  ) => {
 
     return (
-      <li {...props} ref={ref} className={clazzName}>
-        {item.toString()}
+      <li {...props} ref={ref}
+          className={"snovy-dropdown-item".concat(
+            cls(className),
+            cls(highlightedItem, highlighted),
+            cls(activeItem, active)
+          )}
+      >
+        {customItem ? customItem(item) : item.toString()}
       </li>
     )
 
   }
 )
+
+ComboBoxItem.displayName = "ComboBoxItem"
 
 export default ComboBoxItem

@@ -5,8 +5,9 @@ import TabMenuItem, {CollapseTabMenuItem} from "../tab_menu/TabMenuItem"
 type TabHelper = {
   tabAlignment: Alignment,
   tooltip?: string,
-  viewable?: { text: string, toggle?: boolean, action?: () => void, content?: JSX.Element | Array<JSX.Element> | false }
+  action?: () => void
   icon?: JSX.Element
+  viewable?: { text: string, toggle?: boolean, content?: JSX.Element | Array<JSX.Element> | false }
 }
 
 export interface SidebarProps extends React.HTMLProps<HTMLDivElement> {
@@ -36,17 +37,12 @@ export const Sidebar = ({initialTab, orientation, children, ...props}: SidebarPr
           viewable={it.viewable && {
             text: it.viewable.text,
             active: active,
-            onActiveChange: value => it.viewable!.action ? it.viewable!.action() : it.viewable!.toggle ? toggleTab(it.viewable!.text) : setActive(value)
+            onActiveChange: value => it.action ? it.action() : it.viewable!.toggle ? toggleTab(it.viewable!.text) : setActive(value)
           }}
         />),
         <CollapseTabMenuItem
           key="collapse-item" alignment={Alignment.END} orientation={orientation}
-          onClick={() => {
-            setCollapsed(!collapsed)
-
-            const editorElement = Array.from(document.getElementsByClassName("ProseMirror")).first() as HTMLElement
-            editorElement?.focus()
-          }}
+          onClick={() => setCollapsed(!collapsed)}
         />
       ]}
     </TabMenu>

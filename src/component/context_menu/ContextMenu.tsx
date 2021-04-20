@@ -1,7 +1,7 @@
 import React, {useRef} from "react"
 import ContextMenuItem from "./ContextMenuItem"
-import {useContextMenu} from "../../util/Hooks"
-import {isArray} from "../../util/Utils"
+import {useContextMenu} from "../../util/hooks"
+import {isArray} from "../../util/utils"
 
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,

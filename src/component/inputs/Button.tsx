@@ -1,7 +1,7 @@
 import React, {forwardRef, useEffect, useState} from "react"
 import {css} from "@emotion/react"
 import {transparentize} from "polished"
-import {cls} from "../../util/Utils"
+import {cls} from "../../util/utils"
 
 import {default as AddIcon} from "../../../public/icons/add.svg"
 import {default as CollapsedIcon} from "../../../public/icons/expanded.svg"
@@ -10,6 +10,7 @@ import {default as CollapsedCircledIcon} from "../../../public/icons/expanded_ci
 import {default as ExpandedCircledIcon} from "../../../public/icons/collapsed_circled.svg"
 import {default as CheckIcon} from "../../../public/icons/checked.svg"
 import {default as RemoveIcon} from "../../../public/icons/remove.svg"
+import {activeItem} from "../../util/classes"
 
 type BasePresets = "remove"
 
@@ -62,7 +63,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps<BasePresets | To
           cls("snovy-button-circular", circular ?? false),
           cls("mono", mono ?? false),
           cls("svg-button " + preset, preset != undefined),
-          cls("active-item", toggled == true),
+          cls(activeItem, toggled == true),
           cls(className)
         )}
         css={css`

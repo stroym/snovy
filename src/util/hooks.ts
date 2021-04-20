@@ -1,7 +1,7 @@
 import useResizeObserver from "@react-hook/resize-observer"
 import React, {Dispatch, SetStateAction, useEffect, useLayoutEffect, useReducer, useState} from "react"
 import {Key} from "ts-key-enum"
-import {isArray, isItem} from "./Utils"
+import {isArray, isItem} from "./utils"
 
 type mouseEventType = "mousedown" | "click"
 

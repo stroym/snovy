@@ -1,13 +1,14 @@
 import React, {useEffect} from "react"
 import {useCombobox, UseComboboxState, UseComboboxStateChangeOptions} from "downshift"
-import {useDefaultEmpty} from "../../util/Hooks"
+import {useDefaultEmpty} from "../../util/hooks"
 import ComboInfoItem from "./ComboInfoItem"
-import {KeyMapping, useKey} from "../../util/Utils"
+import {KeyMapping, useKey} from "../../util/utils"
 import {Key} from "ts-key-enum"
-import ComboBoxItem from "./ComboBoxItem"
+import ComboBoxItem, {ComboBoxItemProps} from "./ComboBoxItem"
 import WithLabel from "../inputs/WithLabel"
 import Input from "../inputs/Input"
 import {ToggleButton} from "../inputs/Button"
+import {GenericItem} from "../../util/types"
 
 type ComboBoxOptions = {
   selectPreviousOnEsc?: boolean
@@ -23,7 +24,7 @@ const defaultOptions = {
   unboundDropdown: false
 }
 
-export interface ComboBoxProps<T extends Record<string, any> | string> extends React.HTMLAttributes<HTMLInputElement> {
+export interface ComboBoxProps<T extends GenericItem> extends React.HTMLAttributes<HTMLInputElement> {
   onItemSelect?: (active: T | undefined) => void
   items: Array<T> | undefined
   selectedItem?: T
@@ -31,9 +32,10 @@ export interface ComboBoxProps<T extends Record<string, any> | string> extends R
   options?: ComboBoxOptions,
   externalClose?: { closeMenu: boolean, menuVisible: (visible: boolean) => void }
   label?: { value: string, position: "before" | "after" }
+  customItem?: (item: T) => React.ReactElement<ComboBoxItemProps<T>>
 }
 
-const ComboBox = <T extends Record<string, any> | string>({label, ...props}: ComboBoxProps<T>) => {
+const ComboBox = <T extends GenericItem>({label, customItem, ...props}: ComboBoxProps<T>) => {
 
   const options = props.options ? {...defaultOptions, ...props.options} : defaultOptions
 
@@ -172,7 +174,7 @@ const ComboBox = <T extends Record<string, any> | string>({label, ...props}: Com
         dropdownItems?.map((item, index) => (
           <ComboBoxItem
             highlighted={index == highlightedIndex} active={selectedItem == item} key={index} item={item}
-            {...getItemProps({item, index})}
+            {...getItemProps({item, index})} customItem={customItem}
           />
         ))
       }

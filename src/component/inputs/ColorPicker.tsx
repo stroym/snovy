@@ -1,7 +1,7 @@
 import React, {useRef} from "react"
 
 import {ColorButton} from "./Button"
-import {useHideOnOutsideClick} from "../../util/Hooks"
+import {useHideOnOutsideClick} from "../../util/hooks"
 import {TinyStyle} from "../tag/TagItem"
 import {ColoredInput} from "./Input"
 import FocusTrap from "focus-trap-react"
