@@ -13,13 +13,15 @@ interface FormProps {
   onConfirm: (tagText: string, tagColor: string, scopeText?: string, scopeColor?: string, scopeUnique?: boolean) => void
 }
 
+const defaultWhite = "#ffffff"
+
 const TagForm = forwardRef<HTMLFormElement, FormProps>(
   function TagForm(props: FormProps, ref: React.Ref<HTMLFormElement>) {
 
     const [tagText, setTagText] = useState<string>()
     const [tagColor, setTagColor] = useState<string>()
-    const [scopeText, setScopeText] = useState<string>()
-    const [scopeColor, setScopeColor] = useState<string>()
+    const [scopeText, setScopeText] = useState(defaultWhite)
+    const [scopeColor, setScopeColor] = useState(defaultWhite)
 
     const [unique, setUnique] = useState(false)
     const [useScope, setUseScope] = useState(true)
@@ -74,7 +76,7 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
         setScopeColor(sc.color)
         setUnique(sc.unique)
       } else {
-        setScopeText(str)
+        setScopeText(str ?? defaultWhite)
         setScopeColor("")
         setUnique(false)
       }
@@ -132,7 +134,7 @@ const TagFormItem = (props: {
     <span className="snovy-form-item">
       <ColorPicker
         getColor={props.color.get} getColorFromInput={color => props.color.get("#" + color)}
-        selectedItem={props.color.value}
+        selectedItem={props.color.value} includeButton
         colors={["#ff0000", "#ffa500", "#00ff00", "#40e0d0", "#0000ff", "#800080", "#ffffff", "#000000"]}
       />
       {props.children}

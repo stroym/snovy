@@ -56,7 +56,7 @@ export const Sidebar = ({initialTab, orientation, children, ...props}: SidebarPr
         className={`snovy-sidebar ${orientation}`}
         style={{
           display: collapsed ? "none" : "initial",
-          visibility: collapsed ? "hidden" : "initial"
+          visibility: collapsed ? "collapse" : "visible"
         }}
       >
         {

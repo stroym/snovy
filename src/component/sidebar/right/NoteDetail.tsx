@@ -9,6 +9,7 @@ import {title} from "../../../data/Database"
 import {ToggleButton} from "../../inputs/Button"
 import {useHideOnOutsideClick} from "../../../util/hooks"
 import TagForm from "../../tag/TagForm"
+import SidebarContent from "../SidebarContent"
 import ComboBox from "../../combo_box/ComboBox"
 import TagDisplayItem from "../../tag/TagDisplayItem"
 
@@ -109,29 +110,33 @@ const NoteDetail = (props: {
   }
 
   return (
-    <div id="snovy-note-detail">
-      <div className="note-detail-header">
-        <ToggleButton preset="add" circular ref={buttonRef} onClick={flip} setState={formVisible}/>
-        <ComboBox<Tag>
-          items={props.notebook.availableTags(props.note)} newItem={{getInputValue: getInputValue, name: "tag"}}
-          options={{selectPreviousOnEsc: false, resetInputOnSelect: true, unboundDropdown: true}} onItemSelect={onTag}
-          externalClose={{menuVisible: setMenuVisible, closeMenu: menuVisible}} onFocus={() => {setFormVisible(false)}}
-          customItem={item => <TagDisplayItem tag={item}/>}
-        />
-      </div>
-      <div className="note-detail-body">
-        {formVisible &&
+    <SidebarContent
+      id="snovy-note-detail"
+      heading={
+        <>
+          <ToggleButton preset="add" circular ref={buttonRef} onClick={flip} setState={formVisible}/>
+          <ComboBox<Tag>
+            items={props.notebook.availableTags(props.note)} newItem={{getInputValue: getInputValue, name: "tag"}}
+            options={{selectPreviousOnEsc: false, resetInputOnSelect: true, unboundDropdown: true}} onItemSelect={onTag}
+            externalClose={{menuVisible: setMenuVisible, closeMenu: menuVisible}}
+            onFocus={() => {setFormVisible(false)}}
+            customItem={item => <TagDisplayItem tag={item}/>}
+          />
+        </>
+      }
+    >
+      {
+        formVisible &&
         <TagForm ref={formRef} scopes={props.notebook.scopes} initialValue={inputValue} onConfirm={tagCreation}/>
-        }
-        <div id="tag-display-area" tabIndex={-1}>
-          {props.note.tagMap.map(([scope, tags]: [Scope | undefined, Tag[]]) => scope ? scope.unique ?
-            <TagItemScopedUnique key={scope.title} scope={scope} mapped={tags} onRemove={remove}/> :
-            <TagItemScoped key={scope.title} scope={scope} mapped={tags} onRemove={remove}/> :
-            tags.map((item: Tag) => <TagItem key={item.toString()} mapped={item} onRemove={remove}/>)
-          )}
-        </div>
-      </div>
-    </div>
+      }
+      {
+        props.note.tagMap.map(([scope, tags]: [Scope | undefined, Tag[]]) => scope ? scope.unique ?
+          <TagItemScopedUnique key={scope.title} scope={scope} mapped={tags} onRemove={remove}/> :
+          <TagItemScoped key={scope.title} scope={scope} mapped={tags} onRemove={remove}/> :
+          tags.map((item: Tag) => <TagItem key={item.toString()} mapped={item} onRemove={remove}/>)
+        )
+      }
+    </SidebarContent>
   )
 
 }

@@ -1,6 +1,9 @@
-$border-rad-big: 40px;
-$border-rad-medium: 10px;
-$border-rad-small: 5px;
+$border-1: 1px;
+$border-2: 2px;
+
+$border-rad-40: 40px;
+$border-rad-10: 10px;
+$border-rad-5: 5px;
 
 @mixin border($width) {
   border-width: #{$width};
@@ -11,9 +14,9 @@ $border-rad-small: 5px;
   outline: none;
 
   [data-whatinput="keyboard"] &:focus {
-    outline-width: 2px;
+    outline-width: $border-2;
     outline-style: inset;
-    outline-offset: -2px;
+    outline-offset: -$border-2;
     -moz-outline-radius: #{$radius};
     border-radius: #{$radius};
   }
@@ -22,9 +25,9 @@ $border-rad-small: 5px;
 // ---- Buttons ----
 
 .snovy-button {
-  @include border(1px);
-  @include focus($border-rad-medium);
-  border-radius: $border-rad-medium;
+  @include border($border-1);
+  @include focus($border-rad-10);
+  border-radius: $border-rad-10;
 
   &.snovy-button-circular {
     @include focus(50%);
@@ -34,48 +37,56 @@ $border-rad-small: 5px;
 // ---- Inputs ----
 
 .snovy-input {
-  @include focus($border-rad-small);
+  @include focus($border-rad-5);
+
+  outline-offset: -$border-1;
 
   &:not(.snovy-list-item) {
-    border-radius: $border-rad-small;
+    border-radius: $border-rad-5;
   }
 }
 
 .colored-input-wrapper {
   .color-helper {
-    @include border(1px);
-    border-radius: $border-rad-small 0 0 $border-rad-small;
+    @include border($border-1);
+    border-radius: $border-rad-5 0 0 $border-rad-5;
   }
 
   .color-input {
-    @include border(1px);
-    border-radius: 0 $border-rad-small $border-rad-small 0;
+    @include border($border-1 $border-1 $border-1 0);
+    border-radius: 0 $border-rad-5 $border-rad-5 0;
   }
 }
 
 // ---- Forms ----
 
 .snovy-form {
-  .snovy-input:not(.snovy-combo-box .snovy-input),
+  & > .snovy-input,
+  .snovy-form-item > .snovy-input,
   .snovy-combo-box {
-    @include border(1px);
+    @include border($border-1);
   }
 
   .snovy-combo-box {
-    border-radius: $border-rad-small;
+    border-radius: $border-rad-5;
 
     &[aria-expanded="true"] {
-      border-radius: $border-rad-small $border-rad-small 0 0;
+      border-radius: $border-rad-5 $border-rad-5 0 0;
     }
   }
 
   .snovy-button {
-    @include border(1px);
+    @include border($border-1);
   }
 
   .snovy-dropdown {
-    @include border(1px);
-    border-radius: 0 0 $border-rad-small $border-rad-small;
+    @include border($border-1);
+
+    &.slide {
+      border-top: unset;
+    }
+
+    border-radius: 0 0 $border-rad-5 $border-rad-5;
   }
 }
 
@@ -84,22 +95,28 @@ $border-rad-small: 5px;
 .tag-scope,
 .tag-name,
 .snovy-tag-item {
-  border-radius: $border-rad-big;
+  border-radius: $border-rad-40;
+}
+
+.snovy-tag-item {
+  .snovy-button {
+    border: unset;
+  }
 }
 
 .tag-unique,
 .tag-grouped,
 .tag-grouped .tag-container {
-  border-radius: $border-rad-medium;
+  border-radius: $border-rad-10;
 }
 
 .tag-unique {
   .tag-scope {
-    border-radius: $border-rad-medium 0 0 $border-rad-medium;
+    border-radius: $border-rad-10 0 0 $border-rad-10;
   }
 
   .tag-name {
-    border-radius: 0 $border-rad-medium $border-rad-medium 0;
+    border-radius: 0 $border-rad-10 $border-rad-10 0;
   }
 }
 
@@ -107,14 +124,14 @@ $border-rad-small: 5px;
 
 .snovy-context-menu,
 .nested-context-menu {
-  @include border(1px);
+  @include border($border-1);
 
   .outer-wrapper {
-    @include border(0 0 1px 0);
+    @include border(0 0 $border-1 0);
   }
 
   .context-icon {
-    @include border(0 1px 0 0);
+    @include border(0 $border-1 0 0);
   }
 
 }
@@ -123,10 +140,10 @@ $border-rad-small: 5px;
 
 #snovy-editor {
   .toolbar {
-    @include border(0 0 2px 0);
+    @include border(0 0 $border-2 0);
 
     .snovy-button {
-      @include border(1px)
+      @include border($border-2)
     }
   }
 }
@@ -134,37 +151,37 @@ $border-rad-small: 5px;
 // ---- Positional borders ----
 
 .left {
-  @include border(0 2px 0 0);
+  @include border(0 $border-2 0 0);
 }
 
 .right {
-  @include border(0 0 0 2px);
+  @include border(0 0 0 $border-2);
 }
 
 // ---- Menu ----
 .snovy-tab-menu-item {
-  @include focus($border-rad-small);
+  @include focus($border-rad-5);
 }
 
 // ---- Sidebars & their content ----
 
-#notes-selector {
-  #notebook-selector {
-    @include border(0 0 2px 0);
+.snovy-sidebar {
+  .sidebar-heading {
+    @include border(0 0 $border-2 0);
   }
 
-  #snovy-list-section {
-    @include border(0 1px 0 0);
-  }
-
-  #snovy-list-note {
-    @include border(0 0 0 1px);
+  .sidebar-footing {
+    @include border($border-2 0 0 0);
   }
 }
 
-#snovy-note-detail {
-  .note-detail-header {
-    @include border(0 0 2px 0);
+#notes-selector {
+  #snovy-list-section {
+    @include border(0 $border-1 0 0);
+  }
+
+  #snovy-list-note {
+    @include border(0 0 0 $border-1);
   }
 }
 
@@ -172,6 +189,6 @@ $border-rad-small: 5px;
 
 .snovy-options {
   .snovy-combo-box {
-    border-radius: $border-rad-small;
+    border-radius: $border-rad-5;
   }
 }

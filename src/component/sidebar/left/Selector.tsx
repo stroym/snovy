@@ -6,6 +6,7 @@ import Notebook from "../../../data/model/Notebook"
 import List from "../../list/List"
 import {makeContext, makeSharedContext} from "../../context_menu/ContextMenuItem"
 import ContextMenu from "../../context_menu/ContextMenu"
+import SidebarContent from "../SidebarContent"
 
 export const Selector = (props: {
   onNotebookChange: (active: Notebook | undefined) => void,
@@ -66,11 +67,13 @@ export const Selector = (props: {
   const noteRef = useRef<HTMLDivElement>(null)
 
   return (
-    <div id="notes-selector">
-      <ComboBox
+    <SidebarContent
+      id="notes-selector"
+      heading={<ComboBox
         id="notebook-selector" newItem={{getInputValue: createItem, name: "notebook"}}
         items={props.notebooks} selectedItem={props.selectedNotebook} onItemSelect={props.onNotebookChange}
-      />
+      />}
+    >
       <List
         ref={secRef} id="snovy-list-section" defaultFirst items={props.selectedNotebook?.itemsSortedByOrder}
         selection={props.selectedSections} onSelect={props.onSectionChange} getContextTarget={setSectionContext}
@@ -163,7 +166,7 @@ export const Selector = (props: {
           })
         }
       </ContextMenu>
-    </div>
+    </SidebarContent>
   )
 
 }

@@ -126,7 +126,9 @@ export const ColoredInput = ({onValueChange, value, defaultValue, observe, ...pr
 
   return (
     <div className="colored-input-wrapper">
-      <ColorHelper color={color} text="#" style={props.style}/>
+      <ColorHelper color={color} style={props.style}>
+        #
+      </ColorHelper>
       <Input
         {...props} className="color-input" value={color.replaceAll("#", "")} onValueChange={setColor}
         placeholder="Hex code" maxLength={8} onKeyDown={e => useKey(e, keyMap)} pattern="[a-f0-9]{6,8}"

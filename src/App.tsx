@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import "./style/App.scss"
+import "./style/app.scss"
 import "./util/augments"
 import Notebook from "./data/model/Notebook"
 import Section from "./data/model/Section"
@@ -132,6 +132,7 @@ const App = () => {
       id="snovy-app" onContextMenu={e => e.preventDefault()}
       css={css`
         scrollbar-color: ${theme.accent} ${lighten(0.1, theme.accent)};
+        color: ${theme.textPrimary};
 
         &,
         .snovy-context-menu,
@@ -139,11 +140,6 @@ const App = () => {
         .snovy-options,
         .snovy-form {
           background-color: ${theme.primary};
-        }
-
-        *:not(a, .snovy-tag-item *) {
-          color: ${theme.textPrimary};
-          border-color: ${theme.border};
         }
 
         .${activeItem}:not(.mono) {
@@ -157,6 +153,10 @@ const App = () => {
 
         .${selectedItem} {
           background-color: ${darken(0.05, theme.activeItem)};
+        }
+
+        * {
+          border-color: ${theme.border};
         }
 
         *:focus {

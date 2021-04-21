@@ -1,3 +1,5 @@
+@import "../mixins";
+
 #left-menu {
   grid-area: leftmenu;
 }
@@ -15,29 +17,83 @@
 }
 
 .snovy-sidebar {
-  display: inline-flex;
-  min-height: 0;
-  width: 100%;
-  height: 100%;
+  position: relative;
+
+  .sidebar-content {
+    min-height: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-areas: "heading" "body" "footing";
+    grid-template-rows: fit-content(10%) 1fr fit-content(10%);
+
+    .sidebar-heading {
+      grid-area: heading;
+      position: relative;
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      justify-items: flex-start;
+
+      .snovy-dropdown {
+        top: 100%;
+      }
+
+      .snovy-button {
+        border-style: unset;
+      }
+    }
+
+    .sidebar-body {
+      grid-area: body;
+      min-width: 0;
+      min-height: 0;
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .sidebar-footing {
+      grid-area: footing;
+    }
+  }
 }
 
+// ---- Left ----
+
 #notes-selector {
-  display: grid;
-  grid-template-rows: fit-content(10%) 1fr;
-  grid-template-columns: 1fr 1fr;
-  grid-template-areas: "notebook notebook" "section note";
-  width: 100%;
-  height: 100%;
+  .sidebar-body {
+    display: flex;
+    flex-flow: row nowrap;
 
-  #notebook-selector {
-    grid-area: notebook;
+    .snovy-list {
+      width: 50%;
+    }
+  }
+}
+
+// ---- Right ----
+
+#snovy-note-detail {
+  grid-template-rows: fit-content(10%) 3fr 1fr;
+
+  .sidebar-body {
+    @include scrollbar();
+    scrollbar-width: none; //TODO draw arrow that scrolls on hover/click when scroll is available
+    padding: 0.1em;
+    display: flex;
+    flex-flow: row wrap;
+    place-content: flex-start;
+  }
+}
+
+// ---- Template ----
+#content-id {
+  .sidebar-heading {
   }
 
-  #snovy-list-section {
-    grid-area: section;
+  .sidebar-body {
   }
 
-  #snovy-list-note {
-    grid-area: note;
+  .sidebar-footing {
   }
 }

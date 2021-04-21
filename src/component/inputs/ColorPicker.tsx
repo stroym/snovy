@@ -11,6 +11,7 @@ export const ColorPicker = (props: {
   selectedItem: string | undefined
   getColor: (hex: string) => void
   getColorFromInput: (hex: string) => void
+  includeButton?: boolean
 }) => {
 
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -23,12 +24,17 @@ export const ColorPicker = (props: {
     flip()
   }
 
-  //TODO make button optional
   return (
     <>
-      <ColorButton ref={buttonRef} className="color-picker-button" onClick={() => {flip()}} color={props.selectedItem}/>
-      {visible &&
-      <FocusTrap focusTrapOptions={{clickOutsideDeactivates: true}}>
+      {
+        props.includeButton &&
+        <ColorButton
+          ref={buttonRef} className="color-picker-button" mono onClick={() => {flip()}} color={props.selectedItem}
+        />
+      }
+      {
+        visible &&
+        <FocusTrap focusTrapOptions={{clickOutsideDeactivates: true}}>
         <span ref={pickerRef} className="snovy-color-picker">
           <div className="color-container">
             {props.colors.map((color, index) =>
@@ -37,7 +43,7 @@ export const ColorPicker = (props: {
           </div>
           <ColoredInput onValueChange={getColor}/>
         </span>
-      </FocusTrap>
+        </FocusTrap>
       }
     </>
   )
@@ -53,15 +59,15 @@ const ColorItem = (props: {
 
 }
 
-export const ColorHelper = (props: {
+export interface ColorHelperProps extends React.HTMLProps<HTMLSpanElement> {
   color: string
-  text?: string
-  style?: React.CSSProperties
-}) => {
+}
 
-  const tiny = new TinyStyle(props.color)
+export const ColorHelper = ({color, children, style}: ColorHelperProps) => {
 
-  return <span className="color-helper" style={{...props.style, ...tiny.style}}>{props.text}</span>
+  const tiny = new TinyStyle(color)
+
+  return <span className="color-helper" style={{...tiny.style, ...style}}>{children}</span>
 
 }
 
