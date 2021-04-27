@@ -66,7 +66,6 @@ async function addTag(notebookId: number, scopeId?: number) {
       const scope = (await dexie.scopes.get(scopeId))!
 
       await dexie.tags.add(new Tag(notebookId, randomString(randomNumber(8)), scope.color, scopeId)).then(async id => {
-        scope.tagIds.push(id)
         dexie.scopes.put(scope)
       })
     } else {

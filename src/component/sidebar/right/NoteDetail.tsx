@@ -41,7 +41,6 @@ const NoteDetail = (props: {
         const uniqueScoped = props.note.tags.find(it => it.scope?.id == tag.scope!.id)
 
         if (uniqueScoped) {
-          //TODO custom pop-up
           if ((confirm(`This scope is unique. Do you wish to replace the currently present tag ${uniqueScoped.title}?`))) {
             props.note.untag(uniqueScoped)
             props.note.tag(tag)
@@ -57,26 +56,18 @@ const NoteDetail = (props: {
     }
   }
 
-  const tagCreation = async (tagText: string, tagColor: string, scopeText?: string, scopeColor?: string, scopeUnique?: boolean) => {
+  const tagCreation = async (tagText: string, tagColor: string, scope?: { title: string, color: string, unique: boolean }) => {
     let tag
 
-    if (scopeText && scopeColor && scopeUnique) {
-      const maybeScope = await dexie.scopes.where(title).equals(scopeText).first()
+    if (scope) {
+      const dbScope =
+        await dexie.scopes.where(title).equals(scope.title).first() ??
+        await new Scope(props.notebook.id, scope.title, scope.color, scope.unique).save()
 
-      if (maybeScope) {
-        tag = new Tag(props.notebook.id, tagText, tagColor, maybeScope.id)
-
-        //add to scope
-
-      } else {
-        const scope = await new Scope(props.notebook.id, scopeText, scopeColor, scopeUnique).save()
-        tag = new Tag(props.notebook.id, tagText, tagColor, scope.id)
-      }
+      tag = await new Tag(props.notebook.id, tagText, tagColor, dbScope.id).save()
     } else {
-      tag = new Tag(props.notebook.id, tagText, tagColor)
+      tag = await new Tag(props.notebook.id, tagText, tagColor).save()
     }
-
-    await tag.save()
 
     props.note.tag(await tag.load())
     await props.notebook.load()

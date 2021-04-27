@@ -18,6 +18,7 @@ export abstract class Table {
 
   abstract load(): Promise<this>
 
+  //TODO this is probably unnecessary
   abstract create(): Promise<this>
 
   abstract delete(): Promise<boolean>

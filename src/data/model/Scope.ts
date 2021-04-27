@@ -5,7 +5,6 @@ import {Colored} from "./Base"
 export default class Scope extends Colored {
 
   notebookId: number
-  tagIds = new Array<number>()
 
   unique: boolean
 
@@ -13,10 +12,6 @@ export default class Scope extends Colored {
     super(title, color, id)
     this.notebookId = notebookId
     this.unique = unique
-
-    Object.defineProperties(this, {
-      scopedTags: {value: [], enumerable: false, writable: true}
-    })
   }
 
   async create() {
@@ -35,7 +30,6 @@ export default class Scope extends Colored {
 
   async load() {
     return Promise.all([
-      // dexie.tags.where(scopeId).equals(this.id).toArray().then(tags => this.scopedTags = tags)
     ]).then(_it => this)
   }
 
@@ -54,14 +48,6 @@ export default class Scope extends Colored {
 
     return scopes
   }
-
-  // add(tag: Tag) {
-  //   return addTo(this.scopedTags, tag)
-  // }
-  //
-  // remove(items?: Array<Tag> | Tag) {
-  //   return removeFrom(this.scopedTags, items)
-  // }
 
   toColonString(): string {
     return this.unique ? this.title + "::" : this.title + ":"

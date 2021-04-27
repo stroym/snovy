@@ -10,7 +10,7 @@ import WithLabel from "../inputs/WithLabel"
 interface FormProps {
   initialValue?: string
   scopes: Array<Scope>
-  onConfirm: (tagText: string, tagColor: string, scopeText?: string, scopeColor?: string, scopeUnique?: boolean) => void
+  onConfirm: (tagText: string, tagColor: string, scope?: { title: string, color: string, unique: boolean }) => void
 }
 
 const defaultWhite = "#ffffff"
@@ -19,8 +19,8 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
   function TagForm(props: FormProps, ref: React.Ref<HTMLFormElement>) {
 
     const [tagText, setTagText] = useState<string>()
-    const [tagColor, setTagColor] = useState<string>()
-    const [scopeText, setScopeText] = useState(defaultWhite)
+    const [tagColor, setTagColor] = useState<string>(defaultWhite)
+    const [scopeText, setScopeText] = useState("")
     const [scopeColor, setScopeColor] = useState(defaultWhite)
 
     const [unique, setUnique] = useState(false)
@@ -76,15 +76,15 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
         setScopeColor(sc.color)
         setUnique(sc.unique)
       } else {
-        setScopeText(str ?? defaultWhite)
-        setScopeColor("")
+        setScopeText(str ?? "")
+        setScopeColor(defaultWhite)
         setUnique(false)
       }
     }
 
     const createTag = () => {
       if (tagText && tagColor) {
-        props.onConfirm(tagText, tagColor, scopeText, scopeColor, unique)
+        props.onConfirm(tagText, tagColor, {title: scopeText, color: scopeColor, unique: unique})
       }
     }
 
