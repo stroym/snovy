@@ -49,8 +49,8 @@ class Database extends Dexie {
       sections: Database.buildColumns([notebookId, title, order]),
       notes: Database.buildColumns([sectionId, stateId, "*tagIds", title, "content", order]),
       tags: Database.buildColumns([notebookId, scopeId, title, color]),
-      scopes: Database.buildColumns([notebookId, "*tagIds", "&" + title, color]),
-      states: Database.buildColumns([notebookId, "*noteIds", "&" + title, color])
+      scopes: Database.buildColumns([notebookId, "&" + title, color]),
+      states: Database.buildColumns([notebookId, "&" + title, color])
     })
 
     this.options = this.table("options")

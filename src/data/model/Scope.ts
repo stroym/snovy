@@ -29,8 +29,7 @@ export default class Scope extends Colored {
   }
 
   async load() {
-    return Promise.all([
-    ]).then(_it => this)
+    return Promise.all([]).then(_it => this)
   }
 
   async save() {
