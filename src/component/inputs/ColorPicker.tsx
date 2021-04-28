@@ -1,7 +1,7 @@
 import React, {useRef} from "react"
 
 import {ColorButton} from "./Button"
-import {useHideOnOutsideClick} from "../../util/hooks"
+import {watchOutsideClick} from "../../util/hooks"
 import {TinyStyle} from "../tag/TagItem"
 import {ColoredInput} from "./Input"
 import FocusTrap from "focus-trap-react"
@@ -17,7 +17,7 @@ export const ColorPicker = (props: {
   const buttonRef = useRef<HTMLButtonElement>(null)
   const pickerRef = useRef<HTMLDivElement>(null)
 
-  const [visible, , flip] = useHideOnOutsideClick(buttonRef, {otherRefs: [pickerRef], eventType: "click"})
+  const [visible, , flip] = watchOutsideClick(buttonRef, {otherRefs: [pickerRef], eventType: "click"})
 
   const getColor = (color: string) => {
     props.getColor(color)

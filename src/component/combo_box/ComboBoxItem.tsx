@@ -8,7 +8,7 @@ export interface ComboBoxItemProps<T extends GenericItem> extends React.HTMLProp
   item: T
   active?: boolean
   highlighted?: boolean
-  customItem?: (item: T) => React.ReactElement<ComboBoxItemProps<T>>
+  customItem?: (item: T) => React.ReactElement
 }
 
 const ComboBoxItem = forwardRef(<T extends GenericItem>(

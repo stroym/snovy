@@ -63,20 +63,20 @@ export const Selector = (props: {
     props.onNotebookChange(newItem)
   }
 
-  const secRef = useRef<HTMLDivElement>(null)
-  const noteRef = useRef<HTMLDivElement>(null)
+  const secRef = useRef<HTMLOListElement>(null)
+  const noteRef = useRef<HTMLOListElement>(null)
 
   return (
     <SidebarContent
       id="notes-selector"
       heading={<ComboBox
         id="notebook-selector" newItem={{getInputValue: createItem, name: "notebook"}}
-        items={props.notebooks} selectedItem={props.selectedNotebook} onItemSelect={props.onNotebookChange}
+        items={props.notebooks} selected={props.selectedNotebook} onSelect={props.onNotebookChange}
       />}
     >
-      <List
-        ref={secRef} id="snovy-list-section" defaultFirst items={props.selectedNotebook?.itemsSortedByOrder}
-        selection={props.selectedSections} onSelect={props.onSectionChange} getContextTarget={setSectionContext}
+      <List<Section>
+        ref={secRef} id="snovy-list-section" items={props.selectedNotebook?.itemsSortedByOrder}
+        selection={props.selectedSections} onSelect={props.onSectionChange} onContext={setSectionContext}
         onItemValueChange={(str => {
           const it = props.selectedSections.first()
 
@@ -119,9 +119,9 @@ export const Selector = (props: {
           })
         }
       </ContextMenu>
-      <List
-        ref={noteRef} id="snovy-list-note" defaultFirst items={activeSection?.itemsSortedByOrder}
-        selection={props.selectedNotes} onSelect={props.onNoteChange} getContextTarget={setNoteContext}
+      <List<Note>
+        ref={noteRef} id="snovy-list-note" items={activeSection?.itemsSortedByOrder}
+        selection={props.selectedNotes} onSelect={props.onNoteChange} onContext={setNoteContext}
         onItemValueChange={
           (str => {
             const it = props.selectedNotes.first()

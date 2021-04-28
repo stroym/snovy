@@ -28,8 +28,8 @@ html, body, #root {
 }
 
 [data-editable="true"] {
-  cursor: text;
-  user-select: text;
+  cursor: text !important;
+  user-select: text !important;
 }
 
 [data-context="true"] {

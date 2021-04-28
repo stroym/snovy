@@ -30,6 +30,7 @@ import {default as DetailIcon} from "../public/icons/detail.svg"
 import {default as ManagerIcon} from "../public/icons/manager.svg"
 import {default as ResourcesIcon} from "../public/icons/resources.svg"
 import {activeItem, highlightedItem, selectedItem} from "./util/classes"
+import Favorites from "./component/sidebar/left/Favorites"
 // import {default as Icon} from "../public/icons/"
 
 //TODO move props into interfaces, extend basic html props, use destructuring wherever possible
@@ -193,7 +194,8 @@ const App = () => {
             tabAlignment: Alignment.START,
             icon: <FavoritesIcon/>,
             viewable: {
-              text: mappings.favorites
+              text: mappings.favorites,
+              content: <Favorites items={selectedNotebook?.sections}/> //TODO add field on notes
             }
           },
           {

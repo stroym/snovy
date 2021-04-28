@@ -5,7 +5,7 @@ import {isArray, isItem} from "./utils"
 
 type mouseEventType = "mousedown" | "click"
 
-export function useHideOnOutsideClick(
+export function watchOutsideClick(
   elementRef: React.RefObject<Element | null>,
   {otherRefs = [], eventType = "mousedown", initialState = false}: {
     otherRefs?: Array<React.RefObject<Element | null>>,
@@ -15,10 +15,10 @@ export function useHideOnOutsideClick(
 ):
   [boolean, Dispatch<SetStateAction<boolean>>, () => void] {
 
-  const [visible, setVisible] = useState(initialState)
+  const [toggled, setToggled] = useState(initialState)
 
   const flip = () => {
-    setVisible(!visible)
+    setToggled(!toggled)
   }
 
   useEffect(
@@ -36,20 +36,20 @@ export function useHideOnOutsideClick(
   const handleOutsideClick = (e: MouseEvent) => {
     !elementRef.current?.contains(e.target as Node) &&
     !otherRefs?.find(it => it.current?.contains((e.target as Node))) &&
-    setVisible(false)
+    setToggled(false)
   }
 
   const handleKey = (e: KeyboardEvent) => {
     if (e.key == Key.Escape) {
-      setVisible(false)
+      setToggled(false)
     }
   }
 
-  return [visible, setVisible, flip]
+  return [toggled, setToggled, flip]
 }
 
 export function useContextMenu(contextRef: React.RefObject<Element | null>, parentRef: React.RefObject<Element | null>) {
-  const [visible, setVisible] = useHideOnOutsideClick(contextRef)
+  const [visible, setVisible] = watchOutsideClick(contextRef)
   const {position, setX, setY} = useAbsolutePosition(contextRef, visible)
 
   const [, setContextItem] = useReducer(
@@ -111,37 +111,6 @@ export function useDefaultEmpty<T>(array?: Array<T> | T | null | undefined) {
     },
     isArray(array) ? array : isItem(array) ? [array] : []
   )
-}
-
-export function useCollapse(elementRef: React.RefObject<Element | null>):
-  [boolean, Dispatch<SetStateAction<boolean>>] {
-
-  const [collapsed, setCollapsed] = useState(false)
-
-  useEffect(
-    () => {
-      // elementRef.current!.style.transition = "opacity 600"
-      elementRef.current!.classList.remove("snovy-hooks-collapsible")
-    }, []
-  )
-
-  if (elementRef.current) {
-    if (collapsed) {
-      elementRef.current.classList.remove("snovy-hooks-rolling")
-      elementRef.current.classList.add("snovy-hooks-unrolling")
-
-      // elementRef.current.style.opacity = "0"
-      // setTimeout(() => elementRef.current!.style.height = "0", 600)
-    } else {
-      elementRef.current.classList.remove("snovy-hooks-rolling")
-      elementRef.current.classList.add("snovy-hooks-unrolling")
-
-      // elementRef.current.style.height = "100%"
-      // elementRef.current.style.opacity = "1"
-    }
-  }
-
-  return [collapsed, setCollapsed]
 }
 
 export function useMultiSelect<T>(listItems: Array<T> | undefined) {

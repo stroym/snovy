@@ -97,7 +97,7 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
             check={{toggled: unique, toggle: setUnique, descriptor: "Exclusive"}}
           >
             <ComboBox
-              onItemSelect={selectScope} items={props.scopes.map(it => it.toString())} selectedItem={scopeText}
+              onSelect={selectScope} items={props.scopes.map(it => it.toString())} selected={scopeText}
               placeholder="Scope" tabIndex={0} newItem={{getInputValue: makeScope, name: "scope"}}
               options={{slideDropdown: true, unboundDropdown: true}}
             />

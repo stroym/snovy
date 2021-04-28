@@ -1,45 +1,71 @@
-import React, {useRef} from "react"
+import React from "react"
 import {EditableInput} from "../inputs/Input"
 import {GenericItem} from "../../util/types"
 import {cls} from "../../util/utils"
 import {activeItem, selectedItem} from "../../util/classes"
+import {ListPresets} from "./List"
 
-interface ListItemProps<T extends GenericItem> extends React.HTMLProps<HTMLInputElement> {
-  mapped: T
+export interface ListItemProps<T extends GenericItem> extends Omit<React.HTMLProps<HTMLLIElement>, "onSelect"> {
+  item: T
   active: boolean
   selected: boolean
-  onItemClick: (item: T) => void
+  onSelect: (item: T) => void
   onContext?: (item: T) => void
   onValueChange?: (str: string) => void
+  preset?: ListPresets
+  customItem?: (item: T) => React.ReactElement
 }
 
 const ListItem = <T extends GenericItem>(
-  {className, mapped, active, selected, onItemClick, onContext, onValueChange, ...props}: ListItemProps<T>
+  {
+    className,
+    item,
+    active,
+    selected,
+    onSelect,
+    onContext,
+    onValueChange,
+    customItem,
+    preset,
+    ...props
+  }: ListItemProps<T>
 ) => {
-
-  const selfRef = useRef<HTMLInputElement>(null)
 
   const handleContext = (e: React.MouseEvent) => {
     e.stopPropagation()
-    onContext && onContext(mapped)
+    onContext && onContext(item)
   }
 
-  const handleFocus = () => {
-    if (selfRef.current) {
-      selfRef.current.selectionStart = selfRef.current.selectionEnd = 0
+  function resolvePreset() {
+    if (customItem) {
+      return customItem(item)
+    } else {
+      switch (preset) {
+        case "editable":
+          return (
+            <EditableInput
+              placeholder="Title" onValueChange={onValueChange} value={item.toString()}
+              onClick={() => {onSelect(item)}}
+            />
+          )
+        case "simple":
+        default:
+          return <div className="li-simple-content" tabIndex={0}>{item.toString()}</div>
+      }
     }
   }
 
   return (
-    <EditableInput
-      {...props} ref={selfRef} placeholder="Title" onValueChange={onValueChange} value={mapped.toString()}
-      onClick={() => {onItemClick(mapped)}} onFocus={handleFocus} onContextMenu={handleContext}
+    <li
+      {...props} onContextMenu={handleContext}
       className={"snovy-list-item styled-hover".concat(
         cls(className),
         cls(selectedItem, selected),
         cls(activeItem, active)
       )}
-    />
+    >
+      {resolvePreset()}
+    </li>
   )
 
 }

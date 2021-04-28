@@ -17,8 +17,6 @@
 }
 
 .snovy-sidebar {
-  position: relative;
-
   .sidebar-content {
     min-height: 0;
     width: 100%;
@@ -74,6 +72,7 @@
 // ---- Right ----
 
 #snovy-note-detail {
+  position: relative;
   grid-template-rows: fit-content(10%) 3fr 1fr;
 
   .sidebar-body {

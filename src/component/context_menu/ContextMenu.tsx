@@ -3,6 +3,7 @@ import ContextMenuItem from "./ContextMenuItem"
 import {useContextMenu} from "../../util/hooks"
 import {isArray} from "../../util/utils"
 
+//TODO try to make this one global context menu and only set items when clicking eligible elements
 const ContextMenu = (props: {
   parentRef: React.RefObject<Element>,
   children: Array<React.ReactElement<typeof ContextMenuItem> | undefined> | React.ReactElement<typeof ContextMenuItem>,

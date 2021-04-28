@@ -35,15 +35,10 @@ $border-rad-5: 5px;
 }
 
 // ---- Inputs ----
-
 .snovy-input {
   @include focus($border-rad-5);
 
   outline-offset: -$border-1;
-
-  &:not(.snovy-list-item) {
-    border-radius: $border-rad-5;
-  }
 }
 
 .colored-input-wrapper {
@@ -190,5 +185,13 @@ $border-rad-5: 5px;
 .snovy-options {
   .snovy-combo-box {
     border-radius: $border-rad-5;
+  }
+}
+
+// ---- List Items ----
+
+.snovy-list-item {
+  * {
+    @include focus($border-rad-5);
   }
 }

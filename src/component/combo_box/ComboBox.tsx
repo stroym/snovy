@@ -4,7 +4,7 @@ import {useDefaultEmpty} from "../../util/hooks"
 import ComboInfoItem from "./ComboInfoItem"
 import {KeyMapping, useKey} from "../../util/utils"
 import {Key} from "ts-key-enum"
-import ComboBoxItem, {ComboBoxItemProps} from "./ComboBoxItem"
+import ComboBoxItem from "./ComboBoxItem"
 import WithLabel from "../inputs/WithLabel"
 import Input from "../inputs/Input"
 import {ToggleButton} from "../inputs/Button"
@@ -17,27 +17,27 @@ type ComboBoxOptions = {
   unboundDropdown?: boolean
 }
 
-const defaultOptions = {
+const defaultOptions: ComboBoxOptions = {
   selectPreviousOnEsc: true,
   resetInputOnSelect: false,
   slideDropdown: false,
   unboundDropdown: false
 }
 
-export interface ComboBoxProps<T extends GenericItem> extends React.HTMLAttributes<HTMLInputElement> {
-  onItemSelect?: (active: T | undefined) => void
+export interface ComboBoxProps<T extends GenericItem> extends Omit<React.HTMLAttributes<HTMLInputElement>, "onSelect"> {
   items: Array<T> | undefined
-  selectedItem?: T
+  onSelect?: (active: T | undefined) => void
+  selected?: T
   newItem?: { getInputValue: (value: string) => void, name: string }
   options?: ComboBoxOptions,
   externalClose?: { closeMenu: boolean, menuVisible: (visible: boolean) => void }
   label?: { value: string, position: "before" | "after" }
-  customItem?: (item: T) => React.ReactElement<ComboBoxItemProps<T>>
+  customItem?: (item: T) => React.ReactElement
 }
 
-const ComboBox = <T extends GenericItem>({label, customItem, ...props}: ComboBoxProps<T>) => {
+const ComboBox = <T extends GenericItem>({label, customItem, options: passedOptions, ...props}: ComboBoxProps<T>) => {
 
-  const options = props.options ? {...defaultOptions, ...props.options} : defaultOptions
+  const options = passedOptions ? {...defaultOptions, ...passedOptions} : defaultOptions
 
   const [dropdownItems, setDropdownItems] = useDefaultEmpty<T>()
 
@@ -72,7 +72,7 @@ const ComboBox = <T extends GenericItem>({label, customItem, ...props}: ComboBox
   } = useCombobox({
     items: dropdownItems,
     itemToString: item => item ? item.toString() : "",
-    initialSelectedItem: props.selectedItem,
+    initialSelectedItem: props.selected,
     stateReducer: stateReducer,
     onInputValueChange: ({inputValue, selectedItem}) => {
       const target = inputValue ?? ""
@@ -128,13 +128,13 @@ const ComboBox = <T extends GenericItem>({label, customItem, ...props}: ComboBox
 
   useEffect(
     () => {
-      props.selectedItem && selectItem(props.selectedItem)
-    }, [props.selectedItem]
+      props.selected && selectItem(props.selected)
+    }, [props.selected]
   )
 
   useEffect(
     () => {
-      props.onItemSelect && selectedItem != props.selectedItem && props.onItemSelect(selectedItem ?? undefined)
+      props.onSelect && selectedItem != props.selected && props.onSelect(selectedItem ?? undefined)
       closeMenu()
     }, [selectedItem]
   )

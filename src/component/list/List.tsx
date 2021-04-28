@@ -5,21 +5,49 @@ import {Key} from "ts-key-enum"
 import {useMultiSelect} from "../../util/hooks"
 import {GenericItem} from "../../util/types"
 
-interface ListProps<T extends GenericItem> {
-  id?: string
+export type ListPresets = "simple" | "editable"
+
+type ListOptions = {
+  readonly?: boolean,
+  defaultFirst?: boolean
+  preset?: ListPresets
+}
+
+const defaultOptions: ListOptions = {
+  readonly: false,
+  defaultFirst: true,
+  preset: "editable"
+}
+
+interface ListProps<T extends GenericItem> extends Omit<React.HTMLProps<HTMLOListElement>, "onSelect" | "type"> {
   items: Array<T> | undefined
-  defaultFirst?: boolean //TODO defaultSelection, not this
   selection: Array<T>
-  onSelect: (items: Array<any>) => void
-  getContextTarget?: (active: any) => void
+  onSelect: (items: Array<T>) => void
+  onContext?: (active: T | undefined) => void
   onItemValueChange?: (str: string) => void
-  children?: Array<React.ReactElement> | React.ReactElement
+  options?: ListOptions
+  customItem?: (item: T) => React.ReactElement
 }
 
 //TODO maybe expose selectedItems AND activeItem
-const List = forwardRef(<T extends GenericItem>(props: ListProps<T>, ref?: React.Ref<HTMLDivElement>) => {
+const ListWithRef = forwardRef(<T extends GenericItem>(
+  {
+    items,
+    selection,
+    onSelect,
+    onContext,
+    onItemValueChange,
+    options: passedOptions,
+    customItem,
+    children,
+    ...props
+  }: ListProps<T>,
+  ref?: React.Ref<HTMLOListElement>
+) => {
 
-  const {selectedItems, setSelectedItems, handleItemClick} = useMultiSelect<T>(props.items)
+  const options = passedOptions ? {...defaultOptions, ...passedOptions} : defaultOptions
+
+  const {selectedItems, setSelectedItems, handleItemClick} = useMultiSelect<T>(items)
 
   const keyMap: Array<KeyMapping> = [
     {key: Key.Escape, handler: () => !selectedItems.isEmpty() && setSelectedItems([selectedItems.first()!])}
@@ -27,47 +55,45 @@ const List = forwardRef(<T extends GenericItem>(props: ListProps<T>, ref?: React
 
   useEffect(
     () => {
-      if (props.items && !props.items.isEmpty() && props.defaultFirst) {
-        setSelectedItems([props.items.first()!])
+      if (items && !items.isEmpty() && options.defaultFirst) {
+        setSelectedItems([items.first()!])
       }
-    }, [props.items]
+    }, [items]
   )
 
   useEffect(
     () => {
-      if (props.items && !props.items.isEmpty()) {
-        if (props.selection && !props.selection.isEmpty() && props.items.includesAll(props.selection)) {
-          setSelectedItems(props.selection)
+      if (items && !items.isEmpty()) {
+        if (selection && !selection.isEmpty() && items.includesAll(selection)) {
+          setSelectedItems(selection)
         }
       }
-    }, [props.selection]
+    }, [selection]
   )
 
   useEffect(
     () => {
-      props.onSelect && selectedItems != props.selection && props.onSelect(selectedItems)
+      onSelect && selectedItems != selection && onSelect(selectedItems)
     }, [selectedItems]
   )
 
   return (
-    <div
-      ref={ref} id={props.id} className="snovy-list" data-disabled={!props.items}
-      onKeyDown={e => useKey(e, keyMap)}
-      onContextMenu={() => props.getContextTarget && props.getContextTarget(undefined)}
+    <ol
+      {...props} ref={ref} className="snovy-list" data-disabled={!items} tabIndex={-1}
+      onKeyDown={e => useKey(e, keyMap)} onContextMenu={() => onContext && onContext(undefined)}
     >
-      {props.items?.map((item, index) =>
+      {items?.map((item, index) =>
         <ListItem
-          key={index} mapped={item} onValueChange={props.onItemValueChange}
+          key={index} item={item} preset={options.preset} customItem={customItem} onValueChange={onItemValueChange}
           selected={selectedItems.includes(item)} active={selectedItems.first() == item}
-          onItemClick={handleItemClick} onContext={props.getContextTarget}
+          onSelect={handleItemClick} onContext={onContext}
         />)
       }
-      {props.children}
-    </div>
+      {children}
+    </ol>
   )
 
 })
 
-List.displayName = "List"
-
+const List = ListWithRef as <T extends GenericItem>(props: ListProps<T> & { ref?: React.Ref<HTMLOListElement> }) => JSX.Element
 export default List

@@ -1,5 +1,5 @@
 import React, {forwardRef, MutableRefObject, useEffect, useRef, useState} from "react"
-import {useHideOnOutsideClick} from "../../util/hooks"
+import {watchOutsideClick} from "../../util/hooks"
 import {ColorHelper} from "./ColorPicker"
 import {KeyMapping, useKey} from "../../util/utils"
 import {Key} from "ts-key-enum"
@@ -51,7 +51,7 @@ export const EditableInput = forwardRef<HTMLInputElement, InputProps>(
   function EditableInput(props: InputProps, ref?: React.Ref<HTMLInputElement>) {
 
     const selfRef = ref ? (ref as MutableRefObject<HTMLInputElement>) : useRef<HTMLInputElement>(null)
-    const [editable, , flip] = useHideOnOutsideClick(selfRef, {initialState: !props.onValueChange})
+    const [editable, , flip] = watchOutsideClick(selfRef, {initialState: !props.onValueChange})
 
     useEffect(
       () => {
@@ -69,10 +69,16 @@ export const EditableInput = forwardRef<HTMLInputElement, InputProps>(
       }, [editable]
     )
 
+    const handleFocus = () => {
+      if (selfRef.current) {
+        selfRef.current.selectionStart = selfRef.current.selectionEnd = 0
+      }
+    }
+
     return (
       <SynchronizedInput
-        data-editable={editable}
-        ref={selfRef} {...props} readOnly={!editable} onDoubleClick={() => props.onValueChange && flip()}
+        {...props} ref={selfRef} readOnly={!editable} data-editable={editable} onFocus={handleFocus}
+        onDoubleClick={() => props.onValueChange && flip()}
       />
     )
 

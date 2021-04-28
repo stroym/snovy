@@ -7,7 +7,7 @@ import Note from "../../../data/model/Note"
 import {dexie} from "../../../index"
 import {title} from "../../../data/Database"
 import {ToggleButton} from "../../inputs/Button"
-import {useHideOnOutsideClick} from "../../../util/hooks"
+import {watchOutsideClick} from "../../../util/hooks"
 import TagForm from "../../tag/TagForm"
 import SidebarContent from "../SidebarContent"
 import ComboBox from "../../combo_box/ComboBox"
@@ -78,7 +78,7 @@ const NoteDetail = (props: {
   const formRef = useRef<HTMLFormElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
 
-  const [formVisible, setFormVisible, flipForm] = useHideOnOutsideClick(formRef, {otherRefs: [buttonRef]})
+  const [formVisible, setFormVisible, flipForm] = watchOutsideClick(formRef, {otherRefs: [buttonRef]})
   const [menuVisible, setMenuVisible] = useState(false)
   const [inputValue, setInputValue] = useState("")
 
@@ -108,7 +108,7 @@ const NoteDetail = (props: {
           <ToggleButton preset="add" circular ref={buttonRef} onClick={flip} setState={formVisible}/>
           <ComboBox<Tag>
             items={props.notebook.availableTags(props.note)} newItem={{getInputValue: getInputValue, name: "tag"}}
-            options={{selectPreviousOnEsc: false, resetInputOnSelect: true, unboundDropdown: true}} onItemSelect={onTag}
+            options={{selectPreviousOnEsc: false, resetInputOnSelect: true, unboundDropdown: true}} onSelect={onTag}
             externalClose={{menuVisible: setMenuVisible, closeMenu: menuVisible}}
             onFocus={() => {setFormVisible(false)}}
             customItem={item => <TagDisplayItem tag={item}/>}

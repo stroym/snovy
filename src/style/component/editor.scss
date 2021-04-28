@@ -49,7 +49,7 @@
 
 //hide outline toolbar, floating menu and some trash divs
 .block-menu-trigger,
-div:not([class]):not([id]) {
+html div:not([class]):not([id]) {
   display: none;
   visibility: hidden;
 }

@@ -53,7 +53,7 @@ const ThemeManager = ({themes, setThemes, currentTheme, setCurrentTheme}: ThemeP
         >
           <ComboBox
             label={{value: "Active theme", position: "before"}}
-            items={themes} selectedItem={currentTheme} onItemSelect={value => value && setCurrentTheme(value)}
+            items={themes} selected={currentTheme} onSelect={value => value && setCurrentTheme(value)}
           />
           <WithLabel value="Theme name" position="before">
             <SynchronizedInput
