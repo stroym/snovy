@@ -28,7 +28,6 @@ const Editor = (props: {
     }, [props.activeNote]
   )
 
-  //FIXME use a different editor (probably remirror...), outline is proving to be too much hassle
   return (
     <div id="snovy-editor" data-disabled={!props.activeNote}>
       <div className="toolbar">

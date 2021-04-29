@@ -76,7 +76,7 @@ export function useContextMenu(contextRef: React.RefObject<Element | null>, pare
     }, [visible]
   )
 
-  const handleContextMenu = (e: any) => {
+  const handleContextMenu = e => {
     e.preventDefault()
 
     if (!contextRef.current?.contains(e.target)) {
@@ -145,13 +145,13 @@ export function useMultiSelect<T>(listItems: Array<T> | undefined) {
         if (selectedItems.includes(item)) {
           setSelectedItems(listItems.slice(listItems.indexOf(selectedItems.first()!), listItems.indexOf(item) + 1))
         } else {
-          const indiFirst = listItems.indexOf(selectedItems.first()!)
-          const indiItem = listItems.indexOf(item)
+          const firstIndex = listItems.indexOf(selectedItems.first()!)
+          const itemIndex = listItems.indexOf(item)
 
-          if (indiItem > indiFirst) {
-            setSelectedItems(listItems.slice(indiFirst, indiItem + 1))
+          if (itemIndex > firstIndex) {
+            setSelectedItems(listItems.slice(firstIndex, itemIndex + 1))
           } else {
-            setSelectedItems(listItems.slice(indiItem, indiFirst + 1).reverse())
+            setSelectedItems(listItems.slice(itemIndex, firstIndex + 1).reverse())
           }
         }
       }

@@ -39,9 +39,9 @@ export abstract class Titled extends Table {
     return this.title
   }
 
-  updateTitle(newTitle: string) {
+  async updateTitle(newTitle: string) {
     this.title = newTitle
-    this.save()
+    await this.save()
   }
 
 }
@@ -57,9 +57,9 @@ export abstract class Ordered extends Titled {
 
   static compareByOrder = (a: Ordered, b: Ordered) => {return a.order - b.order}
 
-  updateOrder(newOrder: number) {
+  async updateOrder(newOrder: number) {
     this.order = newOrder
-    this.save()
+    await this.save()
   }
 
 }
@@ -73,16 +73,16 @@ export abstract class Colored extends Titled {
     this.color = color
   }
 
-  updateColor(newColor: string) {
+  async updateColor(newColor: string) {
     this.color = newColor
-    this.save()
+    await this.save()
   }
 
 }
 
 export async function addTo<T extends Table>(items: Array<T>, toAdd: T) {
   if (isArray<Ordered>(items) && toAdd instanceof Ordered) {
-    reorder(items, toAdd)
+    await reorder(items, toAdd)
   }
 
   items.push(toAdd)
@@ -110,7 +110,7 @@ async function remove<T extends Table>(items: Array<T>, toRemove: T) {
   await toRemove.delete()
 
   if (isArray<Ordered>(items) && toRemove instanceof Ordered) {
-    reorder(items, toRemove, "down")
+    await reorder(items, toRemove, "down")
   }
 
   return index
@@ -126,26 +126,19 @@ function fetchItem<T>(items: Array<T>, index: number) {
   }
 }
 
-function reorder<T extends Ordered>(items: Array<T>, item: T | Array<T>, direction: "up" | "down" = "up") {
-  if (direction == "up") {
-    if (isArray(item)) {
-      !item.isEmpty() && moveBy(items, item.first()!.order, item.length)
-    } else {
-      moveBy(items, item.order, 1)
-    }
+async function reorder<T extends Ordered>(items: Array<T>, item: T | Array<T>, direction: "up" | "down" = "up") {
+  if (isArray(item)) {
+    !item.isEmpty() && await moveBy(items, item.first()!.order, direction == "up" ? item.length : -item.length)
   } else {
-    if (isArray(item)) {
-      !item.isEmpty() && moveBy(items, item.first()!.order, -item.length)
-    } else {
-      moveBy(items, item.order, -1)
-    }
+    await moveBy(items, item.order, direction == "up" ? 1 : -1)
   }
 }
 
-function moveBy<T extends Ordered>(items: Array<T>, from: number, amount: number) {
+async function moveBy<T extends Ordered>(items: Array<T>, from: number, amount: number) {
   if (from != items.length) {
-    items.sort(Ordered.compareByOrder).slice(from).forEach(value => {
-      value.updateOrder(value.order + amount)
-    })
+
+    for (const item of items.sort(Ordered.compareByOrder).slice(from)) {
+      await item.updateOrder(item.order + amount)
+    }
   }
 }

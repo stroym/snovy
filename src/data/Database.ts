@@ -47,7 +47,7 @@ class Database extends Dexie {
         "accent", "border", "hover", "activeItem"]),
       notebooks: Database.buildColumns([notebookId, title]),
       sections: Database.buildColumns([notebookId, title, order]),
-      notes: Database.buildColumns([sectionId, stateId, "*tagIds", title, "content", order]),
+      notes: Database.buildColumns([sectionId, stateId, "*tagIds", title, "content", order, "archived", "favorite"]),
       tags: Database.buildColumns([notebookId, scopeId, title, color]),
       scopes: Database.buildColumns([notebookId, "&" + title, color]),
       states: Database.buildColumns([notebookId, "&" + title, color])

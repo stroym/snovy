@@ -3,7 +3,7 @@ import SidebarContent from "../SidebarContent"
 import List from "../../list/List"
 import ComboBox from "../../combo_box/ComboBox"
 
-export const Search = () => {
+const Search = () => {
 
   return (
     <SidebarContent

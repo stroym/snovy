@@ -29,7 +29,6 @@ interface ListProps<T extends GenericItem> extends Omit<React.HTMLProps<HTMLOLis
   customItem?: (item: T) => React.ReactElement
 }
 
-//TODO maybe expose selectedItems AND activeItem
 const ListWithRef = forwardRef(<T extends GenericItem>(
   {
     items,

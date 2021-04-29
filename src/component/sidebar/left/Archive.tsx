@@ -2,7 +2,7 @@ import React from "react"
 import SidebarContent from "../SidebarContent"
 import List from "../../list/List"
 
-export const Archive = () => {
+const Archive = () => {
 
   return (
     <SidebarContent id="archive-view">

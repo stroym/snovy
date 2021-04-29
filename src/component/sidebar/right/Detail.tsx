@@ -26,8 +26,8 @@ const Detail = (props: {
     }, [props.note, props.note.tags]
   )
 
-  const remove = (tag: Tag | Array<Tag>) => {
-    props.note.untag(tag)
+  const remove = async (tag: Tag | Array<Tag>) => {
+    await props.note.untag(tag)
     refreshTags()
   }
 
@@ -35,21 +35,21 @@ const Detail = (props: {
     setRefresh(!refresh)
   }
 
-  const onTag = (tag: Tag | undefined) => {
+  const onTag = async (tag: Tag | undefined) => {
     if (tag) {
       if (tag.scope && tag.scope.unique) {
         const uniqueScoped = props.note.tags.find(it => it.scope?.id == tag.scope!.id)
 
         if (uniqueScoped) {
           if ((confirm(`This scope is unique. Do you wish to replace the currently present tag ${uniqueScoped.title}?`))) {
-            props.note.untag(uniqueScoped)
-            props.note.tag(tag)
+            await props.note.untag(uniqueScoped)
+            await props.note.tag(tag)
           }
         } else {
-          props.note.tag(tag)
+          await props.note.tag(tag)
         }
       } else {
-        props.note.tag(tag)
+        await props.note.tag(tag)
       }
 
       refreshTags()
@@ -69,7 +69,7 @@ const Detail = (props: {
       tag = await new Tag(props.notebook.id, tagText, tagColor).save()
     }
 
-    props.note.tag(await tag.load())
+    await props.note.tag(tag)
     await props.notebook.load()
     refreshTags()
     flipForm()

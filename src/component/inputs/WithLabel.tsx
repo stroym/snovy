@@ -1,4 +1,3 @@
-import {css} from "@emotion/react"
 import React from "react"
 
 interface LabelProps extends React.HTMLProps<HTMLLabelElement> {
@@ -14,9 +13,9 @@ export const WithLabel = ({children, value, className, position, vertical, ...pr
   return (
     <label
       {...props} className={`labeled-input-wrapper ${className ?? ""}`}
-      css={css`
-        flex-flow: ${vertical ? "column" : "row"} nowrap;
-      `}
+      style={{
+        flexDirection: vertical ? "column" : "row"
+      }}
     >
       {position == "before" && label}
       {children}

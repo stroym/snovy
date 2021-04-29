@@ -139,7 +139,6 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
     }, [selectedItem]
   )
 
-  //TODO more/more advanced key bindings + info items
   const keyMap: Array<KeyMapping> = [
     {
       key: Key.Enter,

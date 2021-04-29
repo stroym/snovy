@@ -13,6 +13,7 @@ export default class Note extends Ordered {
 
   content = ""
   archived = false
+  favorite = false
   state?: State
   tags: Array<Tag> = new Array<Tag>()
 
@@ -25,7 +26,6 @@ export default class Note extends Ordered {
     })
   }
 
-  //TODO there's gotta be a better way to get and render tags
   get tagMap() {
     const scopedTags = this.tags
       .filter(tag => tag.scope)
@@ -73,18 +73,18 @@ export default class Note extends Ordered {
     }).then(_it => this)
   }
 
-  updateContent(newContent: string) {
+  async updateContent(newContent: string) {
     this.content = newContent
-    this.save()
+    await this.save()
   }
 
-  tag(tag: Tag) {
+  async tag(tag: Tag) {
     this.tags.push(tag)
     this.tagIds.push(tag.id)
-    this.save()
+    await this.save()
   }
 
-  untag(tag: Tag | Array<Tag>) {
+  async untag(tag: Tag | Array<Tag>) {
     if (isArray(tag)) {
       this.tags.deleteAll(tag)
       this.tagIds.deleteAll(tag.map(it => it.id))
@@ -93,16 +93,36 @@ export default class Note extends Ordered {
       this.tagIds.delete(tag.id)
     }
 
-    this.save()
+    await this.save()
   }
 
-  setState(state?: State) {
+  async setState(state?: State) {
     this.state = state
-    this.save()
+    await this.save()
   }
 
   isInState(state: State): boolean {
     return this.state == state
+  }
+
+  async archive() {
+    this.archived = true
+    await this.save()
+  }
+
+  async unarchive() {
+    this.archived = false
+    await this.save()
+  }
+
+  async star() {
+    this.favorite = true
+    await this.save()
+  }
+
+  async unstar() {
+    this.favorite = false
+    await this.save()
   }
 
 }

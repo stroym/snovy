@@ -1,13 +1,8 @@
 import React from "react"
 import SidebarContent from "../SidebarContent"
-import {GenericItem} from "../../../util/types"
 import List from "../../list/List"
 
-export interface FavoritesProps<T extends GenericItem> extends React.HTMLProps<HTMLDivElement> {
-  items: Array<T> | undefined
-}
-
-export const Favorites = <T extends GenericItem>({items}: FavoritesProps<T>) => {
+export const Favorites = () => {
 
   return (
     <SidebarContent id="favorites-view">

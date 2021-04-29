@@ -17,7 +17,6 @@ $border-rad-5: 5px;
     outline-width: $border-2;
     outline-style: inset;
     outline-offset: -$border-2;
-    -moz-outline-radius: #{$radius};
     border-radius: #{$radius};
   }
 }
@@ -56,6 +55,7 @@ $border-rad-5: 5px;
 // ---- Forms ----
 
 .snovy-form {
+
   & > .snovy-input,
   .snovy-form-item > .snovy-input,
   .snovy-combo-box {

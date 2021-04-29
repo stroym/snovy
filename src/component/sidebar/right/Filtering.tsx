@@ -2,7 +2,7 @@ import React from "react"
 import SidebarContent from "../SidebarContent"
 import List from "../../list/List"
 
-export const Filtering = () => {
+const Filtering = () => {
 
   return (
     <SidebarContent id="filter-view">

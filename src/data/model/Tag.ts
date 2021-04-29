@@ -46,7 +46,7 @@ export default class Tag extends Colored {
 
   async unTagAll() {
     for (const note of await dexie.notes.where("tagIds").equals(this.id).toArray()) {
-      note.untag(this)
+      await note.untag(this)
     }
   }
 

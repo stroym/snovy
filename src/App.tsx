@@ -35,7 +35,6 @@ import Search from "./component/sidebar/left/Search"
 import Archive from "./component/sidebar/left/Archive"
 import Filtering from "./component/sidebar/right/Filtering"
 import Resources from "./component/sidebar/right/Resources"
-// import {default as Icon} from "../public/icons/"
 
 //TODO move props into interfaces, extend basic html props, use destructuring wherever possible
 
@@ -201,7 +200,7 @@ const App = () => {
             tooltip: mappings.favorites,
             viewable: {
               text: mappings.favorites,
-              content: <Favorites items={selectedNotebook?.sections}/> //TODO add field on notes
+              content: <Favorites/>
             }
           },
           {

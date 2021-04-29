@@ -7,6 +7,7 @@ import List from "../../list/List"
 import {makeContext, makeSharedContext} from "../../context_menu/ContextMenuItem"
 import ContextMenu from "../../context_menu/ContextMenu"
 import SidebarContent from "../SidebarContent"
+import {Titled} from "../../../data/model/Base"
 
 export const Selector = (props: {
   onNotebookChange: (active: Notebook | undefined) => void,
@@ -77,13 +78,7 @@ export const Selector = (props: {
       <List<Section>
         ref={secRef} id="snovy-list-section" items={props.selectedNotebook?.itemsSortedByOrder}
         selection={props.selectedSections} onSelect={props.onSectionChange} onContext={setSectionContext}
-        onItemValueChange={(str => {
-          const it = props.selectedSections.first()
-
-          if (it) {
-            it.updateTitle(str)
-          }
-        })}
+        onItemValueChange={str => handleTitleChange(props.selectedSections.first(), str)}
       />
       <ContextMenu parentRef={secRef} onFinish={() => setContextActive(!contextActive)}>
         {
@@ -122,15 +117,7 @@ export const Selector = (props: {
       <List<Note>
         ref={noteRef} id="snovy-list-note" items={activeSection?.itemsSortedByOrder}
         selection={props.selectedNotes} onSelect={props.onNoteChange} onContext={setNoteContext}
-        onItemValueChange={
-          (str => {
-            const it = props.selectedNotes.first()
-
-            if (it) {
-              it.updateTitle(str)
-            }
-          })
-        }
+        onItemValueChange={str => handleTitleChange(props.selectedNotes.first(), str)}
       />
       <ContextMenu parentRef={noteRef} onFinish={() => setContextActive(!contextActive)}>
         {
@@ -169,6 +156,12 @@ export const Selector = (props: {
     </SidebarContent>
   )
 
+}
+
+async function handleTitleChange(item: Titled | undefined, newTitle: string) {
+  if (item) {
+    await item.updateTitle(newTitle)
+  }
 }
 
 export default Selector
