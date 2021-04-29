@@ -40,10 +40,6 @@ export default class Section extends Ordered {
     }).then(_it => this)
   }
 
-  async create() {
-    return dexie.transaction("rw", dexie.sections, () => {dexie.sections.add(this)}).then(_it => this)
-  }
-
   //TODO delete notes/allow for moving them to some scratches-like section
   delete() {
     return dexie.transaction("rw", dexie.sections, () => {dexie.sections.delete(this.id)})

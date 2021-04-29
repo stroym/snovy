@@ -13,10 +13,6 @@ export default class Options extends Table {
     this.themeId = themeId
   }
 
-  async create() {
-    return dexie.transaction("rw", dexie.options, () => {dexie.options.add(this)}).then(_it => this)
-  }
-
   //useless
   async delete() {
     return false

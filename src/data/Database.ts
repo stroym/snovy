@@ -82,7 +82,7 @@ export const fetchThemes = async () => {
   return dexie.themes.toArray().then(async (loadedThemes) => {
     if (loadedThemes.isEmpty()) {
       for (const theme of defaults.themes) {
-        await theme.create()
+        await theme.save()
       }
 
       return await dexie.themes.toArray()

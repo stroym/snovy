@@ -52,14 +52,10 @@ export class Theme extends Titled {
     return new Theme("", "", "", "", "", "", "", "")
   }
 
-  async create() {
-    return dexie.transaction("rw", dexie.themes, () => {dexie.themes.add(this)}).then(_it => this)
-  }
-
-  async delete() {
-    return dexie.transaction("rw", dexie.themes, () => {dexie.themes.delete(this.id)})
-      .then(_result => true).catch(_result => false)
-  }
+   async delete() {
+     return dexie.transaction("rw", dexie.themes, () => {dexie.themes.delete(this.id)})
+       .then(_result => true).catch(_result => false)
+   }
 
   async load() {
     return Promise.all([]).then(_it => this)

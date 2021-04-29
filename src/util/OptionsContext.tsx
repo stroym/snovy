@@ -35,7 +35,7 @@ export const OptionsProvider = (props: {
 
   const initOptions = async () => {
     return await dexie.options.toArray().then(async (options) => {
-      return options.isEmpty() ? await defaults.options.create() : await options.first()!.load()
+      return options.isEmpty() ? await defaults.options.save() : await options.first()!.load()
     })
   }
 

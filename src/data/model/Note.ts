@@ -54,10 +54,6 @@ export default class Note extends Ordered {
     return Array.from(temp.entries())
   }
 
-  async create() {
-    return dexie.transaction("rw", dexie.notes, () => {dexie.notes.add(this)}).then(_it => this)
-  }
-
   delete() {
     return dexie.transaction("rw", dexie.notes, () => {dexie.notes.delete(this.id)})
       .then(_result => true).catch(_result => false)

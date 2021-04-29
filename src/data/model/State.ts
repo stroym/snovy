@@ -13,10 +13,6 @@ export default class State extends Colored {
     this.notebookId = notebookId
   }
 
-  async create() {
-    return dexie.transaction("rw", dexie.states, () => {dexie.states.add(this)}).then(_it => this)
-  }
-
   delete() {
     return dexie.transaction("rw", dexie.states, dexie.notes, async () => {
       for (const note of await dexie.notes.where(stateId).equals(this.id).toArray()) {

@@ -14,10 +14,6 @@ export default class Scope extends Colored {
     this.unique = unique
   }
 
-  async create() {
-    return dexie.transaction("rw", dexie.scopes, () => {dexie.scopes.add(this)}).then(_it => this)
-  }
-
   //TODO allow deleting tags or only removing scope from them
   delete() {
     return dexie.transaction("rw", dexie.scopes, dexie.tags, () => {

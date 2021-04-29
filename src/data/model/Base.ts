@@ -18,9 +18,6 @@ export abstract class Table {
 
   abstract load(): Promise<this>
 
-  //TODO this is probably unnecessary
-  abstract create(): Promise<this>
-
   abstract delete(): Promise<boolean>
 
 }
@@ -89,7 +86,7 @@ export async function addTo<T extends Table>(items: Array<T>, toAdd: T) {
   }
 
   items.push(toAdd)
-  return await toAdd.create()
+  return await toAdd.save()
 }
 
 export async function removeFrom<T extends Table>(items: Array<T>, toRemove?: T | Array<T>) {

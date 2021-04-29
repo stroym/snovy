@@ -23,10 +23,6 @@ export default class Tag extends Colored {
     return tags
   }
 
-  async create() {
-    return dexie.transaction("rw", dexie.tags, () => {dexie.tags.add(this)}).then(_it => this)
-  }
-
   delete() {
     return dexie.transaction("rw", dexie.tags, dexie.notes, async () => {
       await this.unTagAll()

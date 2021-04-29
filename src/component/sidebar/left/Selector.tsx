@@ -58,7 +58,7 @@ export const Selector = (props: {
   )
 
   const createItem = async (title: string) => {
-    const newItem = await new Notebook(title).create()
+    const newItem = await new Notebook(title).save()
     props.notebooks.push(newItem)
     props.onNotebookChange(newItem)
   }
