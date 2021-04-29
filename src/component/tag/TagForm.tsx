@@ -77,7 +77,6 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
         setUnique(sc.unique)
       } else {
         setScopeText(str ?? "")
-        setScopeColor(defaultWhite)
         setUnique(false)
       }
     }
