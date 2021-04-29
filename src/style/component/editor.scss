@@ -4,7 +4,7 @@
   grid-area: centre;
   display: grid;
   grid-template-areas: "toolbar" "editor";
-  grid-auto-rows: min-content auto;
+  grid-auto-rows: 5% auto;
 
   .toolbar {
     grid-area: toolbar;

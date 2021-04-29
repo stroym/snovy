@@ -88,7 +88,6 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
       }
     }
 
-    //TODO move the (optional) show button here inside a fragment?
     return (
       <FocusTrap focusTrapOptions={{clickOutsideDeactivates: true}}>
         <form ref={ref} id="snovy-tag-create-form" className="snovy-form" tabIndex={-1}>

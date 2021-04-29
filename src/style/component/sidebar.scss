@@ -25,7 +25,7 @@
     height: 100%;
     display: grid;
     grid-template-areas: "heading" "body" "footing";
-    grid-template-rows: fit-content(10%) 1fr fit-content(10%);
+    grid-template-rows: 5% 1fr fit-content(10%);
 
     .sidebar-heading {
       grid-area: heading;
@@ -75,7 +75,7 @@
 
 #snovy-note-detail {
   position: relative;
-  grid-template-rows: fit-content(10%) 3fr 1fr;
+  grid-template-rows: 5% 3fr 1fr;
 
   .sidebar-body {
     @include scrollbar();
