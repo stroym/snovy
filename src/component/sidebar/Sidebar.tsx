@@ -33,7 +33,7 @@ export const Sidebar = ({initialTab, orientation, children, ...props}: SidebarPr
     <TabMenu orientation={orientation} id={`${orientation}-menu`}>
       {[
         ...children.map((it, index) => <TabMenuItem
-          key={index} alignment={it.tabAlignment} icon={it.icon}
+          key={index} alignment={it.tabAlignment} icon={it.icon} tooltip={it.tooltip}
           viewable={it.viewable && {
             text: it.viewable.text,
             active: active,

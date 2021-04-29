@@ -79,7 +79,7 @@ const ListWithRef = forwardRef(<T extends GenericItem>(
 
   return (
     <ol
-      {...props} ref={ref} className="snovy-list" data-disabled={!items} tabIndex={-1}
+      {...props} ref={ref} className="snovy-list" data-disabled={!items}
       onKeyDown={e => useKey(e, keyMap)} onContextMenu={() => onContext && onContext(undefined)}
     >
       {items?.map((item, index) =>

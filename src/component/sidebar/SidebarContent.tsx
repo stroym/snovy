@@ -15,7 +15,8 @@ export const SidebarContent = ({id, children, heading, footing}: SidebarContentP
           {heading}
         </div>
       }
-      <div className="sidebar-body">
+      {/*FIXME detail body is somehow focusable...*/}
+      <div className="sidebar-body" tabIndex={-1}>
         {children}
       </div>
       {

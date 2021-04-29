@@ -15,6 +15,7 @@ interface ThemeProps {
   setThemes: (themes: Array<Theme>) => void
 }
 
+//TODO add option to disable accent color on sidebars?
 const ThemeManager = ({themes, setThemes, currentTheme, setCurrentTheme}: ThemeProps) => {
 
   const deleteTheme = () => {

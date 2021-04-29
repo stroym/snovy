@@ -1,4 +1,4 @@
-import React, {forwardRef, useEffect, useState} from "react"
+import React, {forwardRef, useEffect} from "react"
 import {css} from "@emotion/react"
 import {transparentize} from "polished"
 import {cls} from "../../util/utils"
@@ -11,6 +11,7 @@ import {default as ExpandedCircledIcon} from "../../../public/icons/collapsed_ci
 import {default as CheckIcon} from "../../../public/icons/checked.svg"
 import {default as RemoveIcon} from "../../../public/icons/remove.svg"
 import {activeItem} from "../../util/classes"
+import {useToggle} from "../../util/hooks"
 
 type BasePresets = "remove"
 
@@ -92,7 +93,7 @@ export const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
     ref?: React.Ref<HTMLButtonElement>
   ) {
 
-    const [toggled, setToggled] = useState(false)
+    const [toggled, setToggled, toggle] = useToggle()
 
     useEffect(
       () => {
@@ -105,7 +106,7 @@ export const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(
     const handleClick = (e) => {
       onClick && onClick(e)
       getState && getState(!toggled)
-      setToggled(!toggled)
+      toggle()
     }
 
     return <Button {...props} ref={ref} toggled={toggled} onClick={handleClick}/>

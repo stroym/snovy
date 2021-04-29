@@ -17,11 +17,11 @@ export const ColorPicker = (props: {
   const buttonRef = useRef<HTMLButtonElement>(null)
   const pickerRef = useRef<HTMLDivElement>(null)
 
-  const [visible, , flip] = watchOutsideClick(buttonRef, {otherRefs: [pickerRef], eventType: "click"})
+  const [visible, , toggle] = watchOutsideClick(buttonRef, {otherRefs: [pickerRef], eventType: "click"})
 
   const getColor = (color: string) => {
     props.getColor(color)
-    flip()
+    toggle()
   }
 
   return (
@@ -29,7 +29,7 @@ export const ColorPicker = (props: {
       {
         props.includeButton &&
         <ColorButton
-          ref={buttonRef} className="color-picker-button" mono onClick={() => {flip()}} color={props.selectedItem}
+          ref={buttonRef} className="color-picker-button" mono onClick={() => {toggle()}} color={props.selectedItem}
         />
       }
       {

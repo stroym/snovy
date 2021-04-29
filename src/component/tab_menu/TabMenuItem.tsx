@@ -1,38 +1,34 @@
-import React, {useState} from "react"
-import {Alignment, Orientation} from "./TabMenu"
+import React from "react"
+import {AlignableProps, OrientableProps, Orientation} from "./TabMenu"
 import {cls} from "../../util/utils"
 import {default as UpArrow} from "../../../public/icons/arrows/up.svg"
 import {default as RightArrow} from "../../../public/icons/arrows/right.svg"
 import {default as DownArrow} from "../../../public/icons/arrows/down.svg"
 import {default as LeftArrow} from "../../../public/icons/arrows/left.svg"
 import {activeItem} from "../../util/classes"
+import {useToggle} from "../../util/hooks"
 
-export interface TabMenuItemProps extends React.HTMLProps<HTMLDivElement> {
-  alignment: Alignment
+//TODO remove alignment from TabMenuItem?
+export interface TabMenuItemProps extends AlignableProps, React.HTMLProps<HTMLDivElement> {
   icon?: JSX.Element
   tooltip?: string
   viewable?: { text: string, active: string, onActiveChange: (text: string) => void }
 }
 
-export interface CollapseTabMenuItemProps extends React.HTMLProps<HTMLDivElement> {
-  alignment: Alignment
-  orientation: Orientation
-}
-
 const TabMenuItem = (
-  {alignment, onClick, icon, tooltip, viewable, ...props}: TabMenuItemProps) => {
+  {alignment: _alignment, onClick, icon, tooltip, viewable, ...props}: TabMenuItemProps) => {
 
   return (
     <div
-      {...props} onClick={e => {
-      onClick && onClick(e)
-      viewable && viewable.onActiveChange(viewable.text)
-    }} data-tip={tooltip} tabIndex={0}
+      {...props} data-tip={tooltip} tabIndex={0}
       className={"snovy-tab-menu-item styled-hover".concat(
         cls("icon", icon != undefined),
-        cls(alignment),
         cls(activeItem, viewable != undefined && viewable.active == viewable.text)
       )}
+      onClick={e => {
+        onClick && onClick(e)
+        viewable && viewable.onActiveChange(viewable.text)
+      }}
     >
       {icon ?? viewable?.text}
     </div>
@@ -40,9 +36,11 @@ const TabMenuItem = (
 
 }
 
-export const CollapseTabMenuItem = ({alignment, orientation, onClick}: CollapseTabMenuItemProps) => {
+export const CollapseTabMenuItem = (
+  {alignment: _alignment, orientation, onClick}: AlignableProps & OrientableProps & React.HTMLProps<HTMLDivElement>
+) => {
 
-  const [toggle, setToggle] = useState(false)
+  const [toggled, , toggle] = useToggle()
 
   const getIcon = () => {
     let onIcon
@@ -66,13 +64,14 @@ export const CollapseTabMenuItem = ({alignment, orientation, onClick}: CollapseT
         offIcon = <LeftArrow/>
     }
 
-    return toggle ? onIcon : offIcon
+    return toggled ? onIcon : offIcon
   }
 
   return <TabMenuItem
-    icon={getIcon()} alignment={alignment}
+    icon={getIcon()}
+    tooltip={toggled ? "Expand" : "Collapse"}
     onClick={e => {
-      setToggle(!toggle)
+      toggle()
       onClick && onClick(e)
     }}
   />

@@ -13,7 +13,7 @@ import SidebarContent from "../SidebarContent"
 import ComboBox from "../../combo_box/ComboBox"
 import TagDisplayItem from "../../tag/TagDisplayItem"
 
-const NoteDetail = (props: {
+const Detail = (props: {
   note: Note,
   notebook: Notebook
 }) => {
@@ -90,14 +90,14 @@ const NoteDetail = (props: {
     }, [formVisible]
   )
 
-  const flip = () => {
+  const toggle = () => {
     setMenuVisible(!menuVisible)
     flipForm()
   }
 
   const getInputValue = (value: string) => {
     setInputValue(value)
-    !formVisible && flip()
+    !formVisible && toggle()
   }
 
   return (
@@ -105,7 +105,7 @@ const NoteDetail = (props: {
       id="snovy-note-detail"
       heading={
         <>
-          <ToggleButton preset="add" circular ref={buttonRef} onClick={flip} setState={formVisible}/>
+          <ToggleButton preset="add" circular ref={buttonRef} onClick={toggle} setState={formVisible}/>
           <ComboBox<Tag>
             items={props.notebook.availableTags(props.note)} newItem={{getInputValue: getInputValue, name: "tag"}}
             options={{selectPreviousOnEsc: false, resetInputOnSelect: true, unboundDropdown: true}} onSelect={onTag}
@@ -132,5 +132,5 @@ const NoteDetail = (props: {
 
 }
 
-export default NoteDetail
+export default Detail
 

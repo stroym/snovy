@@ -2,23 +2,32 @@
 @import "../mixins";
 
 .snovy-tab-menu {
+  width: 100%;
   display: flex;
-  flex-flow: column nowrap;
+  //flex-direction: column; set in js
+  flex-wrap: nowrap;
   justify-content: space-between;
+
+  &:is(.top,.bottom) {
+    flex-direction: row;
+  }
+
+  &:is(.left,.right) {
+    flex-direction: column;
+  }
 
   .menu-section {
     display: flex;
-    flex-flow: column nowrap;
-    justify-content: flex-start;
+    flex-flow: inherit;
     align-items: stretch;
     overflow: hidden;
 
     &.start {
-      justify-items: flex-start;
+      justify-content: flex-start;
     }
 
     &.end {
-      justify-items: flex-end;
+      justify-content: flex-end;
     }
   }
 }
@@ -32,6 +41,7 @@
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
+  width: 100%;
 
   &.icon {
     display: flex;

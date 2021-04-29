@@ -51,7 +51,7 @@ export const EditableInput = forwardRef<HTMLInputElement, InputProps>(
   function EditableInput(props: InputProps, ref?: React.Ref<HTMLInputElement>) {
 
     const selfRef = ref ? (ref as MutableRefObject<HTMLInputElement>) : useRef<HTMLInputElement>(null)
-    const [editable, , flip] = watchOutsideClick(selfRef, {initialState: !props.onValueChange})
+    const [editable, , toggle] = watchOutsideClick(selfRef, {initialState: !props.onValueChange})
 
     useEffect(
       () => {
@@ -78,7 +78,7 @@ export const EditableInput = forwardRef<HTMLInputElement, InputProps>(
     return (
       <SynchronizedInput
         {...props} ref={selfRef} readOnly={!editable} data-editable={editable} onFocus={handleFocus}
-        onDoubleClick={() => props.onValueChange && flip()}
+        onDoubleClick={() => props.onValueChange && toggle()}
       />
     )
 

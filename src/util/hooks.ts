@@ -15,11 +15,7 @@ export function watchOutsideClick(
 ):
   [boolean, Dispatch<SetStateAction<boolean>>, () => void] {
 
-  const [toggled, setToggled] = useState(initialState)
-
-  const flip = () => {
-    setToggled(!toggled)
-  }
+  const [toggled, setToggled, toggle] = useToggle(initialState)
 
   useEffect(
     () => {
@@ -45,7 +41,7 @@ export function watchOutsideClick(
     }
   }
 
-  return [toggled, setToggled, flip]
+  return [toggled, setToggled, toggle]
 }
 
 export function useContextMenu(contextRef: React.RefObject<Element | null>, parentRef: React.RefObject<Element | null>) {
@@ -259,4 +255,14 @@ export function useRelativePosition(elementRef: React.RefObject<Element | null>,
   }
 
   return position
+}
+
+export function useToggle(initialState?: boolean): [boolean, Dispatch<SetStateAction<boolean>>, () => void] {
+  const [toggled, setToggled] = useState(initialState ?? false)
+
+  const toggle = () => {
+    setToggled(!toggled)
+  }
+
+  return [toggled, setToggled, toggle]
 }

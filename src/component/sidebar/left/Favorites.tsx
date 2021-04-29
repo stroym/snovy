@@ -11,7 +11,7 @@ export const Favorites = <T extends GenericItem>({items}: FavoritesProps<T>) => 
 
   return (
     <SidebarContent id="favorites-view">
-      <List items={items} onSelect={blob => {}} selection={[]} options={{preset: "simple"}}/>
+      <List items={[]} onSelect={_ => false} selection={[]} options={{preset: "simple"}}/>
     </SidebarContent>
   )
 

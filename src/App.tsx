@@ -11,7 +11,7 @@ import "dexie-export-import"
 import {Table} from "./data/model/Base"
 import {Alignment, Orientation} from "./component/tab_menu/TabMenu"
 import Selector from "./component/sidebar/left/Selector"
-import NoteDetail from "./component/sidebar/right/NoteDetail"
+import Detail from "./component/sidebar/right/Detail"
 import Manager from "./component/sidebar/right/Manager"
 import {css, useTheme} from "@emotion/react"
 import {darken, lighten} from "polished"
@@ -31,6 +31,10 @@ import {default as ManagerIcon} from "../public/icons/manager.svg"
 import {default as ResourcesIcon} from "../public/icons/resources.svg"
 import {activeItem, highlightedItem, selectedItem} from "./util/classes"
 import Favorites from "./component/sidebar/left/Favorites"
+import Search from "./component/sidebar/left/Search"
+import Archive from "./component/sidebar/left/Archive"
+import Filtering from "./component/sidebar/right/Filtering"
+import Resources from "./component/sidebar/right/Resources"
 // import {default as Icon} from "../public/icons/"
 
 //TODO move props into interfaces, extend basic html props, use destructuring wherever possible
@@ -100,15 +104,15 @@ const App = () => {
   }
 
   const mappings = {
-    notes: "🗊",
-    favorites: "☆",
-    search: "⚲",
-    filtering: "⚖",
-    resources: "⛏",
-    archive: "🗄",
-    options: "⚙",
-    detail: "🕮",
-    manager: "🏷"
+    notes: "Notes",
+    favorites: "Favorites",
+    search: "Search",
+    filtering: "Filtering",
+    resources: "Resources",
+    archive: "Archive",
+    options: "Options",
+    detail: "Detail",
+    manager: "Manager"
   }
 
   const outlineStyle = {
@@ -180,6 +184,7 @@ const App = () => {
           {
             tabAlignment: Alignment.START,
             icon: <NotesIcon/>,
+            tooltip: mappings.notes,
             viewable: {
               text: mappings.notes,
               content:
@@ -193,6 +198,7 @@ const App = () => {
           {
             tabAlignment: Alignment.START,
             icon: <FavoritesIcon/>,
+            tooltip: mappings.favorites,
             viewable: {
               text: mappings.favorites,
               content: <Favorites items={selectedNotebook?.sections}/> //TODO add field on notes
@@ -201,21 +207,25 @@ const App = () => {
           {
             tabAlignment: Alignment.START,
             icon: <SearchIcon/>,
+            tooltip: mappings.search,
             viewable: {
-              text: mappings.search
+              text: mappings.search,
+              content: <Search/>
             }
           },
           {
             tabAlignment: Alignment.END,
             icon: <ArchiveIcon/>,
+            tooltip: mappings.archive,
             viewable: {
-              text: mappings.archive
+              text: mappings.archive,
+              content: <Archive/>
             }
           },
           {
             tabAlignment: Alignment.END,
             icon: <OptionsIcon/>,
-            tooltip: "Options",
+            tooltip: mappings.options,
             viewable: {
               text: mappings.options,
               toggle: true,
@@ -230,16 +240,18 @@ const App = () => {
           {
             tabAlignment: Alignment.START,
             icon: <DetailIcon/>,
+            tooltip: mappings.detail,
             viewable: {
               text: mappings.detail,
               content:
                 selectedNotebook && !selectedNotes.isEmpty() && selectedNotes.first() &&
-                <NoteDetail note={selectedNotes.first()!} notebook={selectedNotebook}/>
+                <Detail note={selectedNotes.first()!} notebook={selectedNotebook}/>
             }
           },
           {
             tabAlignment: Alignment.START,
             icon: <ManagerIcon/>,
+            tooltip: mappings.manager,
             viewable: {
               text: mappings.manager,
               content: <Manager/>
@@ -248,15 +260,19 @@ const App = () => {
           {
             tabAlignment: Alignment.START,
             icon: <FilterIcon/>,
+            tooltip: mappings.filtering,
             viewable: {
-              text: mappings.filtering
+              text: mappings.filtering,
+              content: <Filtering/>
             }
           },
           {
             tabAlignment: Alignment.END,
             icon: <ResourcesIcon/>,
+            tooltip: mappings.resources,
             viewable: {
-              text: mappings.resources
+              text: mappings.resources,
+              content: <Resources item={selectedNotes.first()}/>
             }
           }
         ]}
