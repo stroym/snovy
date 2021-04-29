@@ -10,6 +10,7 @@ import {exportData, fetchThemes, importData} from "../../data/Database"
 import WithLabel from "../inputs/WithLabel"
 import {default as ExportIcon} from "../../../public/icons/import.svg"
 import {default as ImportIcon} from "../../../public/icons/export.svg"
+import {default as RemoveIcon} from "../../../public/icons/remove.svg"
 
 const OptionsManager = () => {
 
@@ -95,6 +96,9 @@ const OptionsManager = () => {
         </WithLabel>
         <WithLabel value="Export" position="before" vertical>
           <Button preset="provided" onClick={exportData}><ExportIcon/></Button>
+        </WithLabel>
+        <WithLabel value="Drop" position="before" vertical>
+          <Button preset="provided" onClick={async () => await dexie.delete()}><RemoveIcon/></Button>
         </WithLabel>
       </div>
       <ThemeManager themes={themes} setThemes={setThemes} currentTheme={theme} setCurrentTheme={setTheme}/>
