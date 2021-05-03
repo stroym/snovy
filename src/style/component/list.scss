@@ -17,6 +17,7 @@
   scroll-snap-align: start;
   border-radius: unset;
   width: 100%;
+  padding: 4% 8%;
 
   &, * {
     cursor: default;
@@ -24,7 +25,6 @@
   }
 
   * {
-    padding: 0 10%;
     height: 100%;
     width: auto;
   }

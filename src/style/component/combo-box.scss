@@ -9,11 +9,11 @@
   display: grid;
   grid-template-areas: "input button" "dropdown dropdown";
   grid-auto-columns: auto min-content;
-  //justify-content: space-between;
 
   .snovy-input {
     grid-area: input;
     align-self: center;
+    height: 1em;
   }
 
   .snovy-button-circular {
@@ -27,20 +27,13 @@
   @include scrollbar();
   grid-area: dropdown;
   width: 100%;
-  max-height: 50vh;
   margin: 0;
   padding: 0;
   z-index: 10;
-  position: absolute;
   display: flex;
   flex-flow: row wrap;
   align-content: flex-start;
   list-style: none;
-
-  &.slide {
-    max-height: unset;
-    position: unset;
-  }
 
   .snovy-dropdown-item {
     scroll-snap-align: start;

@@ -13,14 +13,14 @@ import {GenericItem} from "../../util/types"
 type ComboBoxOptions = {
   selectPreviousOnEsc?: boolean
   resetInputOnSelect?: boolean
-  slideDropdown?: boolean
+  absoluteDropdown?: boolean
   unboundDropdown?: boolean
 }
 
 const defaultOptions: ComboBoxOptions = {
   selectPreviousOnEsc: true,
   resetInputOnSelect: false,
-  slideDropdown: false,
+  absoluteDropdown: true,
   unboundDropdown: false
 }
 
@@ -162,8 +162,11 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
   //TODO the info items should probably be sticky
   const ComboDropdown =
     <ol
-      {...getMenuProps()} className={`snovy-dropdown ${options.slideDropdown ? " slide" : ""}`} data-visible={isOpen}
-      style={props.style}
+      {...getMenuProps()} className="snovy-dropdown" data-visible={isOpen}
+      style={{
+        position: options.absoluteDropdown && "absolute",
+        maxHeight: options.absoluteDropdown && "50vh"
+      }}
     >
       {
         isOpen && dropdownItems.isEmpty() &&
@@ -194,7 +197,7 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
 
   const ComboBox =
     <>
-      <div style={props.style} className="snovy-combo-box" id={props.id} {...getComboboxProps()}>
+      <div className="snovy-combo-box" id={props.id} {...getComboboxProps()}>
         <Input
           {...getInputProps({
             placeholder: props.placeholder,

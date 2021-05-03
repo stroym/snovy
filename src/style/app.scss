@@ -1,5 +1,6 @@
+@use "typography";
+@use "borders";
 @use "component/input";
-@use "component/combo-box";
 @use "component/button";
 @use "component/editor";
 @use "component/sidebar";
@@ -11,8 +12,7 @@
 @use "component/tags";
 @use "component/color-picker";
 @use "component/options";
-@use "typography";
-@use "borders";
+@use "component/combo-box";
 
 html, body, #root {
   margin: 0;

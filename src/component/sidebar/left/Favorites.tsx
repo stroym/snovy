@@ -6,7 +6,9 @@ export const Favorites = () => {
 
   return (
     <SidebarContent id="favorites-view">
-      <List items={[]} onSelect={_ => false} selection={[]} options={{preset: "simple"}}/>
+      <List
+        items={["asdasd", "asda", "bgsfg", "sffsdf"]} onSelect={_ => false} selection={[]} options={{preset: "simple"}}
+      />
     </SidebarContent>
   )
 

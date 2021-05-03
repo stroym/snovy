@@ -16,7 +16,7 @@ $border-rad-5: 5px;
   [data-whatinput="keyboard"] &:focus {
     outline-width: $border-2;
     outline-style: inset;
-    outline-offset: -$border-2;
+    outline-offset: -$border-1;
     border-radius: #{$radius};
   }
 }
@@ -29,15 +29,13 @@ $border-rad-5: 5px;
   border-radius: $border-rad-10;
 
   &.snovy-button-circular {
-    @include focus(50%);
+    border-radius: 50%;
   }
 }
 
 // ---- Inputs ----
-.snovy-input {
+.snovy-input:not(.snovy-list-item) {
   @include focus($border-rad-5);
-
-  outline-offset: -$border-1;
 }
 
 .colored-input-wrapper {
@@ -55,16 +53,13 @@ $border-rad-5: 5px;
 // ---- Forms ----
 
 .snovy-form {
-
-  & > .snovy-input,
   .snovy-form-item > .snovy-input,
   .snovy-combo-box {
     @include border($border-1);
+    border-radius: $border-rad-5;
   }
 
   .snovy-combo-box {
-    border-radius: $border-rad-5;
-
     &[aria-expanded="true"] {
       border-radius: $border-rad-5 $border-rad-5 0 0;
     }
@@ -75,11 +70,7 @@ $border-rad-5: 5px;
   }
 
   .snovy-dropdown {
-    @include border($border-1);
-
-    &.slide {
-      border-top: unset;
-    }
+    @include border(0 $border-1 $border-1 $border-1);
 
     border-radius: 0 0 $border-rad-5 $border-rad-5;
   }
@@ -97,6 +88,10 @@ $border-rad-5: 5px;
   .snovy-button {
     border: unset;
   }
+}
+
+.color-helper {
+  border-radius: 50%;
 }
 
 .tag-unique,
@@ -191,7 +186,7 @@ $border-rad-5: 5px;
 // ---- List Items ----
 
 .snovy-list-item {
-  * {
-    @include focus($border-rad-5);
+  *:focus {
+    outline: none !important;
   }
 }

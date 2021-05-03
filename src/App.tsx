@@ -151,7 +151,8 @@ const App = () => {
         }
 
         .${highlightedItem},
-        .styled-hover:not(.color-item,.mono):hover {
+        .styled-hover:not(.color-item,.mono):hover,
+        .snovy-list-item:focus-within {
           background-color: ${theme.hover} !important;
         }
 
@@ -167,12 +168,16 @@ const App = () => {
           outline-color: ${theme.accent};
 
           [data-whatinput="keyboard"] & {
-            :not(.snovy-tab-menu-item) > svg {
+            :not(.mono) > svg {
               fill: ${theme.accent};
             }
 
             :is(.snovy-tab-menu-item) > svg {
               fill: ${theme.textSecondary};
+            }
+
+            :is(.mono) > svg {
+              opacity: 0.5;
             }
           }
         }

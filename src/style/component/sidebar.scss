@@ -25,15 +25,15 @@
     height: 100%;
     display: grid;
     grid-template-areas: "heading" "body" "footing";
-    grid-template-rows: 5% 1fr fit-content(10%);
+    grid-template-rows: auto 1fr 0;
 
     .sidebar-heading {
       grid-area: heading;
       position: relative;
       display: flex;
       flex-flow: row nowrap;
-      align-items: center;
-      justify-items: flex-start;
+      place-items: center flex-start;
+      //align-items: center;
 
       .snovy-dropdown {
         top: 100%;
@@ -75,7 +75,7 @@
 
 #snovy-note-detail {
   position: relative;
-  grid-template-rows: 5% 3fr 1fr;
+  grid-template-rows: auto 3fr 1fr;
 
   .sidebar-body {
     @include scrollbar();
@@ -83,7 +83,7 @@
     padding: 0.1em;
     display: flex;
     flex-flow: row wrap;
-    place-content: flex-start;
+    align-items: flex-start;
   }
 }
 

@@ -19,6 +19,7 @@ const defaultOptions: ListOptions = {
   preset: "editable"
 }
 
+//TODO track highlighted item & apply hover & focus
 interface ListProps<T extends GenericItem> extends Omit<React.HTMLProps<HTMLOListElement>, "onSelect" | "type"> {
   items: Array<T> | undefined
   selection: Array<T>
@@ -78,7 +79,7 @@ const ListWithRef = forwardRef(<T extends GenericItem>(
 
   return (
     <ol
-      {...props} ref={ref} className="snovy-list" data-disabled={!items}
+      {...props} ref={ref} className="snovy-list" data-disabled={!items} tabIndex={-1}
       onKeyDown={e => useKey(e, keyMap)} onContextMenu={() => onContext && onContext(undefined)}
     >
       {items?.map((item, index) =>

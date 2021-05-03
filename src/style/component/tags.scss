@@ -1,4 +1,4 @@
-@import "../mixins";
+$calc-width: calc(100% - 2 * 0.2em);
 
 .tag-scope,
 .tag-name {
@@ -13,7 +13,8 @@
 }
 
 .snovy-tag-item {
-  @include autosize-margin(0.2em, 100%);
+  margin: 0.2em;
+  max-width: $calc-width;
   box-sizing: border-box;
   padding: 0.2em;
   overflow: hidden;
@@ -32,7 +33,7 @@
 }
 
 .tag-grouped {
-  min-width: calc(100% - 2 * 0.2em); //prevent non-unique scoped tags from shrinking which can lead to empty spaces which look weird
+  min-width: $calc-width; //prevent non-unique scoped tags from shrinking which can lead to empty spaces which look weird
   flex-grow: 1;
   flex-flow: column nowrap;
   align-items: unset;
@@ -69,7 +70,6 @@
   }
 
   .color-helper {
-    @include circular();
     grid-area: color;
     justify-self: center;
   }

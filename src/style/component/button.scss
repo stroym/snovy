@@ -9,11 +9,13 @@
   background-color: transparent;
 
   &.snovy-button-circular {
-    @include circular();
     height: 1em;
     width: 1em;
     padding: unset;
     margin: 0.1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
 
     svg {
@@ -22,7 +24,9 @@
   }
 
   &.svg-button {
-    //outline: none !important;
+    .snovy-tag-item & {
+      outline: none !important;
+    }
 
     &.check svg {
       transform: scale(0.75);

@@ -4,10 +4,14 @@
   grid-area: centre;
   display: grid;
   grid-template-areas: "toolbar" "editor";
-  grid-auto-rows: 5% auto;
+  grid-auto-rows: auto 1fr;
 
   .toolbar {
     grid-area: toolbar;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    //padding: 0.5em 0;
   }
 
   .editor-wrapper {

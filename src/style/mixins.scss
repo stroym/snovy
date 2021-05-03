@@ -1,19 +1,6 @@
-@mixin autosize-margin($margin, $width) {
-  margin: $margin;
-  max-width: calc(#{$width} - 2 * #{$margin});
-}
-
 @mixin button-size($size, $n) {
   height: calc(#{$size} * #{$n});
   width: calc(#{$size} * #{$n});
-}
-
-@mixin circular() {
-  border-radius: 50%;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 @mixin scrollbar() {

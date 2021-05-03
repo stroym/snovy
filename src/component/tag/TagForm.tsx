@@ -24,7 +24,7 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
     const [scopeColor, setScopeColor] = useState(defaultWhite)
 
     const [unique, setUnique] = useState(false)
-    const [useScope, setUseScope] = useState(true)
+    const [unify, setUnify] = useState(true)
 
     useEffect(
       () => {
@@ -57,16 +57,12 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
 
     useEffect(
       () => {
-        if (useScope) {
+        if (unify) {
           setScopeColor(scopeColor)
           setTagColor(scopeColor)
         }
       }, [scopeColor]
     )
-
-    const makeScope = (title: string) => {
-      selectScope(title)
-    }
 
     const selectScope = (str: string | undefined) => {
       const sc = props.scopes.find(it => it.title == str)
@@ -96,15 +92,15 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
           >
             <ComboBox
               onSelect={selectScope} items={props.scopes.map(it => it.toString())} selected={scopeText}
-              placeholder="Scope" tabIndex={0} newItem={{getInputValue: makeScope, name: "scope"}}
-              options={{slideDropdown: true, unboundDropdown: true}}
+              placeholder="Scope" tabIndex={0} newItem={{getInputValue: selectScope, name: "scope"}}
+              options={{absoluteDropdown: false, unboundDropdown: true}}
             />
           </TagFormItem>
           <TagFormItem
             color={{value: tagColor, get: setTagColor}}
             check={{
-              toggled: useScope, toggle: toggle => {
-                setUseScope(toggle)
+              toggled: unify, toggle: toggle => {
+                setUnify(toggle)
                 if (toggle) {
                   setTagColor(scopeColor)
                 }
