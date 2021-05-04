@@ -151,9 +151,14 @@ const App = () => {
         }
 
         .${highlightedItem},
-        .styled-hover:not(.color-item,.mono):hover,
-        .snovy-list-item:focus-within {
+        .styled-hover:not(.color-item,.mono):hover {
           background-color: ${theme.hover} !important;
+        }
+
+        .snovy-list-item:focus-within {
+          [data-whatinput="keyboard"] & {
+            background-color: ${theme.hover} !important;
+          }
         }
 
         .${selectedItem} {
