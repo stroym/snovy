@@ -9,7 +9,7 @@ import {activeItem} from "../../util/classes"
 import {useToggle} from "../../util/hooks"
 
 //TODO remove alignment from TabMenuItem?
-export interface TabMenuItemProps extends AlignableProps, React.HTMLProps<HTMLDivElement> {
+export interface TabMenuItemProps extends AlignableProps, React.HTMLProps<HTMLButtonElement> {
   icon?: JSX.Element
   tooltip?: string
   viewable?: { text: string, active: string, onActiveChange: (text: string) => void }
@@ -19,8 +19,8 @@ const TabMenuItem = (
   {alignment: _alignment, onClick, icon, tooltip, viewable, ...props}: TabMenuItemProps) => {
 
   return (
-    <div
-      {...props} data-tip={tooltip} tabIndex={0}
+    <button
+      {...props} type="button" data-tip={tooltip} tabIndex={0}
       className={"snovy-tab-menu-item styled-hover".concat(
         cls("icon", icon != undefined),
         cls(activeItem, viewable != undefined && viewable.active == viewable.text)
@@ -31,13 +31,13 @@ const TabMenuItem = (
       }}
     >
       {icon ?? viewable?.text}
-    </div>
+    </button>
   )
 
 }
 
 export const CollapseTabMenuItem = (
-  {alignment: _alignment, orientation, onClick}: AlignableProps & OrientableProps & React.HTMLProps<HTMLDivElement>
+  {alignment: _alignment, orientation, onClick}: AlignableProps & OrientableProps & React.HTMLProps<HTMLButtonElement>
 ) => {
 
   const [toggled, , toggle] = useToggle()
