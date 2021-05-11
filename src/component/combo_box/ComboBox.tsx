@@ -107,7 +107,6 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
         } else {
           setInputValue(selectedItem?.toString() ?? "")
         }
-
       }
     }
   })
@@ -162,23 +161,25 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
   //TODO the info items should probably be sticky
   const ComboDropdown =
     <ol
-      {...getMenuProps()} className="snovy-dropdown" data-visible={isOpen}
+      {...getMenuProps()} className="snovy-dropdown" data-visible={isOpen} n
       style={{
         position: options.absoluteDropdown && "absolute",
-        maxHeight: options.absoluteDropdown && "50vh"
+        maxHeight: options.absoluteDropdown && "50vh",
+        display: isOpen ? "initial" : "none",
+        visibility: isOpen ? "visible" : "hidden"
       }}
     >
       {
-        isOpen && dropdownItems.isEmpty() &&
-        <ComboBoxItem className="snovy-dropdown-no-match" item={"No matching items found."}/>
-      }
-      {
-        dropdownItems?.map((item, index) => (
+        dropdownItems.map((item, index) => (
           <ComboBoxItem
             highlighted={index == highlightedIndex} active={selectedItem == item} key={index} item={item}
             {...getItemProps({item, index})} customItem={customItem}
           />
         ))
+      }
+      {
+        dropdownItems.isEmpty() &&
+        <ComboBoxItem className="snovy-dropdown-no-match" item={"No matching items found."}/>
       }
       {
         dropdownItems[highlightedIndex] &&
@@ -189,7 +190,7 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
         <ComboInfoItem
           value={
             `Press ${dropdownItems.isEmpty() ? "Enter/Shift+Enter" : "Shift+Enter"} 
-          to create ${inputValue.isBlank() ? ` new ${props.newItem.name}...` : inputValue}`
+             to create ${inputValue.isBlank() ? ` new ${props.newItem.name}...` : inputValue}`
           }
         />
       }

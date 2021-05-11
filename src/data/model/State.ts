@@ -6,11 +6,8 @@ import {stateId} from "../Database"
 
 export default class State extends Colored {
 
-  notebookId: number
-
-  constructor(notebookId: number, title: string, color: string, id?: number) {
+  constructor(title: string, color: string, id?: number) {
     super(title, color, id)
-    this.notebookId = notebookId
   }
 
   delete() {

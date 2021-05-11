@@ -4,13 +4,10 @@ import {Colored} from "./Base"
 
 export default class Scope extends Colored {
 
-  notebookId: number
-
   unique: boolean
 
-  constructor(notebookId: number, title: string, color: string, unique = false, id?: number) {
+  constructor(title: string, color: string, unique = false, id?: number) {
     super(title, color, id)
-    this.notebookId = notebookId
     this.unique = unique
   }
 
@@ -34,14 +31,6 @@ export default class Scope extends Colored {
     return dexie.transaction("rw", dexie.scopes, () => {
       dexie.scopes.put(this, this.id)
     }).then(_it => this)
-  }
-
-  static async bulkLoad(scopes: Array<Scope>) {
-    for (const scope of scopes) {
-      await scope.load()
-    }
-
-    return scopes
   }
 
   toColonString(): string {

@@ -92,6 +92,16 @@ export const fetchThemes = async () => {
   })
 }
 
+export const fetchTags = async () => {
+  return await dexie.tags.toArray().then(async (loadedTags) => {
+    for (const tag of loadedTags) {
+      await tag.load()
+    }
+
+    return loadedTags
+  })
+}
+
 export const importData = async (files: FileList | null, replaceData = false) => {
   if (files && files.length > 0) {
     const blob = files.item(0)

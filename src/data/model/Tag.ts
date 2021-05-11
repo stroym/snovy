@@ -4,23 +4,13 @@ import {Colored} from "./Base"
 
 export default class Tag extends Colored {
 
-  notebookId: number
   scopeId?: number
 
   scope?: Scope
 
-  constructor(notebookId: number, title: string, color: string, scopeId?: number, id?: number) {
+  constructor(title: string, color: string, scopeId?: number, id?: number) {
     super(title, color, id)
-    this.notebookId = notebookId
     this.scopeId = scopeId
-  }
-
-  static async bulkLoad(tags: Array<Tag>) {
-    for (const tag of tags) {
-      await tag.load()
-    }
-
-    return tags
   }
 
   delete() {

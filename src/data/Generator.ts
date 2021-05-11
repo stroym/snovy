@@ -60,22 +60,22 @@ async function addNote(notebookId: number, sectionId: number, order: number) {
   })
 }
 
-async function addTag(notebookId: number, scopeId?: number) {
-  await dexie.transaction("rw", dexie.notebooks, dexie.tags, dexie.scopes, async () => {
+async function addTag(scopeId?: number) {
+  await dexie.transaction("rw", dexie.tags, dexie.scopes, async () => {
     if (scopeId) {
       const scope = (await dexie.scopes.get(scopeId))!
 
-      await dexie.tags.add(new Tag(notebookId, randomString(randomNumber(8)), scope.color, scope.id))
+      await dexie.tags.add(new Tag(randomString(randomNumber(8)), scope.color, scope.id))
     } else {
-      await dexie.tags.add(new Tag(notebookId, randomString(randomNumber(8)), randomColor(), scopeId))
+      await dexie.tags.add(new Tag(randomString(randomNumber(8)), randomColor(), scopeId))
     }
   })
 }
 
-async function addScope(notebookId: number, unique?: boolean) {
-  return await dexie.transaction("rw", dexie.notebooks, dexie.scopes, async () => {
+async function addScope(unique?: boolean) {
+  return await dexie.transaction("rw", dexie.scopes, async () => {
     return await dexie.scopes.add(
-      new Scope(notebookId, randomString(randomNumber(10)), randomColor(), unique)
+      new Scope(randomString(randomNumber(10)), randomColor(), unique)
     ).then(id => {return id})
   })
 }
@@ -104,20 +104,20 @@ export default async function generate() {
   for (let i = 0; i < 3; i++) {
     const notebookId = (await addNotebook("" + randomNumber(100000, 10000)))!
 
-    for (let j = 0; j < randomNumber(15, 6); j++) {
-      const scopeId = (await addScope(notebookId, j % 3 == 0))
+    for (let j = 0; j < randomNumber(20, 8); j++) {
+      const scopeId = (await addScope(j % 3 == 0))
 
-      for (let k = 0; k < randomNumber(10, 2); k++) {
-        await addTag(notebookId, scopeId)
+      for (let k = 0; k < randomNumber(20, 4); k++) {
+        await addTag(scopeId)
+
+        if (j % 2 == 0) {
+          await addTag(undefined)
+        }
 
         if (j % 3 == 0 && k > randomNumber(4, 1)) {
           break
         }
       }
-    }
-
-    for (let k = 0; k < randomNumber(30, 10); k++) {
-      await addTag(notebookId, undefined)
     }
 
     for (let j = 0; j < i + 4; j++) {

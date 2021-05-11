@@ -15,6 +15,7 @@ interface FormProps {
 
 const defaultWhite = "#ffffff"
 
+//TODO get rid of "item" row things and rework this into a modal, since there's going to be a need for multiple checkboxes and things
 const TagForm = forwardRef<HTMLFormElement, FormProps>(
   function TagForm(props: FormProps, ref: React.Ref<HTMLFormElement>) {
 

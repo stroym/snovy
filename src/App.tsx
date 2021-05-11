@@ -55,6 +55,7 @@ const App = () => {
       dexie.transaction("rw", [dexie.notebooks, dexie.sections, dexie.notes, dexie.scopes, dexie.tags, dexie.states], async () => {
         await dexie.notebooks.toArray().then(async function (values) {
           const loaded = values
+          // const loaded = values.isEmpty() ? values : (await generate())
 
           setNotebooks(loaded.sort(Table.compareById))
           await selectNotebook(loaded.first())
@@ -191,9 +192,7 @@ const App = () => {
       <Sidebar orientation={Orientation.LEFT} initialTab={mappings.notes}>
         {[
           {
-            tabAlignment: Alignment.START,
-            icon: <NotesIcon/>,
-            tooltip: mappings.notes,
+            tabAlignment: Alignment.START, icon: <NotesIcon/>, tooltip: mappings.notes,
             viewable: {
               text: mappings.notes,
               content:
@@ -205,36 +204,28 @@ const App = () => {
             }
           },
           {
-            tabAlignment: Alignment.START,
-            icon: <FavoritesIcon/>,
-            tooltip: mappings.favorites,
+            tabAlignment: Alignment.START, icon: <FavoritesIcon/>, tooltip: mappings.favorites,
             viewable: {
               text: mappings.favorites,
               content: <Favorites/>
             }
           },
           {
-            tabAlignment: Alignment.START,
-            icon: <SearchIcon/>,
-            tooltip: mappings.search,
+            tabAlignment: Alignment.START, icon: <SearchIcon/>, tooltip: mappings.search,
             viewable: {
               text: mappings.search,
               content: <Search/>
             }
           },
           {
-            tabAlignment: Alignment.END,
-            icon: <ArchiveIcon/>,
-            tooltip: mappings.archive,
+            tabAlignment: Alignment.END, icon: <ArchiveIcon/>, tooltip: mappings.archive,
             viewable: {
               text: mappings.archive,
               content: <Archive/>
             }
           },
           {
-            tabAlignment: Alignment.END,
-            icon: <OptionsIcon/>,
-            tooltip: mappings.options,
+            tabAlignment: Alignment.END, icon: <OptionsIcon/>, tooltip: mappings.options,
             viewable: {
               text: mappings.options,
               toggle: true,
@@ -247,9 +238,7 @@ const App = () => {
       <Sidebar initialTab={mappings.detail} orientation={Orientation.RIGHT}>
         {[
           {
-            tabAlignment: Alignment.START,
-            icon: <DetailIcon/>,
-            tooltip: mappings.detail,
+            tabAlignment: Alignment.START, icon: <DetailIcon/>, tooltip: mappings.detail,
             viewable: {
               text: mappings.detail,
               content:
@@ -258,27 +247,21 @@ const App = () => {
             }
           },
           {
-            tabAlignment: Alignment.START,
-            icon: <ManagerIcon/>,
-            tooltip: mappings.manager,
+            tabAlignment: Alignment.START, icon: <ManagerIcon/>, tooltip: mappings.manager,
             viewable: {
               text: mappings.manager,
               content: <Manager/>
             }
           },
           {
-            tabAlignment: Alignment.START,
-            icon: <FilterIcon/>,
-            tooltip: mappings.filtering,
+            tabAlignment: Alignment.START, icon: <FilterIcon/>, tooltip: mappings.filtering,
             viewable: {
               text: mappings.filtering,
               content: <Filtering/>
             }
           },
           {
-            tabAlignment: Alignment.END,
-            icon: <ResourcesIcon/>,
-            tooltip: mappings.resources,
+            tabAlignment: Alignment.END, icon: <ResourcesIcon/>, tooltip: mappings.resources,
             viewable: {
               text: mappings.resources,
               content: <Resources item={selectedNotes.first()}/>
