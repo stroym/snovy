@@ -4,7 +4,6 @@ import Note from "./model/Note"
 import Scope from "./model/Scope"
 import {dexie} from "../index"
 import Tag from "./model/Tag"
-import {notebookId} from "./Database"
 
 const content =
   "# asdasddsasd\n" +
@@ -56,7 +55,7 @@ function makeNote(sectionId: number, order: number) {
 
 async function addNote(notebookId: number, sectionId: number, order: number) {
   await dexie.transaction("rw", dexie.notes, dexie.tags, dexie.scopes, async () => {
-    await dexie.notes.add(makeNote(sectionId, order)).then(async (id) => {await tagNote(notebookId, id)})
+    await dexie.notes.add(makeNote(sectionId, order)).then(async (id) => {await tagNote(id)})
   })
 }
 
@@ -80,9 +79,9 @@ async function addScope(unique?: boolean) {
   })
 }
 
-async function tagNote(ntbId: number, noteId: number) {
+async function tagNote(noteId: number) {
   await dexie.transaction("rw", dexie.notes, dexie.tags, dexie.scopes, async () => {
-    const tags = await dexie.tags.where(notebookId).equals(ntbId).toArray()
+    const tags = await dexie.tags.toArray()
     const note = (await dexie.notes.get(noteId))!
 
     const shuffledIds = tags.map(it => it.id)

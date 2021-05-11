@@ -1,101 +1,42 @@
-import React, {useContext, useEffect, useRef, useState} from "react"
+import React, {useEffect, useRef, useState} from "react"
 import Tag from "../../../data/model/Tag"
 import {TagItem, TagItemScoped, TagItemScopedUnique} from "../../tag/TagItem"
 import Scope from "../../../data/model/Scope"
-import Notebook from "../../../data/model/Notebook"
 import Note from "../../../data/model/Note"
-import {dexie} from "../../../index"
-import {title} from "../../../data/Database"
 import {ToggleButton} from "../../inputs/Button"
-import {useDefaultEmpty, watchOutsideClick} from "../../../util/hooks"
+import {useDefaultEmpty, useToggle, watchOutsideClick} from "../../../util/hooks"
 import TagForm from "../../tag/TagForm"
 import SidebarContent from "../SidebarContent"
 import ComboBox from "../../combo_box/ComboBox"
 import TagDisplayItem from "../../tag/TagDisplayItem"
-import AppContext from "../../../util/AppContext"
 import {Titled} from "../../../data/model/Base"
 
 const Detail = (props: {
-  note: Note,
-  notebook: Notebook
+  note: Note | undefined
+  tags: Array<Tag>
+  scopes: Array<Scope>
 }) => {
-
-  const context = useContext(AppContext)
-
-  const [noteTags, setNoteTags] = useDefaultEmpty<Tag>()
-
-  useEffect(
-    () => {
-      refreshTags()
-    }, [props.note, props.note.tagIds, context.tags]
-  )
-
-  const remove = async (tag: Tag | Array<Tag>) => {
-    await props.note.untag(tag)
-    refreshTags()
-  }
-
-  const refreshTags = () => {
-    setNoteTags(context.tags.filter(it => props.note.tagIds.includes(it.id)))
-  }
-
-  const onTag = async (tag: Tag | undefined) => {
-    if (tag) {
-      if (tag.scope && tag.scope.unique) {
-        const uniqueScoped = noteTags.find(it => it.scope?.id == tag.scope!.id)
-
-        if (uniqueScoped) {
-          if ((confirm(`This scope is unique. Do you wish to replace the currently present tag ${uniqueScoped.title}?`))) {
-            await props.note.untag(uniqueScoped)
-            await props.note.tag(tag)
-          }
-        } else {
-          await props.note.tag(tag)
-        }
-      } else {
-        await props.note.tag(tag)
-      }
-
-      refreshTags()
-    }
-  }
-
-  const tagCreation = async (tagText: string, tagColor: string, scope?: { title: string, color: string, unique: boolean }) => {
-    let tag
-
-    if (scope) {
-      const dbScope =
-        await dexie.scopes.where(title).equals(scope.title).first() ??
-        await new Scope(scope.title, scope.color, scope.unique).save()
-
-      tag = await new Tag(tagText, tagColor, dbScope.id).save()
-    } else {
-      tag = await new Tag(tagText, tagColor).save()
-    }
-
-    await props.note.tag(tag)
-    await props.notebook.load()
-    refreshTags()
-    flipForm()
-  }
 
   const formRef = useRef<HTMLFormElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
 
-  const [formVisible, setFormVisible, flipForm] = watchOutsideClick(formRef, {otherRefs: [buttonRef]})
-  const [menuVisible, setMenuVisible] = useState(false)
+  const [noteTags, setNoteTags] = useDefaultEmpty<Tag>()
+
+  const [formVisible, setFormVisible, flipForm] = watchOutsideClick(formRef, {
+    otherRefs: [buttonRef],
+    onToggleOff: () => setInputValue("")
+  })
+  const [menuVisible, setMenuVisible, toggleMenu] = useToggle()
   const [inputValue, setInputValue] = useState("")
 
   useEffect(
     () => {
-      if (!formVisible) {
-        setInputValue("")
-      }
-    }, [formVisible]
+      refreshTags()
+    }, [props.note, props.tags]
   )
 
   const toggle = () => {
-    setMenuVisible(!menuVisible)
+    toggleMenu()
     flipForm()
   }
 
@@ -108,12 +49,9 @@ const Detail = (props: {
     const scopedTags: Array<Tag> = []
     const unscopedTags: Array<Tag> = []
 
-    context.tags.forEach(it => it.scope ? scopedTags.push(it) : unscopedTags.push(it))
+    props.tags.forEach(it => it.scope ? scopedTags.push(it) : unscopedTags.push(it))
 
-    //TODO try to move these comparators somewhere
-    scopedTags.sort((a, b) => {
-      return Number(a.scope?.unique) - Number(b.scope?.unique) || a.scope!.title.localeCompare(b.scope!.title) || a.title.localeCompare(b.title)
-    })
+    scopedTags.sort(Tag.compareByScopeUnique || Tag.compareByScope || Tag.compareByTitle)
 
     unscopedTags.sort(Titled.compareByTitle)
 
@@ -126,7 +64,7 @@ const Detail = (props: {
 
     noteTags.forEach(it => it.scope ? scopedTags.push(it) : unscopedTags.push(it))
 
-    scopedTags.sort(Tag.compareByExclusivity)
+    scopedTags.sort(Tag.compareByScopeUnique)
 
     //TODO try simplify this
     const tempId = new Map<number, Array<Tag>>()
@@ -151,6 +89,31 @@ const Detail = (props: {
     return Array.from(temp.entries())
   }
 
+  const refreshTags = () => {
+    setNoteTags(props.tags.filter(it => props.note?.tagIds.includes(it.id)))
+  }
+
+  const onTag = async (note: Note, tag: Tag | undefined) => {
+    if (tag) {
+      if (tag.scope && tag.scope.unique) {
+        const uniqueScoped = noteTags.find(it => it.scope?.id == tag.scope!.id)
+
+        if (uniqueScoped) {
+          if ((confirm(`This scope is unique. Do you wish to replace the currently present tag ${uniqueScoped.title}?`))) {
+            await note.untag(uniqueScoped)
+            await note.tag(tag)
+          }
+        } else {
+          await note.tag(tag)
+        }
+      } else {
+        await note.tag(tag)
+      }
+
+      refreshTags()
+    }
+  }
+
   return (
     <SidebarContent
       id="snovy-note-detail"
@@ -159,7 +122,8 @@ const Detail = (props: {
           <ToggleButton preset="add" circular ref={buttonRef} onClick={toggle} setState={formVisible}/>
           <ComboBox<Tag>
             items={availableTags()} newItem={{getInputValue: getInputValue, name: "tag"}}
-            options={{selectPreviousOnEsc: false, resetInputOnSelect: true, unboundDropdown: true}} onSelect={onTag}
+            options={{selectPreviousOnEsc: false, resetInputOnSelect: true, unboundDropdown: true}}
+            onSelect={tag => props.note && onTag(props.note, tag)}
             externalClose={{menuVisible: setMenuVisible, closeMenu: menuVisible}}
             onFocus={() => {setFormVisible(false)}}
             customItem={item => <TagDisplayItem tag={item}/>}
@@ -169,18 +133,34 @@ const Detail = (props: {
     >
       {
         formVisible &&
-        <TagForm ref={formRef} scopes={context.scopes} initialValue={inputValue} onConfirm={tagCreation}/>
+        <TagForm
+          ref={formRef} scopes={props.scopes} initialValue={inputValue}
+          onTagCreated={tag => {
+            flipForm()
+            props.note && onTag(props.note, tag)  //TODO this should only happen when create & tag is used
+          }
+          }
+        />
       }
       {
-        collectNoteTags().map(([scope, tags]: [Scope | undefined, Tag[]]) => scope ? scope.unique ?
-          <TagItemScopedUnique key={scope.title} scope={scope} mapped={tags} onRemove={remove}/> :
-          <TagItemScoped key={scope.title} scope={scope} mapped={tags} onRemove={remove}/> :
-          tags.map((item: Tag) => <TagItem key={item.toString()} mapped={item} onRemove={remove}/>)
-        )
+        props.note && mapTagsToTagItems(
+          collectNoteTags(),
+          async (tag: Tag | Array<Tag>) => {
+            await props.note!.untag(tag)
+            refreshTags()
+          })
       }
     </SidebarContent>
   )
 
+}
+
+const mapTagsToTagItems = (tags: Array<[Scope | undefined, Tag[]]>, remove: (tag: Tag | Array<Tag>) => void) => {
+  return tags.map(([scope, tags]: [Scope | undefined, Tag[]]) => scope ? scope.unique ?
+    <TagItemScopedUnique key={scope.title} scope={scope} mapped={tags} onRemove={remove}/> :
+    <TagItemScoped key={scope.title} scope={scope} mapped={tags} onRemove={remove}/> :
+    tags.map((item: Tag) => <TagItem key={item.toString()} mapped={item} onRemove={remove}/>)
+  )
 }
 
 export default Detail

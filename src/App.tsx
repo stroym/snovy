@@ -7,7 +7,6 @@ import Note from "./data/model/Note"
 import Editor from "./component/editor/Editor"
 import {isArray} from "./util/utils"
 import {dexie} from "./index"
-import "dexie-export-import"
 import {Table} from "./data/model/Base"
 import {Alignment, Orientation} from "./component/tab_menu/TabMenu"
 import Selector from "./component/sidebar/left/Selector"
@@ -35,6 +34,8 @@ import Search from "./component/sidebar/left/Search"
 import Archive from "./component/sidebar/left/Archive"
 import Filtering from "./component/sidebar/right/Filtering"
 import Resources from "./component/sidebar/right/Resources"
+import {useLiveQuery} from "dexie-react-hooks"
+import generate from "./data/Generator"
 
 //TODO move props into interfaces, extend basic html props, use destructuring wherever possible
 
@@ -43,6 +44,16 @@ import Resources from "./component/sidebar/right/Resources"
 const App = () => {
 
   const theme = useTheme()
+
+  const tags = useLiveQuery(() => dexie.tags.toArray().then(async tags => {
+    for (const tag of tags) {
+      await tag.load()
+    }
+    return tags
+  })) ?? []
+
+  const scopes = useLiveQuery(() => dexie.scopes.toArray()) ?? []
+  const states = useLiveQuery(() => dexie.states.toArray()) ?? []
 
   const [notebooks, setNotebooks] = useState<Array<Notebook>>([])
 
@@ -54,8 +65,10 @@ const App = () => {
     () => {
       dexie.transaction("rw", [dexie.notebooks, dexie.sections, dexie.notes, dexie.scopes, dexie.tags, dexie.states], async () => {
         await dexie.notebooks.toArray().then(async function (values) {
-          const loaded = values
-          // const loaded = values.isEmpty() ? values : (await generate())
+          // const loaded = values
+          const loaded = values.isEmpty() ? await generate() : values
+
+          console.log(loaded)
 
           setNotebooks(loaded.sort(Table.compareById))
           await selectNotebook(loaded.first())
@@ -241,9 +254,7 @@ const App = () => {
             tabAlignment: Alignment.START, icon: <DetailIcon/>, tooltip: mappings.detail,
             viewable: {
               text: mappings.detail,
-              content:
-                selectedNotebook && !selectedNotes.isEmpty() && selectedNotes.first() &&
-                <Detail note={selectedNotes.first()!} notebook={selectedNotebook}/>
+              content: <Detail note={selectedNotes.first()!} tags={tags} scopes={scopes}/>
             }
           },
           {

@@ -61,7 +61,7 @@ export default class Tag extends Colored {
   static compareByScope =
     (a: Tag, b: Tag) => { return Number(a.scope) - Number(b.scope)}
 
-  static compareByExclusivity =
+  static compareByScopeUnique =
     (a: Tag, b: Tag) => { return Number(a.scope?.unique) - Number(b.scope?.unique)}
 
 }

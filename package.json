@@ -16,8 +16,9 @@
     "@types/react-portal": "^4.0.2",
     "class-transformer": "^0.4.0",
     "core-js": "^3.8.3",
-    "dexie": "^3.0.3",
+    "dexie": "^v3.1.0-alpha.10",
     "dexie-export-import": "^1.0.0",
+    "dexie-react-hooks": "^1.0.6",
     "downshift": "^6.1.0",
     "file-saver": "^2.0.5",
     "focus-trap-react": "^8.4.2",
@@ -149,6 +150,7 @@
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "@typescript-eslint/no-empty-function": "warn",
       "@typescript-eslint/no-non-null-assertion": "off",
+      "@typescript-eslint/ban-ts-comment": "warn",
       "react/prop-types": "off"
     }
   },

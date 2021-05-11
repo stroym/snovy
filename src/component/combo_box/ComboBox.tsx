@@ -161,7 +161,7 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
   //TODO the info items should probably be sticky
   const ComboDropdown =
     <ol
-      {...getMenuProps()} className="snovy-dropdown" data-visible={isOpen} n
+      {...getMenuProps()} className="snovy-dropdown" data-visible={isOpen}
       style={{
         position: options.absoluteDropdown && "absolute",
         maxHeight: options.absoluteDropdown && "50vh",
@@ -170,6 +170,7 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
       }}
     >
       {
+        //FIXME this customItem thing is way too performance heavy
         dropdownItems.map((item, index) => (
           <ComboBoxItem
             highlighted={index == highlightedIndex} active={selectedItem == item} key={index} item={item}

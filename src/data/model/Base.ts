@@ -31,9 +31,8 @@ export abstract class Titled extends Table {
     this.title = title
   }
 
-  static compareByTitle = (a: Titled, b: Titled) => {return a.title.localeCompare(b.title, undefined)}
-
-  static compareByToString = (a: Titled, b: Titled) => {return a.toString().localeCompare(b.toString(), undefined)}
+  //TODO try to have locales in settings?
+  static compareByTitle = (a: Titled, b: Titled) => {return a.title.localeCompare(b.title, navigator.language)}
 
   toString(): string {
     return this.title

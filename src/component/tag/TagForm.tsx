@@ -6,16 +6,19 @@ import ComboBox from "../combo_box/ComboBox"
 import Input from "../inputs/Input"
 import FocusTrap from "focus-trap-react"
 import WithLabel from "../inputs/WithLabel"
+import Tag from "../../data/model/Tag"
 
 interface FormProps {
   initialValue?: string
   scopes: Array<Scope>
-  onConfirm: (tagText: string, tagColor: string, scope?: { title: string, color: string, unique: boolean }) => void
+  onTagCreated?: (tag: Tag) => void
 }
 
 const defaultWhite = "#ffffff"
 
+//TODO spawns a couple of pixels lower than it should
 //TODO get rid of "item" row things and rework this into a modal, since there's going to be a need for multiple checkboxes and things
+//TODO validate tags to prevent dupes
 const TagForm = forwardRef<HTMLFormElement, FormProps>(
   function TagForm(props: FormProps, ref: React.Ref<HTMLFormElement>) {
 
@@ -24,7 +27,7 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
     const [scopeText, setScopeText] = useState("")
     const [scopeColor, setScopeColor] = useState(defaultWhite)
 
-    const [unique, setUnique] = useState(false)
+    const [scopeUnique, setUnique] = useState(false)
     const [unify, setUnify] = useState(true)
 
     useEffect(
@@ -78,9 +81,20 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
       }
     }
 
-    const createTag = () => {
-      if (tagText && tagColor) {
-        props.onConfirm(tagText, tagColor, {title: scopeText, color: scopeColor, unique: unique})
+    const createTag = async () => {
+      if (tagText && !tagText.isBlank() && tagColor) {
+        let tag
+
+        if (scopeText && !scopeText.isBlank()) {
+          const dbScope = props.scopes.find(it => it.title == scopeText) ??
+            await new Scope(scopeText, scopeColor, scopeUnique).save()
+
+          tag = await new Tag(tagText, tagColor, dbScope.id).save()
+        } else {
+          tag = await new Tag(tagText, tagColor).save()
+        }
+
+        props.onTagCreated && props.onTagCreated(tag)
       }
     }
 
@@ -89,7 +103,7 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
         <form ref={ref} id="snovy-tag-create-form" className="snovy-form" tabIndex={-1}>
           <TagFormItem
             color={{value: scopeColor, get: setScopeColor}}
-            check={{toggled: unique, toggle: setUnique, descriptor: "Exclusive"}}
+            check={{toggled: scopeUnique, toggle: setUnique, descriptor: "Exclusive"}}
           >
             <ComboBox
               onSelect={selectScope} items={props.scopes.map(it => it.toString())} selected={scopeText}
@@ -110,7 +124,7 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
           >
             <Input placeholder="Tag" onValueChange={setTagText} defaultValue={tagText}/>
           </TagFormItem>
-          <Button id="add-tag-button" value="Add & tag" onClick={() => createTag()}/>
+          <Button id="add-tag-button" value="Add & tag" onClick={async () => await createTag()}/>
         </form>
       </FocusTrap>
     )

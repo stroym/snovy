@@ -1,4 +1,5 @@
 import Dexie from "dexie"
+import {exportDB, importInto} from "dexie-export-import"
 import Notebook from "./model/Notebook"
 import State from "./model/State"
 import Scope from "./model/Scope"
@@ -48,9 +49,9 @@ class Database extends Dexie {
       notebooks: Database.buildColumns([notebookId, title]),
       sections: Database.buildColumns([notebookId, title, order]),
       notes: Database.buildColumns([sectionId, stateId, "*tagIds", title, "content", order, "archived", "favorite"]),
-      tags: Database.buildColumns([notebookId, scopeId, title, color]),
-      scopes: Database.buildColumns([notebookId, "&" + title, color]),
-      states: Database.buildColumns([notebookId, "&" + title, color])
+      tags: Database.buildColumns([scopeId, title, color]),
+      scopes: Database.buildColumns(["&" + title, color]),
+      states: Database.buildColumns(["&" + title, color])
     })
 
     this.options = this.table("options")
@@ -92,23 +93,15 @@ export const fetchThemes = async () => {
   })
 }
 
-export const fetchTags = async () => {
-  return await dexie.tags.toArray().then(async (loadedTags) => {
-    for (const tag of loadedTags) {
-      await tag.load()
-    }
-
-    return loadedTags
-  })
-}
-
+//FIXME TS complains with beta Dexie, see #1262 on Github
 export const importData = async (files: FileList | null, replaceData = false) => {
   if (files && files.length > 0) {
     const blob = files.item(0)
 
     if (blob) {
       await dexie.options.clear() //FIXME it shouldn't be necessary to drop current options on import
-      await dexie.import(blob, {overwriteValues: true, clearTablesBeforeImport: replaceData})
+      // @ts-ignore
+      await importInto(dexie, blob, {overwriteValues: true, clearTablesBeforeImport: replaceData})
 
       window.location.reload()
     }
@@ -117,7 +110,8 @@ export const importData = async (files: FileList | null, replaceData = false) =>
 
 export const exportData = async () => {
   saveAs(new File(
-    [await dexie.export({prettyJson: true})],
+    // @ts-ignore
+    [await exportDB(dexie, {prettyJson: true})],
     `snovy-export-\
     ${new Date().toISOString()
       .replace("T", "_")

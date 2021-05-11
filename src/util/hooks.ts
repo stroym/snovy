@@ -7,10 +7,11 @@ type mouseEventType = "mousedown" | "click"
 
 export function watchOutsideClick(
   elementRef: React.RefObject<Element | null>,
-  {otherRefs = [], eventType = "mousedown", initialState = false}: {
+  {otherRefs = [], eventType = "mousedown", initialState = false, onToggleOff = () => false}: {
     otherRefs?: Array<React.RefObject<Element | null>>,
     eventType?: mouseEventType,
-    initialState?: boolean
+    initialState?: boolean,
+    onToggleOff?: () => void
   } = {}
 ):
   [boolean, Dispatch<SetStateAction<boolean>>, () => void] {
@@ -29,15 +30,20 @@ export function watchOutsideClick(
     }, []
   )
 
-  const handleOutsideClick = (e: MouseEvent) => {
-    !elementRef.current?.contains(e.target as Node) &&
-    !otherRefs?.find(it => it.current?.contains((e.target as Node))) &&
+  const toggleOff = () => {
     setToggled(false)
+    onToggleOff && onToggleOff()
+  }
+
+  const handleOutsideClick = (e: MouseEvent) => {
+    if (!elementRef.current?.contains(e.target as Node) && !otherRefs?.find(it => it.current?.contains((e.target as Node)))) {
+      toggleOff()
+    }
   }
 
   const handleKey = (e: KeyboardEvent) => {
     if (e.key == Key.Escape) {
-      setToggled(false)
+      toggleOff()
     }
   }
 
@@ -257,6 +263,7 @@ export function useRelativePosition(elementRef: React.RefObject<Element | null>,
   return position
 }
 
+//TODO move onToggleOff here, use reducer, probably
 export function useToggle(initialState?: boolean): [boolean, Dispatch<SetStateAction<boolean>>, () => void] {
   const [toggled, setToggled] = useState(initialState ?? false)
 
