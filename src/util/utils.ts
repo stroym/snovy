@@ -9,6 +9,10 @@ export function isItem<T>(arg: T | null | undefined): arg is T {
   return arg !== undefined
 }
 
+export function isBlank(string: string | undefined | null) {
+  return string && string.isBlank()
+}
+
 export type KeyMapping = {
   key: Key,
   handler: () => void,
@@ -34,8 +38,14 @@ export function useKey(e: React.KeyboardEvent, keyMappings: Array<KeyMapping>) {
   }
 }
 
-export function cls(className: string | undefined, condition?: boolean) {
-  const temp = className == undefined ? "" : " " + className
+/**
+ * Helper for component className composition. Removes the need for manual blank/condition checks and adding spaces.
+ * @param className if undefined, an empty string is used, otherwise this string with prepended space
+ * @param condition
+ * @return className if condition is true or undefined and className is not blank, empty string otherwise
+ */
+export function cls(className: string | undefined | null, condition?: boolean) {
+  const temp = isBlank(className) ? "" : " " + className
 
   if (condition == undefined) {
     return temp

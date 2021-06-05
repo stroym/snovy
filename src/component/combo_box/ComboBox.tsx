@@ -1,4 +1,4 @@
-import React, {useEffect} from "react"
+import React, {useEffect, useRef} from "react"
 import {useCombobox, UseComboboxState, UseComboboxStateChangeOptions} from "downshift"
 import {useDefaultEmpty} from "../../util/hooks"
 import ComboInfoItem from "./ComboInfoItem"
@@ -9,6 +9,7 @@ import WithLabel from "../inputs/WithLabel"
 import Input from "../inputs/Input"
 import {ToggleButton} from "../inputs/Button"
 import {GenericItem} from "../../util/types"
+import memoize from "fast-memoize"
 
 type ComboBoxOptions = {
   selectPreviousOnEsc?: boolean
@@ -97,7 +98,7 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
       }
     },
     onIsOpenChange: ({selectedItem, isOpen}) => {
-      props.externalClose?.menuVisible(!isOpen)
+      // props.externalClose?.menuVisible(!isOpen) -- this external thing causes performance issues
 
       if (isOpen) {
         setInputValue("")
@@ -111,6 +112,10 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
     }
   })
 
+  const getItemPropsMemoRef = useRef(getItemProps)
+
+  // const memoProps = useMemo(() => {}, [props.items])
+
   useEffect(
     () => {
       if (props.externalClose?.closeMenu) {
@@ -122,6 +127,13 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
   useEffect(
     () => {
       props.items && setDropdownItems(props.items)
+
+      getItemPropsMemoRef.current = memoize(getItemProps, {
+        // @ts-ignore
+        serializer: (item: T, index: number) => {
+          return `it${item}:ind${index}`
+        }
+      })
     }, [props.items]
   )
 
@@ -170,17 +182,17 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
       }}
     >
       {
-        //FIXME this customItem thing is way too performance heavy
         dropdownItems.map((item, index) => (
           <ComboBoxItem
-            highlighted={index == highlightedIndex} active={selectedItem == item} key={index} item={item}
-            {...getItemProps({item, index})} customItem={customItem}
+            highlighted={index == highlightedIndex} selected={selectedItem == item} key={index} item={item}
+            {...getItemPropsMemoRef.current({item, index})}
+            customItem={customItem}
           />
         ))
       }
       {
         dropdownItems.isEmpty() &&
-        <ComboBoxItem className="snovy-dropdown-no-match" item={"No matching items found."}/>
+        <ComboInfoItem className="snovy-dropdown-no-match" value="No matching items found."/>
       }
       {
         dropdownItems[highlightedIndex] &&

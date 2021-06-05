@@ -3,7 +3,8 @@ import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin"
 import HtmlWebpackPlugin from "html-webpack-plugin"
 import {CleanWebpackPlugin} from "clean-webpack-plugin"
 import {ForkTsCheckerWebpackPlugin} from "fork-ts-checker-webpack-plugin/lib/ForkTsCheckerWebpackPlugin"
-import SplitChunksPlugin from "chunks-webpack-plugin"
+// import SplitChunksPlugin from "chunks-webpack-plugin"
+import TerserPlugin from "terser-webpack-plugin"
 
 module.exports = (env, argv) => {
   const isDevelopment = argv.mode == "development"
@@ -13,10 +14,10 @@ module.exports = (env, argv) => {
     entry: "./src/index.tsx",
     target: "web",
     output: {
-      path: __dirname + "/build",
-      filename: "bundle-[name].[contenthash:8].js",
-      sourceMapFilename: "[name].[contenthash:8].map",
-      chunkFilename: "[id].[contenthash:8].js"
+      path: __dirname + "/build"
+      // filename: "bundle-[name].[contenthash:8].js",
+      // sourceMapFilename: "[name].[contenthash:8].map",
+      // chunkFilename: "[id].[contenthash:8].js"
     },
     devtool: isDevelopment && "source-map",
     devServer: {
@@ -25,9 +26,13 @@ module.exports = (env, argv) => {
       port: 3000
     },
     optimization: {
-      splitChunks: {
-        chunks: "all"
-      }
+      // splitChunks: {chunks: "all"}
+      minimize: !isDevelopment,
+      minimizer: [
+        new TerserPlugin({
+          extractComments: false
+        })
+      ]
     },
     resolve: {
       extensions: [".js", ".ts", ".tsx"],
@@ -64,13 +69,14 @@ module.exports = (env, argv) => {
     plugins: [
       new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
-        filename: "./index.html",
+        inject: true,
+        inlineSource: ".(js|css)$",
         template: "./public/index.html"
       }),
+      // new SplitChunksPlugin(),
       isDevelopment && new webpack.HotModuleReplacementPlugin(),
       isDevelopment && new ReactRefreshWebpackPlugin(),
-      new SplitChunksPlugin(),
-      new ForkTsCheckerWebpackPlugin()
+      isDevelopment && new ForkTsCheckerWebpackPlugin()
     ].filter(Boolean)
   }
 }

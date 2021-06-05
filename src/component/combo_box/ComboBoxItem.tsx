@@ -1,17 +1,17 @@
-import React, {forwardRef} from "react"
+import React, {forwardRef, memo} from "react"
 import {cls} from "../../util/utils"
 import {GenericItem} from "../../util/types"
 import {activeItem, highlightedItem} from "../../util/classes"
 
 export interface ComboBoxItemProps<T extends GenericItem> extends React.HTMLProps<HTMLLIElement> {
   item: T
-  active?: boolean
+  selected?: boolean
   highlighted?: boolean
   customItem?: (item: T) => React.ReactElement
 }
 
 const ComboBoxItem = forwardRef(<T extends GenericItem>(
-  {item, active, highlighted, customItem, ...props}: ComboBoxItemProps<T>,
+  {item, selected, highlighted, customItem, ...props}: ComboBoxItemProps<T>,
   ref: React.Ref<HTMLLIElement>
   ) => {
 
@@ -19,7 +19,7 @@ const ComboBoxItem = forwardRef(<T extends GenericItem>(
       <li {...props} ref={ref}
           className={"snovy-dropdown-item".concat(
             cls(highlightedItem, highlighted),
-            cls(activeItem, active)
+            cls(activeItem, selected)
           )}
       >
         {customItem ? customItem(item) : item.toString()}
@@ -31,4 +31,4 @@ const ComboBoxItem = forwardRef(<T extends GenericItem>(
 
 ComboBoxItem.displayName = "ComboBoxItem"
 
-export default ComboBoxItem
+export default memo(ComboBoxItem)
