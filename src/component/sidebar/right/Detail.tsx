@@ -4,7 +4,7 @@ import {TagItem, TagItemScoped, TagItemScopedUnique} from "../../tag/TagItem"
 import Scope from "../../../data/model/Scope"
 import Note from "../../../data/model/Note"
 import {ToggleButton} from "../../inputs/Button"
-import {useDefaultEmpty, useToggle, watchOutsideClick} from "../../../util/hooks"
+import {useDefaultEmpty, watchOutsideClick} from "../../../util/hooks"
 import TagForm from "../../tag/TagForm"
 import SidebarContent from "../SidebarContent"
 import ComboBox from "../../combo_box/ComboBox"
@@ -26,7 +26,6 @@ const Detail = (props: {
     otherRefs: [buttonRef],
     onToggleOff: () => setInputValue("")
   })
-  const [menuVisible, setMenuVisible, toggleMenu] = useToggle()
   const [inputValue, setInputValue] = useState("")
 
   useEffect(
@@ -35,24 +34,18 @@ const Detail = (props: {
     }, [props.note, props.tags]
   )
 
-  const toggle = () => {
-    toggleMenu()
-    flipForm()
-  }
-
   const getInputValue = (value: string) => {
     setInputValue(value)
-    !formVisible && toggle()
+    !formVisible && flipForm()
   }
 
   const availableTags = () => {
+    const tagsNotOnNote = props.tags.filter(it => !noteTags.includes(it))
     const scopedTags: Array<Tag> = []
     const unscopedTags: Array<Tag> = []
 
-    props.tags.forEach(it => it.scope ? scopedTags.push(it) : unscopedTags.push(it))
-
+    tagsNotOnNote.forEach(it => it.scope ? scopedTags.push(it) : unscopedTags.push(it))
     scopedTags.sort(Tag.compareByScopeUnique || Tag.compareByScope || Tag.compareByTitle)
-
     unscopedTags.sort(Titled.compareByTitle)
 
     return scopedTags.concat(unscopedTags)
@@ -93,8 +86,8 @@ const Detail = (props: {
     setNoteTags(props.tags.filter(it => props.note?.tagIds.includes(it.id)))
   }
 
-  const onTag = async (note: Note, tag: Tag | undefined) => {
-    if (tag) {
+  const onTag = async (note: Note | undefined, tag: Tag | undefined) => {
+    if (note && tag) {
       if (tag.scope && tag.scope.unique) {
         const uniqueScoped = noteTags.find(it => it.scope?.id == tag.scope!.id)
 
@@ -119,12 +112,11 @@ const Detail = (props: {
       id="snovy-note-detail"
       heading={
         <>
-          <ToggleButton preset="add" circular ref={buttonRef} onClick={toggle} setState={formVisible}/>
+          <ToggleButton preset="add" circular ref={buttonRef} onClick={flipForm} setState={formVisible}/>
           <ComboBox<Tag>
             items={availableTags()} newItem={{getInputValue: getInputValue, name: "tag"}}
             options={{selectPreviousOnEsc: false, resetInputOnSelect: true, unboundDropdown: true}}
-            onSelect={tag => props.note && onTag(props.note, tag)}
-            externalClose={{menuVisible: setMenuVisible, closeMenu: menuVisible}}
+            onSelect={tag => onTag(props.note, tag)}
             onFocus={() => {setFormVisible(false)}}
             customItem={item => <TagDisplayItem tag={item}/>}
           />
@@ -137,9 +129,8 @@ const Detail = (props: {
           ref={formRef} scopes={props.scopes} initialValue={inputValue}
           onTagCreated={tag => {
             flipForm()
-            props.note && onTag(props.note, tag)  //TODO this should only happen when create & tag is used
-          }
-          }
+            onTag(props.note, tag)  //TODO this should only happen when create & tag is used
+          }}
         />
       }
       {

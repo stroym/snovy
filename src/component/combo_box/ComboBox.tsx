@@ -30,8 +30,7 @@ export interface ComboBoxProps<T extends GenericItem> extends Omit<React.HTMLAtt
   onSelect?: (active: T | undefined) => void
   selected?: T
   newItem?: { getInputValue: (value: string) => void, name: string }
-  options?: ComboBoxOptions,
-  externalClose?: { closeMenu: boolean, menuVisible: (visible: boolean) => void }
+  options?: ComboBoxOptions
   label?: { value: string, position: "before" | "after" }
   customItem?: (item: T) => React.ReactElement
 }
@@ -98,8 +97,6 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
       }
     },
     onIsOpenChange: ({selectedItem, isOpen}) => {
-      // props.externalClose?.menuVisible(!isOpen) -- this external thing causes performance issues
-
       if (isOpen) {
         setInputValue("")
       } else {
@@ -109,20 +106,14 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
           setInputValue(selectedItem?.toString() ?? "")
         }
       }
+    },
+    onSelectedItemChange: ({selectedItem}) => {
+      props.onSelect && selectedItem != props.selected && props.onSelect(selectedItem ?? undefined)
+      closeMenu()
     }
   })
 
   const getItemPropsMemoRef = useRef(getItemProps)
-
-  // const memoProps = useMemo(() => {}, [props.items])
-
-  useEffect(
-    () => {
-      if (props.externalClose?.closeMenu) {
-        closeMenu()
-      }
-    }, [props.externalClose?.closeMenu]
-  )
 
   useEffect(
     () => {
@@ -130,7 +121,7 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
 
       getItemPropsMemoRef.current = memoize(getItemProps, {
         // @ts-ignore
-        serializer: (item: T, index: number) => {
+        serializer: ({item, index}) => {
           return `it${item}:ind${index}`
         }
       })
@@ -141,13 +132,6 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
     () => {
       props.selected && selectItem(props.selected)
     }, [props.selected]
-  )
-
-  useEffect(
-    () => {
-      props.onSelect && selectedItem != props.selected && props.onSelect(selectedItem ?? undefined)
-      closeMenu()
-    }, [selectedItem]
   )
 
   const keyMap: Array<KeyMapping> = [
