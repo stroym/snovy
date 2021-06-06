@@ -5,9 +5,9 @@
   max-height: 100%;
   width: 100%;
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: column nowrap;
   align-content: flex-start;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -17,7 +17,11 @@
   scroll-snap-align: start;
   border-radius: unset;
   width: 100%;
-  padding: 4% 8%;
+  padding: 4% 0;
+
+  & > * {
+    padding: 0 8%;
+  }
 
   &, * {
     cursor: default;

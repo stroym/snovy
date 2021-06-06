@@ -66,6 +66,8 @@
     flex-flow: row nowrap;
 
     .snovy-list {
+      //TODO there's probably a better way to fix this
+      overflow-y: scroll; //needs to be either always shown or hidden on both lists, otherwise items can have different sizes between the two lists
       width: 50%;
     }
   }
