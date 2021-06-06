@@ -10,7 +10,7 @@ export function isItem<T>(arg: T | null | undefined): arg is T {
 }
 
 export function isBlank(string: string | undefined | null) {
-  return string && string.isBlank()
+  return !string || string.isBlank()
 }
 
 export type KeyMapping = {
