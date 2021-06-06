@@ -11,7 +11,7 @@ const OptionsContext = React.createContext<OptionsContextType>({
   setOptions: () => false
 })
 
-interface OptionsContextType {
+type OptionsContextType = {
   options: Options
   setOptions: (options: Options) => void
 }

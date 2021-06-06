@@ -6,7 +6,7 @@ export interface ResourcesProps<T extends GenericItem> extends React.HTMLProps<H
   item: T | undefined
 }
 
-const Resources = <T extends GenericItem>({item}: ResourcesProps<T>) => {
+const Resources = <T extends GenericItem>() => {
 
   return (
     <SidebarContent id="resources-view">

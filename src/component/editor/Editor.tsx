@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react"
-import Note from "../../data/model/Note"
+import React, {useContext, useEffect, useState} from "react"
 import RichMarkdownEditor, {theme as OutlineTheme} from "rich-markdown-editor"
 import base from "rich-markdown-editor/dist/dictionary"
 import {ToggleButton} from "../inputs/Button"
+import AppContext from "../../util/AppContext"
 
 const dictionary = {
   ...base,
@@ -11,33 +11,35 @@ const dictionary = {
 }
 
 const Editor = (props: {
-  activeNote: Note | undefined
   editorStyle: typeof OutlineTheme
 }) => {
+
+  const appContext = useContext(AppContext)
 
   const [value, setValue] = useState("")
   const [sourceMode, setSourceMode] = useState(false)
 
   useEffect(
     () => {
-      if (props.activeNote && !props.activeNote.content.isBlank()) {
-        setValue(props.activeNote.content)
+      if (appContext.selectedNotes.first() && !appContext.selectedNotes.first()?.content.isBlank()) {
+        setValue(appContext.selectedNotes.first()?.content ?? "")
       } else {
         setValue(" ")
       }
-    }, [props.activeNote]
+    }, [appContext.selectedNotes.first()]
   )
 
   return (
-    <div id="snovy-editor" data-disabled={!props.activeNote}>
+    <div id="snovy-editor" data-disabled={!appContext.selectedNotes.first()}>
       <div className="toolbar">
         <ToggleButton preset="check" circular getState={setSourceMode}/>
       </div>
       <div className="editor-wrapper" tabIndex={-1}>
         {/*{sourceMode && <textarea value={value} onChange={e => setValue(e.target.value)}/>}*/}
         <RichMarkdownEditor
-          theme={props.editorStyle} dictionary={dictionary} placeholder="" value={value} readOnly={!props.activeNote}
-          onChange={value => props.activeNote?.updateContent(value())}
+          theme={props.editorStyle} dictionary={dictionary} placeholder="" value={value}
+          readOnly={!appContext.selectedNotes.first()}
+          onChange={value => appContext.selectedNotes.first()?.updateContent(value())}
           style={{
             display: sourceMode ? "none" : "initial",
             visibility: sourceMode ? "hidden" : "initial",

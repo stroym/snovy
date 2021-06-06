@@ -1,13 +1,7 @@
-import React, {useEffect, useState} from "react"
+import React from "react"
 import "./style/app.scss"
 import "./util/augments"
-import Notebook from "./data/model/Notebook"
-import Section from "./data/model/Section"
-import Note from "./data/model/Note"
 import Editor from "./component/editor/Editor"
-import {isArray} from "./util/utils"
-import {dexie} from "./index"
-import {Table} from "./data/model/Base"
 import {Alignment, Orientation} from "./component/tab_menu/TabMenu"
 import Selector from "./component/sidebar/left/Selector"
 import Detail from "./component/sidebar/right/Detail"
@@ -34,8 +28,6 @@ import Search from "./component/sidebar/left/Search"
 import Archive from "./component/sidebar/left/Archive"
 import Filtering from "./component/sidebar/right/Filtering"
 import Resources from "./component/sidebar/right/Resources"
-import {useLiveQuery} from "dexie-react-hooks"
-import generate from "./data/Generator"
 
 //TODO move props into interfaces, extend basic html props, use destructuring wherever possible
 
@@ -44,77 +36,6 @@ import generate from "./data/Generator"
 const App = () => {
 
   const theme = useTheme()
-
-  const tags = useLiveQuery(() => dexie.tags.toArray().then(async tags => {
-    for (const tag of tags) {
-      await tag.load()
-    }
-    return tags
-  })) ?? []
-
-  const scopes = useLiveQuery(() => dexie.scopes.toArray()) ?? []
-  const states = useLiveQuery(() => dexie.states.toArray()) ?? []
-
-  const [notebooks, setNotebooks] = useState<Array<Notebook>>([])
-
-  const [selectedNotebook, setSelectedNotebook] = useState<Notebook | undefined>()
-  const [selectedSections, setSelectedSections] = useState<Array<Section>>([])
-  const [selectedNotes, setSelectedNotes] = useState<Array<Note>>([])
-
-  useEffect(
-    () => {
-      dexie.transaction("rw", [dexie.notebooks, dexie.sections, dexie.notes, dexie.scopes, dexie.tags, dexie.states], async () => {
-        await dexie.notebooks.toArray().then(async function (values) {
-          // const loaded = values
-          const loaded = values.isEmpty() ? await generate() : values
-
-          console.log(loaded)
-
-          setNotebooks(loaded.sort(Table.compareById))
-          await selectNotebook(loaded.first())
-        })
-      })
-    }, []
-  )
-
-  const resetSelected = () => {
-    setSelectedSections([])
-    setSelectedNotes([])
-  }
-
-  const selectNotebook = async (active: Notebook | undefined) => {
-    if (active) {
-      await active.load()
-      setSelectedNotebook(active)
-    }
-
-    resetSelected()
-  }
-
-  const selectSections = async (active: Array<Section> | Section | undefined) => {
-    if (isArray(active)) {
-      await active.first()?.load()
-      setSelectedSections(active)
-      active.isEmpty() && setSelectedNotes([])
-    } else if (active) {
-      await active.load()
-      setSelectedSections([active])
-    } else {
-      resetSelected()
-    }
-  }
-
-  const selectNotes = async (active: Array<Note> | Note | undefined) => {
-    if (isArray(active)) {
-      await active.first()?.load()
-      setSelectedNotes(active)
-    } else if (active) {
-      await active.load()
-      setSelectedNotes([active])
-    } else {
-      setSelectedNotes([])
-    }
-  }
 
   const mappings = {
     notes: "Notes",
@@ -208,12 +129,7 @@ const App = () => {
             tabAlignment: Alignment.START, icon: <NotesIcon/>, tooltip: mappings.notes,
             viewable: {
               text: mappings.notes,
-              content:
-                <Selector
-                  notebooks={notebooks} selectedNotebook={selectedNotebook} onNotebookChange={selectNotebook}
-                  selectedSections={selectedSections} onSectionChange={selectSections}
-                  selectedNotes={selectedNotes} onNoteChange={selectNotes}
-                />
+              content: <Selector/>
             }
           },
           {
@@ -247,14 +163,14 @@ const App = () => {
           }
         ]}
       </Sidebar>
-      <Editor editorStyle={outlineStyle} activeNote={selectedNotes.first()}/>
+      <Editor editorStyle={outlineStyle}/>
       <Sidebar initialTab={mappings.detail} orientation={Orientation.RIGHT}>
         {[
           {
             tabAlignment: Alignment.START, icon: <DetailIcon/>, tooltip: mappings.detail,
             viewable: {
               text: mappings.detail,
-              content: <Detail note={selectedNotes.first()!} tags={tags} scopes={scopes}/>
+              content: <Detail/>
             }
           },
           {
@@ -275,7 +191,7 @@ const App = () => {
             tabAlignment: Alignment.END, icon: <ResourcesIcon/>, tooltip: mappings.resources,
             viewable: {
               text: mappings.resources,
-              content: <Resources item={selectedNotes.first()}/>
+              content: <Resources/>
             }
           }
         ]}

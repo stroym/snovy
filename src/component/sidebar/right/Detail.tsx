@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react"
+import React, {useContext, useEffect, useRef, useState} from "react"
 import Tag from "../../../data/model/Tag"
 import {TagItem, TagItemScoped, TagItemScopedUnique} from "../../tag/TagItem"
 import Scope from "../../../data/model/Scope"
@@ -10,12 +10,11 @@ import SidebarContent from "../SidebarContent"
 import ComboBox from "../../combo_box/ComboBox"
 import TagDisplayItem from "../../tag/TagDisplayItem"
 import {Titled} from "../../../data/model/Base"
+import AppContext from "../../../util/AppContext"
 
-const Detail = (props: {
-  note: Note | undefined
-  tags: Array<Tag>
-  scopes: Array<Scope>
-}) => {
+const Detail = () => {
+
+  const appContext = useContext(AppContext)
 
   const formRef = useRef<HTMLFormElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -31,7 +30,7 @@ const Detail = (props: {
   useEffect(
     () => {
       refreshTags()
-    }, [props.note, props.tags]
+    }, [appContext.selectedNotes, appContext.tags]
   )
 
   const getInputValue = (value: string) => {
@@ -40,7 +39,7 @@ const Detail = (props: {
   }
 
   const availableTags = () => {
-    const tagsNotOnNote = props.tags.filter(it => !noteTags.includes(it))
+    const tagsNotOnNote = appContext.tags.filter(it => !noteTags.includes(it))
     const scopedTags: Array<Tag> = []
     const unscopedTags: Array<Tag> = []
 
@@ -83,7 +82,7 @@ const Detail = (props: {
   }
 
   const refreshTags = () => {
-    setNoteTags(props.tags.filter(it => props.note?.tagIds.includes(it.id)))
+    setNoteTags(appContext.tags.filter(it => appContext.selectedNotes.first()?.tagIds.includes(it.id)))
   }
 
   const onTag = async (note: Note | undefined, tag: Tag | undefined) => {
@@ -116,7 +115,7 @@ const Detail = (props: {
           <ComboBox<Tag>
             items={availableTags()} newItem={{getInputValue: getInputValue, name: "tag"}}
             options={{selectPreviousOnEsc: false, resetInputOnSelect: true, unboundDropdown: true}}
-            onSelect={tag => onTag(props.note, tag)}
+            onSelect={tag => onTag(appContext.selectedNotes.first(), tag)}
             onFocus={() => {setFormVisible(false)}}
             customItem={item => <TagDisplayItem tag={item}/>}
           />
@@ -126,18 +125,18 @@ const Detail = (props: {
       {
         formVisible &&
         <TagForm
-          ref={formRef} scopes={props.scopes} initialValue={inputValue}
+          ref={formRef} scopes={appContext.scopes} initialValue={inputValue}
           onTagCreated={tag => {
             flipForm()
-            onTag(props.note, tag)  //TODO this should only happen when create & tag is used
+            onTag(appContext.selectedNotes.first(), tag)  //TODO this should only happen when create & tag is used
           }}
         />
       }
       {
-        props.note && mapTagsToTagItems(
+        appContext.selectedNotes.first() && mapTagsToTagItems(
           collectNoteTags(),
           async (tag: Tag | Array<Tag>) => {
-            await props.note!.untag(tag)
+            await appContext.selectedNotes.first()!.untag(tag)
             refreshTags()
           })
       }

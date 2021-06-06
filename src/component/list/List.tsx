@@ -15,7 +15,6 @@ type ListOptions = {
 
 const defaultOptions: ListOptions = {
   readonly: false,
-  defaultFirst: true,
   preset: "editable"
 }
 
@@ -55,8 +54,8 @@ const ListWithRef = forwardRef(<T extends GenericItem>(
 
   useEffect(
     () => {
-      if (items && !items.isEmpty() && options.defaultFirst) {
-        setSelectedItems([items.first()!])
+      if (items && !items.isEmpty()) {
+        setSelectedItems(selection)
       }
     }, [items]
   )
@@ -73,7 +72,7 @@ const ListWithRef = forwardRef(<T extends GenericItem>(
 
   useEffect(
     () => {
-      onSelect && selectedItems != selection && onSelect(selectedItems)
+      onSelect && onSelect(selectedItems)
     }, [selectedItems]
   )
 
