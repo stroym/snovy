@@ -120,6 +120,7 @@ export function useMultiSelect<T>(listItems: Array<T> | undefined) {
   const [ctrlMode, setCtrlMode] = useState(false)
   const [shiftMode, setShiftMode] = useState(false)
 
+  const [activeItem, setActiveItem] = useState<T | undefined>()
   const [selectedItems, setSelectedItems] = useState<Array<T>>([])
 
   useEffect(
@@ -130,6 +131,12 @@ export function useMultiSelect<T>(listItems: Array<T> | undefined) {
         document.removeEventListener("mousemove", handleKey)
       }
     }, []
+  )
+
+  useEffect(
+    () => {
+      setActiveItem(selectedItems.first())
+    }, [selectedItems]
   )
 
   const handleKey = (e: MouseEvent) => {
@@ -166,7 +173,20 @@ export function useMultiSelect<T>(listItems: Array<T> | undefined) {
     }
   }
 
-  return {shiftMode, ctrlMode, selectedItems, setSelectedItems, handleItemClick}
+  const resetSelection = () => {
+    activeItem && setSelectedItems([activeItem])
+  }
+
+  return {
+    shiftMode,
+    ctrlMode,
+    selectedItems,
+    setSelectedItems,
+    activeItem,
+    setActiveItem,
+    handleItemClick,
+    resetSelection
+  }
 }
 
 export function useSize(elementRef: React.RefObject<Element | null>, visible: boolean) {
@@ -273,3 +293,5 @@ export function useToggle(initialState?: boolean): [boolean, Dispatch<SetStateAc
 
   return [toggled, setToggled, toggle]
 }
+
+//TODO useNavigation - arrow keys moving in lists and things

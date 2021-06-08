@@ -30,7 +30,7 @@ const Detail = () => {
   useEffect(
     () => {
       refreshTags()
-    }, [appContext.selectedNotes, appContext.tags]
+    }, [appContext.activeNote, appContext.tags]
   )
 
   const getInputValue = (value: string) => {
@@ -82,7 +82,7 @@ const Detail = () => {
   }
 
   const refreshTags = () => {
-    setNoteTags(appContext.tags.filter(it => appContext.selectedNotes.first()?.tagIds.includes(it.id)))
+    setNoteTags(appContext.tags.filter(it => appContext.activeNote?.tagIds.includes(it.id)))
   }
 
   const onTag = async (note: Note | undefined, tag: Tag | undefined) => {
@@ -115,7 +115,7 @@ const Detail = () => {
           <ComboBox<Tag>
             items={availableTags()} newItem={{getInputValue: getInputValue, name: "tag"}}
             options={{selectPreviousOnEsc: false, resetInputOnSelect: true, unboundDropdown: true}}
-            onSelect={tag => onTag(appContext.selectedNotes.first(), tag)}
+            onSelect={tag => onTag(appContext.activeNote, tag)}
             onFocus={() => {setFormVisible(false)}}
             customItem={item => <TagDisplayItem tag={item}/>}
           />
@@ -128,15 +128,15 @@ const Detail = () => {
           ref={formRef} scopes={appContext.scopes} initialValue={inputValue}
           onTagCreated={tag => {
             flipForm()
-            onTag(appContext.selectedNotes.first(), tag)  //TODO this should only happen when create & tag is used
+            onTag(appContext.activeNote, tag)  //TODO this should only happen when create & tag is used
           }}
         />
       }
       {
-        appContext.selectedNotes.first() && mapTagsToTagItems(
+        appContext.activeNote && mapTagsToTagItems(
           collectNoteTags(),
           async (tag: Tag | Array<Tag>) => {
-            await appContext.selectedNotes.first()!.untag(tag)
+            await appContext.activeNote!.untag(tag)
             refreshTags()
           })
       }

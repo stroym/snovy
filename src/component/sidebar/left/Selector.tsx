@@ -9,6 +9,7 @@ import SidebarContent from "../SidebarContent"
 import {Titled} from "../../../data/model/Base"
 import AppContext from "../../../util/AppContext"
 import ContextMenu from "../../context_menu/ContextMenu"
+import {useDefaultEmpty} from "../../../util/hooks"
 
 export const Selector = () => {
 
@@ -18,26 +19,22 @@ export const Selector = () => {
   const [sectionContext, setSectionContext] = useState<Section | undefined>(undefined)
   const [noteContext, setNoteContext] = useState<Note | undefined>(undefined)
 
-  const [activeSection, setActiveSection] = useState<Section | undefined>()
+  const [selectedSections, setSelectedSections] = useDefaultEmpty<Section>()
+  const [selectedNotes, setSelectedNotes] = useDefaultEmpty<Note>()
 
+  //TODO keeping track of the selected item(s) should probably be a part of useContextMenu
   useEffect(
     () => {
-      setActiveSection(appContext.selectedSections.first())
-    }, [appContext.selectedSections]
-  )
-
-  useEffect(
-    () => {
-      if (sectionContext && !appContext.selectedSections.isEmpty() && !appContext.selectedSections.includes(sectionContext)) {
-        appContext.setSelectedSections([appContext.selectedSections.first()!])
+      if (sectionContext && !selectedSections.isEmpty() && !selectedSections.includes(sectionContext)) {
+        setSelectedSections([selectedSections.first()!])
       }
     }, [sectionContext]
   )
 
   useEffect(
     () => {
-      if (noteContext && !appContext.selectedNotes.isEmpty() && !appContext.selectedNotes.includes(noteContext)) {
-        appContext.setSelectedNotes([appContext.selectedNotes.first()!])
+      if (noteContext && !selectedNotes.isEmpty() && !selectedNotes.includes(noteContext)) {
+        setSelectedNotes([selectedNotes.first()!])
       }
     }, [noteContext]
   )
@@ -62,9 +59,11 @@ export const Selector = () => {
       }
     >
       <List<Section>
-        ref={secRef} id="snovy-list-section" items={appContext.activeNotebook?.itemsSortedByOrder}
-        selection={appContext.selectedSections} onSelect={appContext.setSelectedSections} onContext={setSectionContext}
-        onItemValueChange={str => handleTitleChange(appContext.selectedSections.first(), str)}
+        ref={secRef} id="snovy-list-section" items={appContext.sections}
+        selection={selectedSections} onSelectionChange={setSelectedSections}
+        active={appContext.activeSection} onActiveChange={appContext.setActiveSection}
+        onContext={setSectionContext}
+        onItemValueChange={str => handleTitleChange(appContext.activeSection, str)}
       />
       <ContextMenu parentRef={secRef} onFinish={() => setContextActive(!contextActive)}>
         {
@@ -73,7 +72,7 @@ export const Selector = () => {
             async () => {sectionContext ? await appContext.activeNotebook?.add(sectionContext.order + 1) : await appContext.activeNotebook?.add()},
             "+",
             "& go",
-            async () => appContext.setSelectedSections(sectionContext ? await appContext.activeNotebook?.add(sectionContext.order + 1) : await appContext.activeNotebook?.add())
+            async () => setSelectedSections(sectionContext ? await appContext.activeNotebook?.add(sectionContext.order + 1) : await appContext.activeNotebook?.add())
           )
         }
         {
@@ -82,58 +81,60 @@ export const Selector = () => {
             () => {appContext.activeNotebook?.add()},
             "+",
             "& go",
-            async () => appContext.setSelectedSections(await appContext.activeNotebook?.add())
+            async () => setSelectedSections(await appContext.activeNotebook?.add())
           ) && makeSharedContext({
             single: {
               text: "Delete section",
               action: async () => {
                 const neighbour = await appContext.activeNotebook?.remove(sectionContext)
-                neighbour == undefined || sectionContext == appContext.selectedSections.first() && appContext.setSelectedSections(neighbour)
+                neighbour == undefined || sectionContext == selectedSections.first() && setSelectedSections(neighbour)
               }
             },
             multiple: {
-              condition: appContext.selectedSections.hasMore(),
-              text: `Delete ${appContext.selectedSections.length} sections`,
-              action: async () => {appContext.setSelectedSections(await appContext.activeNotebook?.remove(appContext.selectedSections))}
+              condition: selectedSections.hasMore(),
+              text: `Delete ${selectedSections.length} sections`,
+              action: async () => {setSelectedSections(await appContext.activeNotebook?.remove(selectedSections))}
             },
             icon: "×"
           })
         }
       </ContextMenu>
       <List<Note>
-        ref={noteRef} id="snovy-list-note" items={activeSection?.itemsSortedByOrder}
-        selection={appContext.selectedNotes} onSelect={appContext.setSelectedNotes} onContext={setNoteContext}
-        onItemValueChange={str => handleTitleChange(appContext.selectedNotes.first(), str)}
+        ref={noteRef} id="snovy-list-note" items={appContext.notes}
+        selection={selectedNotes} onSelectionChange={setSelectedNotes}
+        active={appContext.activeNote} onActiveChange={appContext.setActiveNote}
+        onContext={setNoteContext}
+        onItemValueChange={str => handleTitleChange(appContext.activeNote, str)}
       />
       <ContextMenu parentRef={noteRef} onFinish={() => setContextActive(!contextActive)}>
         {
           makeContext(
             "New note",
-            async () => {noteContext ? await activeSection?.add(noteContext.order + 1) : await activeSection?.add()},
+            async () => {noteContext ? await appContext.activeSection?.add(noteContext.order + 1) : await appContext.activeSection?.add()},
             "+",
             "& go",
-            async () => appContext.setSelectedNotes(noteContext ? await activeSection?.add(noteContext.order + 1) : await activeSection?.add())
+            async () => setSelectedNotes(noteContext ? await appContext.activeSection?.add(noteContext.order + 1) : await appContext.activeSection?.add())
           )
         }
         {
           noteContext && makeContext(
             "New note (as last)",
-            () => {activeSection?.add()},
+            () => {appContext.activeSection?.add()},
             "+",
             "& go",
-            async () => appContext.setSelectedNotes(await activeSection?.add())
+            async () => setSelectedNotes(await appContext.activeSection?.add())
           ) && makeSharedContext({
             single: {
               text: "Delete note",
               action: async () => {
-                const neighbour = await activeSection?.remove(noteContext)
-                neighbour == undefined || noteContext == appContext.selectedNotes.first() && appContext.setSelectedNotes(neighbour)
+                const neighbour = await appContext.activeSection?.remove(noteContext)
+                neighbour == undefined || noteContext == selectedNotes.first() && setSelectedNotes(neighbour)
               }
             },
             multiple: {
-              condition: appContext.selectedNotes.hasMore(),
-              text: `Delete ${appContext.selectedNotes.length} notes`,
-              action: async () => {appContext.setSelectedNotes(await activeSection?.remove(appContext.selectedNotes))}
+              condition: selectedNotes.hasMore(),
+              text: `Delete ${selectedNotes.length} notes`,
+              action: async () => {setSelectedNotes(await appContext.activeSection?.remove(selectedNotes))}
             },
             icon: "×"
           })

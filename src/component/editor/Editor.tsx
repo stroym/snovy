@@ -21,16 +21,16 @@ const Editor = (props: {
 
   useEffect(
     () => {
-      if (appContext.selectedNotes.first() && !appContext.selectedNotes.first()?.content.isBlank()) {
-        setValue(appContext.selectedNotes.first()?.content ?? "")
+      if (appContext.activeNote && !appContext.activeNote?.content.isBlank()) {
+        setValue(appContext.activeNote?.content ?? "")
       } else {
         setValue(" ")
       }
-    }, [appContext.selectedNotes.first()]
+    }, [appContext.activeNote]
   )
 
   return (
-    <div id="snovy-editor" data-disabled={!appContext.selectedNotes.first()}>
+    <div id="snovy-editor" data-disabled={!appContext.activeNote}>
       <div className="toolbar">
         <ToggleButton preset="check" circular getState={setSourceMode}/>
       </div>
@@ -38,8 +38,8 @@ const Editor = (props: {
         {/*{sourceMode && <textarea value={value} onChange={e => setValue(e.target.value)}/>}*/}
         <RichMarkdownEditor
           theme={props.editorStyle} dictionary={dictionary} placeholder="" value={value}
-          readOnly={!appContext.selectedNotes.first()}
-          onChange={value => appContext.selectedNotes.first()?.updateContent(value())}
+          readOnly={!appContext.activeNote}
+          onChange={value => appContext.activeNote?.updateContent(value())}
           style={{
             display: sourceMode ? "none" : "initial",
             visibility: sourceMode ? "hidden" : "initial",

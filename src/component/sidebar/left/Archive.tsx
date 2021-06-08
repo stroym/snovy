@@ -6,7 +6,7 @@ const Archive = () => {
 
   return (
     <SidebarContent id="archive-view">
-      <List items={[]} onSelect={_ => false} selection={[]} options={{preset: "simple"}}/>
+      <List items={[]} onSelectionChange={_ => false} selection={[]} options={{preset: "simple"}}/>
     </SidebarContent>
   )
 

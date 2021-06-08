@@ -12,7 +12,7 @@ const Search = () => {
         <ComboBox items={[]}/>
       }
     >
-      <List items={[]} onSelect={_ => false} selection={[]} options={{preset: "simple"}}/>
+      <List items={[]} onSelectionChange={_ => false} selection={[]} options={{preset: "simple"}}/>
     </SidebarContent>
   )
 

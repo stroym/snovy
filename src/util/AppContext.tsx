@@ -3,7 +3,6 @@ import Notebook from "../data/model/Notebook"
 import Section from "../data/model/Section"
 import Note from "../data/model/Note"
 import {useDefaultEmpty} from "./hooks"
-import {isArray} from "./utils"
 import {dexie} from "../index"
 import generate from "../data/Generator"
 import {Table} from "../data/model/Base"
@@ -15,12 +14,16 @@ import Tag from "../data/model/Tag"
 const AppContext = React.createContext<AppContextType>({
   notebooks: [],
   setNotebooks: () => false,
+  sections: [],
+  setSections: () => false,
+  notes: [],
+  setNotes: () => false,
   activeNotebook: undefined,
   setActiveNotebook: () => false,
-  selectedSections: [],
-  setSelectedSections: () => false,
-  selectedNotes: [],
-  setSelectedNotes: () => false,
+  activeSection: undefined,
+  setActiveSection: () => false,
+  activeNote: undefined,
+  setActiveNote: () => false,
   tags: [],
   scopes: [],
   states: []
@@ -29,12 +32,16 @@ const AppContext = React.createContext<AppContextType>({
 type AppContextType = {
   notebooks: Array<Notebook>
   setNotebooks: (items: Array<Notebook>) => void
+  sections: Array<Section>
+  setSections: (items: Array<Section>) => void
+  notes: Array<Note>
+  setNotes: (items: Array<Note>) => void
   activeNotebook: Notebook | undefined
   setActiveNotebook: (item: Notebook | undefined) => void
-  selectedSections: Array<Section>
-  setSelectedSections: (items: Array<Section> | Section | undefined) => void
-  selectedNotes: Array<Note>
-  setSelectedNotes: (items: Array<Note> | Note | undefined) => void
+  setActiveSection: (item: Section | undefined) => void
+  activeSection: Section | undefined
+  activeNote: Note | undefined
+  setActiveNote: (item: Note | undefined) => void
   tags: Array<Tag>
   scopes: Array<Scope>
   states: Array<State>
@@ -56,12 +63,11 @@ export const AppProvider = (props: {
   const scopes = useLiveQuery(() => dexie.scopes.toArray()) ?? []
   const states = useLiveQuery(() => dexie.states.toArray()) ?? []
 
-  //TODO try adding sections and notes as an array as well, all that loading in lists is not going so well
   //also maybe like liveQuery that shit, since adding new things via context is borked, again
 
   const [notebooks, setNotebooks] = useDefaultEmpty<Notebook>()
-  const [selectedSections, setSelectedSections] = useDefaultEmpty<Section>()
-  const [selectedNotes, setSelectedNotes] = useDefaultEmpty<Note>()
+  const [sections, setSections] = useDefaultEmpty<Section>()
+  const [notes, setNotes] = useDefaultEmpty<Note>()
 
   const [activeNotebook, setActiveNotebook] = useState<Notebook | undefined>()
   const [activeSection, setActiveSection] = useState<Section | undefined>()
@@ -81,42 +87,28 @@ export const AppProvider = (props: {
     }, []
   )
 
-  const resetSelected = () => {
-    setSelectedSections([])
-    setSelectedNotes([])
-  }
-
   const selectNotebook = async (active: Notebook | undefined) => {
-    if (active) {
+    if (active && active != activeNotebook) {
       await active.load()
       setActiveNotebook(active)
-    }
-
-    resetSelected()
-  }
-
-  const selectSections = async (active: Array<Section> | Section | undefined) => {
-    if (isArray(active)) {
-      await active.first()?.load()
-      setSelectedSections(active)
-      active.isEmpty() && setSelectedNotes([])
-    } else if (active) {
-      await active.load()
-      setSelectedSections([active])
-    } else {
-      resetSelected()
+      await selectSection(active.sections.first())
+      setSections(active.itemsSortedByOrder)
     }
   }
 
-  const selectNotes = async (active: Array<Note> | Note | undefined) => {
-    if (isArray(active)) {
-      await active.first()?.load()
-      setSelectedNotes(active)
-    } else if (active) {
+  const selectSection = async (active: Section | undefined) => {
+    if (active && active != activeSection) {
       await active.load()
-      setSelectedNotes([active])
-    } else {
-      setSelectedNotes([])
+      setActiveSection(active)
+      await selectNote(active.notes.first())
+      setNotes(active.itemsSortedByOrder)
+    }
+  }
+
+  const selectNote = async (active: | Note | undefined) => {
+    if (active && active != activeNote) {
+      await active.load()
+      setActiveNote(active)
     }
   }
 
@@ -124,9 +116,11 @@ export const AppProvider = (props: {
     <AppContext.Provider
       value={{
         notebooks, setNotebooks,
+        sections, setSections,
+        notes, setNotes,
         activeNotebook, setActiveNotebook: selectNotebook,
-        selectedSections, setSelectedSections: selectSections,
-        selectedNotes, setSelectedNotes: selectNotes,
+        activeSection, setActiveSection: selectSection,
+        activeNote, setActiveNote: selectNote,
         tags, scopes, states
       }}
     >

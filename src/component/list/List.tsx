@@ -9,20 +9,23 @@ export type ListPresets = "simple" | "editable"
 
 type ListOptions = {
   readonly?: boolean,
-  defaultFirst?: boolean
+  useMultiSelect?: boolean //TODO?
   preset?: ListPresets
 }
 
 const defaultOptions: ListOptions = {
   readonly: false,
+  useMultiSelect: true,
   preset: "editable"
 }
 
 //TODO track highlighted item & apply hover & focus
 interface ListProps<T extends GenericItem> extends Omit<React.HTMLProps<HTMLOListElement>, "onSelect" | "type"> {
   items: Array<T> | undefined
-  selection: Array<T>
-  onSelect: (items: Array<T>) => void
+  selection?: Array<T>
+  onSelectionChange?: (items: Array<T>) => void
+  active?: T | undefined
+  onActiveChange?: (item: T | undefined) => void
   onContext?: (active: T | undefined) => void
   onItemValueChange?: (str: string) => void
   options?: ListOptions
@@ -33,7 +36,9 @@ const ListWithRef = forwardRef(<T extends GenericItem>(
   {
     items,
     selection,
-    onSelect,
+    onSelectionChange,
+    active,
+    onActiveChange,
     onContext,
     onItemValueChange,
     options: passedOptions,
@@ -46,16 +51,24 @@ const ListWithRef = forwardRef(<T extends GenericItem>(
 
   const options = passedOptions ? {...defaultOptions, ...passedOptions} : defaultOptions
 
-  const {selectedItems, setSelectedItems, handleItemClick} = useMultiSelect<T>(items)
+  const {
+    activeItem,
+    setActiveItem,
+    selectedItems,
+    setSelectedItems,
+    handleItemClick,
+    resetSelection
+  } = useMultiSelect<T>(items)
 
   const keyMap: Array<KeyMapping> = [
-    {key: Key.Escape, handler: () => !selectedItems.isEmpty() && setSelectedItems([selectedItems.first()!])}
+    {key: Key.Escape, handler: resetSelection}
   ]
 
   useEffect(
     () => {
       if (items && !items.isEmpty()) {
-        setSelectedItems(selection)
+        active && setActiveItem(active)
+        selection && setSelectedItems(selection)
       }
     }, [items]
   )
@@ -72,7 +85,13 @@ const ListWithRef = forwardRef(<T extends GenericItem>(
 
   useEffect(
     () => {
-      onSelect && onSelect(selectedItems)
+      onActiveChange && activeItem != active && onActiveChange(activeItem)
+    }, [activeItem]
+  )
+
+  useEffect(
+    () => {
+      onSelectionChange && selectedItems != selection && onSelectionChange(selectedItems)
     }, [selectedItems]
   )
 
@@ -84,7 +103,7 @@ const ListWithRef = forwardRef(<T extends GenericItem>(
       {items?.map((item, index) =>
         <ListItem
           key={index} item={item} preset={options.preset} customItem={customItem} onValueChange={onItemValueChange}
-          selected={selectedItems.includes(item)} active={selectedItems.first() == item}
+          selected={selectedItems.includes(item)} active={activeItem == item}
           onSelect={handleItemClick} onContext={onContext}
         />)
       }
