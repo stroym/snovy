@@ -118,7 +118,7 @@ async function remove<T extends Table>(items: Array<T>, toRemove: T) {
 function fetchItem<T>(items: Array<T>, index: number) {
   if (index > 0) {
     return items[index - 1]
-  } else if (index == 0 && items.length > 1) {
+  } else if (index == 0 && items.length >= 1) {
     return items[index]
   } else {
     return undefined

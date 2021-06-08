@@ -9,7 +9,7 @@ export type ListPresets = "simple" | "editable"
 
 type ListOptions = {
   readonly?: boolean,
-  useMultiSelect?: boolean //TODO?
+  useMultiSelect?: boolean //TODO? maybe like allow selection to be Array<T> | T, but definitely don't expose activeItem setter
   preset?: ListPresets
 }
 
@@ -21,10 +21,9 @@ const defaultOptions: ListOptions = {
 
 //TODO track highlighted item & apply hover & focus
 interface ListProps<T extends GenericItem> extends Omit<React.HTMLProps<HTMLOListElement>, "onSelect" | "type"> {
-  items: Array<T> | undefined
+  items: Array<T>
   selection?: Array<T>
   onSelectionChange?: (items: Array<T>) => void
-  active?: T | undefined
   onActiveChange?: (item: T | undefined) => void
   onContext?: (active: T | undefined) => void
   onItemValueChange?: (str: string) => void
@@ -37,7 +36,6 @@ const ListWithRef = forwardRef(<T extends GenericItem>(
     items,
     selection,
     onSelectionChange,
-    active,
     onActiveChange,
     onContext,
     onItemValueChange,
@@ -53,7 +51,6 @@ const ListWithRef = forwardRef(<T extends GenericItem>(
 
   const {
     activeItem,
-    setActiveItem,
     selectedItems,
     setSelectedItems,
     handleItemClick,
@@ -66,32 +63,16 @@ const ListWithRef = forwardRef(<T extends GenericItem>(
 
   useEffect(
     () => {
-      if (items && !items.isEmpty()) {
-        active && setActiveItem(active)
-        selection && setSelectedItems(selection)
+      if (items && !items.isEmpty() && selection && !selection.isEmpty()) {
+        setSelectedItems(selection)
       }
-    }, [items]
-  )
-
-  useEffect(
-    () => {
-      if (items && !items.isEmpty()) {
-        if (selection && !selection.isEmpty() && items.includesAll(selection)) {
-          setSelectedItems(selection)
-        }
-      }
-    }, [selection]
-  )
-
-  useEffect(
-    () => {
-      onActiveChange && activeItem != active && onActiveChange(activeItem)
-    }, [activeItem]
+    }, [items, selection]
   )
 
   useEffect(
     () => {
       onSelectionChange && selectedItems != selection && onSelectionChange(selectedItems)
+      onActiveChange && onActiveChange(activeItem)
     }, [selectedItems]
   )
 

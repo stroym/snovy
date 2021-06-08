@@ -22,6 +22,18 @@ export const Selector = () => {
   const [selectedSections, setSelectedSections] = useDefaultEmpty<Section>()
   const [selectedNotes, setSelectedNotes] = useDefaultEmpty<Note>()
 
+  useEffect(
+    () => {
+      setSelectedSections(appContext.activeSection)
+    }, [appContext.activeSection]
+  )
+
+  useEffect(
+    () => {
+      setSelectedNotes(appContext.activeNote)
+    }, [appContext.activeNote]
+  )
+
   //TODO keeping track of the selected item(s) should probably be a part of useContextMenu
   useEffect(
     () => {
@@ -61,7 +73,7 @@ export const Selector = () => {
       <List<Section>
         ref={secRef} id="snovy-list-section" items={appContext.sections}
         selection={selectedSections} onSelectionChange={setSelectedSections}
-        active={appContext.activeSection} onActiveChange={appContext.setActiveSection}
+        onActiveChange={appContext.setActiveSection}
         onContext={setSectionContext}
         onItemValueChange={str => handleTitleChange(appContext.activeSection, str)}
       />
@@ -102,7 +114,7 @@ export const Selector = () => {
       <List<Note>
         ref={noteRef} id="snovy-list-note" items={appContext.notes}
         selection={selectedNotes} onSelectionChange={setSelectedNotes}
-        active={appContext.activeNote} onActiveChange={appContext.setActiveNote}
+        onActiveChange={appContext.setActiveNote}
         onContext={setNoteContext}
         onItemValueChange={str => handleTitleChange(appContext.activeNote, str)}
       />

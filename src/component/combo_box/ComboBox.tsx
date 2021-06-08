@@ -115,6 +115,7 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
 
   const getItemPropsMemoRef = useRef(getItemProps)
 
+  //TODO useCallback to memo
   useEffect(
     () => {
       props.items && setDropdownItems(props.items)

@@ -115,13 +115,21 @@ export function useDefaultEmpty<T>(array?: Array<T> | T | null | undefined) {
   )
 }
 
-export function useMultiSelect<T>(listItems: Array<T> | undefined) {
+export function useMultiSelect<T>(listItems: Array<T>) {
 
   const [ctrlMode, setCtrlMode] = useState(false)
   const [shiftMode, setShiftMode] = useState(false)
 
-  const [activeItem, setActiveItem] = useState<T | undefined>()
-  const [selectedItems, setSelectedItems] = useState<Array<T>>([])
+  const [selectedItems, setSelectedItems] = useReducer(
+    (prevState: Array<T>, newState: Array<T>): Array<T> => {
+      if (listItems.includesAll(newState)) {
+        return newState
+      } else {
+        return prevState
+      }
+    },
+    []
+  )
 
   useEffect(
     () => {
@@ -131,12 +139,6 @@ export function useMultiSelect<T>(listItems: Array<T> | undefined) {
         document.removeEventListener("mousemove", handleKey)
       }
     }, []
-  )
-
-  useEffect(
-    () => {
-      setActiveItem(selectedItems.first())
-    }, [selectedItems]
   )
 
   const handleKey = (e: MouseEvent) => {
@@ -154,18 +156,16 @@ export function useMultiSelect<T>(listItems: Array<T> | undefined) {
         setSelectedItems(selectedItems.concat(item))
       }
     } else if (shiftMode) {
-      if (listItems) {
-        if (selectedItems.includes(item)) {
-          setSelectedItems(listItems.slice(listItems.indexOf(selectedItems.first()!), listItems.indexOf(item) + 1))
-        } else {
-          const firstIndex = listItems.indexOf(selectedItems.first()!)
-          const itemIndex = listItems.indexOf(item)
+      if (selectedItems.includes(item)) {
+        setSelectedItems(listItems.slice(listItems.indexOf(selectedItems.first()!), listItems.indexOf(item) + 1))
+      } else {
+        const firstIndex = listItems.indexOf(selectedItems.first()!)
+        const itemIndex = listItems.indexOf(item)
 
-          if (itemIndex > firstIndex) {
-            setSelectedItems(listItems.slice(firstIndex, itemIndex + 1))
-          } else {
-            setSelectedItems(listItems.slice(itemIndex, firstIndex + 1).reverse())
-          }
+        if (itemIndex > firstIndex) {
+          setSelectedItems(listItems.slice(firstIndex, itemIndex + 1))
+        } else {
+          setSelectedItems(listItems.slice(itemIndex, firstIndex + 1).reverse())
         }
       }
     } else {
@@ -174,7 +174,7 @@ export function useMultiSelect<T>(listItems: Array<T> | undefined) {
   }
 
   const resetSelection = () => {
-    activeItem && setSelectedItems([activeItem])
+    selectedItems.first() && setSelectedItems([selectedItems.first()!])
   }
 
   return {
@@ -182,8 +182,7 @@ export function useMultiSelect<T>(listItems: Array<T> | undefined) {
     ctrlMode,
     selectedItems,
     setSelectedItems,
-    activeItem,
-    setActiveItem,
+    activeItem: selectedItems.first(),
     handleItemClick,
     resetSelection
   }
