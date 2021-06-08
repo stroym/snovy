@@ -2,6 +2,7 @@
   "name": "snovy",
   "version": "0.0.0",
   "description": "note manager with advanced tag support",
+  "homepage": "https://stroym.github.io/snovy",
   "main": "index.tsx",
   "private": true,
   "repository": {
@@ -63,6 +64,7 @@
     "eslint-plugin-react": "^7.22.0",
     "fast-memoize": "^2.5.2",
     "fork-ts-checker-webpack-plugin": "^6.0.5",
+    "gh-pages": "^3.2.0",
     "html-webpack-plugin": "^5.1.0",
     "node-sass": "^5.0.0",
     "pre-commit": "^1.2.2",
@@ -87,7 +89,9 @@
     "buildDev": "webpack --mode development",
     "buildProd": "webpack --mode production",
     "eject": "react-scripts eject",
-    "lint": "eslint '*/**/*.{ts,tsx}' --quiet --fix"
+    "lint": "eslint '*/**/*.{ts,tsx}' --quiet --fix",
+    "predeploy": "yarn run buildProd",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "env": {
