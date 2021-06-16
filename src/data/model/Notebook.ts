@@ -42,12 +42,13 @@ export default class Notebook extends Titled {
     return this.sections.sort(Ordered.compareByOrder)
   }
 
-  add(order?: number) {
+  async add(order?: number) {
     return addTo(this.sections, new Section(this.id, "", order ? order : this.sections.length))
+      .finally(() => this.itemsSortedByOrder)
   }
 
-  remove(items?: Array<Section> | Section) {
-    return removeFrom(this.sections, items)
+  async remove(items?: Array<Section> | Section) {
+    return await removeFrom(this.sections, items)
   }
 
 }

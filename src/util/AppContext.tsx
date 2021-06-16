@@ -14,10 +14,6 @@ import Tag from "../data/model/Tag"
 const AppContext = React.createContext<AppContextType>({
   notebooks: [],
   setNotebooks: () => false,
-  sections: [],
-  setSections: () => false,
-  notes: [],
-  setNotes: () => false,
   activeNotebook: undefined,
   setActiveNotebook: () => false,
   activeSection: undefined,
@@ -32,10 +28,6 @@ const AppContext = React.createContext<AppContextType>({
 type AppContextType = {
   notebooks: Array<Notebook>
   setNotebooks: (items: Array<Notebook>) => void
-  sections: Array<Section>
-  setSections: (items: Array<Section>) => void
-  notes: Array<Note>
-  setNotes: (items: Array<Note>) => void
   activeNotebook: Notebook | undefined
   setActiveNotebook: (item: Notebook | undefined) => void
   setActiveSection: (item: Section | undefined) => void
@@ -51,7 +43,7 @@ export const AppProvider = (props: {
   children: Array<React.ReactElement> | React.ReactElement
 }) => {
 
-  //TODO add context menu items context, maybe
+  //TODO add context menu items + singular context menu, maybe
 
   const tags = useLiveQuery(() => dexie.tags.toArray().then(async tags => {
     for (const tag of tags) {
@@ -63,11 +55,7 @@ export const AppProvider = (props: {
   const scopes = useLiveQuery(() => dexie.scopes.toArray()) ?? []
   const states = useLiveQuery(() => dexie.states.toArray()) ?? []
 
-  //also maybe like liveQuery that shit, since adding new things via context is borked, again
-
   const [notebooks, setNotebooks] = useDefaultEmpty<Notebook>()
-  const [sections, setSections] = useDefaultEmpty<Section>()
-  const [notes, setNotes] = useDefaultEmpty<Note>()
 
   const [activeNotebook, setActiveNotebook] = useState<Notebook | undefined>()
   const [activeSection, setActiveSection] = useState<Section | undefined>()
@@ -88,27 +76,40 @@ export const AppProvider = (props: {
   )
 
   const selectNotebook = async (active: Notebook | undefined) => {
-    if (active && active != activeNotebook) {
-      await active.load()
-      setActiveNotebook(active)
-      await selectSection(active.sections.first())
-      setSections(active.itemsSortedByOrder)
+    if (active) {
+      if (active != activeNotebook) {
+        await active.load()
+        setActiveNotebook(active)
+        await selectSection(active.sections.first())
+      }
+    } else {
+      setActiveNotebook(undefined)
+      setActiveSection(undefined)
+      setActiveNote(undefined)
     }
   }
 
   const selectSection = async (active: Section | undefined) => {
-    if (active && active != activeSection) {
-      await active.load()
-      setActiveSection(active)
-      await selectNote(active.notes.first())
-      setNotes(active.itemsSortedByOrder)
+    if (active) {
+      if (active != activeSection) {
+        await active.load()
+        setActiveSection(active)
+        await selectNote(active.notes.first())
+      }
+    } else {
+      setActiveSection(undefined)
+      setActiveNote(undefined)
     }
   }
 
   const selectNote = async (active: | Note | undefined) => {
-    if (active && active != activeNote) {
-      await active.load()
-      setActiveNote(active)
+    if (active) {
+      if (active != activeNote) {
+        await active.load()
+        setActiveNote(active)
+      }
+    } else {
+      setActiveNote(undefined)
     }
   }
 
@@ -116,8 +117,6 @@ export const AppProvider = (props: {
     <AppContext.Provider
       value={{
         notebooks, setNotebooks,
-        sections, setSections,
-        notes, setNotes,
         activeNotebook, setActiveNotebook: selectNotebook,
         activeSection, setActiveSection: selectSection,
         activeNote, setActiveNote: selectNote,

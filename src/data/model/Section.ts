@@ -46,8 +46,9 @@ export default class Section extends Ordered {
       .then(_result => true).catch(_result => false)
   }
 
-  add(order?: number) {
+  async add(order?: number) {
     return addTo(this.notes, new Note(this.id, "", order ? order : this.notes.length))
+      .finally(() => this.itemsSortedByOrder)
   }
 
   remove(items?: Array<Note> | Note) {

@@ -71,7 +71,7 @@ export const Selector = () => {
       }
     >
       <List<Section>
-        ref={secRef} id="snovy-list-section" items={appContext.sections}
+        ref={secRef} id="snovy-list-section" items={appContext.activeNotebook?.itemsSortedByOrder ?? []}
         selection={selectedSections} onSelectionChange={setSelectedSections}
         onActiveChange={appContext.setActiveSection}
         onContext={setSectionContext}
@@ -81,20 +81,14 @@ export const Selector = () => {
         {
           makeContext(
             "New section",
-            async () => {sectionContext ? await appContext.activeNotebook?.add(sectionContext.order + 1) : await appContext.activeNotebook?.add()},
+            async () => setSelectedSections(sectionContext ? await appContext.activeNotebook?.add(sectionContext.order + 1) : await appContext.activeNotebook?.add()),
             "+",
-            "& go",
-            async () => setSelectedSections(sectionContext ? await appContext.activeNotebook?.add(sectionContext.order + 1) : await appContext.activeNotebook?.add())
+            " (as last)",
+            async () => setSelectedSections(await appContext.activeNotebook?.add())
           )
         }
         {
-          sectionContext && makeContext(
-            "New section (as last)",
-            () => {appContext.activeNotebook?.add()},
-            "+",
-            "& go",
-            async () => setSelectedSections(await appContext.activeNotebook?.add())
-          ) && makeSharedContext({
+          sectionContext && makeSharedContext({
             single: {
               text: "Delete section",
               action: async () => {
@@ -110,9 +104,10 @@ export const Selector = () => {
             icon: "×"
           })
         }
+
       </ContextMenu>
       <List<Note>
-        ref={noteRef} id="snovy-list-note" items={appContext.notes}
+        ref={noteRef} id="snovy-list-note" items={appContext.activeSection?.itemsSortedByOrder ?? []}
         selection={selectedNotes} onSelectionChange={setSelectedNotes}
         onActiveChange={appContext.setActiveNote}
         onContext={setNoteContext}
@@ -122,20 +117,14 @@ export const Selector = () => {
         {
           makeContext(
             "New note",
-            async () => {noteContext ? await appContext.activeSection?.add(noteContext.order + 1) : await appContext.activeSection?.add()},
+            async () => setSelectedNotes(noteContext ? await appContext.activeSection?.add(noteContext.order + 1) : await appContext.activeSection?.add()),
             "+",
-            "& go",
-            async () => setSelectedNotes(noteContext ? await appContext.activeSection?.add(noteContext.order + 1) : await appContext.activeSection?.add())
+            "(as last)",
+            async () => setSelectedNotes(await appContext.activeSection?.add())
           )
         }
         {
-          noteContext && makeContext(
-            "New note (as last)",
-            () => {appContext.activeSection?.add()},
-            "+",
-            "& go",
-            async () => setSelectedNotes(await appContext.activeSection?.add())
-          ) && makeSharedContext({
+          noteContext && makeSharedContext({
             single: {
               text: "Delete note",
               action: async () => {
