@@ -26,7 +26,7 @@ const defaultOptions: ComboBoxOptions = {
 }
 
 export interface ComboBoxProps<T extends GenericItem> extends Omit<React.HTMLAttributes<HTMLInputElement>, "onSelect"> {
-  items: Array<T> | undefined
+  items: Array<T>
   onSelect?: (active: T | undefined) => void
   selected?: T
   newItem?: { getInputValue: (value: string) => void, name: string }
@@ -115,18 +115,22 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
 
   const getItemPropsMemoRef = useRef(getItemProps)
 
-  //TODO useCallback to memo
   useEffect(
     () => {
-      props.items && setDropdownItems(props.items)
+      setDropdownItems(props.items)
+    }, [props.items]
+  )
 
+  //FIXME with hundreds of tags the whole combobox locking up for 500+ ms is unacceptable
+  useEffect(
+    () => {
       getItemPropsMemoRef.current = memoize(getItemProps, {
         // @ts-ignore
         serializer: ({item, index}) => {
           return `it${item}:ind${index}`
         }
       })
-    }, [props.items]
+    }, [dropdownItems]
   )
 
   useEffect(
@@ -169,9 +173,8 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
       {
         dropdownItems.map((item, index) => (
           <ComboBoxItem
-            highlighted={index == highlightedIndex} selected={selectedItem == item} key={index} item={item}
-            {...getItemPropsMemoRef.current({item, index})}
-            customItem={customItem}
+            {...getItemPropsMemoRef.current({item, index})} key={`${item}${index}`} item={item}
+            highlighted={index == highlightedIndex} selected={selectedItem == item} customItem={customItem}
           />
         ))
       }
