@@ -71,7 +71,8 @@ module.exports = (env, argv) => {
       new HtmlWebpackPlugin({
         inject: true,
         inlineSource: ".(js|css)$",
-        template: "./public/index.html"
+        template: "./public/index.html",
+        favicon: "./public/favicon.ico"
       }),
       // new SplitChunksPlugin(),
       isDevelopment && new webpack.HotModuleReplacementPlugin(),
