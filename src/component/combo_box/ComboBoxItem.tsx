@@ -22,7 +22,7 @@ const ComboBoxItem = forwardRef(<T extends GenericItem>(
             cls(activeItem, selected)
           )}
       >
-        {customItem ? customItem(item) : item.toString()}
+        {customItem ? customItem(item) : <p>{item.toString()}</p>}
       </li>
     )
 

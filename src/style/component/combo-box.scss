@@ -32,7 +32,7 @@
   z-index: 10;
   display: flex;
   flex-flow: row wrap;
-  align-content: flex-start;
+  place-content: flex-start center;
   list-style: none;
 
   .snovy-dropdown-item {
@@ -40,12 +40,19 @@
     width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding: 0 2%;
     cursor: default;
     user-select: none;
+    display: flex;
+    flex-flow: column nowrap;
+    place-content: flex-start center;
+
+    p {
+      padding: 0 2%;
+    }
   }
 
   .snovy-dropdown-no-match {
+    height: 100%;
     text-align: center;
   }
 

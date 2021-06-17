@@ -9,7 +9,7 @@ import WithLabel from "../inputs/WithLabel"
 import Input from "../inputs/Input"
 import {ToggleButton} from "../inputs/Button"
 import {GenericItem} from "../../util/types"
-import memoize from "fast-memoize"
+import {useVirtual} from "react-virtual"
 
 type ComboBoxOptions = {
   selectPreviousOnEsc?: boolean
@@ -35,11 +35,17 @@ export interface ComboBoxProps<T extends GenericItem> extends Omit<React.HTMLAtt
   customItem?: (item: T) => React.ReactElement
 }
 
-const ComboBox = <T extends GenericItem>({label, customItem, options: passedOptions, ...props}: ComboBoxProps<T>) => {
+const ComboBox = <T extends GenericItem>({
+                                           items,
+                                           label,
+                                           customItem,
+                                           options: passedOptions,
+                                           ...props
+                                         }: ComboBoxProps<T>) => {
 
   const options = passedOptions ? {...defaultOptions, ...passedOptions} : defaultOptions
 
-  const [dropdownItems, setDropdownItems] = useDefaultEmpty<T>()
+  const [dropdownItems, setDropdownItems] = useDefaultEmpty<T>(items)
 
   const stateReducer = (state: UseComboboxState<T>, stateChange: UseComboboxStateChangeOptions<T>) => {
     const {type, changes} = stateChange
@@ -78,10 +84,10 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
       const target = inputValue ?? ""
 
       if (target.isBlank() && selectedItem) {
-        setDropdownItems(props.items)
-        setHighlightedIndex(props.items?.indexOf(selectedItem) ?? -1)
+        setDropdownItems(items)
+        setHighlightedIndex(items?.indexOf(selectedItem) ?? -1)
       } else {
-        const filteredItems = props.items?.filter(item =>
+        const filteredItems = items?.filter(item =>
           item.toString().toLowerCase().startsWith(target.toLowerCase()) //TODO includes + highlight
         )
 
@@ -111,27 +117,29 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
       props.onSelect && selectedItem != props.selected && props.onSelect(selectedItem ?? undefined)
       closeMenu()
     }
+    // onHighlightedIndexChange: ({highlightedIndex}) =>
+    //   highlightedIndex && virtualizer.scrollToIndex(highlightedIndex),
+    // scrollIntoView: () => false
   })
 
-  const getItemPropsMemoRef = useRef(getItemProps)
-
   useEffect(
     () => {
-      setDropdownItems(props.items)
-    }, [props.items]
+      setDropdownItems(items)
+    }, [items]
   )
 
-  //FIXME with hundreds of tags the whole combobox locking up for 500+ ms is unacceptable
-  useEffect(
-    () => {
-      getItemPropsMemoRef.current = memoize(getItemProps, {
-        // @ts-ignore
-        serializer: ({item, index}) => {
-          return `it${item}:ind${index}`
-        }
-      })
-    }, [dropdownItems]
-  )
+  // const getItemPropsMemoRef = useRef(getItemProps)
+
+  // useEffect(
+  //   () => {
+  //     getItemPropsMemoRef.current = memoize(getItemProps, {
+  //       // @ts-ignore
+  //       serializer: ({item, index}) => {
+  //         return `it${item}:ind${index}`
+  //       }
+  //     })
+  //   }, [dropdownItems]
+  // )
 
   useEffect(
     () => {
@@ -159,10 +167,19 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
     }
   ]
 
-  //TODO the info items should probably be sticky
+  const dropdownRef = useRef<HTMLOListElement>(null)
+
+  const virtualizer = useVirtual({
+    size: dropdownItems.length,
+    parentRef: dropdownRef,
+    estimateSize: React.useCallback(() => customItem ? 80 : 40, []),
+    overscan: 10
+  })
+
+  //TODO the info items should probably be sticky or like a help pop-up or something
   const ComboDropdown =
     <ol
-      {...getMenuProps()} className="snovy-dropdown" data-visible={isOpen}
+      {...getMenuProps({ref: dropdownRef})} className="snovy-dropdown" data-visible={isOpen}
       style={{
         position: options.absoluteDropdown && "absolute",
         maxHeight: options.absoluteDropdown && "50vh",
@@ -171,10 +188,23 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
       }}
     >
       {
-        dropdownItems.map((item, index) => (
+        !dropdownItems.isEmpty() && <li key="total-size" style={{height: virtualizer.totalSize}}/>
+      }
+      {
+        virtualizer.virtualItems.map(virtualRow => (
           <ComboBoxItem
-            {...getItemPropsMemoRef.current({item, index})} key={`${item}${index}`} item={item}
-            highlighted={index == highlightedIndex} selected={selectedItem == item} customItem={customItem}
+            {...getItemProps({item: dropdownItems[virtualRow.index], index: virtualRow.index})}
+            key={virtualRow.index} item={dropdownItems[virtualRow.index]}
+            highlighted={virtualRow.index == highlightedIndex}
+            selected={selectedItem == dropdownItems[virtualRow.index]} customItem={customItem}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: virtualRow.size,
+              transform: `translateY(${virtualRow.start}px)`
+            }}
           />
         ))
       }
@@ -182,19 +212,19 @@ const ComboBox = <T extends GenericItem>({label, customItem, options: passedOpti
         dropdownItems.isEmpty() &&
         <ComboInfoItem className="snovy-dropdown-no-match" value="No matching items found."/>
       }
-      {
-        dropdownItems[highlightedIndex] &&
-        <ComboInfoItem value={`Press Enter to select ${dropdownItems[highlightedIndex].toString()}`}/>
-      }
-      {
-        props.newItem && dropdownItems[highlightedIndex]?.toString() != inputValue &&
-        <ComboInfoItem
-          value={
-            `Press ${dropdownItems.isEmpty() ? "Enter/Shift+Enter" : "Shift+Enter"} 
-             to create ${inputValue.isBlank() ? ` new ${props.newItem.name}...` : inputValue}`
-          }
-        />
-      }
+      {/*{*/}
+      {/*  dropdownItems[highlightedIndex] &&*/}
+      {/*  <ComboInfoItem value={`Press Enter to select ${dropdownItems[highlightedIndex].toString()}`}/>*/}
+      {/*}*/}
+      {/*{*/}
+      {/*  props.newItem && dropdownItems[highlightedIndex]?.toString() != inputValue &&*/}
+      {/*  <ComboInfoItem*/}
+      {/*    value={*/}
+      {/*      `Press ${dropdownItems.isEmpty() ? "Enter/Shift+Enter" : "Shift+Enter"} */}
+      {/*       to create ${inputValue.isBlank() ? ` new ${props.newItem.name}...` : inputValue}`*/}
+      {/*    }*/}
+      {/*  />*/}
+      {/*}*/}
     </ol>
 
   const ComboBox =
