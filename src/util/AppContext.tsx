@@ -4,7 +4,6 @@ import Section from "../data/model/Section"
 import Note from "../data/model/Note"
 import {useDefaultEmpty} from "./hooks"
 import {dexie} from "../index"
-import generate from "../data/Generator"
 import {Table} from "../data/model/Base"
 import {useLiveQuery} from "dexie-react-hooks"
 import Scope from "../data/model/Scope"
@@ -65,8 +64,7 @@ export const AppProvider = (props: {
     () => {
       dexie.transaction("rw", [dexie.notebooks, dexie.sections, dexie.notes, dexie.scopes, dexie.tags, dexie.states], async () => {
         await dexie.notebooks.toArray().then(async function (values) {
-          // const loaded = values
-          const loaded = values.isEmpty() ? await generate() : values
+          const loaded = values
 
           setNotebooks(loaded.sort(Table.compareById))
           await selectNotebook(loaded.first())

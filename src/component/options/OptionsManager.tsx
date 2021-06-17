@@ -11,6 +11,8 @@ import WithLabel from "../inputs/WithLabel"
 import {default as ExportIcon} from "../../../public/icons/import.svg"
 import {default as ImportIcon} from "../../../public/icons/export.svg"
 import {default as RemoveIcon} from "../../../public/icons/remove.svg"
+import {default as AddIcon} from "../../../public/icons/add.svg"
+import generate from "../../data/Generator"
 
 const OptionsManager = () => {
 
@@ -96,6 +98,9 @@ const OptionsManager = () => {
         </WithLabel>
         <WithLabel value="Export" position="before" vertical>
           <Button preset="provided" onClick={exportData}><ExportIcon/></Button>
+        </WithLabel>
+        <WithLabel value="Mock" position="before" vertical>
+          <Button preset="provided" onClick={async () => await generate()}><AddIcon/></Button>
         </WithLabel>
         <WithLabel value="Drop" position="before" vertical>
           <Button preset="provided" onClick={async () => await dexie.delete()}><RemoveIcon/></Button>
