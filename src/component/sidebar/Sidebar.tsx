@@ -2,6 +2,7 @@ import React, {useState} from "react"
 import TabMenu, {Alignment, Orientation} from "../tab_menu/TabMenu"
 import TabMenuItem, {CollapseTabMenuItem} from "../tab_menu/TabMenuItem"
 
+//TODO this is likely unnecessary
 type TabHelper = {
   tabAlignment: Alignment,
   tooltip?: string,

@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useRef, useState} from "react"
-import Tag from "../../../data/model/Tag"
+import Tag, {sortTags} from "../../../data/model/Tag"
 import {TagItem, TagItemScoped, TagItemScopedUnique} from "../../tag/TagItem"
 import Scope from "../../../data/model/Scope"
 import Note from "../../../data/model/Note"
@@ -9,7 +9,6 @@ import TagForm from "../../tag/TagForm"
 import SidebarContent from "../SidebarContent"
 import ComboBox from "../../combo_box/ComboBox"
 import TagDisplayItem from "../../tag/TagDisplayItem"
-import {Titled} from "../../../data/model/Base"
 import AppContext from "../../../util/AppContext"
 
 const Detail = () => {
@@ -36,18 +35,6 @@ const Detail = () => {
   const getInputValue = (value: string) => {
     setInputValue(value)
     !formVisible && flipForm()
-  }
-
-  const availableTags = () => {
-    const tagsNotOnNote = appContext.tags.filter(it => !noteTags.includes(it))
-    const scopedTags: Array<Tag> = []
-    const unscopedTags: Array<Tag> = []
-
-    tagsNotOnNote.forEach(it => it.scope ? scopedTags.push(it) : unscopedTags.push(it))
-    scopedTags.sort(Tag.compareByScopeUnique || Tag.compareByScope || Tag.compareByTitle)
-    unscopedTags.sort(Titled.compareByTitle)
-
-    return scopedTags.concat(unscopedTags)
   }
 
   const collectNoteTags = () => {
@@ -113,7 +100,8 @@ const Detail = () => {
         <>
           <ToggleButton preset="add" circular ref={buttonRef} onClick={flipForm} setState={formVisible}/>
           <ComboBox<Tag>
-            items={availableTags()} newItem={{getInputValue: getInputValue, name: "tag"}}
+            items={sortTags(appContext.tags.filter(it => !noteTags.includes(it)))}
+            newItem={{getInputValue: getInputValue, name: "tag"}}
             options={{selectPreviousOnEsc: false, resetInputOnSelect: true, unboundDropdown: true}}
             onSelect={tag => onTag(appContext.activeNote, tag)}
             onFocus={() => {setFormVisible(false)}}

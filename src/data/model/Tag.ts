@@ -1,6 +1,6 @@
 import Scope from "./Scope"
 import {dexie} from "../../index"
-import {Colored} from "./Base"
+import {Colored, Titled} from "./Base"
 
 export default class Tag extends Colored {
 
@@ -64,4 +64,15 @@ export default class Tag extends Colored {
   static compareByScopeUnique =
     (a: Tag, b: Tag) => { return Number(a.scope?.unique) - Number(b.scope?.unique)}
 
+}
+
+export function sortTags(rawTags: Array<Tag>) {
+  const scopedTags: Array<Tag> = []
+  const unscopedTags: Array<Tag> = []
+
+  rawTags.forEach(it => it.scope ? scopedTags.push(it) : unscopedTags.push(it))
+  scopedTags.sort(Tag.compareByScopeUnique || Tag.compareByScope || Tag.compareByTitle)
+  unscopedTags.sort(Titled.compareByTitle)
+
+  return scopedTags.concat(unscopedTags)
 }

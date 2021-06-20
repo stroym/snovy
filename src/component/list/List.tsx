@@ -31,6 +31,7 @@ interface ListProps<T extends GenericItem> extends Omit<React.HTMLProps<HTMLOLis
   customItem?: (item: T) => React.ReactElement
 }
 
+//TODO add integrated label
 //TODO virtualize this
 const ListWithRef = forwardRef(<T extends GenericItem>(
   {

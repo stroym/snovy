@@ -17,19 +17,13 @@
   scroll-snap-align: start;
   border-radius: unset;
   width: 100%;
-  padding: 4% 0;
 
   & > * {
-    padding: 0 8%;
+    padding: 2% 4%;
   }
 
   &, * {
     cursor: default;
     user-select: none;
-  }
-
-  * {
-    height: 100%;
-    width: auto;
   }
 }

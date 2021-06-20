@@ -75,7 +75,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps<BasePresets | To
           }
         `}
       >
-        {preset ? resolvePreset() : value || defaultValue}
+        {preset ? resolvePreset() : value || defaultValue || children}
       </button>
     )
 

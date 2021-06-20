@@ -15,7 +15,6 @@ import {Portal} from "react-portal"
 import {theme as outlineTheme} from "rich-markdown-editor"
 import {default as OptionsIcon} from "../public/icons/options.svg"
 import {default as FavoritesIcon} from "../public/icons/favorites.svg"
-import {default as FilterIcon} from "../public/icons/filter.svg"
 import {default as SearchIcon} from "../public/icons/search.svg"
 import {default as ArchiveIcon} from "../public/icons/archived.svg"
 import {default as NotesIcon} from "../public/icons/notes.svg"
@@ -26,7 +25,6 @@ import {activeItem, highlightedItem, selectedItem} from "./util/classes"
 import Favorites from "./component/sidebar/left/Favorites"
 import Search from "./component/sidebar/left/Search"
 import Archive from "./component/sidebar/left/Archive"
-import Filtering from "./component/sidebar/right/Filtering"
 import Resources from "./component/sidebar/right/Resources"
 
 //TODO move props into interfaces, extend basic html props, use destructuring wherever possible
@@ -41,7 +39,6 @@ const App = () => {
     notes: "Notes",
     favorites: "Favorites",
     search: "Search",
-    filtering: "Filtering",
     resources: "Resources",
     archive: "Archive",
     options: "Options",
@@ -178,13 +175,6 @@ const App = () => {
             viewable: {
               text: mappings.manager,
               content: <Manager/>
-            }
-          },
-          {
-            tabAlignment: Alignment.START, icon: <FilterIcon/>, tooltip: mappings.filtering,
-            viewable: {
-              text: mappings.filtering,
-              content: <Filtering/>
             }
           },
           {

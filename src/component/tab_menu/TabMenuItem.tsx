@@ -8,7 +8,6 @@ import {default as LeftArrow} from "../../../public/icons/arrows/left.svg"
 import {activeItem} from "../../util/classes"
 import {useToggle} from "../../util/hooks"
 
-//TODO remove alignment from TabMenuItem?
 export interface TabMenuItemProps extends AlignableProps, React.HTMLProps<HTMLButtonElement> {
   icon?: JSX.Element
   tooltip?: string
