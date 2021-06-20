@@ -10,6 +10,7 @@ import Input from "../inputs/Input"
 import {ToggleButton} from "../inputs/Button"
 import {GenericItem} from "../../util/types"
 import {useVirtual} from "react-virtual"
+import {virtualizedStyle} from "../../util/styles"
 
 type ComboBoxOptions = {
   selectPreviousOnEsc?: boolean
@@ -191,20 +192,13 @@ const ComboBox = <T extends GenericItem>({
         !dropdownItems.isEmpty() && <li key="total-size" style={{height: virtualizer.totalSize}}/>
       }
       {
-        virtualizer.virtualItems.map(virtualRow => (
+        virtualizer.virtualItems.map(vi => (
           <ComboBoxItem
-            {...getItemProps({item: dropdownItems[virtualRow.index], index: virtualRow.index})}
-            key={virtualRow.index} item={dropdownItems[virtualRow.index]}
-            highlighted={virtualRow.index == highlightedIndex}
-            selected={selectedItem == dropdownItems[virtualRow.index]} customItem={customItem}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: virtualRow.size,
-              transform: `translateY(${virtualRow.start}px)`
-            }}
+            {...getItemProps({item: dropdownItems[vi.index], index: vi.index})}
+            key={vi.index} item={dropdownItems[vi.index]}
+            highlighted={vi.index == highlightedIndex}
+            selected={selectedItem == dropdownItems[vi.index]} customItem={customItem}
+            style={virtualizedStyle(vi)}
           />
         ))
       }
@@ -212,19 +206,6 @@ const ComboBox = <T extends GenericItem>({
         dropdownItems.isEmpty() &&
         <ComboInfoItem className="snovy-dropdown-no-match" value="No matching items found."/>
       }
-      {/*{*/}
-      {/*  dropdownItems[highlightedIndex] &&*/}
-      {/*  <ComboInfoItem value={`Press Enter to select ${dropdownItems[highlightedIndex].toString()}`}/>*/}
-      {/*}*/}
-      {/*{*/}
-      {/*  props.newItem && dropdownItems[highlightedIndex]?.toString() != inputValue &&*/}
-      {/*  <ComboInfoItem*/}
-      {/*    value={*/}
-      {/*      `Press ${dropdownItems.isEmpty() ? "Enter/Shift+Enter" : "Shift+Enter"} */}
-      {/*       to create ${inputValue.isBlank() ? ` new ${props.newItem.name}...` : inputValue}`*/}
-      {/*    }*/}
-      {/*  />*/}
-      {/*}*/}
     </ol>
 
   const ComboBox =

@@ -21,6 +21,8 @@ const Search = () => {
 
   const [active, setActive] = useState(mappings.filters)
 
+  //FIXME the scroll indicator on the lists here are wonky
+
   return (
     <SidebarContent
       id="search-view"

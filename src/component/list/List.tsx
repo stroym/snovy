@@ -1,9 +1,11 @@
-import React, {forwardRef, useEffect} from "react"
+import React, {forwardRef, MutableRefObject, useEffect, useRef} from "react"
 import ListItem from "./ListItem"
 import {KeyMapping, useKey} from "../../util/utils"
 import {Key} from "ts-key-enum"
 import {useMultiSelect} from "../../util/hooks"
 import {GenericItem} from "../../util/types"
+import {useVirtual} from "react-virtual"
+import {virtualizedStyle} from "../../util/styles"
 
 export type ListPresets = "simple" | "editable"
 
@@ -32,7 +34,6 @@ interface ListProps<T extends GenericItem> extends Omit<React.HTMLProps<HTMLOLis
 }
 
 //TODO add integrated label
-//TODO virtualize this
 const ListWithRef = forwardRef(<T extends GenericItem>(
   {
     items,
@@ -78,17 +79,32 @@ const ListWithRef = forwardRef(<T extends GenericItem>(
     }, [selectedItems]
   )
 
+  const selfRef = ref ? (ref as MutableRefObject<HTMLOListElement>) : useRef<HTMLOListElement>(null)
+
+  const virtualizer = useVirtual({
+    size: items.length,
+    parentRef: selfRef,
+    estimateSize: React.useCallback(() => customItem ? 80 : 40, []),
+    overscan: 10
+  })
+
   return (
     <ol
-      {...props} ref={ref} className="snovy-list" data-disabled={!items} tabIndex={-1}
+      {...props} ref={selfRef} className="snovy-list" data-disabled={!items} tabIndex={-1}
       onKeyDown={e => useKey(e, keyMap)} onContextMenu={() => onContext && onContext(undefined)}
     >
-      {items?.map((item, index) =>
-        <ListItem
-          key={index} item={item} preset={options.preset} customItem={customItem} onValueChange={onItemValueChange}
-          selected={selectedItems.includes(item)} active={activeItem == item}
-          onSelect={handleItemClick} onContext={onContext}
-        />)
+      {
+        !items.isEmpty() && <li key="total-size" style={{height: virtualizer.totalSize}}/>
+      }
+      {
+        virtualizer.virtualItems.map(vi => (
+          <ListItem
+            key={vi.index} item={items[vi.index]} preset={options.preset} customItem={customItem}
+            onValueChange={onItemValueChange} onSelect={handleItemClick} onContext={onContext}
+            selected={selectedItems.includes(items[vi.index])} active={activeItem == items[vi.index]}
+            style={virtualizedStyle(vi)}
+          />
+        ))
       }
       {children}
     </ol>
