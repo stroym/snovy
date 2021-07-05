@@ -100,10 +100,20 @@ const OptionsManager = () => {
           <Button preset="provided" onClick={exportData}><ExportIcon/></Button>
         </WithLabel>
         <WithLabel value="Mock" position="before" vertical>
-          <Button preset="provided" onClick={async () => await generate()}><AddIcon/></Button>
+          <Button
+            preset="provided" onClick={async () => {
+            await generate()
+            location.reload()
+          }}
+          ><AddIcon/></Button>
         </WithLabel>
         <WithLabel value="Drop" position="before" vertical>
-          <Button preset="provided" onClick={async () => await dexie.delete()}><RemoveIcon/></Button>
+          <Button
+            preset="provided" onClick={async () => {
+            await dexie.delete()
+            location.reload()
+          }}
+          ><RemoveIcon/></Button>
         </WithLabel>
       </div>
       <ThemeManager themes={themes} setThemes={setThemes} currentTheme={theme} setCurrentTheme={setTheme}/>

@@ -3,7 +3,7 @@ import Options from "./Options"
 
 const options = new Options(-1, false)
 
-const dark = new Theme(
+const plainDark = new Theme(
   "plaindark",
   "#282424",
   "#f8f8ff",
@@ -14,7 +14,7 @@ const dark = new Theme(
   "#c0c0c0"
 )
 
-const light = new Theme(
+const plainLight = new Theme(
   "plainlight",
   "#b0a1a1",
   "#000000",
@@ -25,8 +25,8 @@ const light = new Theme(
   "#c0c0c0"
 )
 
-const green = Theme.makeFrom(
-  dark,
+const greenDark = Theme.makeFrom(
+  plainDark,
   "greendark",
   {
     accent: "#556b2f",
@@ -35,8 +35,8 @@ const green = Theme.makeFrom(
   }
 )
 
-const neon = Theme.makeFrom(
-  dark,
+const neonDark = Theme.makeFrom(
+  plainDark,
   "neondark",
   {
     accent: "#7500a7",
@@ -48,5 +48,5 @@ const neon = Theme.makeFrom(
 
 export const defaults = {
   options: options,
-  themes: [dark, light, green, neon]
+  themes: [greenDark, neonDark, plainDark, plainLight]
 }
