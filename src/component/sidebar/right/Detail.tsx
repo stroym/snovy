@@ -74,6 +74,11 @@ const Detail = () => {
 
   const onTag = async (note: Note | undefined, tag: Tag | undefined) => {
     if (note && tag) {
+      if (appContext.tags.filter(it => it.isEqual(tag)).length > 0) {
+        alert(`Tag ${tag.toString()} already exists!`)
+        return
+      }
+
       if (tag.scope && tag.scope.unique) {
         const uniqueScoped = noteTags.find(it => it.scope?.id == tag.scope!.id)
 
@@ -114,9 +119,9 @@ const Detail = () => {
         formVisible &&
         <TagForm
           ref={formRef} scopes={appContext.scopes} initialValue={inputValue}
-          onTagCreated={tag => {
+          onTagCreated={async tag => {
             flipForm()
-            onTag(appContext.activeNote, tag)  //TODO this should only happen when create & tag is used
+            await onTag(appContext.activeNote, tag)  //TODO this should only happen when create & tag is used
           }}
         />
       }

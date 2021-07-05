@@ -18,7 +18,6 @@ const defaultWhite = "#ffffff"
 
 //TODO spawns a couple of pixels lower than it should
 //TODO get rid of "item" row things and rework this into a modal, since there's going to be a need for multiple checkboxes and things
-//TODO validate tags to prevent dupes
 const TagForm = forwardRef<HTMLFormElement, FormProps>(
   function TagForm(props: FormProps, ref: React.Ref<HTMLFormElement>) {
 
