@@ -2,7 +2,7 @@ import React from "react"
 import {Key} from "ts-key-enum"
 
 export function isArray<T>(arg: unknown): arg is Array<T> {
-  return arg instanceof Array
+  return Array.isArray(arg)
 }
 
 export function isItem<T>(arg: T | null | undefined): arg is T {
@@ -51,5 +51,19 @@ export function cls(className: string | undefined | null, condition?: boolean) {
     return temp
   } else {
     return condition ? temp : ""
+  }
+}
+
+/**
+ * Compares if the two passed arrays contain the same elements, regardless of their order.
+ * @param array1
+ * @param array2
+ * @return true if arrays contain the same elements, false otherwise
+ */
+export function compareArrayContents<T>(array1: Array<T> | null | undefined, array2: Array<T> | null | undefined) {
+  if (Array.isArray(array1) && Array.isArray(array2)) {
+    return array1.length == array2.length && array1.every(el => array2.includes(el))
+  } else {
+    return false
   }
 }

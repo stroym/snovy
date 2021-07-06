@@ -1,6 +1,6 @@
 import React, {forwardRef, MutableRefObject, useEffect, useRef} from "react"
 import ListItem from "./ListItem"
-import {KeyMapping, useKey} from "../../util/utils"
+import {compareArrayContents, KeyMapping, useKey} from "../../util/utils"
 import {Key} from "ts-key-enum"
 import {useMultiSelect} from "../../util/hooks"
 import {GenericItem} from "../../util/types"
@@ -66,15 +66,13 @@ const ListWithRef = forwardRef(<T extends GenericItem>(
 
   useEffect(
     () => {
-      if (items && !items.isEmpty() && selection && !selection.isEmpty()) {
-        setSelectedItems(selection)
-      }
-    }, [items, selection]
+      selection && setSelectedItems(selection)
+    }, [selection]
   )
 
   useEffect(
     () => {
-      onSelectionChange && selectedItems != selection && onSelectionChange(selectedItems)
+      onSelectionChange && !compareArrayContents(selectedItems, selection) && onSelectionChange(selectedItems)
       onActiveChange && onActiveChange(activeItem)
     }, [selectedItems]
   )

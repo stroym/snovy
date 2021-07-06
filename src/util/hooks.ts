@@ -174,7 +174,7 @@ export function useMultiSelect<T>(listItems: Array<T>) {
   }
 
   const resetSelection = () => {
-    selectedItems.first() && setSelectedItems([selectedItems.first()!])
+    selectedItems.first() ? setSelectedItems([selectedItems.first()!]) : setSelectedItems([])
   }
 
   return {
