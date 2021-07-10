@@ -21,12 +21,16 @@ $border-rad-5: 5px;
   }
 }
 
+@mixin focus-radius-always($radius) {
+  border-radius: $radius;
+  @include focus($radius);
+}
+
 // ---- Buttons ----
 
 .snovy-button {
   @include border($border-1);
-  @include focus($border-rad-10);
-  border-radius: $border-rad-10;
+  @include focus-radius-always($border-rad-10);
 
   &.snovy-button-circular {
     border-radius: 50%;
@@ -41,14 +45,12 @@ $border-rad-5: 5px;
 .colored-input-wrapper {
   .color-helper {
     @include border($border-1);
-    @include focus($border-rad-5 0 0 $border-rad-5);
-    border-radius: $border-rad-5 0 0 $border-rad-5;
+    @include focus-radius-always($border-rad-5 0 0 $border-rad-5);
   }
 
   .color-input {
     @include border($border-1 $border-1 $border-1 0);
-    @include focus(0 $border-rad-5 $border-rad-5 0);
-    border-radius: 0 $border-rad-5 $border-rad-5 0;
+    @include focus-radius-always(0 $border-rad-5 $border-rad-5 0);
   }
 }
 
@@ -73,7 +75,6 @@ $border-rad-5: 5px;
 
   .snovy-dropdown {
     @include border(0 $border-1 $border-1 $border-1);
-
     border-radius: 0 0 $border-rad-5 $border-rad-5;
   }
 }
