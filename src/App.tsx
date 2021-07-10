@@ -83,7 +83,7 @@ const App = () => {
         }
 
         .${highlightedItem},
-        .styled-hover:not(.color-item,.mono):hover {
+        .styled-hover:not(.color-item, .snovy-color-button, .mono):hover {
           background-color: ${theme.hover} !important;
         }
 

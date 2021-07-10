@@ -13,7 +13,7 @@
   .snovy-input {
     grid-area: input;
     align-self: center;
-    height: 1em;
+    height: 100%;
   }
 
   .snovy-button-circular {
@@ -25,6 +25,7 @@
 
 .snovy-dropdown {
   @include scrollbar();
+  position: relative;
   grid-area: dropdown;
   width: 100%;
   margin: 0;

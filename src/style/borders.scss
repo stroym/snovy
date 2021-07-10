@@ -19,6 +19,10 @@ $border-rad-5: 5px;
     outline-offset: -$border-1;
     border-radius: #{$radius};
   }
+
+  &:hover {
+    border-radius: #{$radius};
+  }
 }
 
 @mixin focus-radius-always($radius) {
@@ -191,11 +195,5 @@ $border-rad-5: 5px;
 .snovy-list-item {
   *:focus {
     outline: none !important;
-  }
-}
-
-.snovy-note-item {
-  .color-helper {
-    @include border($border-1);
   }
 }

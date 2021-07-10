@@ -18,7 +18,7 @@
   border-radius: unset;
   width: 100%;
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: row nowrap;
   place-content: flex-start center;
 
   & > * {
@@ -32,6 +32,7 @@
 }
 
 .snovy-note-item {
+  width: 100%;
   display: flex;
   flex-flow: row nowrap;
   place-items: center flex-start;
