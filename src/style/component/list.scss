@@ -30,3 +30,9 @@
     user-select: none;
   }
 }
+
+.snovy-note-item {
+  display: flex;
+  flex-flow: row nowrap;
+  place-items: center flex-start;
+}

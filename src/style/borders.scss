@@ -41,11 +41,13 @@ $border-rad-5: 5px;
 .colored-input-wrapper {
   .color-helper {
     @include border($border-1);
+    @include focus($border-rad-5 0 0 $border-rad-5);
     border-radius: $border-rad-5 0 0 $border-rad-5;
   }
 
   .color-input {
     @include border($border-1 $border-1 $border-1 0);
+    @include focus(0 $border-rad-5 $border-rad-5 0);
     border-radius: 0 $border-rad-5 $border-rad-5 0;
   }
 }
@@ -188,5 +190,11 @@ $border-rad-5: 5px;
 .snovy-list-item {
   *:focus {
     outline: none !important;
+  }
+}
+
+.snovy-note-item {
+  .color-helper {
+    @include border($border-1);
   }
 }

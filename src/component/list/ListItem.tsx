@@ -13,7 +13,7 @@ export interface ListItemProps<T extends GenericItem> extends Omit<React.HTMLPro
   onContext?: (item: T) => void
   onValueChange?: (str: string) => void
   preset?: ListPresets
-  customItem?: (item: T) => React.ReactElement
+  customItem?: (item: T, onValueChange?: (str: string) => void) => React.ReactElement
 }
 
 const ListItem = <T extends GenericItem>(
@@ -38,16 +38,11 @@ const ListItem = <T extends GenericItem>(
 
   function resolvePreset() {
     if (customItem) {
-      return customItem(item)
+      return customItem(item, onValueChange)
     } else {
       switch (preset) {
         case "editable":
-          return (
-            <EditableInput
-              placeholder="Title" onValueChange={onValueChange} value={item.toString()}
-              onClick={() => {onSelect(item)}}
-            />
-          )
+          return <EditableInput placeholder="Title" onValueChange={onValueChange} value={item.toString()}/>
         case "simple":
         default:
           return <div className="li-simple-content" tabIndex={0}>{item.toString()}</div>
@@ -57,7 +52,7 @@ const ListItem = <T extends GenericItem>(
 
   return (
     <li
-      {...props} onContextMenu={handleContext}
+      {...props} onContextMenu={handleContext} onClick={() => {onSelect(item)}}
       className={"snovy-list-item styled-hover".concat(
         cls(className),
         cls(selectedItem, selected),

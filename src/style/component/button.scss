@@ -14,8 +14,7 @@
     padding: unset;
     margin: 0.1em;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    place-items: center;
     flex-shrink: 0;
 
     svg {
@@ -24,6 +23,9 @@
   }
 
   &.svg-button {
+    display: flex;
+    place-items: center;
+
     .snovy-tag-item & {
       outline: none !important;
     }

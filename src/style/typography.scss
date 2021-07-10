@@ -97,7 +97,6 @@ $font-big: 3rem;
 
   .color-helper {
     @include button-size($size, 1);
-    font-size: $size;
   }
 }
 
@@ -108,6 +107,12 @@ $font-big: 3rem;
 
   .tag-detail {
     @include tag-detail-sizing($font-medium);
+  }
+}
+
+.snovy-note-item {
+  .color-helper {
+    @include button-size($font-small, 1);
   }
 }
 

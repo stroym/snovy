@@ -9,7 +9,7 @@ const plainDark = new Theme(
   "#f8f8ff",
   "#000000",
   "#a9a9a9",
-  "#3c3737",
+  "#5f5858",
   "#d3d3d3",
   "#c0c0c0"
 )
@@ -20,7 +20,7 @@ const plainLight = new Theme(
   "#000000",
   "#f8f8ff",
   "#a9a9a9",
-  "#3c3737",
+  "#5f5858",
   "#d3d3d3",
   "#c0c0c0"
 )

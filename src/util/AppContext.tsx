@@ -92,7 +92,12 @@ export const AppProvider = (props: {
       if (active != activeSection) {
         await active.load()
         setActiveSection(active)
-        await selectNote(active.notes.first())
+
+        for (const note of active.notes) {
+          await note.load()
+        }
+
+        setActiveNote(active.notes.first())
       }
     } else {
       setActiveSection(undefined)

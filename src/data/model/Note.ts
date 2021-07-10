@@ -26,7 +26,9 @@ export default class Note extends Ordered {
   }
 
   async load() {
-    return Promise.all([]).then(_it => this)
+    return Promise.all([
+      this.stateId ? await dexie.states.get(this.stateId).then(async state => this.state = await state?.load()) : () => false
+    ]).then(_it => this)
   }
 
   async save() {
@@ -58,12 +60,12 @@ export default class Note extends Ordered {
   }
 
   async setState(state?: State) {
-    this.state = state
+    this.stateId = state?.id
     await this.save()
   }
 
   isInState(state: State): boolean {
-    return this.state == state
+    return this.state?.id == state.id
   }
 
   async archive() {

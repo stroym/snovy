@@ -30,7 +30,7 @@ interface ListProps<T extends GenericItem> extends Omit<React.HTMLProps<HTMLOLis
   onContext?: (active: T | undefined) => void
   onItemValueChange?: (str: string) => void
   options?: ListOptions
-  customItem?: (item: T) => React.ReactElement
+  customItem?: (item: T, onValueChange?: (str: string) => void) => React.ReactElement
 }
 
 //TODO add integrated label
@@ -82,7 +82,7 @@ const ListWithRef = forwardRef(<T extends GenericItem>(
   const virtualizer = useVirtual({
     size: items.length,
     parentRef: selfRef,
-    estimateSize: React.useCallback(() => customItem ? 80 : 40, []),
+    estimateSize: React.useCallback(() => customItem ? 40 : 40, []),  //TODO probably expose virtualizer options + add option to enable/disable virtualization
     overscan: 10
   })
 

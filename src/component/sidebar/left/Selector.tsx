@@ -6,10 +6,11 @@ import Notebook from "../../../data/model/Notebook"
 import List from "../../list/List"
 import {makeContext, makeSharedContext} from "../../context_menu/ContextMenuItem"
 import SidebarContent from "../SidebarContent"
-import {Titled} from "../../../data/model/Base"
 import AppContext from "../../../util/AppContext"
 import ContextMenu from "../../context_menu/ContextMenu"
 import {useDefaultEmpty} from "../../../util/hooks"
+import NoteListItem from "../../list/NoteListItem"
+import {Titled} from "../../../data/model/Base"
 
 export const Selector = () => {
 
@@ -112,6 +113,7 @@ export const Selector = () => {
         onActiveChange={appContext.setActiveNote}
         onContext={setNoteContext}
         onItemValueChange={str => handleTitleChange(appContext.activeNote, str)}
+        customItem={(item, onValueChange) => <NoteListItem note={item} onValueChange={onValueChange}/>}
       />
       <ContextMenu parentRef={noteRef} onFinish={() => setContextActive(!contextActive)}>
         {
