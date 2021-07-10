@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useEffect} from "react"
 import {AlignableProps, OrientableProps, Orientation} from "./TabMenu"
 import {cls} from "../../util/utils"
 import {default as UpArrow} from "../../../public/icons/arrows/up.svg"
@@ -11,11 +11,17 @@ import {useToggle} from "../../util/hooks"
 export interface TabMenuItemProps extends AlignableProps, React.HTMLProps<HTMLButtonElement> {
   icon?: JSX.Element
   tooltip?: string
-  viewable?: { text: string, active: string, onActiveChange: (text: string) => void }
+  viewable?: { text: string, active: string, onActiveChange: (text: string) => void, isDefault?: boolean }
 }
 
 const TabMenuItem = (
   {alignment: _alignment, onClick, icon, tooltip, viewable, ...props}: TabMenuItemProps) => {
+
+  useEffect(
+    () => {
+      viewable && viewable.active == viewable.text && viewable.onActiveChange(viewable.text)
+    }, []
+  )
 
   return (
     <button
