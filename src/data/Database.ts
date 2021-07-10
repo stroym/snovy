@@ -93,14 +93,12 @@ export const fetchThemes = async () => {
   })
 }
 
-//FIXME TS complains with beta Dexie, see #1262 on Github
 export const importData = async (files: FileList | null, replaceData = false) => {
   if (files && files.length > 0) {
     const blob = files.item(0)
 
     if (blob) {
       await dexie.options.clear() //FIXME it shouldn't be necessary to drop current options on import
-      // @ts-ignore
       await importInto(dexie, blob, {overwriteValues: true, clearTablesBeforeImport: replaceData})
 
       window.location.reload()
@@ -110,7 +108,6 @@ export const importData = async (files: FileList | null, replaceData = false) =>
 
 export const exportData = async () => {
   saveAs(new File(
-    // @ts-ignore
     [await exportDB(dexie, {prettyJson: true})],
     `snovy-export-\
     ${new Date().toISOString()
