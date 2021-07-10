@@ -41,6 +41,12 @@ $border-rad-5: 5px;
   }
 }
 
+.snovy-color-button {
+  &:hover {
+    box-shadow: 0 0 0 $border-2;
+  }
+}
+
 // ---- Inputs ----
 .snovy-input:not(.snovy-list-item) {
   @include focus($border-rad-5);

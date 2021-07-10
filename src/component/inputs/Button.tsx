@@ -1,6 +1,5 @@
 import React, {forwardRef, useEffect} from "react"
 import {css} from "@emotion/react"
-import {transparentize} from "polished"
 import {cls} from "../../util/utils"
 
 import {default as AddIcon} from "../../../public/icons/add.svg"
@@ -17,6 +16,7 @@ type BasePresets = "remove"
 
 type TogglePresets = "add" | "collapse" | "collapse_simple" | "check" | "provided"
 
+//TODO add tooltip
 export interface ButtonProps<T extends BasePresets | TogglePresets> extends React.HTMLProps<HTMLButtonElement> {
   preset?: T
   mono?: boolean
@@ -122,14 +122,7 @@ export const ColorButton = forwardRef<HTMLButtonElement, ColorButtonProps>(
 
     return <Button
       {...props} ref={ref} className={`snovy-color-button ${className ?? ""}`} circular
-      css={color && css`
-        background-color: ${color};
-
-        &:hover {
-          background-color: ${transparentize(0.6, color)};
-        }
-      `
-      }
+      style={{backgroundColor: color, color: color}}
     />
   }
 )

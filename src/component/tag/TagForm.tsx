@@ -7,6 +7,7 @@ import Input from "../inputs/Input"
 import FocusTrap from "focus-trap-react"
 import WithLabel from "../inputs/WithLabel"
 import Tag from "../../data/model/Tag"
+import {defaultNoSelectionColor} from "../../data/model/options/Defaults"
 
 interface FormProps {
   initialValue?: string
@@ -14,16 +15,14 @@ interface FormProps {
   onTagCreated?: (tag: Tag) => void
 }
 
-const defaultWhite = "#ffffff"
-
 //TODO get rid of "item" row things and rework this into a modal, since there's going to be a need for multiple checkboxes and things
 const TagForm = forwardRef<HTMLFormElement, FormProps>(
   function TagForm(props: FormProps, ref: React.Ref<HTMLFormElement>) {
 
     const [tagText, setTagText] = useState<string>()
-    const [tagColor, setTagColor] = useState<string>(defaultWhite)
+    const [tagColor, setTagColor] = useState<string>(defaultNoSelectionColor)
     const [scopeText, setScopeText] = useState("")
-    const [scopeColor, setScopeColor] = useState(defaultWhite)
+    const [scopeColor, setScopeColor] = useState(defaultNoSelectionColor)
 
     const [scopeUnique, setUnique] = useState(false)
     const [unify, setUnify] = useState(true)

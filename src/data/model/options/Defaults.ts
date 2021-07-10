@@ -50,3 +50,5 @@ export const defaults = {
   options: options,
   themes: [greenDark, neonDark, plainDark, plainLight]
 }
+
+export const defaultNoSelectionColor = "transparent"
