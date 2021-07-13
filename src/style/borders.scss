@@ -34,16 +34,19 @@ $border-rad-5: 5px;
 
 .snovy-button {
   @include border($border-1);
-  @include focus-radius-always($border-rad-10);
+  @include focus-radius-always(var(--border-rad));
+
+  --border-rad: #{$border-rad-10};
 
   &.snovy-button-circular {
-    border-radius: 50%;
+    --border-rad: 50%;
   }
 }
 
 .snovy-color-button {
+  [data-whatinput="keyboard"] &:focus,
   &:hover {
-    box-shadow: 0 0 0 $border-2;
+    box-shadow: 0 0 0 $border-2 currentColor;
   }
 }
 
@@ -139,42 +142,31 @@ $border-rad-5: 5px;
 
 }
 
-// ---- Editor ----
-
-#snovy-editor {
-  .toolbar {
-    @include border(0 0 $border-2 0);
-
-    .snovy-button {
-      @include border($border-2)
-    }
-  }
-}
-
 // ---- Positional borders ----
 
 .left {
-  @include border(0 $border-2 0 0);
+  @include border(0 $border-1 0 0);
 }
 
 .right {
-  @include border(0 0 0 $border-2);
+  @include border(0 0 0 $border-1);
 }
 
 // ---- Menu ----
 .snovy-tab-menu-item {
-  @include focus($border-rad-5);
+  @include focus(0);
+  border-radius: unset;
 }
 
 // ---- Sidebars & their content ----
 
 .snovy-sidebar {
   .sidebar-heading {
-    @include border(0 0 $border-2 0);
+    @include border(0 0 $border-1 0);
   }
 
   .sidebar-footing {
-    @include border($border-2 0 0 0);
+    @include border($border-1 0 0 0);
   }
 }
 

@@ -101,6 +101,10 @@ const App = () => {
           border-color: ${theme.border};
         }
 
+        .snovy-color-button {
+          color: ${theme.border};
+        }
+
         *:focus {
           outline-color: ${theme.accent};
 

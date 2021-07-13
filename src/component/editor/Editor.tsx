@@ -1,7 +1,6 @@
 import React, {useContext, useEffect, useState} from "react"
 import RichMarkdownEditor, {theme as OutlineTheme} from "rich-markdown-editor"
 import base from "rich-markdown-editor/dist/dictionary"
-import {ToggleButton} from "../inputs/Button"
 import AppContext from "../../util/AppContext"
 
 const dictionary = {
@@ -29,11 +28,10 @@ const Editor = (props: {
     }, [appContext.activeNote]
   )
 
+  //TODO move source mode to context menu
+
   return (
     <div id="snovy-editor" data-disabled={!appContext.activeNote}>
-      <div className="toolbar">
-        <ToggleButton preset="check" circular getState={setSourceMode}/>
-      </div>
       <div className="editor-wrapper" tabIndex={-1}>
         {/*{sourceMode && <textarea value={value} onChange={e => setValue(e.target.value)}/>}*/}
         <RichMarkdownEditor

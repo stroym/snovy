@@ -2,7 +2,6 @@ import React from "react"
 import Note from "../../data/model/Note"
 import {EditableInput} from "../inputs/Input"
 import {ColorButton} from "../inputs/Button"
-import {defaultNoSelectionColor} from "../../data/model/options/Defaults"
 
 export interface NoteListItemProps {
   note: Note
@@ -15,7 +14,7 @@ const NoteListItem = ({note, onValueChange, ...props}: NoteListItemProps) => {
   return (
     <div className="snovy-note-item">
       <EditableInput placeholder="Title" onValueChange={onValueChange} value={note.toString()}/>
-      <ColorButton color={note.state?.color ?? defaultNoSelectionColor} onDoubleClick={() => false}/>
+      <ColorButton color={note.state?.color} onDoubleClick={() => false}/>
     </div>
   )
 

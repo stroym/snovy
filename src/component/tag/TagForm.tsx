@@ -7,7 +7,6 @@ import Input from "../inputs/Input"
 import FocusTrap from "focus-trap-react"
 import WithLabel from "../inputs/WithLabel"
 import Tag from "../../data/model/Tag"
-import {defaultNoSelectionColor} from "../../data/model/options/Defaults"
 
 interface FormProps {
   initialValue?: string
@@ -20,9 +19,9 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
   function TagForm(props: FormProps, ref: React.Ref<HTMLFormElement>) {
 
     const [tagText, setTagText] = useState<string>()
-    const [tagColor, setTagColor] = useState<string>(defaultNoSelectionColor)
+    const [tagColor, setTagColor] = useState<string | undefined>()
     const [scopeText, setScopeText] = useState("")
-    const [scopeColor, setScopeColor] = useState(defaultNoSelectionColor)
+    const [scopeColor, setScopeColor] = useState<string | undefined>()
 
     const [scopeUnique, setUnique] = useState(false)
     const [unify, setUnify] = useState(true)
@@ -82,7 +81,7 @@ const TagForm = forwardRef<HTMLFormElement, FormProps>(
       if (tagText && !tagText.isBlank() && tagColor) {
         let tag
 
-        if (scopeText && !scopeText.isBlank()) {
+        if (scopeText && !scopeText.isBlank() && scopeColor) {
           const dbScope = props.scopes.find(it => it.title == scopeText) ??
             await new Scope(scopeText, scopeColor, scopeUnique).save()
 
